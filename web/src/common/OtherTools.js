@@ -409,3 +409,32 @@ export function getIcon(link) {
 export function isProdoction(){ 
     return process.env.NODE_ENV === "production";
 }
+/**
+ * 获取dict单个数据
+ */
+export function getDictItem(dictList, value, option = {}) {
+    const { valueKey = 'value',isCongruence = false } = option;
+    return dictList.find(item => {
+        /** 是否用全等操作 */
+        if(isCongruence){
+            return item[valueKey] === value;
+        }else{
+            return item[valueKey] == value;
+        }
+    });
+}
+/**
+ * 获取dict的value对应的label
+ */
+export function getDictItemLabel(target, value, option = {}) {
+    const { valueKey = 'value', lebelKey = 'label', showValue = true,isCongruence = false } = option;
+    let item = getDictItem(target, value, { valueKey: valueKey,isCongruence:isCongruence });
+    if (item) {
+        return item[lebelKey];
+    } else if (showValue) {
+        //如果没找到item的化直接返回value
+        return value;
+    } else {
+        return '';
+    }
+}

@@ -11,3 +11,10 @@ export function messageSuccess(...params){
 export function messageError(...params){
     return ElMessage.error(...params);
 };
+/** alert */
+export function alert(...params){
+    return ElMessageBox.alert(...params);
+};
+export function confirm(...params){
+    return ElMessageBox.confirm(...params);
+};

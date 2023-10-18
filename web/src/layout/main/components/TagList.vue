@@ -125,7 +125,7 @@ export default {
 .tag-list-cp-container {
     height: 100%;
     width: 100%;
-    padding: 0 5px;
+    padding: 0;
     box-sizing: border-box;
     display: flex;
     flex-direction: row;
@@ -150,7 +150,7 @@ export default {
                 padding: 5px;
                 box-sizing: border-box;
                 border:1px solid rgb(196, 196, 196);
-                margin-right: 5px;
+                margin-left: 5px;
                 font-size: 13px;
                 height: 30px;
                 width: max-content;

@@ -169,12 +169,18 @@
                         <template #default="scope">
                             <el-button
                                 :text="true"
-                                @click="handleDetails(scope.row,{isShow:true})">
+                                @click="handleDetails(scope.row,{
+                                    isShow:true,
+                                    afterTitle:' - 查看',
+                                })">
                                 查看
                             </el-button>
                             <el-button
                                 :text="true"
-                                @click="handleEdit(scope.row)">
+                                @click="handleEdit(scope.row,{
+                                    isShow:true,
+                                    afterTitle:' - 编辑',
+                                })">
                                 编辑
                             </el-button>
                             <el-button
@@ -212,6 +218,8 @@
                 />
             </div>
         </div>
+        <EditDataDialog
+            ref="EditDataDialogRef"></EditDataDialog>
     </div>
 </template>
 
@@ -225,13 +233,16 @@ import { copyValue } from '@/common/OtherTools';
 import DictTags from '@/components/DictTags.vue';
 import {debounceFn} from "@/common/DebounceAndThrottle";
 import {responseData} from "./common/Data.js";
-import {messageSuccess} from "@/common/MessagePrompt.js";
+import {messageSuccess,confirm} from "@/common/MessagePrompt.js";
+import EditDataDialog from "./components/EditDataDialog.vue";
 
 export default defineComponent({
     components: {
         DictTags,
+        EditDataDialog,
     },
     setup() {
+        const EditDataDialogRef = ref(null);  //组件实例
         const router = useRouter();
         const dataContainer = reactive({
             loading:false,
@@ -296,46 +307,54 @@ export default defineComponent({
         }
         /** 新增按钮操作 */
         function handleAdd() {
-            // router.push({ name: "AddSalesLead" });
+            if(!EditDataDialogRef.value) return;
+            EditDataDialogRef.value.initData(true,{},{
+                afterTitle:' - 添加',
+            }).then(()=>{
+
+            }).catch(()=>{
+
+            });
         }
         /** 详情按钮操作 */
         function handleDetails(row,querys) {
-            // router.push({
-            //     name: "SalesLeadDetails/:id",
-            //     query:{
-            //         id:row.id,
-            //         ...querys,
-            //     },
-            //     params:{
-            //         id:row.id,
-            //     },
-            // });
+            if(!EditDataDialogRef.value) return;
+            EditDataDialogRef.value.initData(true,{
+                ...row,
+            },{
+                ...querys,
+            }).then(()=>{
+
+            }).catch(()=>{
+
+            });
         }
         /** 编辑按钮操作 */
         function handleEdit(row,querys) {
-            // router.push({
-            //     name: "SalesLeadEdit/:id",
-            //     query:{
-            //         id:row.id,
-            //         ...querys,
-            //     },
-            //     params:{
-            //         id:row.id,
-            //     },
-            // });
+            if(!EditDataDialogRef.value) return;
+            EditDataDialogRef.value.initData(true,{
+                ...row,
+            },{
+                ...querys,
+            }).then(()=>{
+
+            }).catch(()=>{
+
+            });
         }
         /** 删除 */
         function handleDelete(rows){
-            // instance.$modal.confirm('确认删除该数据？').then(()=>{
-            //     dataContainer.loading = true;
-            //     deleteSalesLeadApi(rows.map(item=>item.id).join(',')).then(() => {
-            //         getDataList();
-            //     }).catch(()=>{
-            //         return;
-            //     }).finally(()=>{
-            //         dataContainer.loading = false;
-            //     });
-            // }).catch(() => {});
+            confirm('确认删除该数据？').then(()=>{
+                // dataContainer.loading = true;
+                // deleteSalesLeadApi(rows.map(item=>item.id).join(',')).then(() => {
+                //     getDataList();
+                // }).catch(()=>{
+                //     return;
+                // }).finally(()=>{
+                //     dataContainer.loading = false;
+                // });
+                messageSuccess("删除成功");
+            }).catch(() => {});
         }
         return {
             dataContainer,
@@ -349,6 +368,7 @@ export default defineComponent({
             handleDetails,
             handleEdit,
             handleDelete,
+            EditDataDialogRef,
         };
     },
 });

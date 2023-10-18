@@ -5,8 +5,8 @@
                 <el-menu-item 
                     v-for="item,index in 40"
                     :key="index"
-                    :index="index">
-                    <span>Navigator Four</span>
+                    :index="(index+1)+''">
+                    <span>目录结构 - 用户管理</span>
                 </el-menu-item>
             </el-menu>
         </el-scrollbar>
