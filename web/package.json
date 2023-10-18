@@ -1,0 +1,41 @@
+{
+  "name": "my-vue-app",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@element-plus/icons-vue": "^2.0.10",
+    "ace-builds": "^1.14.0",
+    "axios": "^1.2.2",
+    "blueimp-md5": "^2.19.0",
+    "color": "^4.2.3",
+    "colorthief": "^2.3.2",
+    "element-plus": "^2.2.28",
+    "file-saver": "^2.0.5",
+    "js-md5": "^0.7.3",
+    "jsoneditor": "^9.9.2",
+    "nprogress": "^0.2.0",
+    "pinia": "^2.0.29",
+    "qs": "^6.11.0",
+    "sass": "^1.57.1",
+    "sass-loader": "^13.2.0",
+    "storages-js": "0.0.4",
+    "vite-plugin-ali-oss": "^1.0.8",
+    "vue": "^3.2.45",
+    "vue-router": "^4.1.6",
+    "vue3-ace-editor": "^2.2.2",
+    "vuedraggable": "^4.1.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.0.0",
+    "file-loader": "^6.2.0",
+    "unplugin-auto-import": "^0.12.1",
+    "unplugin-vue-components": "^0.22.12",
+    "vite": "^4.0.0"
+  }
+}
