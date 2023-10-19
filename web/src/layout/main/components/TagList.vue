@@ -48,9 +48,13 @@ import {
     computed,onMounted,watch,toRef,
     onUnmounted,
 } from "vue";
+import SvgIcon from "@/components/svgIcon/index.vue";
 
 export default {
     name: 'MyTabs',
+    components: {
+        SvgIcon,
+    },
     props:{
         activeIndex:{  //当前选择的index
             type:Number,

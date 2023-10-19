@@ -23,9 +23,13 @@ import {
     toRef,
     onUnmounted,
 } from 'vue';
+import SvgIcon from "@/components/svgIcon/index.vue";
 
 export default {
     name: 'Menu',
+    components: {
+        SvgIcon,
+    },
     setup(props) {
         const dataContainer = reactive({});
         return {

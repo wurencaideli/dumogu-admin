@@ -66,6 +66,7 @@
                                 <el-button
                                     type="primary"
                                     @click="handleQuery">
+                                    <SvgIcon name="Navbar-full"></SvgIcon>
                                     查询
                                 </el-button>
                                 <el-button
@@ -235,11 +236,13 @@ import {debounceFn} from "@/common/DebounceAndThrottle";
 import {responseData} from "./common/Data.js";
 import {messageSuccess,confirm} from "@/common/MessagePrompt.js";
 import EditDataDialog from "./components/EditDataDialog.vue";
+import SvgIcon from "@/components/svgIcon/index.vue";
 
 export default defineComponent({
     components: {
         DictTags,
         EditDataDialog,
+        SvgIcon,
     },
     setup() {
         const EditDataDialogRef = ref(null);  //组件实例

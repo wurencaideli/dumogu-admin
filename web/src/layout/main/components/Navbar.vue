@@ -62,9 +62,13 @@ import {
     onUnmounted,
 } from "vue";
 import { useRouter } from "vue-router";
+import SvgIcon from "@/components/svgIcon/index.vue";
 
 export default {
     name: 'Navbar',
+    components: {
+        SvgIcon,
+    },
     props:{
         
     },
