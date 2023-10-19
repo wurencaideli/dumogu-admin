@@ -37,7 +37,6 @@ export const constantRoutes = [
     {
         path: '/main',
         component:() => import('@/layout/main/index.vue'),
-        redirect: 'index',
         children: [
             {
                 path: 'index',
@@ -59,6 +58,30 @@ export const constantRoutes = [
             },
         ],
     },
+    // {
+    //     path: '/main',
+    //     component:() => import('@/layout/main/index.vue'),
+    //     children: [
+    //         {
+    //             path: 'show-list',
+    //             component: () => import('@/views/exampleViews/showList/index.vue'),
+    //             name: 'show-list',
+    //             meta: { title: '例子页面', icon: 'dashboard', affix: false }
+    //         },
+    //     ],
+    // },
+    // {
+    //     path: '/main',
+    //     component:() => import('@/layout/main/index.vue'),
+    //     children: [
+    //         {
+    //             path: 'show-list/info/:sign',
+    //             component: () => import('@/views/exampleViews/showList/info.vue'),
+    //             name: 'show-list-info',
+    //             meta: { title: '例子页面详情', icon: 'dashboard', affix: false }
+    //         },
+    //     ],
+    // },
     /** 404页面 */
     {
         path: "/:pathMatch(.*)*",
@@ -77,8 +100,11 @@ const router = createRouter({
     history: createWebHistory(),
     routes: constantRoutes,
 });
+/** 挂载到全局方便操作 */
+window.router = router;
 console.log(
     "所有路由",
+    router,
     router.getRoutes().filter(item=>{
         return !!item.meta && !!item.name;
     }),

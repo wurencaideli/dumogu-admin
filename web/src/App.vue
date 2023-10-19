@@ -67,9 +67,8 @@ export default defineComponent({
 <el-config-provider :locale="locale">
     <el-scrollbar 
         height="100vh">
-        <router-view v-slot="{ Component,route }">
+        <router-view v-slot="{ Component }">
             <component 
-                :key="route.path"
                 :is="Component" />
         </router-view>
     </el-scrollbar>

@@ -3,10 +3,11 @@
         <el-scrollbar height="100%">
             <el-menu default-active="2">
                 <el-menu-item 
-                    v-for="item,index in 40"
-                    :key="index"
+                    v-for="item,index in dataContainer.dataList"
+                    :key="item.path"
+                    @click="toPath(item.path)"
                     :index="(index+1)+''">
-                    <span>目录结构 - 用户管理</span>
+                    <span>{{item.title}}</span>
                 </el-menu-item>
             </el-menu>
         </el-scrollbar>
@@ -24,16 +25,35 @@ import {
     onUnmounted,
 } from 'vue';
 import SvgIcon from "@/components/svgIcon/index.vue";
+import { useRouter,useRoute } from "vue-router";
 
 export default {
     name: 'Menu',
     components: {
         SvgIcon,
     },
+    props:{
+        /** 所显示的数据列表 */
+        dataList:{
+            type:Array,
+            default:()=>{
+                return [];
+            },
+        },
+    },
     setup(props) {
-        const dataContainer = reactive({});
+        const router = useRouter();
+        const route = useRoute();
+        const dataContainer = reactive({
+            dataList:toRef(props,'dataList'),
+        });
+        /** 跳转相应链接 */
+        function toPath(params){
+            router.push(params);
+        }
         return {
             dataContainer,
+            toPath,
         };
     },
 };
@@ -44,6 +64,9 @@ export default {
     width: 100%;
     :deep(.el-menu){
         border:none !important;
+        .is-active{
+            background-color: #f1f1f1;
+        }
     }
 }
 </style>

@@ -3,10 +3,17 @@
  * 操作 layout
  * 负责相应事件的统一分发处理
  */
-import { ref, defineComponent,h } from 'vue';
+import { 
+    ref, defineComponent,h,
+    reactive,watch,
+    toRef,
+    computed,
+} from 'vue';
 import Navbar from "./components/Navbar.vue";
 import Menu from "./components/Menu.vue";
 import TagList from "./components/TagList.vue";
+import { useRouter,useRoute } from "vue-router";
+import {userData} from "@/store/user";
 
 export default defineComponent({
     name:'MainLayout',
@@ -17,6 +24,20 @@ export default defineComponent({
     },
     props: {},
     setup() {
+        let userDataStore = userData();
+        const router = useRouter();
+        const route = useRoute();
+        /**
+         * 一个tag例子的属性介绍
+         */
+        // {
+        //     path:'/main/index',
+        //     title:'标签一',  //标签标题
+        //     sign:'/main/index',  //唯一标识
+        //     fullPath:'/main/index',  //跳转地址，完整地址
+        //     isCache:true,  //该标签页面是否缓存
+        //     fixed:false,  //是否固定，不可删除
+        // }
         /** 
          * 原本方法根据组件名来缓存，现在根据路由path动态修改组件实例名称来缓存
          * 添加tag时也根据路由path来命名
@@ -46,8 +67,81 @@ export default defineComponent({
                 return h(wrapper);
             }
         }
+        const dataContainer = reactive({
+            tagList:toRef(userDataStore,'tagList'),
+            activeSign:toRef(userDataStore,'activeSign'),
+            menuList:toRef(userDataStore,'menuList'),
+        });
+        /** 判断是否需要缓存的 */
+        function isCache(data){
+            return true;
+        }
+        watch(route,()=>{
+            let tagList = userDataStore.tagList;
+            let activeSign = userDataStore.activeSign;
+            /** 
+             * 已经跳转的路由添加到标签上
+             * 不重复添加
+             *  */
+            if(!tagList.find(item=>item.path==route.path)){
+                tagList.push({
+                    title:'哈哈哈',
+                    path:route.path,
+                    fullPath:route.fullPath,
+                    sign:route.path,
+                    isCache:isCache(route),  //表示该标签需要缓存
+                });
+            }
+            /** 设置当前所显示的标签 */
+            tagList.forEach(item=>{
+                if(item.path !== route.path) return;
+                activeSign = item.sign;
+            });
+            userDataStore.setTagList(tagList);
+            userDataStore.setActiveSign(activeSign);
+        },{
+            deep:true,
+            immediate:true,
+        });
+        /** tag 点击事件 */
+        function handleTagClick(item){
+            router.push(item.fullPath);
+        }
+        /** tag 删除事件 */
+        function handleTagRemove(tag){
+            let tagList = userDataStore.tagList;
+            let activeSign = userDataStore.activeSign;
+            let index = tagList.findIndex(item=>{
+                return item.sign == tag.sign;
+            });
+            if(tag.sign != activeSign){
+                tagList.splice(index,1);
+            }else{
+                if(index > 0){
+                    /** 跳转到靠左边的一个标签 */
+                    handleTagClick(tagList[index - 1]);
+                    tagList.splice(index,1);
+                }
+            }
+            userDataStore.setTagList(tagList);
+        }
+        /** 
+         * 需要缓存的列表
+         * 根据标签列表来的，需要改的话只需要处理标签列表
+         *  */
+        const cacheTagList = computed(()=>{
+            return userDataStore.tagList.filter(item=>{
+                return item.isCache;
+            }).map(item=>{
+                return item.path;
+            });
+        });
         return {
             formatComponentInstance,
+            dataContainer,
+            handleTagClick,
+            handleTagRemove,
+            cacheTagList,
         };
     },
 });
@@ -60,18 +154,23 @@ export default defineComponent({
         </div>
         <div class="content-container">
             <div class="left">
-                <Menu></Menu>
+                <Menu
+                    :dataList="dataContainer.menuList"></Menu>
             </div>
             <div class="right">
                 <div class="top">
-                    <TagList></TagList>
+                    <TagList
+                        :tagList="dataContainer.tagList"
+                        :activeSign="dataContainer.activeSign"
+                        @onClick="handleTagClick"
+                        @onRemove="handleTagRemove"></TagList>
                 </div>
                 <div class="view-container">
                     <router-view v-slot="{ Component,route }">
-                        <keep-alive>
+                        <keep-alive 
+                            :include="cacheTagList">
                             <component 
-                                :is="formatComponentInstance(Component,route)" 
-                                :key="route.path" />
+                                :is="formatComponentInstance(Component,route)"/>
                         </keep-alive>
                     </router-view>
                 </div>

@@ -7,14 +7,18 @@
             <div 
                 class="scrollbar-container">    
                 <div
-                    v-for="item,index in 50" 
-                    :key="index"
+                    v-for="item,index in dataContainer.tagList" 
+                    :key="item.sign"
                     :class="{
                         'item':true,
-                        'active':index==1,
-                    }">
-                    标签 {{ index}}
-                    <div class="bt">
+                        'active':dataContainer.activeSign==item.sign,
+                    }"
+                    @click="handleClick(item)">
+                    {{item.title}}
+                    <div
+                        v-if="!item.fixed"
+                        @click.stop="handleRemove(item)" 
+                        class="bt">
                         <svg t="1697599667788" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="9077" width="32" height="32"><path d="M639.125 512l217.96875-217.96875c14.4375-14.4375 14.4375-40.03125 0-54.46875l-72.65625-72.65625c-14.4375-14.4375-40.125-14.4375-54.46875 0L512 384.78125 294.03125 166.8125c-14.4375-14.4375-40.125-14.4375-54.46875 0l-72.65625 72.65625c-14.4375 14.4375-14.4375 40.125 0 54.46875L384.78125 512 166.8125 729.96875c-14.4375 14.4375-14.4375 40.125 0 54.46875l72.65625 72.65625c14.4375 14.4375 40.125 14.4375 54.46875 0L512 639.125l217.96875 217.96875c14.4375 14.4375 40.125 14.4375 54.46875 0l72.65625-72.65625c14.4375-14.4375 14.4375-40.03125 0-54.46875L639.125 512z" p-id="9078"></path></svg>
                     </div>
                 </div>
@@ -74,7 +78,7 @@ export default {
         },
         /** 当前活动的唯一标识 */
         activeSign:{
-            type:Number,
+            type:[Number,String],
             default:0,
         },
     },
