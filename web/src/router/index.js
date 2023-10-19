@@ -31,7 +31,6 @@ export const constantRoutes = [
     /** 定义首页重定向地址 */
     {
         path: '',
-        component:() => import('@/layout/main/index.vue'),
         redirect: '/main/index',
     },
     /** 其他业务相关页面 */
@@ -43,9 +42,21 @@ export const constantRoutes = [
             {
                 path: 'index',
                 component: () => import('@/views/main/index.vue'),
-                name: 'Index',
+                name: 'main-index',
                 meta: { title: '首页', icon: 'dashboard', affix: false }
-            }
+            },
+            {
+                path: 'show-list',
+                component: () => import('@/views/exampleViews/showList/index.vue'),
+                name: 'show-list',
+                meta: { title: '例子页面', icon: 'dashboard', affix: false }
+            },
+            {
+                path: 'show-list/info/:sign',
+                component: () => import('@/views/exampleViews/showList/info.vue'),
+                name: 'show-list-info',
+                meta: { title: '例子页面详情', icon: 'dashboard', affix: false }
+            },
         ],
     },
     /** 404页面 */
@@ -66,5 +77,11 @@ const router = createRouter({
     history: createWebHistory(),
     routes: constantRoutes,
 });
+console.log(
+    "所有路由",
+    router.getRoutes().filter(item=>{
+        return !!item.meta && !!item.name;
+    }),
+);
 
 export default router;

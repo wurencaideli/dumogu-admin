@@ -34,6 +34,15 @@
             <div class="item">
                 关闭其他
             </div>
+            <div class="item">
+                关闭左边
+            </div>
+            <div class="item">
+                关闭右边
+            </div>
+            <div class="item">
+                关闭所有
+            </div>
         </div>
     </div>
 </div>
@@ -41,7 +50,7 @@
 <script>
 /*
  * 标签切换按钮组件
- * 提供类名供外部调整
+ * 由外部指定数据
  */
 import { 
     defineComponent,ref,reactive, 
@@ -51,94 +60,42 @@ import {
 import SvgIcon from "@/components/svgIcon/index.vue";
 
 export default {
-    name: 'MyTabs',
+    name: 'TagList',
     components: {
         SvgIcon,
     },
     props:{
-        activeIndex:{  //当前选择的index
+        /** 所显示的标签列表 */
+        tagList:{
+            type:Array,
+            default:()=>{
+                return [];
+            },
+        },
+        /** 当前活动的唯一标识 */
+        activeSign:{
             type:Number,
             default:0,
-        },
-        tabLength:{  //可切换的tab length
-            type:Number,
-            default:0,
-        },
-        gridStyle:{  //布局样式，等宽或自动
-            type:String,
-            default:'equal',
         },
     },
-    setup(props){
-        const MyTabsRef = ref(null);
-        const ItemBgRef = ref(null);
+    emits:['onClick','onRemove'],
+    setup(props,{emit}){
         const dataContainer = reactive({
-            show:false,
-            timer:'',
-            activeIndex:toRef(props,'activeIndex'),
-            tabLength:toRef(props,'tabLength'),
-            gridStyle:toRef(props,'gridStyle'),
+            tagList:toRef(props,'tagList'),
+            activeSign:toRef(props,'activeSign'),
         });
-        /** 是否活跃 */
-        function isActive(){
-            const el = MyTabsRef.value;
-            if(!el) return false;
-            let react = el.getBoundingClientRect();
-            /** 元素被隐藏了也不计算 */
-            if(!react.width && !react.height) return false;
-            return el.getRootNode() === document;
+        /** 标签点击事件，向外部抛出 */
+        function handleClick(item){
+            emit('onClick',item);
         }
-        /** 计算位置 */
-        function computedLocation(){ 
-            const MyTabsEl = MyTabsRef.value;
-            if(!MyTabsEl) return;
-            if(!isActive()) return;
-            const ItemEls = new Array(...MyTabsEl.children);
-            if(!ItemEls) return;
-            ItemEls.pop();
-            dataContainer.show = ItemEls.length > 0;
-            const ItemBgEl = ItemBgRef.value;
-            if(!ItemBgEl) return;
-            if(dataContainer.activeIndex<0 || dataContainer.activeIndex>=ItemEls.length) return;
-            let left = ItemEls[dataContainer.activeIndex].offsetLeft;
-            let top = ItemEls[dataContainer.activeIndex].offsetTop;
-            let transform = `translate(${left}px, ${top}px)`;
-            let width = ItemEls[dataContainer.activeIndex].clientWidth + 'px';
-            let height = ItemEls[dataContainer.activeIndex].clientHeight + 'px';
-            if(ItemBgEl.style.transform != transform){
-                ItemBgEl.style.transform = transform;
-            }
-            if(ItemBgEl.style.width != width){
-                ItemBgEl.style.width = width;
-            }
-            if(ItemBgEl.style.height != height){
-                ItemBgEl.style.height = height;
-            }
+        /** 标签删除事件 */
+        function handleRemove(item){
+            emit('onRemove',item);
         }
-        watch(props,()=>{
-            computedLocation();
-        });
-        onMounted(()=>{
-            computedLocation();
-            /** 监听元素宽高变化 */
-            let timer;
-            window.addEventListener("resize",()=>{
-                clearTimeout(timer);
-                timer = setTimeout(()=>{
-                    computedLocation();
-                },150);
-            });
-            dataContainer.timer = setInterval(()=>{
-                computedLocation();
-            },150);
-        });
-        onUnmounted(()=>{
-            clearInterval(dataContainer.timer);
-        });
         return {
-            MyTabsRef,
-            ItemBgRef,
             dataContainer,
+            handleClick,
+            handleRemove,
         };
     },
 }
@@ -232,7 +189,7 @@ export default {
             box-shadow: 0 3px 8px 0 rgba(0, 0, 0, 0.5);
             padding: 10px 0;
             box-sizing: border-box;
-            border-radius: 3px;
+            border-radius: 2px;
             overflow: hidden;
             opacity: 0;
             transition: opacity 0.2s;
@@ -247,7 +204,7 @@ export default {
                 width: auto;
                 min-width: max-content;
                 transition: all 0.2s;
-                padding: 13px 15px;
+                padding: 10px 15px;
                 box-sizing: border-box;
                 display: block;
                 color: #6b7386;
