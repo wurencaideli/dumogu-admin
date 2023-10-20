@@ -140,7 +140,6 @@ export default {
                 flex-direction: row;
                 justify-content: center;
                 align-items: center;
-                background-color: rgb(233, 233, 233);
                 padding: 5px 10px;
                 box-sizing: border-box;
                 border:1px solid rgb(196, 196, 196);
@@ -149,8 +148,9 @@ export default {
                 height: 30px;
                 width: max-content;
                 &.active{
-                    background-color: #0072E5;
-                    color: rgb(255, 255, 255);
+                    background-color: rgb(209, 209, 209);
+                    // background-color: #0072E5;
+                    // color: rgb(255, 255, 255);
                     font-weight: bold;
                 }
                 >.bt{

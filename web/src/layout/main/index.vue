@@ -200,12 +200,17 @@ export default defineComponent({
     display: flex;
     flex-direction: column;
     background-color: white;
+    position: relative;
+    z-index: 9;
     >.head-container{
         width: 100%;
         background-color: white;
         height: var(--navbar-height);
-        border-bottom: 1px solid rgb(218, 218, 218);
+        // border-bottom: 1px solid rgb(218, 218, 218);
         box-sizing: border-box;
+        position: relative;
+        z-index: 9;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.177);
     }
     >.content-container{
         flex: 1 1 0;
@@ -213,18 +218,25 @@ export default defineComponent({
         width: 100%;
         display: flex;
         flex-direction: row;
+        position: relative;
+        z-index: 8;
         >.left{
             width: var(--menu-width);
             height: 100%;
             overflow-y: auto;
-            border-right: 1px solid rgb(218, 218, 218);
+            // border-right: 1px solid rgb(218, 218, 218);
             box-sizing: border-box;
+            position: relative;
+            z-index: 9;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.177);
         }
         >.right{
             flex: 1 1 0;
             width: 0;
             display: flex;
             flex-direction: column;
+            position: relative;
+            z-index: 8;
             >.top{
                 height: var(--tags-height);
                 width: 100%;

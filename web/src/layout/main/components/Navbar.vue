@@ -63,6 +63,8 @@ import {
 } from "vue";
 import { useRouter } from "vue-router";
 import SvgIcon from "@/components/svgIcon/index.vue";
+import {logout} from "@/action/FormatUserData";
+import {confirm} from "@/common/MessagePrompt";
 
 export default {
     name: 'Navbar',
@@ -111,6 +113,12 @@ export default {
         }
         /** 退出登录 */
         function onLogout() {
+            confirm('是否确认退出登录').then(()=>{
+                logout();
+                toPath('/login');
+            }).catch(()=>{
+                return;
+            });
         }
         return {
             dataContainer,

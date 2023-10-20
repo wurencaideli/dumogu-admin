@@ -40,40 +40,64 @@ export function getUserData(){
          * 没path的，根据name获取映射的系统菜单属性进行跳转
          * isCache 表示该页面是否缓存
          * hidden 表示该页面是否在左边目录上显示
+         * isLink 表示直接跳转新页面
          *  */
         let menuList = [
             {
                 name:"main-index",
                 title:'首页',
                 isCache:true,
+                iconName:"Navbar-full",
             },
             {
                 name:"show-list",
                 title:'展示列表',
+                iconName:"Navbar-full",
             },
             {
                 name:"show-list-info",
                 title:'数据详情',
                 hidden:true,
+                iconName:"Navbar-full",
             },
             {
                 name:"show-list-add",
                 title:'数据添加',
                 hidden:true,
+                iconName:"Navbar-full",
             },
             {
                 name:"show-list-update",
                 title:'数据编辑',
                 hidden:true,
                 isCache:true,
+                iconName:"Navbar-full",
             },
             {
                 name:"user-list",
                 title:'用户列表',
+                isCache:true,
+                iconName:"Navbar-full",
             },
             {
                 name:"role-list",
                 title:'角色列表',
+                iconName:"Navbar-full",
+                childs:[
+                    {
+                        name:"show-list-update",
+                        path:'/main/show-list/update/asdasd12',
+                        title:'数据编12312',
+                        childs:[
+                            {
+                                name:"show-list-update",
+                                path:'/main/show-list/update/asdasd12123',
+                                title:'数据编辑 - 123',
+                                iconName:"Navbar-full",
+                            },
+                        ],
+                    },
+                ],
             },
         ];
         menuList = menuMapping(menuList);
@@ -84,4 +108,16 @@ export function getUserData(){
         userDataStore.setShowMenuList(showMenuList);
         /** 写入权限数据 */
     });
+}
+/** 
+ * 用户退出登录
+ * 清空用户数据
+ */
+export function logout(){
+    const userDataStore = userData();
+    userDataStore.setUserInfo({});
+    userDataStore.setMenuList([]);
+    userDataStore.setShowMenuList([]);
+    userDataStore.setTagList([]);
+    userDataStore.setActiveSign('');
 }

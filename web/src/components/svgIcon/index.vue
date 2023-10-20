@@ -43,6 +43,7 @@ export default defineComponent({
 .svg-icon{
     width: 20px;
     height: 20px;
+    line-height: 1;
     :deep(svg){
         object-fit: cover;
         height: 100%;
