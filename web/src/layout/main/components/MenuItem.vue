@@ -7,7 +7,7 @@
             <div class="item-target">
                 <SvgIcon
                     v-if="dataContainer.dataInfo.iconName"
-                    style="width: 23px;height: 23px;"
+                    :style="'width: 23px;height: 23px;'"
                     :name="dataContainer.dataInfo.iconName"></SvgIcon>
                 {{dataContainer.dataInfo.title}}
             </div>
@@ -19,7 +19,7 @@
                 <div class="item-target">
                     <SvgIcon
                         v-if="dataContainer.dataInfo.iconName"
-                        style="width: 23px;height: 23px;"
+                        :style="'width: 23px;height: 23px;'"
                         :name="dataContainer.dataInfo.iconName"></SvgIcon>
                     {{dataContainer.dataInfo.title}}
                 </div>

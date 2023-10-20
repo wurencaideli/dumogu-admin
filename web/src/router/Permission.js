@@ -34,9 +34,9 @@ router.beforeEach(async (to, from, next) => {
         await getUserData().catch(()=>{});
     }
     /** 
-     * 判断用户是否有权限
+     * 判断用户是否有该目录权限
      * 如果有权限的才放行
-     * 没权限的跳转到登录页面
+     * 没权限的跳转到401页面
      *  */
     let menuList = userData.menuList;
     if(!menuList.find(item=>item.name==toName)){

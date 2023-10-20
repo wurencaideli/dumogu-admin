@@ -5,6 +5,8 @@
 import {userData} from "@/store/user";
 import userApi from '@/common/http/User.js';
 import {sysMeluNameMap} from "@/router/Common";
+import {toTree,unfoldTreeList} from "@/common/MenuTools";
+import {guid} from "@/common/Guid";
 
 /**
  * 目录映射
@@ -100,11 +102,34 @@ export function getUserData(){
                 ],
             },
         ];
+        /** 
+         * 将树形结构展开
+         * 因为menuList 会用来判断是否有权限查看页面，用一维数组比较好判断
+         * 而且还要过滤不要展示的目录
+         *  */
+        menuList = unfoldTreeList(menuList,{
+            childsKey:'childs',
+            setParentKey:'parentSign',
+            getParentKey:'sign',
+            forEachFn(item){
+                /** 添加标识以便区分 */
+                item.sign = guid();
+            },
+        });
         menuList = menuMapping(menuList);
         /** 写入菜单数据 */
         userDataStore.setMenuList(menuList);
         let showMenuList = [];
         showMenuList = menuList.filter(item=>!item.hidden);
+        showMenuList = toTree(showMenuList.map(item=>{
+            delete item.childs;
+            return item;
+        }),{
+            pKey:'parentSign',
+            key:'sign',
+            childsKey:'childs',
+            isNew:true,
+        });
         userDataStore.setShowMenuList(showMenuList);
         /** 写入权限数据 */
     });
