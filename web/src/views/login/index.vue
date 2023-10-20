@@ -3,14 +3,15 @@
  * 登录页面
  *  */
 import { defineComponent,ref,reactive, computed,onMounted,onActivated } from "vue";
-import publicApi from '@/common/http/Public';
+import publicApi from '@/common/http/Public.js';
+import userApi from '@/common/http/User.js';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { useRoute,useRouter } from 'vue-router';
 import {throttleFn_1 as throttleFn} from '@/common/DebounceAndThrottle';
 import { verifiedData } from "@/common/VerifiedTools";
 import { formatWebsiteList } from "@/common/OtherTools";
 import { Select,ArrowRightBold,SemiSelect } from '@element-plus/icons-vue';
-import {userData as userDataStore} from "@/store/user";
+import {userData} from "@/store/user";
 
 export default defineComponent({
     name:'LoginView',
@@ -18,7 +19,7 @@ export default defineComponent({
         Select,ArrowRightBold,SemiSelect,
     },
     setup(){
-        const userData = userDataStore();
+        const userDataStore = userData();
         const router = useRouter();
         const route = useRoute();
         const FormElRef = ref(null);
@@ -117,16 +118,22 @@ export default defineComponent({
                     ...otherParmas,
                 };
                 params.captchaId = dataContainer.captchaId;
-                userApi.login(params).then(res=>{
-                    res = res || {};
-                    let data = res.data || {};
+                userApi.login(params).then(async res=>{
+                    let data = res || {};
                     dataContainer.form.password = '';
+                    /** 写入全局数据 */
+                    userDataStore.setUserInfo({
+                        token:data.token || '',
+                    });
                     ElMessage({
                         type: 'success',
                         message: '登录成功',
                     });
-                    userData.setToken(data.token || '');
-                    getUserInfo();
+                    /** 
+                     * 登录成功，跳转到首页
+                     * 其他用户信息会在路由跳转是获取到
+                     *  */
+                    router.push('/');
                 }).catch((res)=>{
                     ElMessage.error('登录失败：'+res.msg);
                 }).finally(()=>{
@@ -135,33 +142,6 @@ export default defineComponent({
                 });
             });
         },700);
-        /** 获取用户信息 */
-        function getUserInfo(){
-            userApi.getUser().then(async res=>{
-                res = res || {};
-                const data = res.data || {};
-                userData.setUserInfo({
-                    ...data,
-                    token:userData.token,
-                });
-                router.push({
-                    path:'/',
-                });
-            }).catch(res=>{
-                ElMessage.error('获取用户信息失败：'+res.msg);
-            });
-        }
-        onActivated(()=>{
-            /** 使用注册来的账号信息 */
-            const params = window.params || {};
-            delete window.params;
-            if(params.name){
-                dataContainer.form.name = params.name;
-            }
-            if(params.password){
-                dataContainer.form.password = params.password;
-            }
-        });
         /** 去除首尾空格 */
         function toTrim(data,p){
             let str = data[p];

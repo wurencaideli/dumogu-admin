@@ -6,6 +6,7 @@ export const publicData = defineStore('publicData', {
     state: () => {
         return {
             activeType:'',  //当前显示的类型
+            friendLinkList:[],  //友情链接
         };
     },
     getters: {  },

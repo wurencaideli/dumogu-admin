@@ -14,6 +14,7 @@ import Menu from "./components/Menu.vue";
 import TagList from "./components/TagList.vue";
 import { useRouter,useRoute } from "vue-router";
 import {userData} from "@/store/user";
+import {sysMeluList} from "@/router/Common";
 
 export default defineComponent({
     name:'MainLayout',
@@ -72,24 +73,36 @@ export default defineComponent({
             activeSign:toRef(userDataStore,'activeSign'),
             menuList:toRef(userDataStore,'menuList'),
         });
-        /** 判断是否需要缓存的 */
-        function isCache(data){
-            return true;
+        /** 根据系统目录获取用户的目录配置 */
+        function getUserMenu(data){
+            let menuList = dataContainer.menuList;
+            /** 优先使用当前的path判断获取映射 */
+            let target = menuList.find(item=>item.path==data.path) || {};
+            /** 其次，使用name获取映射 */
+            if(!target.title){
+                target = menuList.find(item=>item.name==data.name) || {};
+            }
+            return target;
         }
+        /** 监听路由，当路由发送变化时将符合条件的标签添加到标签列表中 */
         watch(route,()=>{
-            let tagList = userDataStore.tagList;
-            let activeSign = userDataStore.activeSign;
+            let tagList = dataContainer.tagList;
+            let activeSign = dataContainer.activeSign;
             /** 
              * 已经跳转的路由添加到标签上
+             * 必须是系统目录中的，不然不允许添加标签，因为只有属于目录才会有标签
              * 不重复添加
              *  */
-            if(!tagList.find(item=>item.path==route.path)){
+            if(
+                !!sysMeluList.find(item=>item.name==route.name) 
+                && !tagList.find(item=>item.path==route.path)
+            ){
                 tagList.push({
-                    title:'哈哈哈',
+                    title:getUserMenu(route).title,
                     path:route.path,
                     fullPath:route.fullPath,
                     sign:route.path,
-                    isCache:isCache(route),  //表示该标签需要缓存
+                    isCache:getUserMenu(route).isCache,  //表示该标签需要缓存
                 });
             }
             /** 设置当前所显示的标签 */
@@ -109,8 +122,8 @@ export default defineComponent({
         }
         /** tag 删除事件 */
         function handleTagRemove(tag){
-            let tagList = userDataStore.tagList;
-            let activeSign = userDataStore.activeSign;
+            let tagList = dataContainer.tagList;
+            let activeSign = dataContainer.activeSign;
             let index = tagList.findIndex(item=>{
                 return item.sign == tag.sign;
             });
