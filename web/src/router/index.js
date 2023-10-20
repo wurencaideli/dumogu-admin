@@ -49,12 +49,12 @@ export const constantRoutes = [
         path: '/main',
         component:() => import('@/layout/main/index.vue'),
         children: [
+            /** 一些页面例子 */
             {
                 path: 'index',
-                component: () => import('@/views/main/index.vue'),
+                component: () => import('@/views/exampleViews/main/index.vue'),
                 name: 'main-index',
                 meta: { 
-                    title: '首页',
                     isMenu:true,
                 },
             },
@@ -63,7 +63,22 @@ export const constantRoutes = [
                 component: () => import('@/views/exampleViews/showList/index.vue'),
                 name: 'show-list',
                 meta: { 
-                    title: '例子页面',
+                    isMenu:true,
+                },
+            },
+            {
+                path: 'show-list/add',
+                component: () => import('@/views/exampleViews/showList/add.vue'),
+                name: 'show-list-add',
+                meta: { 
+                    isMenu:true,
+                },
+            },
+            {
+                path: 'show-list/update/:sign',
+                component: () => import('@/views/exampleViews/showList/add.vue'),
+                name: 'show-list-update',
+                meta: { 
                     isMenu:true,
                 },
             },
@@ -72,7 +87,22 @@ export const constantRoutes = [
                 component: () => import('@/views/exampleViews/showList/info.vue'),
                 name: 'show-list-info',
                 meta: { 
-                    title: '例子页面详情',
+                    isMenu:true,
+                },
+            },
+            {
+                path: 'user-list',
+                component: () => import('@/views/exampleViews/userList/index.vue'),
+                name: 'user-list',
+                meta: { 
+                    isMenu:true,
+                },
+            },
+            {
+                path: 'role-list',
+                component: () => import('@/views/exampleViews/roleList/index.vue'),
+                name: 'role-list',
+                meta: { 
                     isMenu:true,
                 },
             },

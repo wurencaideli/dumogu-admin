@@ -220,6 +220,8 @@
                 />
             </div>
         </div>
+        <EditDataDialog
+            ref="EditDataDialogRef"></EditDataDialog>
     </div>
 </template>
 
@@ -234,15 +236,18 @@ import DictTags from '@/components/DictTags.vue';
 import {debounceFn} from "@/common/DebounceAndThrottle";
 import {responseData} from "./common/Data.js";
 import {messageSuccess,confirm} from "@/common/MessagePrompt.js";
+import EditDataDialog from "./components/EditDataDialog.vue";
 import SvgIcon from "@/components/svgIcon/index.vue";
 import {hasPermi} from "@/action/PowerTools";
 
 export default defineComponent({
     components: {
         DictTags,
+        EditDataDialog,
         SvgIcon,
     },
     setup() {
+        const EditDataDialogRef = ref(null);  //组件实例
         const router = useRouter();
         const dataContainer = reactive({
             loading:false,
@@ -307,28 +312,40 @@ export default defineComponent({
         }
         /** 新增按钮操作 */
         function handleAdd() {
-            router.push({
-                name:'show-list-add',
+            if(!EditDataDialogRef.value) return;
+            EditDataDialogRef.value.initData(true,{
+            },{
+                afterTitle:' - 添加',
+            }).then(()=>{
+
+            }).catch(()=>{
+
             });
         }
         /** 详情按钮操作 */
         function handleDetails(row,querys) {
-            router.push({
-                name:'show-list-info',
-                params:{
-                    sign:row.id,
-                },
-                querys,
+            if(!EditDataDialogRef.value) return;
+            EditDataDialogRef.value.initData(true,{
+                ...row,
+            },{
+                ...querys,
+            }).then(()=>{
+
+            }).catch(()=>{
+
             });
         }
         /** 编辑按钮操作 */
         function handleEdit(row,querys) {
-            router.push({
-                name:'show-list-update',
-                params:{
-                    sign:row.id,
-                },
-                querys,
+            if(!EditDataDialogRef.value) return;
+            EditDataDialogRef.value.initData(true,{
+                ...row,
+            },{
+                ...querys,
+            }).then(()=>{
+
+            }).catch(()=>{
+
             });
         }
         /** 删除 */
@@ -357,6 +374,7 @@ export default defineComponent({
             handleDetails,
             handleEdit,
             handleDelete,
+            EditDataDialogRef,
             hasPermi,
         };
     },

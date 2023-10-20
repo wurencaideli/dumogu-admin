@@ -28,17 +28,6 @@ export default defineComponent({
         let userDataStore = userData();
         const router = useRouter();
         const route = useRoute();
-        /**
-         * 一个tag例子的属性介绍
-         */
-        // {
-        //     path:'/main/index',
-        //     title:'标签一',  //标签标题
-        //     sign:'/main/index',  //唯一标识
-        //     fullPath:'/main/index',  //跳转地址，完整地址
-        //     isCache:true,  //该标签页面是否缓存
-        //     fixed:false,  //是否固定，不可删除
-        // }
         /** 
          * 原本方法根据组件名来缓存，现在根据路由path动态修改组件实例名称来缓存
          * 添加tag时也根据路由path来命名
@@ -72,6 +61,7 @@ export default defineComponent({
             tagList:toRef(userDataStore,'tagList'),
             activeSign:toRef(userDataStore,'activeSign'),
             menuList:toRef(userDataStore,'menuList'),
+            showMenuList:toRef(userDataStore,'showMenuList'),
         });
         /** 根据系统目录获取用户的目录配置 */
         function getUserMenu(data){
@@ -88,6 +78,13 @@ export default defineComponent({
         watch(route,()=>{
             let tagList = dataContainer.tagList;
             let activeSign = dataContainer.activeSign;
+            let newTag = {
+                title:getUserMenu(route).title,
+                path:route.path,
+                fullPath:route.fullPath,
+                sign:route.path,  //唯一标识
+                isCache:getUserMenu(route).isCache,  //表示该标签需要缓存
+            };
             /** 
              * 已经跳转的路由添加到标签上
              * 必须是系统目录中的，不然不允许添加标签，因为只有属于目录才会有标签
@@ -97,13 +94,8 @@ export default defineComponent({
                 !!sysMeluList.find(item=>item.name==route.name) 
                 && !tagList.find(item=>item.path==route.path)
             ){
-                tagList.push({
-                    title:getUserMenu(route).title,
-                    path:route.path,
-                    fullPath:route.fullPath,
-                    sign:route.path,
-                    isCache:getUserMenu(route).isCache,  //表示该标签需要缓存
-                });
+                // 添加进入标签列表
+                tagList.push(newTag);
             }
             /** 设置当前所显示的标签 */
             tagList.forEach(item=>{
@@ -116,11 +108,17 @@ export default defineComponent({
             deep:true,
             immediate:true,
         });
-        /** tag 点击事件 */
+        /** 
+         * tag 点击事件
+         * 跳转到该标签的地址里，注意是完整地址
+         *  */
         function handleTagClick(item){
             router.push(item.fullPath);
         }
-        /** tag 删除事件 */
+        /** 
+         * tag 删除事件
+         * 删除后跳转到一个附件的标签
+         *  */
         function handleTagRemove(tag){
             let tagList = dataContainer.tagList;
             let activeSign = dataContainer.activeSign;
@@ -130,16 +128,16 @@ export default defineComponent({
             if(tag.sign != activeSign){
                 tagList.splice(index,1);
             }else{
-                if(index > 0){
-                    /** 跳转到靠左边的一个标签 */
-                    handleTagClick(tagList[index - 1]);
+                let tag = tagList[index - 1] || tagList[index + 1];
+                if(tag){
+                    handleTagClick(tag);
                     tagList.splice(index,1);
                 }
             }
             userDataStore.setTagList(tagList);
         }
         /** 
-         * 需要缓存的列表
+         * 需要缓存的页面列表
          * 根据标签列表来的，需要改的话只需要处理标签列表
          *  */
         const cacheTagList = computed(()=>{
@@ -168,7 +166,7 @@ export default defineComponent({
         <div class="content-container">
             <div class="left">
                 <Menu
-                    :dataList="dataContainer.menuList"></Menu>
+                    :dataList="dataContainer.showMenuList"></Menu>
             </div>
             <div class="right">
                 <div class="top">

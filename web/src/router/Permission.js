@@ -5,7 +5,6 @@
  */
 import router from './index';
 import {userData as userDataStore} from "@/store/user";
-import { ElMessage } from 'element-plus';
 import {getUserData} from "@/action/FormatUserData";
 
 /** 权限白名单 */
@@ -16,6 +15,7 @@ const whiteList = [
 router.beforeEach(async (to, from, next) => {
     const userData = userDataStore();
     let toPath = to.path;
+    let toName = to.name;
     /** 如果是白名单中的路由直接放行 */
     if(whiteList.includes(toPath)){
         next();
@@ -39,7 +39,7 @@ router.beforeEach(async (to, from, next) => {
      * 没权限的跳转到登录页面
      *  */
     let menuList = userData.menuList;
-    if(!menuList.find(item=>item.path==toPath)){
+    if(!menuList.find(item=>item.name==toName)){
         next(`/401`); // 没权限的跳转到401
         return;
     }

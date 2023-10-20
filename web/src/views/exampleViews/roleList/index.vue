@@ -84,6 +84,7 @@
             <div class="top-container">
                 <div class="left">
                     <el-button
+                        v-if="hasPermi(['yx:apply:apply'])"
                         type="primary"
                         @click="handleAdd">
                         新增
@@ -237,6 +238,7 @@ import {responseData} from "./common/Data.js";
 import {messageSuccess,confirm} from "@/common/MessagePrompt.js";
 import EditDataDialog from "./components/EditDataDialog.vue";
 import SvgIcon from "@/components/svgIcon/index.vue";
+import {hasPermi} from "@/action/PowerTools";
 
 export default defineComponent({
     components: {
@@ -311,7 +313,8 @@ export default defineComponent({
         /** 新增按钮操作 */
         function handleAdd() {
             if(!EditDataDialogRef.value) return;
-            EditDataDialogRef.value.initData(true,{},{
+            EditDataDialogRef.value.initData(true,{
+            },{
                 afterTitle:' - 添加',
             }).then(()=>{
 
@@ -372,6 +375,7 @@ export default defineComponent({
             handleEdit,
             handleDelete,
             EditDataDialogRef,
+            hasPermi,
         };
     },
 });

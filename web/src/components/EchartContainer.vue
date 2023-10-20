@@ -4,7 +4,10 @@
  * 外部只关心写入配置
  * 组件关心的是自身大小的适应以及实例的销毁，以及提供一些常用的方法让外部调用
  */
-import { defineComponent,ref,getCurrentInstance,reactive,nextTick, computed,onUnmounted } from "vue";
+import { 
+    defineComponent,ref,getCurrentInstance,reactive,nextTick, computed,onUnmounted,
+    onActivated,
+} from "vue";
 import * as echarts from 'echarts';
 
 export default defineComponent({

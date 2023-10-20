@@ -1,35 +1,32 @@
 <script>
 /** 
- * 注册页面
+ * 登录页面
  *  */
-import { defineComponent,ref,reactive, computed,onMounted } from "vue";
-import userApi from '@/common/http/Api';
-import publicApi from '@/common/http/Public';
+import { defineComponent,ref,reactive, computed,onMounted,onActivated } from "vue";
+import publicApi from '@/common/http/Public.js';
+import userApi from '@/common/http/User.js';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { useRoute,useRouter } from 'vue-router';
 import {throttleFn_1 as throttleFn} from '@/common/DebounceAndThrottle';
 import { verifiedData } from "@/common/VerifiedTools";
-import { enEmojiData,deEmojiData } from "@/common/Emoji";
-import { ArrowRightBold } from '@element-plus/icons-vue';
-import {userData as userDataStore} from "@/store/user";
-import SearchContainer from "./components/SearchContainer.vue";
+import { formatWebsiteList } from "@/common/OtherTools";
+import { Select,ArrowRightBold,SemiSelect } from '@element-plus/icons-vue';
+import {userData} from "@/store/user";
 
 export default defineComponent({
-    name:'RegisterView',
+    name:'LoginView',
     components: {
-        ArrowRightBold,
-        SearchContainer,
+        Select,ArrowRightBold,SemiSelect,
     },
     setup(){
-        const userData = userDataStore();
+        const userDataStore = userData();
         const router = useRouter();
+        const route = useRoute();
         const FormElRef = ref(null);
         const dataContainer = reactive({
             form: {
-                nickname:'',
                 name:'',
                 password:'',
-                overTime:'',
                 captchaText:'',
             },
             rules: {
@@ -38,22 +35,6 @@ export default defineComponent({
                 ],
                 password: [
                     { required: true, message: '请输入密码', trigger: 'blur' },
-                ],
-                password_:[
-                    { required: true, message: '请再次输入密码', trigger: 'blur' },
-                    { 
-                        validator:(rule,value,callBack)=>{
-                            if(value !== dataContainer.form.password){
-                                callBack(new Error('两次密码不一致'));
-                            }else{
-                                callBack();
-                            }
-                        }, 
-                        trigger: 'blur',
-                    },
-                ],
-                nickname: [
-                    { required: true, message: '请输入昵称', trigger: 'blur' },
                 ],
                 captchaText: [
                     { required: true, message: '请输入验证码', trigger: 'blur' },
@@ -79,16 +60,6 @@ export default defineComponent({
                 },
                 password:{
                     label:'密码 : 不能为空 && 长度1-150',
-                    validate(value){
-                        if(!value && value !== 0) return false;
-                        value = String(value);
-                        if(value.length < 1) return false;
-                        if(value.length > 150) return false;
-                        return true;
-                    },
-                },
-                nickname:{
-                    label:'昵称 : 不能为空 && 长度1-150',
                     validate(value){
                         if(!value && value !== 0) return false;
                         value = String(value);
@@ -126,8 +97,8 @@ export default defineComponent({
             });
         },700);
         getCaptcha();
-        /** 注册操作 */
-        const onRegister = throttleFn(function(){
+        /** 登录操作 */
+        const onLogin = throttleFn(function(otherParmas){
             if(dataContainer.loading) return;
             if (!FormElRef.value) return;
             FormElRef.value.validate((valid,e) => {
@@ -136,35 +107,35 @@ export default defineComponent({
                     ElMessage.error(message);
                     return;
                 };
-                const verifiedData_ = validBase(dataContainer.form);
-                if(verifiedData_){
-                    ElMessage.error('参数错误！'+verifiedData_[0].label);
+                const verifiedData = validBase(dataContainer.form);
+                if(verifiedData){
+                    ElMessage.error('参数错误！'+verifiedData[0].label);
                     return;
                 };
                 dataContainer.loading = true;
-                const params = enEmojiData({
+                const params = {
                     ...dataContainer.form,
-                });
+                    ...otherParmas,
+                };
                 params.captchaId = dataContainer.captchaId;
-                userApi.register(params).then(res=>{
-                    res = res || {};
-                    const data = res.data || {};
+                userApi.login(params).then(async res=>{
+                    let data = res || {};
+                    dataContainer.form.password = '';
+                    /** 写入全局数据 */
+                    userDataStore.setUserInfo({
+                        token:data.token || '',
+                    });
                     ElMessage({
                         type: 'success',
-                        message: '注册成功',
+                        message: '登录成功',
                     });
-                    // 携带注册信息，优化体验
-                    window.params = {
-                        name:dataContainer.form.name,
-                        password:dataContainer.form.password,
-                    };
-                    router.push({
-                        path:'/visitor/login',
-                    });
-                    dataContainer.form.password = '';
-                    dataContainer.form.password_ = '';
+                    /** 
+                     * 登录成功，跳转到首页
+                     * 其他用户信息会在路由跳转是获取到
+                     *  */
+                    router.push('/');
                 }).catch((res)=>{
-                    ElMessage.error('注册失败：'+res.msg);
+                    ElMessage.error('登录失败：'+res.msg);
                 }).finally(()=>{
                     dataContainer.loading = false;
                     getCaptcha();
@@ -185,7 +156,7 @@ export default defineComponent({
         }
         return {
             dataContainer,
-            onRegister,
+            onLogin,
             FormElRef,
             getCaptcha,
             toTrim,
@@ -196,86 +167,48 @@ export default defineComponent({
 </script>
 
 <template>
-    <div class="register-view">
-        <div class="top-container box-container">
-            <el-form
-                label-position="top"
-                label-width="100px"
-                :model="dataContainer.form"
-                :rules="dataContainer.rules"
-                class="form-container container"
-                ref="FormElRef"
-            >
-                <div class="right">
-                    <div class="info-container">
-                        <div class="title">
-                            欢迎注册毒蘑菇搜索
-                        </div>
-                        <div class="content">
-                            <p>请注意保管好密码，本网站不收集任何个人信息，账号可以是任何字符串。</p>
-                            <p>坏处就是密码忘记了不知道怎么找回密码，因为我不认为一个网址是很重要的东西，所以忘记了再注册一个就是了。</p>
-                            <p>新注册的账号默认为公开类型，就是说会有个个人网址导航，别人可以访问但是只限访问。可以在个人页面取消公开。</p>
-                            <p>🤠 一个账号最多可以添加300个网址，我觉得100个首页就放不到了，本来就是一个极简的导航类型网站，没考虑到会添加很多网址的情况。</p>
-                            <p>🥰 网站整体偏向管理风格，才像一个工具，小而美。</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="left">
-                    <div class="left-container">
-                        <el-form-item label="昵称" prop="nickname">
-                            <el-input 
-                                clearable
-                                @keyup.enter="onRegister"
-                                v-model="dataContainer.form.nickname" />
-                        </el-form-item>
+    <div class="login-view">
+        <div class="container">
+            <div class="left">
+            </div>
+            <div class="right">
+                <div class="container">
+                    <el-form
+                        label-position="top"
+                        label-width="100px"
+                        :model="dataContainer.form"
+                        :rules="dataContainer.rules"
+                        class="form-container container"
+                        ref="FormElRef"
+                    >
                         <el-form-item label="账号" prop="name">
                             <el-input 
                                 clearable
-                                @keyup.enter="onRegister"
                                 @input="()=>{
                                     toTrim(dataContainer.form,'name');
                                     palindrome(dataContainer.form,'name');
                                 }"
+                                @keyup.enter="onLogin"
                                 v-model="dataContainer.form.name" />
                         </el-form-item>
                         <el-form-item label="密码" prop="password">
                             <el-input 
+                                type="password"
                                 clearable
-                                @keyup.enter="onRegister"
+                                @keyup.enter="onLogin"
                                 show-password
                                 @input="()=>{
                                     toTrim(dataContainer.form,'password');
                                 }"
-                                type="password"
                                 v-model="dataContainer.form.password" />
-                        </el-form-item>
-                        <el-form-item label="确认密码" prop="password_">
-                            <el-input 
-                                clearable
-                                @keyup.enter="onRegister"
-                                show-password
-                                @input="()=>{
-                                    toTrim(dataContainer.form,'password_');
-                                }"
-                                type="password"
-                                v-model="dataContainer.form.password_" />
-                        </el-form-item>
-                        <el-form-item 
-                            v-if="dataContainer.form.name=='admin'"
-                            label="admin注册暗号" prop="sign">
-                            <el-input 
-                                clearable
-                                @keyup.enter="onRegister"
-                                type="password"
-                                v-model="dataContainer.form.sign" />
                         </el-form-item>
                         <el-form-item label="验证码" prop="captchaText">
                             <div class="captcha-container">
                                 <el-input 
                                     v-model="dataContainer.form.captchaText" 
                                     placeholder=""
-                                    @keyup.enter="onRegister"
-                                    clearable>
+                                    clearable
+                                    @keyup.enter="onLogin">
                                 </el-input>
                                 <div 
                                     class="captcha-right"
@@ -286,12 +219,11 @@ export default defineComponent({
                         </el-form-item>
                         <div class="bt-list">
                             <el-button
-                                class="save-bt"
                                 v-if="!dataContainer.form.idU"
                                 type="primary"
                                 :loading="dataContainer.loading"
-                                @click="onRegister">
-                                注 册
+                                @click="onLogin">
+                                登 录
                                 <el-icon
                                     size="20px"
                                     style="margin-left: 15px;"><ArrowRightBold /></el-icon>
@@ -299,82 +231,90 @@ export default defineComponent({
                         </div>
                         <div class="other">
                             登录管理网址,
-                            <router-link to="/visitor/login" class="route-bt">
-                                已有账号？去登录
+                            <router-link to="/register">
+                                没有账号？去注册
                             </router-link>
                         </div>
-                    </div>
+                    </el-form>
                 </div>
-            </el-form>
+            </div>
         </div>
-        <SearchContainer></SearchContainer>
+        <div class="bottom">
+            版权所有 @www.dumogu.top
+        </div>
     </div>
 </template>
 
 <style lang="scss" scoped>
-.register-view{
-    width: 100%;
-    >.top-container{
-        padding: 60px 0 80px 0;
-        box-sizing: border-box;
-        :deep(.form-container){
-            .left,.right{
+.login-view{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url(https://c.wallhere.com/photos/82/08/light_baby_elephant_wool_girl_socks_vintage_ties-799904.jpg!d);
+    background-size: cover;
+    backdrop-filter: blur(12px);
+    >.container{
+        display: flex;
+        flex-direction: row;
+        width: 900px;
+        background-color: rgb(255, 255, 255);
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 3px 8px 0 rgba(0, 0, 0, .408);
+        >.left{
+            flex: 1 1 0;
+            width: 0;
+            background-image: url(https://s1.ax1x.com/2023/08/21/pPG62bF.jpg);
+            background-size: cover;
+        }
+        >.right{
+            flex: 1 1 0;
+            width: 0;
+            >.container{
+                width: 100%;
+                height: 100%;
+                padding: 60px 30px;
                 box-sizing: border-box;
-            }
-            .left{
-                width: 350px;
-                >.left-container{
-                    box-sizing: border-box;
-                    >.bt-list{
-                        display: flex;
-                        align-items: center;
-                        margin: 40px 0;
-                        >.save-bt{
-                            flex: 1 1 0;
-                            width: 0;
-                            width: 100px;
-                            height: 50px;
-                            border: none;
-                            font-size: 17px;
-                            background-color: #0059B2;
-                            background: linear-gradient(to right,#007FFF,#0059B2);
-                            box-shadow: 0 3px 3px -2px #00000033, 0 3px 4px 0 #00000024, 0 1px 8px 0 #0000001f;
-                        }
-                    }
-                    >.other{
-                        margin-top: 30px;
-                        color: #858585;
-                        font-size: 16px;
-                        >.route-bt{
-                            color: #0059B2;
-                        }
-                    }
-                    .captcha-container{
+                :deep(.bt-list){
+                    width: 100%;
+                    >*{
                         width: 100%;
-                        display: flex;
-                        flex-direction: row;
-                        >.el-input{
-                            flex: 1 1 0;
-                            width: 0;
-                        }
-                        >.captcha-right{
-                            width: 150px;
-                            height: var(--input-height);
-                            background-color: #0059B2;
-                            border-radius: 5px;
-                            margin-left: 15px;
-                            overflow: hidden;
-                            cursor: pointer;
-                        }
                     }
                 }
-            }
-            .right{
-                flex: 1 1 0;
-                width: 0;
-                margin-right: 60px;
+                :deep(.captcha-container){
+                    width: 100%;
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    >*{
+                        flex: 1 1 0;
+                        width: 0;
+                    }
+                    >.captcha-right{
+                        background-color: rgb(220, 220, 220);
+                        height: 30px;
+                        border-radius: 5px;
+                        overflow: hidden;
+                        margin-left: 15px;
+                        cursor: pointer;
+                    }
+                }
+                :deep(.other){
+                    margin-top: 15px;
+                }
             }
         }
+    }
+    >.bottom{
+        position: fixed;
+        bottom: 15px;
+        width: 100%;
+        height: fit-content;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 }
 </style>
