@@ -49,18 +49,19 @@ export function getUserData(){
                 name:"main-index",
                 title:'首页',
                 isCache:true,
-                iconName:"Navbar-full",
+                fixed:true,
+                iconName:"all-fill",
             },
             {
                 name:"show-list",
                 title:'展示列表',
-                iconName:"Navbar-full",
+                iconName:"dingwei",
             },
             {
                 name:"show-list-info",
                 title:'数据详情',
                 hidden:true,
-                iconName:"Navbar-full",
+                iconName:"all-fill",
             },
             {
                 name:"show-list-add",
@@ -84,7 +85,7 @@ export function getUserData(){
             {
                 name:"role-list",
                 title:'角色列表',
-                iconName:"Navbar-full",
+                iconName:"xihuan",
                 childs:[
                     {
                         name:"show-list-update",
@@ -100,6 +101,12 @@ export function getUserData(){
                         ],
                     },
                 ],
+            },
+            {
+                name:"icon-list",
+                title:'icon 列表展示',
+                isCache:true,
+                iconName:"Navbar-full",
             },
         ];
         /** 

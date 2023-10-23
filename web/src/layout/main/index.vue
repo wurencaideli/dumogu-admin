@@ -92,6 +92,7 @@ export default defineComponent({
                 fullPath:route.fullPath,
                 sign:route.path,  //唯一标识
                 isCache:getUserMenu(route).isCache,  //表示该标签需要缓存
+                fixed:getUserMenu(route).fixed,  //表示该标签需要固定
             };
             /** 
              * 已经跳转的路由添加到标签上
@@ -102,8 +103,15 @@ export default defineComponent({
                 !!sysMeluList.find(item=>item.name==route.name) 
                 && !tagList.find(item=>item.path==route.path)
             ){
-                // 添加进入标签列表
-                tagList.push(newTag);
+                // 添加进入标签列表，添加到当前标签的右边
+                let index = tagList.findIndex(item=>{
+                    return item.sign == activeSign;
+                });
+                if(index != -1){
+                    tagList.splice(index+1,0,newTag);
+                }else{
+                    tagList.push(newTag);
+                }
             }
             /** 设置当前所显示的标签 */
             tagList.forEach(item=>{

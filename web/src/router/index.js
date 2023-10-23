@@ -103,6 +103,14 @@ export const constantRoutes = [
                     isMenu:true,
                 },
             },
+            {
+                path: 'icon-list',
+                component: () => import('@/views/exampleViews/iconList/index.vue'),
+                name: 'icon-list',
+                meta: { 
+                    isMenu:true,
+                },
+            },
         ],
     },
     /** 404页面 */

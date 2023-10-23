@@ -11,7 +11,7 @@ export function deleteCurrentTag(){
     let tagList = userDataStore.tagList;
     let activeSign = userDataStore.activeSign;
     let index = tagList.findIndex(item=>{
-        return item.sign == activeSign;
+        return item.sign == activeSign && !item.fixed;
     });
     if(index == -1) return;
     tagList.splice(index,1);
