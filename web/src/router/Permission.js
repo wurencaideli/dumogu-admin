@@ -6,6 +6,7 @@
 import router from './index';
 import {userData as userDataStore} from "@/store/User";
 import {getUserData} from "@/action/FormatUserData";
+import {sysMeluList} from "@/router/Common";
 
 /** 权限白名单 */
 const whiteList = [
@@ -36,11 +37,12 @@ router.beforeEach(async (to, from, next) => {
     }
     /** 
      * 判断用户是否有该目录权限
+     * 必须是系统目录的才判断有无权限
      * 如果有权限的才放行
      * 没权限的跳转到401页面
      *  */
     let menuList = userData.menuList;
-    if(!menuList.find(item=>item.name==toName)){
+    if(sysMeluList.find(item=>item.name==toName) && !menuList.find(item=>item.name==toName)){
         next(`/401`); // 没权限的跳转到401
         return;
     }

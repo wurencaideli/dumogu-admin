@@ -108,6 +108,13 @@ export function getUserData(){
                 isCache:true,
                 iconName:"Navbar-full",
             },
+            {
+                name:"mine",
+                title:'个人中心',
+                isCache:true,
+                hidden:true,
+                iconName:"Navbar-full",
+            },
         ];
         /** 
          * 将树形结构展开

@@ -111,6 +111,14 @@ export const constantRoutes = [
                     isMenu:true,
                 },
             },
+            {
+                path: 'mine',
+                component: () => import('@/views/exampleViews/mine/index.vue'),
+                name: 'mine',
+                meta: { 
+                    isMenu:true,
+                },
+            },
         ],
     },
     /** 404页面 */

@@ -3,10 +3,12 @@
  * 404
  */
 import { defineComponent,ref,getCurrentInstance,reactive,toRef, computed,onMounted,watch } from "vue";
+import svg404 from "@/assets/img-list/404.svg";
 
 export default defineComponent({
     setup(){
         const dataContainer = reactive({
+            svg404:svg404,
         });
         return {
             dataContainer,
@@ -18,15 +20,74 @@ export default defineComponent({
 <template>    
 <div 
     class="main-404-view">
-    404
+    <div class="container">
+        <img
+            :src="dataContainer.svg404"/>
+        <div class="right">
+            <div class="title">
+                404错误!没找到该页面
+            </div>
+            <div class="content">
+                对不起，您正在寻找的页面不存在。尝试检查URL的错误，然后按浏览器上的刷新按钮或尝试在我们的应用程序中找到其他内容。
+            </div>
+            <router-link 
+                class="bt"
+                to="/main/index">
+                返回首页
+            </router-link>
+        </div>
+    </div>
 </div>
 </template>
 
 <style lang="scss" scoped>
 .main-404-view{
-    height: fit-content;
+    height: 100vh;
+    width:100vw;
     font-weight: bold;
     line-height: 1.5;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    >.container{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        >img{
+            width:456px;
+            height:262px;
+        }
+        >.right{
+            margin-left:30px;
+            max-width:456px;
+            >.title{
+                font-size: 32px;
+                font-weight: bold;
+                line-height: 40px;
+                color: #1482f0;
+                margin-bottom: 40px;
+            }
+            >.content{
+                font-size: 13px;
+                line-height: 21px;
+                color: grey;
+                margin-bottom: 40px;
+            }
+            >.bt{
+                width: 110px;
+                height: 36px;
+                background: #1482f0;
+                border-radius: 100px;
+                text-align: center;
+                color: #ffffff;
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+            }
+        }
+    }
 }
 </style>
 
