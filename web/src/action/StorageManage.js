@@ -4,7 +4,10 @@
  */
 import StorageS from 'storages-js';
 
-/** 所有实例 */
+/** 
+ * 所有实例
+ * 公共管理
+ *  */
 const allStorage = {};
 function createS(key,value){
     if(!allStorage[key]){
@@ -17,12 +20,7 @@ function createS(key,value){
 const userStorage = ()=>{
     return createS('user-container','');
 }
-/** 保存 历史背景图片记录 */
-const hisImgStorage = ()=>{
-    return createS('his-img-container','');
-}
 
 export default {
     userStorage,
-    hisImgStorage,
 };

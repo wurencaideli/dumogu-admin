@@ -5,7 +5,6 @@ import { defineStore } from 'pinia';
 export const publicData = defineStore('publicData', {
     state: () => {
         return {
-            activeType:'',  //当前显示的类型
             friendLinkList:[],  //友情链接
         };
     },
@@ -13,9 +12,6 @@ export const publicData = defineStore('publicData', {
     actions: {
         setFriendLinkList(value){
             this.friendLinkList = value || [];
-        },
-        setActiveType(value){
-            this.activeType = value || '';
         },
     },
 });

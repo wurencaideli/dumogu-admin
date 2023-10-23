@@ -21,7 +21,7 @@ service.interceptors.request.use(
     config => {
         const userData = userDataStore();
         config.headers = config.headers || {};
-        config.headers['token'] = userData.token;
+        config.headers['token'] = userData.userInfo.token;
         return config;
     },
     () => {
