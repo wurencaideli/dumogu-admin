@@ -4,12 +4,13 @@
  * 不做什么自动什么什么的，获取数据自己手动去调用，要的就是手动挡的可操作性，出错了也只是调用的问题
  */
 import router from './index';
-import {userData as userDataStore} from "@/store/user";
+import {userData as userDataStore} from "@/store/User";
 import {getUserData} from "@/action/FormatUserData";
 
 /** 权限白名单 */
 const whiteList = [
     '/login', '/auth-redirect', '/bind', '/register','/404','/401',
+    'main-redirect',
 ];
 
 router.beforeEach(async (to, from, next) => {
@@ -17,7 +18,7 @@ router.beforeEach(async (to, from, next) => {
     let toPath = to.path;
     let toName = to.name;
     /** 如果是白名单中的路由直接放行 */
-    if(whiteList.includes(toPath)){
+    if(whiteList.includes(toPath) || whiteList.includes(toName)){
         next();
         return;
     }

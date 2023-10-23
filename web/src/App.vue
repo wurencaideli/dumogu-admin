@@ -2,7 +2,7 @@
 import { defineComponent,ref,getCurrentInstance,reactive,nextTick, computed,onMounted } from "vue";
 import { ElConfigProvider } from 'element-plus';
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs';  //启用element 中文
-import {publicData as publicDataStore} from "@/store/public";
+import {publicData as publicDataStore} from "@/store/Public";
 import {loadScript,isPc} from "@/common/OtherTools";
 import {friendLinkList} from "@/common/Const";
 import { ElMessage, ElMessageBox } from 'element-plus';

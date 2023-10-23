@@ -4,12 +4,12 @@
  */
 import axios from "axios";
 import Const from "./Const";
-import {userData as userDataStore} from "@/store/user";
+import {userData as userDataStore} from "@/store/User";
 import { ElMessageBox } from 'element-plus';
 import {
     messageSuccess,
     messageError,
-} from "@/common/MessagePrompt";
+} from "@/action/MessagePrompt";
 import router from '@/router';
 
 export const service = axios.create({  //可创建多个 axios实例

@@ -31,20 +31,34 @@
             <svg t="1697616141094" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="12019" width="32" height="32"><path d="M867.126867 516.953333l-416-416A52.986667 52.986667 0 0 0 413.413533 85.333333H53.333533a53.393333 53.393333 0 0 0-53.333333 53.333334v360.08a52.986667 52.986667 0 0 0 15.62 37.713333l416 416a53.333333 53.333333 0 0 0 75.426667 0l360.08-360.08a53.4 53.4 0 0 0 0-75.426667zM341.333533 341.333333a85.333333 85.333333 0 1 1-85.333333-85.333333 85.426667 85.426667 0 0 1 85.333333 85.333333z m653.793334 251.046667l-382.706667 382.706667a21.333333 21.333333 0 0 1-30.173333-30.173334l382.706666-382.706666a10.666667 10.666667 0 0 0 0-15.08L539.5802 121.753333a21.333333 21.333333 0 0 1 30.173333-30.173333l425.373334 425.373333a53.4 53.4 0 0 1 0 75.426667z" fill="#5C5C66" p-id="12020"></path></svg>
         </div>
         <div class="bt-list-container">
-            <div class="item">
-                关闭当前
+            <div 
+                v-if="dataContainer.tagList.length>1"
+                class="item"
+                @click="handleOptionClick(1)">
+                关闭当前标签页
             </div>
-            <div class="item">
-                关闭其他
+            <div 
+                v-if="dataContainer.tagList.length>1"
+                class="item"
+                @click="handleOptionClick(2)">
+                关闭其他标签页
             </div>
-            <div class="item">
-                关闭左边
+            <div 
+                v-if="dataContainer.tagList.length>1"
+                class="item"
+                @click="handleOptionClick(3)">
+                关闭左边标签页
             </div>
-            <div class="item">
-                关闭右边
+            <div 
+                v-if="dataContainer.tagList.length>1"
+                class="item"
+                @click="handleOptionClick(4)">
+                关闭右边标签页
             </div>
-            <div class="item">
-                关闭所有
+            <div 
+                class="item"
+                @click="handleOptionClick(5)">
+                刷新当前标签页
             </div>
         </div>
     </div>
@@ -93,7 +107,7 @@ export default {
             default:0,
         },
     },
-    emits:['onClick','onRemove'],
+    emits:['onClick','onRemove','onOptionClick'],
     setup(props,{emit}){
         const dataContainer = reactive({
             tagList:toRef(props,'tagList'),
@@ -107,10 +121,15 @@ export default {
         function handleRemove(item){
             emit('onRemove',item);
         }
+        /** 操作事件 */
+        function handleOptionClick(type){
+            emit('onOptionClick',type);
+        }
         return {
             dataContainer,
             handleClick,
             handleRemove,
+            handleOptionClick,
         };
     },
 }
@@ -199,7 +218,7 @@ export default {
             position: absolute;
             z-index: 9;
             top: calc(100% + 0px);
-            right: 0;
+            right: 5px;
             background-color: rgb(255, 255, 255);
             box-shadow: 0 3px 8px 0 rgba(0, 0, 0, 0.5);
             padding: 10px 0;
@@ -219,11 +238,11 @@ export default {
                 width: auto;
                 min-width: max-content;
                 transition: all 0.2s;
-                padding: 10px 15px;
+                padding: 15px 15px;
                 box-sizing: border-box;
                 display: block;
                 color: #6b7386;
-                text-align: center;
+                text-align: left;
                 &:hover{
                     background-color: rgba(194, 224, 255, 0.5);
                     color: #0072E5;

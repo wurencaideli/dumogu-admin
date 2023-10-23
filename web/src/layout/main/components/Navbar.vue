@@ -64,7 +64,7 @@ import {
 import { useRouter } from "vue-router";
 import SvgIcon from "@/components/svgIcon/index.vue";
 import {logout} from "@/action/FormatUserData";
-import {confirm} from "@/common/MessagePrompt";
+import {confirm} from "@/action/MessagePrompt";
 
 export default {
     name: 'Navbar',

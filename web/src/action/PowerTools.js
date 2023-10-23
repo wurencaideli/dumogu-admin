@@ -1,7 +1,7 @@
 /** 
  * 权限验证相关函数
  *  */
-import {userData} from "@/store/user";
+import {userData} from "@/store/User";
 
 /** 
  * 按钮权限过滤

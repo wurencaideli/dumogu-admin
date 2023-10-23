@@ -13,8 +13,16 @@ import Navbar from "./components/Navbar.vue";
 import Menu from "./components/Menu.vue";
 import TagList from "./components/TagList.vue";
 import { useRouter,useRoute } from "vue-router";
-import {userData} from "@/store/user";
+import {userData} from "@/store/User";
 import {sysMeluList} from "@/router/Common";
+import {
+    deleteCurrentTag,
+    refreshCurrentTag,
+    deleteOtherTags,
+    deleteLeftTags,
+    deleteRightTags,
+    toReferPath,
+} from "./Common/TagListTools";
 
 export default defineComponent({
     name:'MainLayout',
@@ -136,6 +144,32 @@ export default defineComponent({
             }
             userDataStore.setTagList(tagList);
         }
+        /** 操作事件 */
+        function handleOptionClick(type){
+            let tagList = dataContainer.tagList;
+            let activeSign = dataContainer.activeSign;
+            let index = tagList.findIndex(item=>{
+                return item.sign == activeSign;
+            });
+            switch(true){
+                case type == 1:
+                    deleteCurrentTag();
+                    toReferPath(index);
+                    break;
+                case type == 2:
+                    deleteOtherTags();
+                    break;
+                case type == 3:
+                    deleteLeftTags();
+                    break;
+                case type == 4:
+                    deleteRightTags();
+                    break;
+                case type == 5:
+                    refreshCurrentTag();
+                    break;
+            }
+        }
         /** 
          * 需要缓存的页面列表
          * 根据标签列表来的，需要改的话只需要处理标签列表
@@ -144,6 +178,7 @@ export default defineComponent({
             return userDataStore.tagList.filter(item=>{
                 return item.isCache;
             }).map(item=>{
+                /** 缓存组件是根据path命名来缓存的 */
                 return item.path;
             });
         });
@@ -153,6 +188,7 @@ export default defineComponent({
             handleTagClick,
             handleTagRemove,
             cacheTagList,
+            handleOptionClick,
         };
     },
 });
@@ -174,7 +210,8 @@ export default defineComponent({
                         :tagList="dataContainer.tagList"
                         :activeSign="dataContainer.activeSign"
                         @onClick="handleTagClick"
-                        @onRemove="handleTagRemove"></TagList>
+                        @onRemove="handleTagRemove"
+                        @onOptionClick="handleOptionClick"></TagList>
                 </div>
                 <div class="view-container">
                     <router-view v-slot="{ Component,route }">

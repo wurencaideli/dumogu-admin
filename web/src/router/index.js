@@ -16,18 +16,6 @@ NProgress.configure({
 });
 
 export const constantRoutes = [
-    /** 重定向路由 */
-    {
-        path: '/redirect',
-        component:() => import('@/layout/main/index.vue'),
-        hidden: true,
-        children: [
-            {
-                path: '/redirect/:path(.*)',
-                component: () => import('@/views/redirect/index.vue')
-            }
-        ],
-    },
     /** 登录注册相关页面 */
     {
         path: '/login',
@@ -49,6 +37,15 @@ export const constantRoutes = [
         path: '/main',
         component:() => import('@/layout/main/index.vue'),
         children: [
+            /** 
+             * 重定向页面
+             * 用来刷新标签页
+             *  */
+            {
+                path: 'redirect/:path(.*)',
+                name:'main-redirect',
+                component: () => import('@/views/redirect/index.vue')
+            },
             /** 一些页面例子 */
             {
                 path: 'index',

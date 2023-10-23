@@ -2,8 +2,8 @@
  * 格式化用户的一些数据
  * 在这里可以接口请求用户的一些数据
  */
-import {userData} from "@/store/user";
-import userApi from '@/common/http/User.js';
+import {userData} from "@/store/User";
+import userApi from '@/http/User.js';
 import {sysMeluNameMap} from "@/router/Common";
 import {toTree,unfoldTreeList} from "@/common/MenuTools";
 import {guid} from "@/common/Guid";

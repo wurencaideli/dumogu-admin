@@ -3,15 +3,14 @@
  * 登录页面
  *  */
 import { defineComponent,ref,reactive, computed,onMounted,onActivated } from "vue";
-import publicApi from '@/common/http/Public.js';
-import userApi from '@/common/http/User.js';
+import publicApi from '@/http/Public.js';
+import userApi from '@/http/User.js';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { useRoute,useRouter } from 'vue-router';
 import {throttleFn_1 as throttleFn} from '@/common/DebounceAndThrottle';
 import { verifiedData } from "@/common/VerifiedTools";
-import { formatWebsiteList } from "@/common/OtherTools";
 import { Select,ArrowRightBold,SemiSelect } from '@element-plus/icons-vue';
-import {userData} from "@/store/user";
+import {userData} from "@/store/User";
 
 export default defineComponent({
     name:'LoginView',

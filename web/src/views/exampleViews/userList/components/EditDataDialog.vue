@@ -64,7 +64,7 @@ import { defineComponent, ref, getCurrentInstance, reactive, nextTick } from 'vu
 import { mergeObjProperty } from '@/common/OtherTools';
 import { getDictItem,initDataByConfig } from "@/common/OtherTools";
 import { verifiedData } from "@/common/VerifiedTools";
-import {messageError} from "@/common/MessagePrompt.js";
+import {messageError} from "@/action/MessagePrompt.js";
 //配置信息，初始化时使用
 const configMap = {
     open: {

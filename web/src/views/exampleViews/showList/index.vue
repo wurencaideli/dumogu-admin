@@ -233,7 +233,7 @@ import { copyValue } from '@/common/OtherTools';
 import DictTags from '@/components/DictTags.vue';
 import {debounceFn} from "@/common/DebounceAndThrottle";
 import {responseData} from "./common/Data.js";
-import {messageSuccess,confirm} from "@/common/MessagePrompt.js";
+import {messageSuccess,confirm} from "@/action/MessagePrompt.js";
 import SvgIcon from "@/components/svgIcon/index.vue";
 import {hasPermi} from "@/action/PowerTools";
 

@@ -6,7 +6,7 @@
 /**
  * 将目录转换为树形结构
  */
- export function toTree(list=[],option={key:'id',pKey:'pid',isNew:true,childsKey:'childs'}){
+export function toTree(list=[],option={key:'id',pKey:'pid',isNew:true,childsKey:'childs'}){
     const {key,pKey,isNew,childsKey} = option;
     if(isNew){
         list = JSON.parse(JSON.stringify(list));
