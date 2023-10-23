@@ -79,6 +79,7 @@ export default {
         .el-menu-item{
             &.is-active{
                 background-color: #dfdfdf;
+                font-weight: bold;
             }
         }
     }

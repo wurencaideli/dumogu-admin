@@ -11,12 +11,20 @@
         </div>
     </div>
     <div class="right">
+        <a
+            href="https://github.com/wurencaideli/dumogu-admin"
+            target="_blank"
+            class="bt">
+            <SvgIcon
+                :style="'width:60px;height:25px;'"
+                name="github"></SvgIcon>
+        </a>
         <div
             @click="toggleFullScreen" 
             class="bt">
-            <svg t="1697598663799" 
-                class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4016" 
-                width="25" height="25"><path d="M170.666667 170.666667v213.333333H85.333333V85.333333h298.666667v85.333334H170.666667z m682.666666 213.333333V170.666667h-213.333333V85.333333h298.666667v298.666667h-85.333334zM170.666667 640v213.333333h213.333333v85.333334H85.333333v-298.666667h85.333334z m682.666666 0h85.333334v298.666667h-298.666667v-85.333334h213.333333v-213.333333z" fill="#2E2F30" p-id="4017"></path></svg>
+            <SvgIcon
+                :style="'width:25px;height:25px;'"
+                name="Navbar-full"></SvgIcon>
         </div>
         <div class="bt user">
             <el-image 
@@ -26,7 +34,9 @@
                 管理员
             </div>
             <div class="option">
-                <svg t="1697599063633" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6297" width="32" height="32"><path d="M585.246075 875.340272l408.227201-447.966132c57.440818-63.040395 12.824837-164.374669-72.613865-164.374669H104.224378c-85.25807 0-130.054683 101.334274-72.613865 164.374669l408.407832 447.7855c39.016405 42.809667 106.211325 42.809667 145.22773 0.180632z" fill="#333333" p-id="6298"></path></svg>
+                <SvgIcon
+                    :style="'width:15px;height:15px;'"
+                    name="sort-down"></SvgIcon>
             </div>
             <div class="bt-list-container">
                 <div class="item">
@@ -172,11 +182,6 @@ export default {
             justify-content: center;
             align-items: center;
             cursor: pointer;
-            >svg{
-                height: 25px;
-                width: 25px;
-                vertical-align: bottom;
-            }
         }
         >.user{
             cursor: pointer;
@@ -203,11 +208,6 @@ export default {
                 flex-direction: row;
                 justify-content: center;
                 align-items: center;
-                >svg{
-                    height: 10px;
-                    width: 10px;
-                    vertical-align: bottom;
-                }
             }
             >.bt-list-container{
                 width: fit-content;

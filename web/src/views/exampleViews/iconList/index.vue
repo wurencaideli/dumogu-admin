@@ -6,6 +6,7 @@
                 v-for="item,index in dataContainer.imgList"
                 :key="index">
                 <SvgIcon
+                    :style="'width:30px;height:30px;'"
                     :name="item.name"></SvgIcon>
                 <div class="name">
                     {{item.name}}
