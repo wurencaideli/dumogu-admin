@@ -4,31 +4,33 @@
     <div class="left">
         <el-scrollbar 
             height="100%">
-            <div 
-                class="scrollbar-container">    
-                <div
-                    v-for="item,index in dataContainer.tagList" 
-                    :key="item.sign"
-                    :class="{
-                        'item':true,
-                        'active':dataContainer.activeSign==item.sign,
-                    }"
-                    @click="handleClick(item)">
-                    <div 
-                        class="sign"
-                        v-if="dataContainer.activeSign==item.sign">
-                    </div>
-                    {{item.title}}
+            <draggable 
+                class="scrollbar-container"
+                item-key="sign"
+                v-model="tagListTrans">
+                <template #item="{element}">
                     <div
-                        v-if="!item.fixed"
-                        @click.stop="handleRemove(item)" 
-                        class="bt">
-                        <SvgIcon
-                            :style="'width:12px;height:12px;'"
-                            name="times"></SvgIcon>
+                        :class="{
+                            'item':true,
+                            'active':dataContainer.activeSign==element.sign,
+                        }"
+                        @click="handleClick(element)">
+                        <div 
+                            class="sign"
+                            v-if="dataContainer.activeSign==element.sign">
+                        </div>
+                        {{element.title}}
+                        <div
+                            v-if="!element.fixed"
+                            @click.stop="handleRemove(element)" 
+                            class="bt">
+                            <SvgIcon
+                                :style="'width:12px;height:12px;'"
+                                name="times"></SvgIcon>
+                        </div>
                     </div>
-                </div>
-            </div>
+                </template>
+            </draggable>
         </el-scrollbar>
     </div>
     <div class="right">
@@ -98,11 +100,13 @@ import {
     onUnmounted,
 } from "vue";
 import SvgIcon from "@/components/svgIcon/index.vue";
+import draggable from 'vuedraggable';
 
 export default {
     name: 'TagList',
     components: {
         SvgIcon,
+        draggable,
     },
     props:{
         /** 
@@ -130,11 +134,20 @@ export default {
             default:0,
         },
     },
-    emits:['onClick','onRemove','onOptionClick'],
+    emits:['onChange','onClick','onRemove','onOptionClick'],
     setup(props,{emit}){
         const dataContainer = reactive({
             tagList:toRef(props,'tagList'),
             activeSign:toRef(props,'activeSign'),
+        });
+        /** 用来排序转换的数组，由外部确定是否转换 */
+        const tagListTrans = computed({
+            get(){
+                return dataContainer.tagList;
+            },
+            set(value){
+                emit('onChange',value);
+            },
         });
         /** 标签点击事件，向外部抛出 */
         function handleClick(item){
@@ -153,6 +166,7 @@ export default {
             handleClick,
             handleRemove,
             handleOptionClick,
+            tagListTrans,
         };
     },
 }
@@ -170,13 +184,18 @@ export default {
     >.left{
         flex: 1 1 0;
         width: 0;
-        .scrollbar-container{
+        height: 100%;
+        :deep(.el-scrollbar__view){
+            height: 100%;
+        }
+        :deep(.scrollbar-container){
             display: flex;
             flex-direction: row;
             justify-content: flex-start;
             align-items: center;
             width: fit-content;
-            >.item{
+            height: 100%;
+            .item{
                 cursor: pointer;
                 display: flex;
                 flex-direction: row;
@@ -190,6 +209,9 @@ export default {
                 width: max-content;
                 border-radius: 3px;
                 color: rgb(91, 91, 91);
+                &:last-child{
+                    margin-right: 5px;
+                }
                 &.active{
                     background-color: #dfdfdf;
                     color: #5240ff;

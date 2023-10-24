@@ -244,7 +244,7 @@ export default defineComponent({
             router.push({
                 name:'show-list-info',
                 params:{
-                    sign:row.id,
+                    sign:row.id || '123123',
                 },
                 querys,
             });
@@ -254,7 +254,7 @@ export default defineComponent({
             router.push({
                 name:'show-list-update',
                 params:{
-                    sign:row.id,
+                    sign:row.id || '123123',
                 },
                 querys,
             });

@@ -197,6 +197,7 @@ export default defineComponent({
             handleTagRemove,
             cacheTagList,
             handleOptionClick,
+            userDataStore,
         };
     },
 });
@@ -217,6 +218,9 @@ export default defineComponent({
                     <TagList
                         :tagList="dataContainer.tagList"
                         :activeSign="dataContainer.activeSign"
+                        @onChange="e=>{
+                            userDataStore.setTagList(e);
+                        }"
                         @onClick="handleTagClick"
                         @onRemove="handleTagRemove"
                         @onOptionClick="handleOptionClick"></TagList>
