@@ -3,9 +3,6 @@
         height="100%">
         <div class="page-container main-view">
             <div class="container">
-                <h3>
-                    数据详情页面
-                </h3>
                 <p>
                     当前加载时间：{{dataContainer.nowTime}}
                 </p>
@@ -13,7 +10,21 @@
                     当前加载时间戳：{{dataContainer.nowTime_1}}
                 </p>
                 <p>
-                    数据唯一标识：{{dataContainer.form.id}}
+                    <el-button 
+                        @click="handleClick"
+                        type="primary">
+                        刷新当前标签页
+                    </el-button>
+                </p>
+                <p>
+                    <el-button 
+                        @click="handleClick_1"
+                        type="primary">
+                        <el-icon size="20px" color="#ffffff">
+                            <Delete></Delete>
+                        </el-icon>
+                        跳转到另一个标签页，并且关闭当前标签页
+                    </el-button>
                 </p>
             </div>
         </div>
@@ -28,11 +39,15 @@ import {
     defineComponent,onBeforeUnmount,ref,reactive,getCurrentInstance,onActivated,
     onMounted,
 } from 'vue';
-import { useRouter, useRoute } from "vue-router";
+import { useRouter } from "vue-router";
 import SvgIcon from "@/components/svgIcon/index.vue";
 import {
     Delete,
 } from '@element-plus/icons-vue';
+import {
+    deleteCurrentTag,
+    refreshCurrentTag,
+} from "@/layout/main/Common/TagListTools";
 
 export default defineComponent({
     components: {
@@ -41,27 +56,28 @@ export default defineComponent({
     },
     setup() {
         const router = useRouter();
-        const route = useRoute();
         const dataContainer = reactive({
             loading:false,
-            form:{},
             nowTime:new Date(),
             nowTime_1:new Date().getTime(),
         });
-        /** 
-         * 数据初始化
-         */
-        function initData(){
-            let params = route.params;
-            if(!params.sign) return;
-            dataContainer.form = {
-                id:params.sign,
-            }
+        /** 点击操作 */
+        function handleClick(){
+            refreshCurrentTag();
         }
-        initData();
+        function handleClick_1(){
+            deleteCurrentTag();
+            router.push({
+                name:'show-list-update',
+                params:{
+                    sign:'测试',
+                },
+            });
+        }
         return {
             dataContainer,
-            initData,
+            handleClick,
+            handleClick_1,
         };
     },
 });

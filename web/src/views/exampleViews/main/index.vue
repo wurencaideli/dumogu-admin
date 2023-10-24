@@ -1,5 +1,5 @@
 <template>
-    <el-scrollbar 
+    <DefinScrollbar 
         height="100%">
         <div class="page-container main-view">
             <div class="container">
@@ -7,7 +7,7 @@
                     ref="EchartContainerRef"></EchartContainer>
             </div>
         </div>
-    </el-scrollbar>
+    </DefinScrollbar>
 </template>
 
 <script>
@@ -21,11 +21,13 @@ import {
 import { useRouter } from "vue-router";
 import SvgIcon from "@/components/svgIcon/index.vue";
 import EchartContainer from "@/components/EchartContainer.vue";
+import DefinScrollbar from "@/components/DefinScrollbar.vue";
 
 export default defineComponent({
     components: {
         SvgIcon,
         EchartContainer,
+        DefinScrollbar,
     },
     setup() {
         const router = useRouter();

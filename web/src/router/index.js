@@ -114,6 +114,22 @@ export const constantRoutes = [
                     isMenu:true,
                 },
             },
+            {
+                path: 'setup-tag',
+                component: () => import('@/views/exampleViews/setupTag/index.vue'),
+                name: 'setup-tag',
+                meta: { 
+                    isMenu:true,
+                },
+            },
+            {
+                path: 'setup-menu',
+                component: () => import('@/views/exampleViews/setupMenu/index.vue'),
+                name: 'setup-menu',
+                meta: { 
+                    isMenu:true,
+                },
+            },
         ],
     },
     /** 404页面 */

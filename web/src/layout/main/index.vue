@@ -302,6 +302,7 @@ export default defineComponent({
                 overflow: hidden;
                 position: relative;
                 z-index: 1;
+                background-color: #f1f1f1;
             }
         }
     }

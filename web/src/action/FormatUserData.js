@@ -55,7 +55,7 @@ export function getUserData(){
             {
                 name:"show-list",
                 title:'展示列表',
-                iconName:"dingwei",
+                iconName:"laptop-check",
                 number:4,
             },
             {
@@ -81,23 +81,29 @@ export function getUserData(){
                 name:"user-list",
                 title:'用户列表',
                 isCache:true,
-                iconName:"Navbar-full",
+                iconName:"database",
             },
             {
                 name:"role-list",
-                title:'角色列表',
-                iconName:"xihuan",
+                title:'角色管理',
+                iconName:"alignleft-fill",
                 childs:[
+                    {
+                        name:"role-list",
+                        title:'用户列表',
+                        isCache:true,
+                        iconName:"database",
+                    },
                     {
                         name:"show-list-update",
                         path:'/main/show-list/update/asdasd12',
-                        title:'数据编12312',
+                        title:'数据编辑',
                         childs:[
                             {
                                 name:"show-list-update",
-                                path:'/main/show-list/update/asdasd12123',
-                                title:'数据编辑 - 123',
-                                iconName:"Navbar-full",
+                                path:'/main/show-list/update/测试',
+                                title:'数据编辑 - 测试',
+                                iconName:"plus-square-fill",
                             },
                         ],
                     },
@@ -107,7 +113,7 @@ export function getUserData(){
                 name:"icon-list",
                 title:'icon 列表展示',
                 isCache:true,
-                iconName:"Navbar-full",
+                iconName:"collection-fill",
                 number:20,
             },
             {
@@ -116,6 +122,20 @@ export function getUserData(){
                 isCache:true,
                 hidden:true,
                 iconName:"Navbar-full",
+            },
+            {
+                name:"setup-tag",
+                title:'设置标签页',
+                isCache:true,
+                hidden:false,
+                iconName:"tag",
+            },
+            {
+                name:"setup-menu",
+                title:'目录信息',
+                isCache:true,
+                hidden:false,
+                iconName:"Directory-tree",
             },
         ];
         /** 

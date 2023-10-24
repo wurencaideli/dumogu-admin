@@ -45,8 +45,7 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    padding: 10px;
-    background-color: #f1f1f1;
+    padding: var(--page-gap);
     box-sizing: border-box;
     overflow: auto;
     /** 查询体 */
