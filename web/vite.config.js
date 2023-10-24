@@ -4,6 +4,8 @@ import AutoImport from 'unplugin-auto-import/vite';
 import Components from 'unplugin-vue-components/vite';
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
 import { resolve } from 'path';
+import optionConfig from './oss.config';
+import vitePluginAliOss from 'vite-plugin-ali-oss';
 
 const pathResolve = (dir) => {
     return resolve(__dirname, '.', dir);
@@ -12,6 +14,8 @@ const pathResolve = (dir) => {
 export default defineConfig(({
     mode,
 })=>{
+    const prod = process.env.NODE_ENV === 'production';
+    let base = '/';
     let plugins = [
         vue(),
         AutoImport({
@@ -21,8 +25,21 @@ export default defineConfig(({
             resolvers: [ElementPlusResolver()],
         }),
     ];
+    /** 如果有阿里云配置则使用 */
+    if(optionConfig.url){
+        base = prod ? optionConfig.url+'/' : '/';
+        /** 上传到阿里云OSS上 */
+        const options = {
+            region: optionConfig.region,
+            accessKeyId: optionConfig.accessKeyId,
+            accessKeySecret: optionConfig.accessKeySecret,
+            bucket: optionConfig.bucket,
+            overwrite:true,
+        };
+        plugins.push(vitePluginAliOss(options));
+    }
     return {
-        base: '/', // must be URL when build
+        base: base, // must be URL when build
         plugins: plugins,
         build: { 
             /** 指定输出路径 */

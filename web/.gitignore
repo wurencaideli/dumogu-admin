@@ -12,6 +12,7 @@ dist
 browser-plug
 dist-ssr
 *.local
+oss.config-local.js
 
 # Editor directories and files
 .vscode/*
