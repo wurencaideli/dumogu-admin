@@ -20,6 +20,12 @@
                 name="github"></SvgIcon>
         </a>
         <div
+            class="bt">
+            <SvgIcon
+                :style="'width:25px;height:25px;'"
+                name="commentlines-fill"></SvgIcon>
+        </div>
+        <div
             @click="toggleFullScreen" 
             class="bt">
             <SvgIcon

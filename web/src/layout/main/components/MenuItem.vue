@@ -10,6 +10,11 @@
                     :style="'width: 20px;height: 20px;'"
                     :name="dataContainer.dataInfo.iconName"></SvgIcon>
                 {{dataContainer.dataInfo.title}}
+                <div
+                    v-if="dataContainer.dataInfo.number"
+                    class="sign">
+                    {{dataContainer.dataInfo.number}}
+                </div>
             </div>
         </el-menu-item>
         <el-sub-menu 
@@ -90,8 +95,23 @@ export default {
         display: flex;
         flex-direction: row;
         align-items: center;
+        position: relative;
         >*{
             margin-right: 5px;
+        }
+        >.sign{
+            right: 0;
+            position: absolute;
+            width: fit-content;
+            background-color: #ffe4e4;
+            color: #f56c6c;
+            border-radius: 999px;
+            padding: 5px 10px;
+            box-sizing: border-box;
+            line-height: 1;
+            font-size: 12px;
+            margin: 0;
+            font-weight: bold;
         }
     }
 }

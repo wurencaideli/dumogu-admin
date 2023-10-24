@@ -28,6 +28,9 @@
                                 :style="'width:12px;height:12px;'"
                                 name="times"></SvgIcon>
                         </div>
+                        <div 
+                            v-if="element.isCache"
+                            class="cache"></div>
                     </div>
                 </template>
             </draggable>
@@ -209,6 +212,7 @@ export default {
                 width: max-content;
                 border-radius: 3px;
                 color: rgb(91, 91, 91);
+                position: relative;
                 &:last-child{
                     margin-right: 5px;
                 }
@@ -233,6 +237,16 @@ export default {
                     justify-content: center;
                     align-items: center;
                     margin-left: 5px;
+                }
+                >.cache{
+                    width: 30%;
+                    max-width: 30px;
+                    min-width: 15px;
+                    height: 3px;
+                    border-radius: 999px;
+                    background-color: #5340ff34;
+                    position: absolute;
+                    bottom: 0;
                 }
             }
         }

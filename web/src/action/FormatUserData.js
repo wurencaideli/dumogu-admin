@@ -56,6 +56,7 @@ export function getUserData(){
                 name:"show-list",
                 title:'展示列表',
                 iconName:"dingwei",
+                number:4,
             },
             {
                 name:"show-list-info",
@@ -107,6 +108,7 @@ export function getUserData(){
                 title:'icon 列表展示',
                 isCache:true,
                 iconName:"Navbar-full",
+                number:20,
             },
             {
                 name:"mine",
