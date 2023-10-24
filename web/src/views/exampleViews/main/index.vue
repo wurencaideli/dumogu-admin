@@ -1,10 +1,13 @@
 <template>
-    <div class="page-container main-view">
-        <div class="container">
-            <EchartContainer
-                ref="EchartContainerRef"></EchartContainer>
+    <el-scrollbar 
+        height="100%">
+        <div class="page-container main-view">
+            <div class="container">
+                <EchartContainer
+                    ref="EchartContainerRef"></EchartContainer>
+            </div>
         </div>
-    </div>
+    </el-scrollbar>
 </template>
 
 <script>
@@ -103,11 +106,10 @@ export default defineComponent({
         display: flex;
         flex-direction: column;
         width: 100%;
-        height: 100%;
-        >.container{
+        .container{
             background-color: white;
             width: 100%;
-            height: 100%;
+            height: 800px;
             border-radius: 5px;
         }
     }

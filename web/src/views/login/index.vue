@@ -239,7 +239,15 @@ export default defineComponent({
             </div>
         </div>
         <div class="bottom">
-            版权所有 @www.dumogu.top
+            版权所有 @www.dumogu.top 毒蘑菇 - 管理
+            <a
+                href="https://github.com/wurencaideli/dumogu-admin"
+                target="_blank"
+                class="bt">
+                <SvgIcon
+                    :style="'width:60px;height:25px;'"
+                    name="github"></SvgIcon>
+            </a>
         </div>
     </div>
 </template>
@@ -251,13 +259,16 @@ export default defineComponent({
     display: flex;
     justify-content: center;
     align-items: center;
-    background-image: url(https://c.wallhere.com/photos/82/08/light_baby_elephant_wool_girl_socks_vintage_ties-799904.jpg!d);
+    background-image: url(https://cn.bing.com/th?id=OHR.RebelBase_ZH-CN0484516261_1920x1080.jpg&rf=LaDigue_1920x1080.jpg&pid=hp);
     background-size: cover;
     backdrop-filter: blur(12px);
+    padding: 15px;
+    box-sizing: border-box;
     >.container{
         display: flex;
         flex-direction: row;
-        width: 900px;
+        width: 100%;
+        max-width: 850px;
         background-color: rgb(255, 255, 255);
         border-radius: 12px;
         overflow: hidden;
@@ -265,7 +276,7 @@ export default defineComponent({
         >.left{
             flex: 1 1 0;
             width: 0;
-            background-image: url(https://s1.ax1x.com/2023/08/21/pPG62bF.jpg);
+            background-image: url(https://cn.bing.com/th?id=OHR.IdahoBarn_ZH-CN6472682534_1920x1080.jpg&rf=LaDigue_1920x1080.jpg&pid=hp);
             background-size: cover;
         }
         >.right{
@@ -314,6 +325,11 @@ export default defineComponent({
         display: flex;
         justify-content: center;
         align-items: center;
+        font-size: 17px;
+        color: white;
+        >*{
+            margin-left: 5px;
+        }
     }
 }
 </style>

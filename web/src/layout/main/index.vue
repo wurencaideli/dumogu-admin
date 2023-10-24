@@ -255,7 +255,7 @@ export default defineComponent({
         box-sizing: border-box;
         position: relative;
         z-index: 9;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.177);
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.177);
     }
     >.content-container{
         flex: 1 1 0;
@@ -273,7 +273,7 @@ export default defineComponent({
             box-sizing: border-box;
             position: relative;
             z-index: 9;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.177);
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.177);
         }
         >.right{
             flex: 1 1 0;
@@ -285,14 +285,19 @@ export default defineComponent({
             >.top{
                 height: var(--tags-height);
                 width: 100%;
-                border-bottom: 1px solid rgb(218, 218, 218);
+                // border-bottom: 1px solid rgb(218, 218, 218);
                 box-sizing: border-box;
+                box-shadow: 0 0 5px rgba(0, 0, 0, 0.177);
+                position: relative;
+                z-index: 2;
             }
             >.view-container{
                 flex: 1 1 0;
                 height: 0;
                 width: 100%;
                 overflow: hidden;
+                position: relative;
+                z-index: 1;
             }
         }
     }

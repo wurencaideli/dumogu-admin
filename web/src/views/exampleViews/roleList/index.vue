@@ -12,49 +12,9 @@
                     label-width="110px">
                     <el-row :gutter="0">
                         <el-col :span="6" :xs="6">
-                            <el-form-item label="线索编号" prop="clueCode">
+                            <el-form-item label="编号" prop="code">
                                 <el-input
-                                    v-model="dataContainer.form.clueCode"
-                                    placeholder="请输入"
-                                    clearable
-                                    @clear="handleQuery"
-                                    @keyup.enter="handleQuery"/>
-                            </el-form-item>
-                        </el-col>
-                        <el-col :span="6" :xs="6">
-                            <el-form-item label="线索编号" prop="clueCode">
-                                <el-input
-                                    v-model="dataContainer.form.clueCode"
-                                    placeholder="请输入"
-                                    clearable
-                                    @clear="handleQuery"
-                                    @keyup.enter="handleQuery"/>
-                            </el-form-item>
-                        </el-col>
-                        <el-col :span="6" :xs="6">
-                            <el-form-item label="线索编号" prop="clueCode">
-                                <el-input
-                                    v-model="dataContainer.form.clueCode"
-                                    placeholder="请输入"
-                                    clearable
-                                    @clear="handleQuery"
-                                    @keyup.enter="handleQuery"/>
-                            </el-form-item>
-                        </el-col>
-                        <el-col :span="6" :xs="6">
-                            <el-form-item label="线索名称" prop="clueName">
-                                <el-input
-                                    v-model="dataContainer.form.clueName"
-                                    placeholder="请输入"
-                                    clearable
-                                    @clear="handleQuery"
-                                    @keyup.enter="handleQuery"/>
-                            </el-form-item>
-                        </el-col>
-                        <el-col :span="6" :xs="6">
-                            <el-form-item label="线索名称" prop="clueName">
-                                <el-input
-                                    v-model="dataContainer.form.clueName"
+                                    v-model="dataContainer.form.code"
                                     placeholder="请输入"
                                     clearable
                                     @clear="handleQuery"
@@ -116,50 +76,18 @@
                     height="100%">
                     <el-table-column type="index" align="center" label="序号" width="60" fixed="left"/>
                     <el-table-column
-                        label="线索编号"
+                        label="编号"
                         show-overflow-tooltip
                         align="center"
                         min-width="170"
-                        prop="clueCode"
+                        prop="code"
                         sortable="custom"
                         :sort-orders="['descending', 'ascending']"/>
                     <el-table-column
-                        label="线索名称"
+                        label="名称"
                         show-overflow-tooltip
                         align="center"
-                        prop="clueName"
-                        min-width="150"
-                        sortable="custom"
-                        :sort-orders="['descending', 'ascending']"/>
-                    <el-table-column
-                        label="客户名称"
-                        show-overflow-tooltip
-                        align="center"
-                        prop="clientName"
-                        min-width="150"
-                        sortable="custom"
-                        :sort-orders="['descending', 'ascending']"/>
-                    <el-table-column
-                        label="线路主题"
-                        show-overflow-tooltip
-                        align="center"
-                        prop="studyRouteName"
-                        min-width="150"
-                        sortable="custom"
-                        :sort-orders="['descending', 'ascending']"/>
-                    <el-table-column
-                        label="项目编号"
-                        show-overflow-tooltip
-                        align="center"
-                        prop="projectCode"
-                        min-width="150"
-                        sortable="custom"
-                        :sort-orders="['descending', 'ascending']"/>
-                    <el-table-column
-                        label="创建时间"
-                        show-overflow-tooltip
-                        align="center"
-                        prop="createTime"
+                        prop="name"
                         min-width="150"
                         sortable="custom"
                         :sort-orders="['descending', 'ascending']"/>

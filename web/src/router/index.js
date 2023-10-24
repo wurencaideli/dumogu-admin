@@ -22,11 +22,6 @@ export const constantRoutes = [
         component: () => import('@/views/login/index.vue'),
         hidden: true
     },
-    {
-        path: '/register',
-        component: () => import('@/views/login/register.vue'),
-        hidden: true
-    },
     /** 定义首页重定向地址 */
     {
         path: '',

@@ -3,9 +3,8 @@ import { defineComponent,ref,getCurrentInstance,reactive,nextTick, computed,onMo
 import { ElConfigProvider } from 'element-plus';
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs';  //启用element 中文
 import {publicData as publicDataStore} from "@/store/Public";
-import {loadScript,isPc} from "@/common/OtherTools";
+import {loadScript} from "@/common/OtherTools";
 import {friendLinkList} from "@/common/Const";
-import { ElMessage, ElMessageBox } from 'element-plus';
 import { useRoute,useRouter } from 'vue-router';
 
 export default defineComponent({
@@ -39,23 +38,6 @@ export default defineComponent({
                 ...friendLinkList,
             ]);
         },150);
-        onMounted(()=>{
-            setTimeout(()=>{
-                if(isPc()) return;
-                if(route.name == 'MMain') return;
-                ElMessageBox.confirm(
-                    '检测到移动端设备，跳转到移动版页面',
-                    '提示',
-                    {
-                        confirmButtonText: '确定',
-                        cancelButtonText: '取消',
-                        type: 'warning',
-                    },
-                ).then(() => {
-                    router.push('/m');
-                }).catch(()=>{});
-            },700);
-        });
         return {
             locale: zhCn,
         };

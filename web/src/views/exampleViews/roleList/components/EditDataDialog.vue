@@ -16,17 +16,9 @@
                 label-width="120px">
                 <el-row :gutter="0">
                     <el-col :span="8" :xs="6">
-                        <el-form-item label="仓储点位" prop="warehouseName">
+                        <el-form-item label="名称" prop="name">
                             <el-input
-                                v-model="dataContainer.form.warehouseName"
-                                placeholder="请输入"
-                                clearable/>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="8" :xs="6">
-                        <el-form-item label="仓储点位1" prop="warehouseName1">
-                            <el-input
-                                v-model="dataContainer.form.warehouseName1"
+                                v-model="dataContainer.form.name"
                                 placeholder="请输入"
                                 clearable/>
                         </el-form-item>
@@ -96,8 +88,7 @@ export default defineComponent({
             reject:undefined,
             form:{},
             rules:{
-                warehouseName: [{ required: true, message: '请输入仓储点位', trigger: 'blur' }],
-                warehouseName1: [{ required: true, message: '请输入仓储点位1', trigger: 'blur' }],
+                name: [{ required: true, message: '请输入仓储点位', trigger: 'blur' }],
             },
         });
         const otherDataContainer = {
@@ -164,15 +155,8 @@ export default defineComponent({
          *  */
         function validData(data){
             const failData = verifiedData(data,{
-                estimatedRevenue:{
-                    msg:'预估收入 不能为空',
-                    validate(value,option){
-                        if(!value && value !== 0) return false;
-                        return true;
-                    },
-                },
-                taxRate:{
-                    msg:'税率 不能为空',
+                name:{
+                    msg:'名称 不能为空',
                     validate(value,option){
                         if(!value && value !== 0) return false;
                         return true;

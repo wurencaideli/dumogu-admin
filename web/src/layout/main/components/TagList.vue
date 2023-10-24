@@ -14,6 +14,10 @@
                         'active':dataContainer.activeSign==item.sign,
                     }"
                     @click="handleClick(item)">
+                    <div 
+                        class="sign"
+                        v-if="dataContainer.activeSign==item.sign">
+                    </div>
                     {{item.title}}
                     <div
                         v-if="!item.fixed"
@@ -191,6 +195,13 @@ export default {
                     color: #5240ff;
                     font-weight: bold;
                     // border:1px solid rgb(196, 196, 196);
+                }
+                >.sign{
+                    width: 10px;
+                    height: 10px;
+                    border-radius: 50%;
+                    background-color: #5240ff;
+                    margin-right: 5px;
                 }
                 >.bt{
                     width: fit-content;

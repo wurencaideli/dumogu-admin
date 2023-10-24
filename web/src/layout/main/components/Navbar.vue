@@ -149,13 +149,14 @@ export default {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    color:#444954;
     >.left{
         display: flex;
         flex-direction: row;
         justify-content: flex-start;
         align-items: center;
         >.logo{
-            width: 150px;
+            width: 240px;
             height: 50px;
             border-radius: 5px;
             cursor: pointer;
@@ -164,6 +165,7 @@ export default {
         >.name{
             font-size: 20px;
             font-weight: bold;
+            color:#444954;
         }
     }
     >.right{
@@ -200,6 +202,7 @@ export default {
             >.name{
                 font-size: 15px;
                 margin-right: 10px;
+                color:#444954;
             }
             >.option{
                 width: fit-content;

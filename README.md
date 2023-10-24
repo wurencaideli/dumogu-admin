@@ -11,7 +11,7 @@ dumogu-admin，制作最简易的管理端架子，没有什么弯弯绕绕的�
 基本上一个模块对应的文件夹下都有README.md文件，表示这个文件夹的作用。
 
 web端部分截图
-[![piAr0pQ.jpg](https://z1.ax1x.com/2023/10/23/piAr0pQ.jpg)](https://imgse.com/i/piAr0pQ)
-[![piArtTf.jpg](https://z1.ax1x.com/2023/10/23/piArtTf.jpg)](https://imgse.com/i/piArtTf)
-[![piArY0P.jpg](https://z1.ax1x.com/2023/10/23/piArY0P.jpg)](https://imgse.com/i/piArY0P)
-[![piArJmt.jpg](https://z1.ax1x.com/2023/10/23/piArJmt.jpg)](https://imgse.com/i/piArJmt)
+[![piEPJRx.jpg](https://z1.ax1x.com/2023/10/24/piEPJRx.jpg)](https://imgse.com/i/piEPJRx)
+[![piEPGJ1.jpg](https://z1.ax1x.com/2023/10/24/piEPGJ1.jpg)](https://imgse.com/i/piEPGJ1)
+[![piEP8iR.jpg](https://z1.ax1x.com/2023/10/24/piEP8iR.jpg)](https://imgse.com/i/piEP8iR)
+[![piEP1o9.jpg](https://z1.ax1x.com/2023/10/24/piEP1o9.jpg)](https://imgse.com/i/piEP1o9)
