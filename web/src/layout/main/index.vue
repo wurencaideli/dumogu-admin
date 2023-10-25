@@ -21,7 +21,7 @@ import {
     deleteOtherTags,
     deleteLeftTags,
     deleteRightTags,
-    toReferPath,
+    getLatelyHisTag,
 } from "./Common/TagListTools";
 
 export default defineComponent({
@@ -70,39 +70,59 @@ export default defineComponent({
             activeSign:toRef(userDataStore,'activeSign'),
             menuList:toRef(userDataStore,'menuList'),
             showMenuList:toRef(userDataStore,'showMenuList'),
+            tagHisList:toRef(userDataStore,'tagHisList'),
         });
         /** 根据系统目录获取用户的目录配置 */
         function getUserMenu(data){
             let menuList = dataContainer.menuList;
             /** 优先使用当前的path判断获取映射 */
-            let target = menuList.find(item=>item.path==data.path) || {};
+            let target = menuList.find(item=>item.path == data.path) || {};
             /** 其次，使用name获取映射 */
             if(!target.title){
-                target = menuList.find(item=>item.name==data.name) || {};
+                target = menuList.find(item=>item.name == data.name) || {};
             }
             return target;
         }
-        /** 监听路由，当路由发送变化时将符合条件的标签添加到标签列表中 */
-        watch(route,()=>{
+        /** 添加历史点击记录 */
+        function addHisTagList(){
+            let tagHisList = dataContainer.tagHisList;
             let tagList = dataContainer.tagList;
             let activeSign = dataContainer.activeSign;
+            /** 如果与最近的一个重复则不添加 */
+            let latelyHisTag = getLatelyHisTag();
+            if(latelyHisTag && (latelyHisTag.sign == activeSign)) return;
+            /** 找到当前显示的tag，并且添加记录 */
+            let activeTag = tagList.find(item=>item.sign==activeSign);
+            if(!activeTag) return;
+            /** 添加到数据管理 */
+            tagHisList.push(activeTag);
+            userDataStore.setTagHisList(tagHisList);
+        }
+        /**
+         * 根据当前路由情况 添加标签
+         */
+        function addTag(){
+            let tagList = dataContainer.tagList;
+            let activeSign = dataContainer.activeSign;
+            /** 获取该路由对应的用户配置 */
+            const userMenuConfig = getUserMenu(route);
+            /** 创建一个新标签，配置其属性，其中sign是唯一标识，很重要，必填 */
             let newTag = {
-                title:getUserMenu(route).title,
+                title:userMenuConfig.title,
                 path:route.path,
                 fullPath:route.fullPath,
                 sign:route.path,  //唯一标识
-                isCache:getUserMenu(route).isCache,  //表示该标签需要缓存
-                fixed:getUserMenu(route).fixed,  //表示该标签需要固定
+                isCache:userMenuConfig.isCache,  //表示该标签需要缓存
+                fixed:userMenuConfig.fixed,  //表示该标签需要固定
             };
             /** 
-             * 已经跳转的路由添加到标签上
              * 必须是系统目录中的，不然不允许添加标签，因为只有属于目录才会有标签
+             *  */
+            if(!sysMeluList.find(item=>item.name == route.name)) return;
+            /** 
              * 不重复添加
              *  */
-            if(
-                !!sysMeluList.find(item=>item.name==route.name) 
-                && !tagList.find(item=>item.path==route.path)
-            ){
+            if(!tagList.find(item=>item.path == newTag.sign)){
                 // 添加进入标签列表，添加到当前标签的右边
                 let index = tagList.findIndex(item=>{
                     return item.sign == activeSign;
@@ -114,14 +134,15 @@ export default defineComponent({
                 }
             }
             /** 设置当前所显示的标签 */
-            tagList.forEach(item=>{
-                if(item.path !== route.path) return;
-                activeSign = item.sign;
-            });
+            activeSign = newTag.sign;
             userDataStore.setTagList(tagList);
             userDataStore.setActiveSign(activeSign);
-        },{
-            deep:true,
+            /** 添加历史记录 */
+            addHisTagList();
+        }
+        /** 监听路由，
+         * 当路由发生变化时将符合条件的标签添加到标签列表中 */
+        watch(route,addTag,{
             immediate:true,
         });
         /** 
@@ -133,36 +154,35 @@ export default defineComponent({
         }
         /** 
          * tag 删除事件
-         * 删除后跳转到一个附件的标签
+         * 删除后跳转到一个最近的标签，使用标签记录
          *  */
         function handleTagRemove(tag){
             let tagList = dataContainer.tagList;
             let activeSign = dataContainer.activeSign;
+            /** 还剩最后一个标签的话不用删除 */
+            if(tagList.length <= 1) return;
             let index = tagList.findIndex(item=>{
                 return item.sign == tag.sign;
             });
-            if(tag.sign != activeSign){
-                tagList.splice(index,1);
-            }else{
-                let tag = tagList[index - 1] || tagList[index + 1];
-                if(tag){
-                    handleTagClick(tag);
-                    tagList.splice(index,1);
-                }
-            }
+            if(index == -1) return;
+            let oldTag = tagList[index];
+            tagList.splice(index,1);
             userDataStore.setTagList(tagList);
+            /** 如果删除的是当前的标签页的话跳转到最近的标签 */
+            if(oldTag.sign === activeSign){
+                let latelyHisTag = getLatelyHisTag();
+                /** 触发该标签的点击事件 */
+                handleTagClick(latelyHisTag);
+            }
         }
         /** 操作事件 */
         function handleOptionClick(type){
-            let tagList = dataContainer.tagList;
-            let activeSign = dataContainer.activeSign;
-            let index = tagList.findIndex(item=>{
-                return item.sign == activeSign;
-            });
             switch(true){
                 case type == 1:
                     deleteCurrentTag();
-                    toReferPath(index);
+                    let latelyHisTag = getLatelyHisTag();
+                    /** 触发该标签的点击事件 */
+                    handleTagClick(latelyHisTag);
                     break;
                 case type == 2:
                     deleteOtherTags();

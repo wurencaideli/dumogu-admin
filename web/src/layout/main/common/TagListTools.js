@@ -5,7 +5,10 @@
 import {userData} from "@/store/User";
 import router from '@/router';
 
-/** 删除当前的标签 */
+/** 
+ * 删除当前的标签
+ * 只负责删除标签
+ *  */
 export function deleteCurrentTag(){
     let userDataStore = userData();
     let tagList = userDataStore.tagList;
@@ -35,6 +38,7 @@ export function refreshCurrentTag(){
         if(!target) return;
         target.isCache = isCache;
         target = null;
+        userDataStore.setTagList([...tagList]);
     });
     /** 跳转到重定向页面 */
     router.push({
@@ -90,15 +94,21 @@ export function deleteRightTags(){
     userDataStore.setTagList(tagList_);
 }
 /** 
- * 跳转到其他最近的页面
- * 根据一个参照标签进行跳转
- *  */
-export function toReferPath(referTagIndex){
+ * 获取历史记录里最近的一个标签（不在标签列表中的过滤掉）
+ */
+export function getLatelyHisTag(){
     let userDataStore = userData();
-    referTagIndex = referTagIndex || 0;
     let tagList = userDataStore.tagList;
-    let tag = tagList[referTagIndex] || tagList[referTagIndex - 1] || tagList[referTagIndex + 1];
-    if(tag){
-        router.push(tag.fullPath);
-    }
+    /** 先处理已经删除了的历史记录 */
+    let tagHisList = userDataStore.tagHisList;
+    let signMap = tagList.reduce((c,i)=>{
+        c[i.sign] = true;
+        return c;
+    },{});
+    tagHisList = tagHisList.filter(item=>{
+        return signMap[item.sign];
+    });
+    userDataStore.setTagHisList(tagHisList);
+    tagHisList = userDataStore.tagHisList;
+    return tagHisList[tagHisList.length - 1];
 }

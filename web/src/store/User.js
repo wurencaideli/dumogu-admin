@@ -17,6 +17,7 @@ export const userData = defineStore('userData', {
             menuList:[],  //用户菜单列表
             showMenuList:[],  //用于展示的菜单列表，结构树形化
             tagList:[],  //标签列表
+            tagHisList:[],  //标签历史列表，记录标签历史添加列表
             activeSign:'',  //当前活动的标签唯一标识
             permissionList:[],  //权限字符串，柑橘该字符串可判断按钮权限
         };
@@ -37,6 +38,9 @@ export const userData = defineStore('userData', {
         },
         setTagList(value){
             this.tagList = value || [];
+        },
+        setTagHisList(value){
+            this.tagHisList = value || [];
         },
         setActiveSign(value){
             this.activeSign = value || '';

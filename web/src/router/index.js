@@ -39,7 +39,11 @@ export const constantRoutes = [
             {
                 path: 'redirect/:path(.*)',
                 name:'main-redirect',
-                component: () => import('@/views/redirect/index.vue')
+                component: () => import('@/views/redirect/index.vue'),
+                meta: { 
+                    /** 该页面属于此操作页面，但是不算菜单，不允许添加到标签页上 */
+                    isMenu:false,
+                },
             },
             /** 一些页面例子 */
             {
