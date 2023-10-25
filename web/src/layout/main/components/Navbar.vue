@@ -19,6 +19,14 @@
                 :style="'width:60px;height:25px;'"
                 name="github"></SvgIcon>
         </a>
+        <a
+            href="https://txc.qq.com/products/613546"
+            target="_blank"
+            class="bt">
+            <SvgIcon
+                :style="'width:25px;height:25px;'"
+                name="fankui"></SvgIcon>
+        </a>
         <div
             class="bt">
             <SvgIcon

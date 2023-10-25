@@ -1,6 +1,8 @@
 ## 毒蘑菇 - 管理
 
 开源地址 https://github.com/wurencaideli/dumogu-admin
+线上DEMO https://admin.dumogu.top/
+吐槽地址 https://txc.qq.com/products/613546
 
 包含后端服务，前端。前端采用vue3，vite，element-plus，axios，pinia，storages-js，各种小工具库啥的，不采用ts。后端部分还没开始搭建。
 
@@ -11,7 +13,9 @@ dumogu-admin，制作最简易的管理端架子，没有什么弯弯绕绕的�
 基本上一个模块对应的文件夹下都有README.md文件，表示这个文件夹的作用。
 
 web端部分截图
-[![piEPJRx.jpg](https://z1.ax1x.com/2023/10/24/piEPJRx.jpg)](https://imgse.com/i/piEPJRx)
-[![piEPGJ1.jpg](https://z1.ax1x.com/2023/10/24/piEPGJ1.jpg)](https://imgse.com/i/piEPGJ1)
-[![piEP8iR.jpg](https://z1.ax1x.com/2023/10/24/piEP8iR.jpg)](https://imgse.com/i/piEP8iR)
-[![piEP1o9.jpg](https://z1.ax1x.com/2023/10/24/piEP1o9.jpg)](https://imgse.com/i/piEP1o9)
+[![piVYWqO.jpg](https://z1.ax1x.com/2023/10/25/piVYWqO.jpg)](https://imgse.com/i/piVYWqO)
+[![piVYhZD.jpg](https://z1.ax1x.com/2023/10/25/piVYhZD.jpg)](https://imgse.com/i/piVYhZD)
+[![piVY4de.jpg](https://z1.ax1x.com/2023/10/25/piVY4de.jpg)](https://imgse.com/i/piVY4de)
+[![piVY2M6.jpg](https://z1.ax1x.com/2023/10/25/piVY2M6.jpg)](https://imgse.com/i/piVY2M6)
+[![piVYRsK.jpg](https://z1.ax1x.com/2023/10/25/piVYRsK.jpg)](https://imgse.com/i/piVYRsK)
+[![piVY5IH.jpg](https://z1.ax1x.com/2023/10/25/piVY5IH.jpg)](https://imgse.com/i/piVY5IH)
