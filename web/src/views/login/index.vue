@@ -229,10 +229,10 @@ export default defineComponent({
                             </el-button>
                         </div>
                         <div class="other">
-                            登录管理网址,
-                            <router-link to="/register">
+                            （没有后台接口，随便输入必填项就可以登录）
+                            <!-- <router-link to="/register">
                                 没有账号？去注册
-                            </router-link>
+                            </router-link> -->
                         </div>
                     </el-form>
                 </div>

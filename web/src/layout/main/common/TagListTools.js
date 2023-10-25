@@ -112,3 +112,33 @@ export function getLatelyHisTag(){
     tagHisList = userDataStore.tagHisList;
     return tagHisList[tagHisList.length - 1];
 }
+/** 
+ * 格式化标签列表
+ * 与目录重新建立关系，相当于更新了一下标签
+ *  */
+export function formatTagsByMenu(){
+    let userDataStore = userData();
+    let tagList = userDataStore.tagList;
+    let menuList = userDataStore.menuList;
+    let pathMap = {};
+    let nameMap = {};
+    menuList.forEach(item=>{
+        pathMap[item.path] = item;
+        nameMap[item.name] = item;
+    });
+    let tagList_ = [];
+    tagList.forEach(item=>{
+        /** 优先取path */
+        let userMenuConfig = pathMap[item.path] || nameMap[item.menuName];
+        /** 有目录权限的才更新*/
+        if(!userMenuConfig) return;
+        item = {
+            ...item,
+            isCache:userMenuConfig.isCache,  //表示该标签需要缓存
+            fixed:userMenuConfig.fixed,  //表示该标签需要固定
+            title:userMenuConfig.title,
+        };
+        tagList_.push(item);
+    });
+    userDataStore.setTagList(tagList_);
+}

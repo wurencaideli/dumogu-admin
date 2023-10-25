@@ -9,6 +9,30 @@
                 <p>
                     当前加载时间戳：{{dataContainer.nowTime_1}}
                 </p>
+                <p>
+                    <el-button 
+                        @click="handleClick"
+                        type="primary">
+                        更新用户目录
+                    </el-button>
+                    获取新的目录信息，标签页不变（没有权限的标签页再次打开会提示没有权限）
+                </p>
+                <p>
+                    <el-button 
+                        @click="handleClick_2"
+                        type="primary">
+                        还原用户目录
+                    </el-button>
+                    获取新的目录信息，标签页不变（没有权限的标签页再次打开会提示没有权限）
+                </p>
+                <p>
+                    <el-button 
+                        @click="handleClick_1"
+                        type="primary">
+                        重新映射标签页和目录的关系
+                    </el-button>
+                    剔除没有目录权限的标签页，重新更新标签页中相应的目录配置信息
+                </p>
                 <h3>
                     用户总目录信息，扁平化处理了，包含所有目录
                 </h3>
@@ -51,6 +75,13 @@ import {userData} from "@/store/User";
 import {sysMeluList} from "@/router/Common";
 import { onBeforeRouteLeave } from 'vue-router';
 import DefinScrollbar from "@/components/DefinScrollbar.vue";
+import {
+    getUserData_1,
+    getUserData,
+} from "@/action/FormatUserData";
+import {
+    formatTagsByMenu,
+} from "@/layout/main/common/TagListTools";
 
 export default defineComponent({
     components: {
@@ -78,11 +109,24 @@ export default defineComponent({
         let sysMenu = computed(()=>{
             return JSON.stringify(sysMeluList,null,4);
         });
+        /** 点击操作 */
+        function handleClick(){
+            getUserData_1();
+        }
+        function handleClick_1(){
+            formatTagsByMenu();
+        }
+        function handleClick_2(){
+            getUserData();
+        }
         return {
             dataContainer,
             userMenu,
             sysMenu,
             userMenu_1,
+            handleClick,
+            handleClick_1,
+            handleClick_2,
         };
     },
 });

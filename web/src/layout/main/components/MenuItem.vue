@@ -11,6 +11,11 @@
                     :name="dataContainer.dataInfo.iconName"></SvgIcon>
                 {{dataContainer.dataInfo.title}}
                 <div
+                    v-if="dataContainer.dataInfo.content"
+                    class="content">
+                    {{dataContainer.dataInfo.content}}
+                </div>
+                <div
                     v-if="dataContainer.dataInfo.number"
                     class="sign">
                     {{dataContainer.dataInfo.number}}
@@ -26,6 +31,11 @@
                         v-if="dataContainer.dataInfo.iconName"
                         :style="'width: 20px;height: 20px;'"
                         :name="dataContainer.dataInfo.iconName"></SvgIcon>
+                    <div
+                        v-if="dataContainer.dataInfo.content"
+                        class="content">
+                        {{dataContainer.dataInfo.content}}
+                    </div>
                     {{dataContainer.dataInfo.title}}
                 </div>
             </template>
@@ -112,6 +122,12 @@ export default {
             font-size: 12px;
             margin: 0;
             font-weight: bold;
+        }
+        >.content{
+            font-size: 12px;
+            margin-left: 5px;
+            opacity: 0.8;
+            font-weight: 400 !important;
         }
     }
 }

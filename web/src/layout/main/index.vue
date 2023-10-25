@@ -106,9 +106,14 @@ export default defineComponent({
             let activeSign = dataContainer.activeSign;
             /** 获取该路由对应的用户配置 */
             const userMenuConfig = getUserMenu(route);
-            /** 创建一个新标签，配置其属性，其中sign是唯一标识，很重要，必填 */
+            /** 
+             * 创建一个新标签，配置其属性
+             * 其中sign是唯一标识，很重要，必填 
+             * menuName 必填
+             * */
             let newTag = {
                 title:userMenuConfig.title,
+                menuName:userMenuConfig.name,
                 path:route.path,
                 fullPath:route.fullPath,
                 sign:route.path,  //唯一标识
