@@ -1,8 +1,11 @@
 <template>
 <div 
     class="tag-list-cp-container">
-    <div class="left">
+    <div 
+        class="left"
+        @wheel="handleScroll">
         <el-scrollbar 
+            ref="ElScrollbarRef"
             height="100%">
             <draggable 
                 class="scrollbar-container"
@@ -101,6 +104,7 @@ import {
     defineComponent,ref,reactive, 
     computed,onMounted,watch,toRef,
     onUnmounted,
+    nextTick,
 } from "vue";
 import SvgIcon from "@/components/svgIcon/index.vue";
 import draggable from 'vuedraggable';
@@ -139,6 +143,7 @@ export default {
     },
     emits:['onChange','onClick','onRemove','onOptionClick'],
     setup(props,{emit}){
+        const ElScrollbarRef = ref(null);
         const dataContainer = reactive({
             tagList:toRef(props,'tagList'),
             activeSign:toRef(props,'activeSign'),
@@ -164,12 +169,57 @@ export default {
         function handleOptionClick(type){
             emit('onOptionClick',type);
         }
+        /** 
+         * 鼠标滚动事件
+         * 横向滚动标签页
+         *  */
+        function handleScroll(e){
+            if(!ElScrollbarRef.value) return;
+            /** shift + 鼠标滚轮可以横向滚动 */
+            if(e.shiftKey) return;
+            let el = ElScrollbarRef.value.wrapRef;
+            let scrollLeft = el.scrollLeft;
+            if(e.deltaY < 0){
+                scrollLeft = scrollLeft - 20;
+            }else{
+                scrollLeft = scrollLeft + 20;
+            }
+            el.scrollLeft = scrollLeft;
+        }
+        /** 
+         * 自动滚动到相应标签
+         * 防止标签没在视区
+         */
+        function autoScroll(){
+            nextTick(()=>{
+                if(!ElScrollbarRef.value) return;
+                let el = ElScrollbarRef.value.wrapRef;
+                let target = el.querySelector('.item.active');
+                let rect = el.getBoundingClientRect();
+                let rect_1 = target.getBoundingClientRect();
+                if(rect_1.x < rect.x){
+                    // 表示在左边遮挡
+                    let scroll = rect.x - rect_1.x;
+                    el.scrollLeft = el.scrollLeft - scroll - 5;
+                }
+                if(rect_1.x > (rect.x + rect.width)){
+                    // 表示在右边遮挡
+                    let scroll = rect_1.x - (rect.x + rect.width);
+                    el.scrollLeft = el.scrollLeft + scroll + rect_1.width + 5;
+                }
+            });
+        }
+        watch(toRef(props,'activeSign'),()=>{
+            autoScroll();
+        });
         return {
             dataContainer,
             handleClick,
             handleRemove,
             handleOptionClick,
             tagListTrans,
+            handleScroll,
+            ElScrollbarRef,
         };
     },
 }
