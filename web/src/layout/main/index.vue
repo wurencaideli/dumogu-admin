@@ -66,11 +66,13 @@ export default defineComponent({
             }
         }
         const dataContainer = reactive({
+            userInfo:toRef(userDataStore,'userInfo'),
             tagList:toRef(userDataStore,'tagList'),
             activeSign:toRef(userDataStore,'activeSign'),
             menuList:toRef(userDataStore,'menuList'),
             showMenuList:toRef(userDataStore,'showMenuList'),
             tagHisList:toRef(userDataStore,'tagHisList'),
+            breadcrumbList:[],  //面包屑列表
         });
         /** 根据系统目录获取用户的目录配置 */
         function getUserMenu(data){
@@ -82,6 +84,28 @@ export default defineComponent({
                 target = menuList.find(item=>item.name == data.name) || {};
             }
             return target;
+        }
+        /** 
+         * 获取面包屑列表
+         * 根据当前用户目录中获取树形级别
+         *  */
+        function getBreadcrumbList(){
+            const userMenuConfig = getUserMenu(route);
+            if(!userMenuConfig.path) return;
+            let menuSignMap = dataContainer.menuList.reduce((c,i)=>{
+                c[i.sign] = i;
+                return c;
+            },{});
+            let list = [];
+            function findP(target){
+                list.unshift(target);
+                let targetP = menuSignMap[target.parentSign];
+                if(targetP){
+                    findP(targetP);
+                }
+            }
+            findP(userMenuConfig);
+            dataContainer.breadcrumbList = list;
         }
         /** 添加历史点击记录 */
         function addHisTagList(){
@@ -146,8 +170,13 @@ export default defineComponent({
             addHisTagList();
         }
         /** 监听路由，
-         * 当路由发生变化时将符合条件的标签添加到标签列表中 */
-        watch(route,addTag,{
+         * 当路由发生变化时将符合条件的标签添加到标签列表中 
+         * 获取面包屑导航列表
+         * */
+        watch(route,()=>{
+            addTag();
+            getBreadcrumbList();
+        },{
             immediate:true,
         });
         /** 
@@ -231,7 +260,9 @@ export default defineComponent({
 <template>
     <div class="main-layout">    
         <div class="head-container">
-            <Navbar></Navbar>
+            <Navbar
+                :userInfo="dataContainer.userInfo"
+                :breadcrumbList="dataContainer.breadcrumbList"></Navbar>
         </div>
         <div class="content-container">
             <div class="left">

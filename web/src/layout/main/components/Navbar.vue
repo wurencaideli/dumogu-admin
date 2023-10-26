@@ -2,12 +2,37 @@
 <div 
     class="navbar-cp-container">
     <div class="left">
-        <el-image 
-            @click="toPath({path:'/'})"
-            class="logo"
-            :src="'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'" fit="cover" />
-        <div class="name">
-            毒蘑菇 - 管理
+        <div class="logo-container">
+            <el-image 
+                @click="toPath({path:'/'})"
+                class="logo"
+                :src="'https://cn.bing.com/th?id=OHR.AdelieWPD_ZH-CN8434233391_1920x1080.jpg&rf=LaDigue_1920x1080.jpg&pid=hp'" fit="cover" />
+            <div class="name">
+                毒蘑菇 - 管理
+            </div>
+        </div>
+        <div class="path-list-container">
+            <el-breadcrumb separator="/">
+                <!-- <el-breadcrumb-item 
+                    :to="{ path: '/main/index' }">
+                    首页    
+                </el-breadcrumb-item> -->
+                <el-breadcrumb-item
+                    v-for="item,index in dataContainer.breadcrumbList"
+                    :to="item.path?{
+                        path:item.path,
+                    }:''">
+                    <a 
+                        v-if="item.isLink"
+                        :href="item.path"
+                        target="_blank">
+                        {{item.title}}
+                    </a>
+                    <span v-else>
+                        {{item.title}}
+                    </span>
+                </el-breadcrumb-item>
+            </el-breadcrumb>
         </div>
     </div>
     <div class="right">
@@ -43,7 +68,8 @@
         <div class="bt user">
             <el-image 
                 class="img"
-                :src="'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'" fit="cover" />
+                :src="dataContainer.userInfo.avatar"
+                fit="cover" />
             <div class="name">
                 管理员
             </div>
@@ -96,12 +122,24 @@ export default {
         SvgIcon,
     },
     props:{
-        
+        breadcrumbList:{
+            type:Array,
+            default:()=>{
+                return [];
+            },
+        },
+        userInfo:{
+            type:Object,
+            default:()=>{
+                return {};
+            },
+        },
     },
     setup(props){
         const router = useRouter();
         const dataContainer = reactive({
-            
+            breadcrumbList:toRef(props,'breadcrumbList'),
+            userInfo:toRef(props,'userInfo'),
         });
         /** 全屏事件 */
         function toggleFullScreen() {
@@ -157,7 +195,6 @@ export default {
 .navbar-cp-container {
     height: 100%;
     width: 100%;
-    padding: 0 15px;
     box-sizing: border-box;
     display: flex;
     flex-direction: row;
@@ -169,17 +206,35 @@ export default {
         flex-direction: row;
         justify-content: flex-start;
         align-items: center;
-        >.logo{
-            width: 240px;
-            height: 50px;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-right: 20px;
+        height: 100%;
+        >.logo-container{
+            padding: 0 15px;
+            box-sizing: border-box;
+            width: var(--menu-width);
+            height: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: center;
+            box-shadow: 0 0px 5px rgba(0, 0, 0, 0.177);
+            >.logo{
+                flex:1 1 0;
+                width: 0;
+                height: 50px;
+                border-radius: 5px;
+                cursor: pointer;
+                margin-right: 15px;
+            }
+            >.name{
+                width: max-content;
+                font-size: 20px;
+                font-weight: bold;
+                color:#444954;
+            }
         }
-        >.name{
-            font-size: 20px;
-            font-weight: bold;
-            color:#444954;
+        >.path-list-container{
+            padding: 0 15px;
+            box-sizing: border-box;
         }
     }
     >.right{
@@ -187,6 +242,8 @@ export default {
         flex-direction: row;
         justify-content: flex-end;
         align-items: center;
+        padding: 0 15px 0 0;
+        box-sizing: border-box;
         >*{
             margin-left: 15px;
         }

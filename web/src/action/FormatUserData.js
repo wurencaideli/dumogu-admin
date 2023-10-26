@@ -11,10 +11,12 @@ import {guid} from "@/common/Guid";
 /**
  * 目录映射
  * 将用户的配置目录和系统目录映射关系
+ * 目的是将没有path的添加path，有path的或者没有name的不做处理
  */ 
 function menuMapping(menuList){
     menuList.forEach(item=>{
         if(item.path) return;
+        if(!item.name) return;
         item.path = (sysMeluNameMap[item.name] || {}).path || '';
     });
     return menuList;
@@ -29,15 +31,13 @@ export function getUserData(){
         /** 写入基本信息  */
         userDataStore.setUserInfo({
             ...userInfo,
-            "userId": "1",
             "userName": "admin",
             "nickName": "管理员",
-            "email": "admin@163.com",
-            "phonenumber": "15888888888",
-            "admin": true,
+            "avatar":'https://cn.bing.com/th?id=OHR.AdelieWPD_ZH-CN8434233391_1920x1080.jpg&rf=LaDigue_1920x1080.jpg&pid=hp',
         });
         /** 
          * 用户目录列表
+         * name表示对应的系统目录，有name才有此系统目录的权限
          * 有path的可直接跳转
          * 没path的，根据name获取映射的系统菜单属性进行跳转
          * isCache 表示该页面是否缓存
@@ -87,27 +87,45 @@ export function getUserData(){
                 iconName:"database",
             },
             {
-                name:"role-list",
                 title:'角色管理',
                 iconName:"alignleft-fill",
                 childs:[
                     {
                         name:"role-list",
-                        title:'用户列表',
+                        title:'角色列表',
                         isCache:true,
                         content:'(有缓存)',
                         iconName:"database",
                     },
                     {
-                        name:"show-list-update",
-                        path:'/main/show-list/update/asdasd12',
-                        title:'数据编辑',
+                        title:'可点击父级',
+                        path:'/main/show-list/update/erterter',
                         childs:[
                             {
                                 name:"show-list-update",
-                                path:'/main/show-list/update/测试',
+                                path:'/main/show-list/update/123123',
                                 title:'数据编辑 - 测试',
                                 iconName:"plus-square-fill",
+                                childs:[
+                                    {
+                                        name:"show-list-update",
+                                        path:'/main/show-list/update/1231233',
+                                        title:'数据编辑 - 测试',
+                                        iconName:"plus-square-fill",
+                                    },
+                                ],
+                            },
+                            {
+                                title:'数据编辑 - 测试',
+                                iconName:"plus-square-fill",
+                                childs:[
+                                    {
+                                        name:"show-list-update",
+                                        path:'/main/show-list/update/1235123',
+                                        title:'数据编辑 - 测试',
+                                        iconName:"plus-square-fill",
+                                    },
+                                ],
                             },
                         ],
                     },
@@ -156,7 +174,7 @@ export function getUserData(){
             setParentKey:'parentSign',
             getParentKey:'sign',
             forEachFn(item){
-                /** 添加标识以便区分 */
+                /** 添加唯一标识以便区分 */
                 item.sign = guid();
             },
         });

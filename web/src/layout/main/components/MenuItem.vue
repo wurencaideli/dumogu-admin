@@ -1,5 +1,6 @@
 <template>
     <div class="menu-item-container">
+        <!-- 没有子目录的 -->
         <el-menu-item
             v-if="!dataContainer.dataInfo.childs || dataContainer.dataInfo.childs.length==0"
             :index="dataContainer.dataInfo.path"
@@ -22,9 +23,38 @@
                 </div>
             </div>
         </el-menu-item>
+        <!-- 有子目录且父节点可点击 -->
+        <el-sub-menu 
+            v-else-if="dataContainer.dataInfo.path"
+            :class="{
+                'is-sub-defin-active':route.path==dataContainer.dataInfo.path,
+            }"
+            :index="dataContainer.dataInfo.path">
+            <template #title>
+                <div 
+                    class="item-target"
+                    @click.stop="handleClick(dataContainer.dataInfo)">
+                    <SvgIcon
+                        v-if="dataContainer.dataInfo.iconName"
+                        :style="'width: 20px;height: 20px;'"
+                        :name="dataContainer.dataInfo.iconName"></SvgIcon>
+                    <div
+                        v-if="dataContainer.dataInfo.content"
+                        class="content">
+                        {{dataContainer.dataInfo.content}}
+                    </div>
+                    {{dataContainer.dataInfo.title}}
+                </div>
+            </template>
+            <MenuItem
+                v-for="item,index in dataContainer.dataInfo.childs"
+                :key="item.path"
+                :dataInfo="item"></MenuItem>
+        </el-sub-menu>
+        <!-- 有子目录且父节点不可点击 -->
         <el-sub-menu 
             v-else
-            :index="dataContainer.dataInfo.path">
+            :index="dataContainer.dataInfo.sign">
             <template #title>
                 <div class="item-target">
                     <SvgIcon
@@ -82,6 +112,7 @@ export default {
         });
         /** 跳转相应链接 */
         function handleClick(params){
+            if(!params.path) return;
             /** 如果是一个链接的话直接跳转 */
             if(params.isLink){
                 window.open(params.path);
@@ -92,6 +123,7 @@ export default {
         return {
             dataContainer,
             handleClick,
+            route,
         };
     },
 };

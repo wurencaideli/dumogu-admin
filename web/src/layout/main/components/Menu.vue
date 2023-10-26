@@ -2,8 +2,8 @@
     <div class="menu-container">
         <el-scrollbar height="100%">
             <el-menu 
-                :default-active="route.path"
-                default-active="2">
+                ref="ElMenuRef"
+                :default-active="route.path">
                 <MenuItem
                     v-for="item,index in dataContainer.dataList"
                     :key="item.path"
@@ -45,12 +45,24 @@ export default {
     setup(props) {
         const router = useRouter();
         const route = useRoute();
+        const ElMenuRef = ref(null);
         const dataContainer = reactive({
             dataList:toRef(props,'dataList'),
+        });
+        /** 
+         * 当页面加载后设置设置当前打开的父节点，因为如果父节点可点击的话不会自动打开
+         * */
+        onMounted(()=>{
+            if(!ElMenuRef.value) return;
+            let el = ElMenuRef.value.$el;
+            let hasActiveSubEl = el.querySelector('.el-sub-menu .is-sub-defin-active');
+            if(!hasActiveSubEl) return;
+            ElMenuRef.value.open(route.path);
         });
         return {
             dataContainer,
             route,
+            ElMenuRef,
         };
     },
 };
@@ -68,17 +80,30 @@ export default {
         --el-menu-active-color:#5240ff !important;
         --el-menu-item-font-size:16px !important;
         --el-menu-text-color:rgb(91, 91, 91) !important;
+        --active-item-bg-color:#dfdfdf;
+        --active-sub-bg-color:#f1f1f1af;
         .el-sub-menu{
             &.is-active{
-                background-color: #f1f1f1af;
+                background-color: var(--active-sub-bg-color);
             }
             .el-sub-menu__icon-arrow{
                 font-size: 17px !important;
             }
+            &.is-sub-defin-active{
+                >.el-sub-menu__title{
+                    background-color: var(--active-item-bg-color);
+                    font-weight: bold;
+                    color: var(--el-menu-active-color);
+                }
+            }
+            /** 表示有已经活动的sub目录 */
+            &:has(.is-sub-defin-active){
+                background-color: var(--active-sub-bg-color);
+            }
         }
         .el-menu-item{
             &.is-active{
-                background-color: #dfdfdf;
+                background-color: var(--active-item-bg-color);
                 font-weight: bold;
             }
         }
