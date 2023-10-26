@@ -195,6 +195,7 @@ export default {
                 if(!ElScrollbarRef.value) return;
                 let el = ElScrollbarRef.value.wrapRef;
                 let target = el.querySelector('.item.active');
+                if(!target) return;
                 let rect = el.getBoundingClientRect();
                 let rect_1 = target.getBoundingClientRect();
                 if(rect_1.x < rect.x){
