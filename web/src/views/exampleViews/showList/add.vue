@@ -15,6 +15,43 @@
                 <p>
                     数据唯一标识：{{dataContainer.form.id}}
                 </p>
+                <el-form
+                    :model="dataContainer.form"
+                    ref="FormElRef" :inline="true" 
+                    :rules="dataContainer.rules"
+                    label-width="120px">
+                    <el-row :gutter="0">
+                        <el-col :span="8" :xs="6">
+                            <el-form-item label="名称" prop="name">
+                                <el-input
+                                    v-model="dataContainer.form.name"
+                                    placeholder="请输入"
+                                    clearable/>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="8" :xs="6">
+                            <el-form-item label="名称" prop="name">
+                                <el-input
+                                    v-model="dataContainer.form.name"
+                                    placeholder="请输入"
+                                    clearable/>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="8" :xs="6">
+                            <el-form-item label="名称" prop="name">
+                                <el-input
+                                    v-model="dataContainer.form.name"
+                                    placeholder="请输入"
+                                    clearable/>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+                </el-form>
+                <el-button
+                    type="primary"
+                    @click="handleSubmit">
+                    提交
+                </el-button>
             </div>
         </div>
     </el-scrollbar>
@@ -33,6 +70,8 @@ import SvgIcon from "@/components/svgIcon/index.vue";
 import {
     Delete,
 } from '@element-plus/icons-vue';
+import { verifiedData } from "@/common/VerifiedTools";
+import {messageError} from "@/action/MessagePrompt.js";
 
 export default defineComponent({
     components: {
@@ -40,6 +79,7 @@ export default defineComponent({
         Delete,
     },
     setup() {
+        const FormElRef = ref(null);  //组件实例
         const router = useRouter();
         const route = useRoute();
         const dataContainer = reactive({
@@ -47,6 +87,9 @@ export default defineComponent({
             form:{},
             nowTime:new Date(),
             nowTime_1:new Date().getTime(),
+            rules:{
+                name: [{ required: true, message: '请输入仓储点位', trigger: 'blur' }],
+            },
         });
         /** 
          * 数据初始化
@@ -59,9 +102,41 @@ export default defineComponent({
             }
         }
         initData();
+        /** 提交数据 */
+        function handleSubmit(){
+            /** 使用组件自带方法验证数据 */
+            if (!FormElRef.value) return;
+            FormElRef.value.validate((valid,e) => {
+                if(e){
+                    /** 打印报错信息 */
+                    let msg = e[Object.keys(e)[0]][0].message;
+                    messageError(msg);
+                }
+                if (!valid) return;
+                /** 像后端提交 */
+            });
+        }
+        /** 
+         * 数据验证
+         * 外部可调用
+         *  */
+        function validData(data){
+            const failData = verifiedData(data,{
+                name:{
+                    msg:'名称 不能为空',
+                    validate(value,option){
+                        if(!value && value !== 0) return false;
+                        return true;
+                    },
+                },
+            });
+            return failData;
+        }
         return {
             dataContainer,
             initData,
+            FormElRef,
+            handleSubmit,
         };
     },
 });
