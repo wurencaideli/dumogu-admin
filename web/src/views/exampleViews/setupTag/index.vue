@@ -1,5 +1,5 @@
 <template>
-    <el-scrollbar 
+    <DefinScrollbar 
         height="100%">
         <div class="page-container main-view">
             <div class="container">
@@ -35,9 +35,16 @@
                         跳转到另一个标签页，并且关闭当前标签页
                     </el-button>
                 </p>
+                <p>
+                    <el-button 
+                        @click="handleClick_2"
+                        type="primary">
+                        更新标签信息（修改标题，切换缓存状态），不会更改目录配置，就是说重新重目录配置处创建该标签会使用目录的配置
+                    </el-button>
+                </p>
             </div>
         </div>
-    </el-scrollbar>
+    </DefinScrollbar>
 </template>
 
 <script>
@@ -56,12 +63,16 @@ import {
 import {
     deleteCurrentTag,
     refreshCurrentTag,
+    getCurrentTag,
+    updateTag,
 } from "@/layout/main/Common/TagListTools";
+import DefinScrollbar from "@/components/DefinScrollbar.vue";
 
 export default defineComponent({
     components: {
         SvgIcon,
         Delete,
+        DefinScrollbar,
     },
     setup() {
         const router = useRouter();
@@ -83,10 +94,20 @@ export default defineComponent({
                 },
             });
         }
+        function handleClick_2(){
+            let tag = getCurrentTag();
+            if(!tag) return;
+            updateTag({
+                ...tag,
+                title:tag.title + '-1',
+                isCache:!tag.isCache,
+            });
+        }
         return {
             dataContainer,
             handleClick,
             handleClick_1,
+            handleClick_2,
         };
     },
 });

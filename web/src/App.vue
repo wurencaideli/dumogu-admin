@@ -38,6 +38,11 @@ export default defineComponent({
                 ...friendLinkList,
             ]);
         },150);
+        /** 阻止默认的拖拽事件 */
+        document.body.ondrop = function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
         return {
             locale: zhCn,
         };

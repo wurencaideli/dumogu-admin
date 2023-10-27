@@ -136,3 +136,50 @@ export function formatTagsByMenu(){
     });
     userDataStore.setTagList(tagList_);
 }
+/** 
+ * 获取标签
+ * 返回新对象，防止获取了就直接修改
+ *  */
+export function getTag(sign){
+    let userDataStore = userData();
+    let tagList = userDataStore.tagList;
+    let target = tagList.find(item=>{
+        return item.sign == sign;
+    });
+    return {
+        ...target,
+    };
+}
+/** 
+ * 获取当前的标签
+ * 返回新对象，防止获取了就直接修改
+ *  */
+export function getCurrentTag(){
+    let userDataStore = userData();
+    let tagList = userDataStore.tagList;
+    let activeSign = userDataStore.activeSign;
+    let target = tagList.find(item=>{
+        return item.sign == activeSign;
+    });
+    return {
+        ...target,
+    };
+}
+/** 
+ * 修改标签
+ * 参数是一个tag对象数据
+ *  */
+export function updateTag(tag){
+    if(!tag || !tag.sign) return;
+    let userDataStore = userData();
+    let tagList = userDataStore.tagList;
+    let target = tagList.find(item=>{
+        return item.sign == tag.sign;
+    });
+    if(!target) return;
+    /** 只修改有的属性 */
+    Object.keys(tag).forEach(key=>{
+        target[key] = tag[key];
+    });
+    userDataStore.setTagList(tagList);
+}

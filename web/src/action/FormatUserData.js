@@ -108,12 +108,6 @@ export function getUserData(){
                 iconName:"all-fill",
             },
             {
-                title:'开源地址',
-                iconName:"laptop-check",
-                isLink:true,
-                path:'https://github.com/wurencaideli/dumogu-admin',
-            },
-            {
                 name:"show-list",
                 title:'展示列表',
                 iconName:"laptop-check",
@@ -222,6 +216,42 @@ export function getUserData(){
                 content:'(有缓存)',
                 hidden:false,
                 iconName:"Directory-tree",
+            },
+            {
+                title:'开源地址',
+                iconName:"git-hub",
+                isLink:true,
+                path:'https://github.com/wurencaideli/dumogu-admin',
+            },
+            {
+                title:'一篇文字',
+                iconName:"friendship",
+                isLink:true,
+                path:'https://www.dumogu.top/',
+            },
+            {
+                title:'毒蘑菇 - 博客',
+                iconName:"friendship",
+                isLink:true,
+                path:'https://blog.dumogu.top/',
+            },
+            {
+                title:'毒蘑菇 - 搜索',
+                iconName:"friendship",
+                isLink:true,
+                path:'https://s.dumogu.top/',
+            },
+            {
+                title:'毒蘑菇 - 变量',
+                iconName:"friendship",
+                isLink:true,
+                path:'https://var.dumogu.top/',
+            },
+            {
+                title:'站搜搜',
+                iconName:"friendship",
+                isLink:true,
+                path:'https://www.zhansousou.com/',
             },
         ];
         let transData = transUserMenu(menuList);
