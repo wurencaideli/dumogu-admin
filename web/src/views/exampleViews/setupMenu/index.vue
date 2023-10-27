@@ -34,12 +34,6 @@
                     剔除没有目录权限的标签页，重新更新标签页中相应的目录配置信息
                 </p>
                 <h3>
-                    用户总目录信息，扁平化处理了，包含所有目录
-                </h3>
-                <p>
-                    {{userMenu}}
-                </p>
-                <h3>
                     用户总目录可展示信息，方便左侧展示，树形结构，过滤了隐藏的目录
                 </h3>
                 <p>
@@ -100,9 +94,6 @@ export default defineComponent({
         const otherDataContainer = {
             top:0,  //记录滚动条
         };
-        let userMenu = computed(()=>{
-            return JSON.stringify(userDataStore.menuList,null,4);
-        });
         let userMenu_1 = computed(()=>{
             return JSON.stringify(userDataStore.showMenuList,null,4);
         });
@@ -121,7 +112,6 @@ export default defineComponent({
         }
         return {
             dataContainer,
-            userMenu,
             sysMenu,
             userMenu_1,
             handleClick,

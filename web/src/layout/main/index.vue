@@ -69,21 +69,16 @@ export default defineComponent({
             userInfo:toRef(userDataStore,'userInfo'),
             tagList:toRef(userDataStore,'tagList'),
             activeSign:toRef(userDataStore,'activeSign'),
-            menuList:toRef(userDataStore,'menuList'),
             showMenuList:toRef(userDataStore,'showMenuList'),
+            hasSysMenuConfigMap:toRef(userDataStore,'hasSysMenuConfigMap'),
             tagHisList:toRef(userDataStore,'tagHisList'),
             breadcrumbList:[],  //面包屑列表
         });
         /** 根据系统目录获取用户的目录配置 */
         function getUserMenu(data){
-            let menuList = dataContainer.menuList;
             /** 优先使用当前的path判断获取映射 */
-            let target = menuList.find(item=>item.path == data.path) || {};
-            /** 其次，使用name获取映射 */
-            if(!target.title){
-                target = menuList.find(item=>item.name == data.name) || {};
-            }
-            return target;
+            let target = dataContainer.hasSysMenuConfigMap[data.path] || dataContainer.hasSysMenuConfigMap[data.name];
+            return target || {};
         }
         /** 
          * 获取面包屑列表
@@ -92,14 +87,10 @@ export default defineComponent({
         function getBreadcrumbList(){
             const userMenuConfig = getUserMenu(route);
             if(!userMenuConfig.path) return;
-            let menuSignMap = dataContainer.menuList.reduce((c,i)=>{
-                c[i.sign] = i;
-                return c;
-            },{});
             let list = [];
             function findP(target){
                 list.unshift(target);
-                let targetP = menuSignMap[target.parentSign];
+                let targetP = dataContainer.hasSysMenuConfigMap[target.parentSign];
                 if(targetP){
                     findP(targetP);
                 }

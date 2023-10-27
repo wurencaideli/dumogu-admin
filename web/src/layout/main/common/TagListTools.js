@@ -119,17 +119,11 @@ export function getLatelyHisTag(){
 export function formatTagsByMenu(){
     let userDataStore = userData();
     let tagList = userDataStore.tagList;
-    let menuList = userDataStore.menuList;
-    let pathMap = {};
-    let nameMap = {};
-    menuList.forEach(item=>{
-        pathMap[item.path] = item;
-        nameMap[item.name] = item;
-    });
+    let hasSysMenuConfigMap = userDataStore.hasSysMenuConfigMap;
     let tagList_ = [];
     tagList.forEach(item=>{
         /** 优先取path */
-        let userMenuConfig = pathMap[item.path] || nameMap[item.menuName];
+        let userMenuConfig = hasSysMenuConfigMap[item.path] || hasSysMenuConfigMap[item.menuName];
         /** 有目录权限的才更新*/
         if(!userMenuConfig) return;
         item = {

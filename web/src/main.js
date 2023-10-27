@@ -5,7 +5,7 @@ import { createPinia } from 'pinia';
 import App from './App.vue';
 import router from './router/index';
 /** 注册路由许可验证 */
-import "./router/Permission";
+import "./permission";
 /** 打印完整路由表 */
 import {sysMeluList} from "./router/Common";
 console.log(

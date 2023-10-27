@@ -14,7 +14,7 @@ export const userData = defineStore('userData', {
         }
         return {
             userInfo:userInfo || {},  //当前登录用户的基础数据
-            menuList:[],  //用户菜单列表
+            hasSysMenuConfigMap:[],  //已经拥有的系统目录map,包含配置信息，可以是path，name
             showMenuList:[],  //用于展示的菜单列表，结构树形化
             tagList:[],  //标签列表
             tagHisList:[],  //标签历史列表，记录标签历史添加列表
@@ -30,8 +30,8 @@ export const userData = defineStore('userData', {
             const userStorage = allStorage.userStorage();
             userStorage.value = value;
         },
-        setMenuList(value){
-            this.menuList = value || [];
+        setHasSysMenuConfigMap(value){
+            this.hasSysMenuConfigMap = value || '';
         },
         setShowMenuList(value){
             this.showMenuList = value || [];

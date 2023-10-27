@@ -4,6 +4,9 @@
         <el-menu-item
             v-if="!dataContainer.dataInfo.childs || dataContainer.dataInfo.childs.length==0"
             :index="dataContainer.dataInfo.path"
+            :class="{
+                'is-active':dataContainer.dataInfo.path==route.path,
+            }"
             @click="handleClick(dataContainer.dataInfo)">
             <div class="item-target">
                 <SvgIcon

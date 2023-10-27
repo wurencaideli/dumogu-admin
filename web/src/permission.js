@@ -1,14 +1,18 @@
 /** 
  * 路由权限配置
  * 只做路由跳转时的权限验证
- * 不做什么自动什么什么的，获取数据自己手动去调用，要的就是手动挡的可操作性，出错了也只是调用的问题
  */
-import router from './index';
+import router from '@/router/index';
 import {userData as userDataStore} from "@/store/User";
 import {getUserData} from "@/action/FormatUserData";
-import {sysMeluList} from "@/router/Common";
+import {
+    sysMeluNameMap,
+} from "@/router/Common";
 
-/** 权限白名单 */
+/** 
+ * 权限白名单
+ * 包含路径，和目录名
+ *  */
 const whiteList = [
     '/login', '/auth-redirect', '/bind', '/register','/404','/401',
     'main-redirect',
@@ -32,7 +36,7 @@ router.beforeEach(async (to, from, next) => {
         return;
     }
     /** 如果没有菜单则先获取用户数据 */
-    if(userData.menuList.length == 0){
+    if(userData.showMenuList.length == 0){
         await getUserData().catch(()=>{});
     }
     /** 
@@ -41,8 +45,13 @@ router.beforeEach(async (to, from, next) => {
      * 如果有权限的才放行
      * 没权限的跳转到401页面
      *  */
-    let menuList = userData.menuList;
-    if(sysMeluList.find(item=>item.name==toName) && !menuList.find(item=>item.name==toName)){
+    let hasSysMenuConfigMap = userData.hasSysMenuConfigMap;
+    if(
+        !!sysMeluNameMap[toName] && 
+        (
+            !hasSysMenuConfigMap[toName] && !hasSysMenuConfigMap[toPath]
+        )
+    ){
         next(`/401`); // 没权限的跳转到401
         return;
     }

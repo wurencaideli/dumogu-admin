@@ -3,23 +3,77 @@
  * 在这里可以接口请求用户的一些数据
  */
 import {userData} from "@/store/User";
-import userApi from '@/http/User.js';
-import {sysMeluNameMap} from "@/router/Common";
+import {
+    sysMeluNameMap,
+    sysMeluPathMap,
+} from "@/router/Common";
 import {toTree,unfoldTreeList} from "@/common/MenuTools";
 import {guid} from "@/common/Guid";
 
-/**
- * 目录映射
- * 将用户的配置目录和系统目录映射关系
- * 目的是将没有path的添加path，有path的或者没有name的不做处理
- */ 
-function menuMapping(menuList){
-    menuList.forEach(item=>{
-        if(item.path) return;
-        if(!item.name) return;
-        item.path = (sysMeluNameMap[item.name] || {}).path || '';
+/** 
+ * 转换用户menu
+ * 目的是分出用于显示的和用户判断目录权限的
+ * 用于判断权限的包含配置信息
+ *  */
+function transUserMenu(menuList){
+    let hasSysMenuConfigMap = {};
+    let showMenuList = [];
+    /** 
+     * 将树形结构展开
+     * 需要换成一维数组来过滤不要展示的目录
+     *  */
+    menuList = unfoldTreeList(menuList,{
+        childsKey:'childs',
+        setParentKey:'parentSign',
+        getParentKey:'sign',
+        forEachFn(item){
+            /** 添加唯一标识以便区分 */
+            item.sign = guid();
+        },
     });
-    return menuList;
+    menuList.forEach(item=>{
+        /** 根据目录配置找到对应的系统menu */
+        /** 有路由地址，但没菜单名称 */
+        if(item.path && !item.name) {
+            let sysMenu = sysMeluPathMap[item.path] || {};
+            item.name = sysMenu.name;
+        };
+        /** 没路由地址，但有菜单名称 */
+        if(!item.path && item.name) {
+            let sysMenu = sysMeluNameMap[item.name] || {};
+            item.path = sysMenu.path;
+        };
+        /** 
+         * 添加权限，添加已有的权限列表
+         * 因为path属于name的子集，所哟name,path都应该有自己的配置
+         *  */
+        if(item.name){
+            hasSysMenuConfigMap[item.name] = item;
+        }
+        if(item.path){
+            hasSysMenuConfigMap[item.path] = item;
+        }
+        /** 有唯一标识的也添加，方便查找，可以替换一些信息 */
+        if(item.sign){
+            hasSysMenuConfigMap[item.sign] = {
+                ...item,
+            };
+        }
+    });
+    showMenuList = menuList.filter(item=>!item.hidden);
+    showMenuList = toTree(showMenuList.map(item=>{
+        delete item.childs;
+        return item;
+    }),{
+        pKey:'parentSign',
+        key:'sign',
+        childsKey:'childs',
+        isNew:true,
+    });
+    return {
+        showMenuList,
+        hasSysMenuConfigMap,
+    };
 }
 /** 
  * 获取用户详细数据
@@ -52,6 +106,12 @@ export function getUserData(){
                 isCache:true,
                 fixed:true,
                 iconName:"all-fill",
+            },
+            {
+                title:'开源地址',
+                iconName:"laptop-check",
+                isLink:true,
+                path:'https://github.com/wurencaideli/dumogu-admin',
             },
             {
                 name:"show-list",
@@ -164,36 +224,11 @@ export function getUserData(){
                 iconName:"Directory-tree",
             },
         ];
-        /** 
-         * 将树形结构展开
-         * 因为menuList 会用来判断是否有权限查看页面，用一维数组比较好判断
-         * 而且还要过滤不要展示的目录
-         *  */
-        menuList = unfoldTreeList(menuList,{
-            childsKey:'childs',
-            setParentKey:'parentSign',
-            getParentKey:'sign',
-            forEachFn(item){
-                /** 添加唯一标识以便区分 */
-                item.sign = guid();
-            },
-        });
-        menuList = menuMapping(menuList);
-        /** 写入菜单数据 */
-        userDataStore.setMenuList(menuList);
-        let showMenuList = [];
-        showMenuList = menuList.filter(item=>!item.hidden);
-        showMenuList = toTree(showMenuList.map(item=>{
-            delete item.childs;
-            return item;
-        }),{
-            pKey:'parentSign',
-            key:'sign',
-            childsKey:'childs',
-            isNew:true,
-        });
-        userDataStore.setShowMenuList(showMenuList);
-        /** 写入权限数据 */
+        let transData = transUserMenu(menuList);
+        /** 写入展示菜单数据 */
+        userDataStore.setShowMenuList(transData.showMenuList);
+        /** 写入权限菜单数据 */
+        userDataStore.setHasSysMenuConfigMap(transData.hasSysMenuConfigMap);
     });
 }
 /** 
@@ -264,36 +299,11 @@ export function getUserData_1(){
                 iconName:"Directory-tree",
             },
         ];
-        /** 
-         * 将树形结构展开
-         * 因为menuList 会用来判断是否有权限查看页面，用一维数组比较好判断
-         * 而且还要过滤不要展示的目录
-         *  */
-        menuList = unfoldTreeList(menuList,{
-            childsKey:'childs',
-            setParentKey:'parentSign',
-            getParentKey:'sign',
-            forEachFn(item){
-                /** 添加标识以便区分 */
-                item.sign = guid();
-            },
-        });
-        menuList = menuMapping(menuList);
-        /** 写入菜单数据 */
-        userDataStore.setMenuList(menuList);
-        let showMenuList = [];
-        showMenuList = menuList.filter(item=>!item.hidden);
-        showMenuList = toTree(showMenuList.map(item=>{
-            delete item.childs;
-            return item;
-        }),{
-            pKey:'parentSign',
-            key:'sign',
-            childsKey:'childs',
-            isNew:true,
-        });
-        userDataStore.setShowMenuList(showMenuList);
-        /** 写入权限数据 */
+        let transData = transUserMenu(menuList);
+        /** 写入展示菜单数据 */
+        userDataStore.setShowMenuList(transData.showMenuList);
+        /** 写入权限菜单数据 */
+        userDataStore.setHasSysMenuConfigMap(transData.hasSysMenuConfigMap);
     });
 }
 /** 
@@ -303,8 +313,8 @@ export function getUserData_1(){
 export function logout(){
     const userDataStore = userData();
     userDataStore.setUserInfo({});
-    userDataStore.setMenuList([]);
     userDataStore.setShowMenuList([]);
+    userDataStore.setHasSysMenuConfigMap({});
     userDataStore.setTagList([]);
     userDataStore.setActiveSign('');
 }
