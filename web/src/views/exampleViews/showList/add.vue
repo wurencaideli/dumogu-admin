@@ -22,7 +22,7 @@
                     label-width="120px">
                     <el-row :gutter="0">
                         <el-col :span="8" :xs="6">
-                            <el-form-item label="名称" prop="name">
+                            <el-form-item label="修改数据名称" prop="name">
                                 <el-input
                                     v-model="dataContainer.form.name"
                                     placeholder="请输入"
@@ -30,17 +30,25 @@
                             </el-form-item>
                         </el-col>
                         <el-col :span="8" :xs="6">
-                            <el-form-item label="名称" prop="name">
+                            <el-form-item label="修改数据code" prop="code">
                                 <el-input
-                                    v-model="dataContainer.form.name"
+                                    v-model="dataContainer.form.code"
                                     placeholder="请输入"
                                     clearable/>
                             </el-form-item>
                         </el-col>
                         <el-col :span="8" :xs="6">
-                            <el-form-item label="名称" prop="name">
+                            <el-form-item label="修改数据id" prop="id">
                                 <el-input
-                                    v-model="dataContainer.form.name"
+                                    v-model="dataContainer.form.id"
+                                    placeholder="请输入"
+                                    clearable/>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="8" :xs="6">
+                            <el-form-item label="修改数据id" prop="id">
+                                <el-input
+                                    v-model="dataContainer.form.id"
                                     placeholder="请输入"
                                     clearable/>
                             </el-form-item>
@@ -52,6 +60,13 @@
                     @click="handleSubmit">
                     提交
                 </el-button>
+                <p>
+                    <el-button 
+                        @click="handleClick_2"
+                        type="primary">
+                        更新标签信息（修改标题，切换缓存状态），不会更改目录配置，就是说重新重目录配置处创建该标签会使用目录的配置
+                    </el-button>
+                </p>
             </div>
         </div>
     </el-scrollbar>
@@ -72,6 +87,10 @@ import {
 } from '@element-plus/icons-vue';
 import { verifiedData } from "@/common/VerifiedTools";
 import {messageError} from "@/action/MessagePrompt.js";
+import {
+    getCurrentTag,
+    updateTag,
+} from "@/layout/main/Common/TagListTools";
 
 export default defineComponent({
     components: {
@@ -132,11 +151,21 @@ export default defineComponent({
             });
             return failData;
         }
+        function handleClick_2(){
+            let tag = getCurrentTag();
+            if(!tag) return;
+            updateTag({
+                ...tag,
+                title:tag.title + '-1',
+                isCache:!tag.isCache,
+            });
+        }
         return {
             dataContainer,
             initData,
             FormElRef,
             handleSubmit,
+            handleClick_2,
         };
     },
 });
@@ -153,7 +182,7 @@ export default defineComponent({
             // min-height: 800px;
             height: fit-content;
             border-radius: 5px;
-            padding: 30px;
+            padding: 15px;
             box-sizing: border-box;
             >*{
                 margin: 0 0 30px 0;

@@ -6,9 +6,10 @@
                 <div 
                     class="item"
                     v-for="item,index in dataContainer.imgList"
+                    @click="onClick(item)"
                     :key="index">
                     <SvgIcon
-                        :style="'width:30px;height:30px;'"
+                        :style="'width:23px;height:23px;'"
                         :name="item.name"></SvgIcon>
                     <div class="name">
                         {{item.name}}
@@ -28,6 +29,8 @@ import {defineComponent,onBeforeUnmount,ref,reactive,getCurrentInstance,onActiva
 import SvgIcon from "@/components/svgIcon/index.vue";
 import {imgList} from "@/components/svgIcon/Common.js";
 import DefinScrollbar from "@/components/DefinScrollbar.vue";
+import { copyValue } from '@/common/OtherTools';
+import {messageSuccess} from "@/action/MessagePrompt";
 
 export default defineComponent({
     components: {
@@ -38,8 +41,17 @@ export default defineComponent({
         const dataContainer = reactive({
             imgList:imgList,
         });
+        /** copy事件 */
+        function onClick(item){
+            let msg = `<SvgIcon
+:style="'width:23px;height:23px;'"
+name="${item.name}"></SvgIcon>`;
+            copyValue(msg);
+            messageSuccess('复制成功');
+        }
         return {
             dataContainer,
+            onClick,
         };
     },
 });
@@ -56,16 +68,23 @@ export default defineComponent({
             box-sizing: border-box;
             background-color: white;
             border-radius: 5px;
-            display: flex;
-            flex-wrap: wrap;
-            flex-direction: row;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            grid-gap: 0 0;
             >.item{
-                width: 150px;
+                width: 100%;
                 display: flex;
                 flex-direction: column;
                 justify-content: flex-start;
                 align-items: center;
-                margin:0 15px 30px 0;
+                cursor: pointer;
+                transition: all 0.2s;
+                border-radius: 5px;
+                padding: 15px;
+                box-sizing: border-box;
+                &:hover{
+                    background-color: rgb(231, 231, 231);
+                }
                 >.name{
                     font-size: 15px;
                     margin-top: 10px;

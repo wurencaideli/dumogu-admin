@@ -2,3 +2,35 @@
  *自定义ui库样式
  * 主要是elementui的默认样式的修改
  */
+
+:root{
+    --el-color-primary-rgb:83, 64, 255 !important;
+    --el-color-primary:#5240ff !important;
+    --el-color-primary-light-1:rgba(83, 64, 255, 0.9) !important;
+    --el-color-primary-light-2:rgba(83, 64, 255, 0.8) !important;
+    --el-color-primary-light-3:rgba(83, 64, 255, 0.7) !important;
+    --el-color-primary-light-4:rgba(83, 64, 255, 0.6) !important;
+    --el-color-primary-light-5:rgba(83, 64, 255, 0.5) !important;
+    --el-color-primary-light-6:rgba(83, 64, 255, 0.4) !important;
+    --el-color-primary-light-7:rgba(83, 64, 255, 0.3) !important;
+    --el-color-primary-light-8:rgba(83, 64, 255, 0.2) !important;
+    --el-color-primary-light-9:rgba(83, 64, 255, 0.1) !important;
+    --el-color-primary-dark-2:#4839ce !important;
+}
+.el-button{
+    line-height: 1.3 !important;
+    >span{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+    }
+}
+.el-row{
+    .el-form{
+        .el-form-item{
+            width: 100%;
+            margin: 0 0 15px 0;
+        }
+    }
+}

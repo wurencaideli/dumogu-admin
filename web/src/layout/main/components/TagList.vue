@@ -84,7 +84,7 @@
                 关闭右边标签页
             </div>
             <div 
-                class="item"
+                class="item re-bt"
                 @click="handleOptionClick(5)">
                 <SvgIcon
                     :style="'width:16px;height:16px;'"
@@ -362,6 +362,10 @@ export default {
                     margin-right: 5px;
                 }
                 &:hover{
+                    background-color: rgba(194, 224, 255, 0.5);
+                    color: #0072E5;
+                }
+                &.re-bt{
                     background-color: rgba(194, 224, 255, 0.5);
                     color: #0072E5;
                 }

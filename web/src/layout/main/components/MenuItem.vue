@@ -11,7 +11,7 @@
             <div class="item-target">
                 <SvgIcon
                     v-if="dataContainer.dataInfo.iconName"
-                    :style="'width: 20px;height: 20px;'"
+                    :style="'width: 20px;min-width:20px;height: 20px;'"
                     :name="dataContainer.dataInfo.iconName"></SvgIcon>
                 {{dataContainer.dataInfo.title}}
                 <div
@@ -39,7 +39,7 @@
                     @click.stop="handleClick(dataContainer.dataInfo)">
                     <SvgIcon
                         v-if="dataContainer.dataInfo.iconName"
-                        :style="'width: 20px;height: 20px;'"
+                        :style="'width: 20px;min-width:20px;height: 20px;'"
                         :name="dataContainer.dataInfo.iconName"></SvgIcon>
                     <div
                         v-if="dataContainer.dataInfo.content"
@@ -62,7 +62,7 @@
                 <div class="item-target">
                     <SvgIcon
                         v-if="dataContainer.dataInfo.iconName"
-                        :style="'width: 20px;height: 20px;'"
+                        :style="'width: 20px;min-width:20px;height: 20px;'"
                         :name="dataContainer.dataInfo.iconName"></SvgIcon>
                     <div
                         v-if="dataContainer.dataInfo.content"

@@ -26,12 +26,16 @@
                                 <el-button
                                     type="primary"
                                     @click="handleQuery">
-                                    <SvgIcon name="Navbar-full"></SvgIcon>
+                                    <SvgIcon 
+                                        :style="'width:15px;height:15px;margin-right:5px;'"
+                                        name="search-bt"></SvgIcon>
                                     查询
                                 </el-button>
                                 <el-button
-                                    icon="Refresh"
                                     @click="resetQuery">
+                                    <SvgIcon 
+                                        :style="'width:15px;height:15px;margin-right:5px;'"
+                                        name="redo"></SvgIcon>
                                     重置
                                 </el-button>
                             </el-form-item>
