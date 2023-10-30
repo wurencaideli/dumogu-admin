@@ -12,6 +12,56 @@
                     label-width="110px">
                     <el-row :gutter="0">
                         <el-col :span="6" :xs="6">
+                            <el-form-item label="数据名称" prop="code">
+                                <el-input
+                                    v-model="dataContainer.form.code"
+                                    placeholder="请输入"
+                                    clearable
+                                    @clear="handleQuery"
+                                    @keyup.enter="handleQuery"/>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="6" :xs="6">
+                            <el-form-item label="数据编号" prop="code">
+                                <el-input
+                                    v-model="dataContainer.form.code"
+                                    placeholder="请输入"
+                                    clearable
+                                    @clear="handleQuery"
+                                    @keyup.enter="handleQuery"/>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="6" :xs="6">
+                            <el-form-item label="编号" prop="code">
+                                <el-input
+                                    v-model="dataContainer.form.code"
+                                    placeholder="请输入"
+                                    clearable
+                                    @clear="handleQuery"
+                                    @keyup.enter="handleQuery"/>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="6" :xs="6">
+                            <el-form-item label="编号" prop="code">
+                                <el-input
+                                    v-model="dataContainer.form.code"
+                                    placeholder="请输入"
+                                    clearable
+                                    @clear="handleQuery"
+                                    @keyup.enter="handleQuery"/>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="6" :xs="6">
+                            <el-form-item label="编号" prop="code">
+                                <el-input
+                                    v-model="dataContainer.form.code"
+                                    placeholder="请输入"
+                                    clearable
+                                    @clear="handleQuery"
+                                    @keyup.enter="handleQuery"/>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="6" :xs="6">
                             <el-form-item label="编号" prop="code">
                                 <el-input
                                     v-model="dataContainer.form.code"
@@ -67,7 +117,12 @@
                     </el-button>
                 </div>
                 <div class="right">
-                    
+                    <el-button
+                        v-if="hasPermi(['yx:apply:apply'])"
+                        type="primary"
+                        @click="handleAdd">
+                        显示搜索
+                    </el-button>
                 </div>
             </div>
             <div class="table-container">
@@ -85,6 +140,22 @@
                         align="center"
                         min-width="170"
                         prop="code"
+                        sortable="custom"
+                        :sort-orders="['descending', 'ascending']"/>
+                    <el-table-column
+                        label="名称"
+                        show-overflow-tooltip
+                        align="center"
+                        prop="name"
+                        min-width="150"
+                        sortable="custom"
+                        :sort-orders="['descending', 'ascending']"/>
+                    <el-table-column
+                        label="名称"
+                        show-overflow-tooltip
+                        align="center"
+                        prop="name"
+                        min-width="150"
                         sortable="custom"
                         :sort-orders="['descending', 'ascending']"/>
                     <el-table-column

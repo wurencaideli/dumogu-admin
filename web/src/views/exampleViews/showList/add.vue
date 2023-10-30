@@ -15,6 +15,13 @@
                 <p>
                     数据唯一标识：{{dataContainer.form.id}}
                 </p>
+                <p>
+                    <el-button 
+                        @click="handleClick_2"
+                        type="primary">
+                        更新标签信息（修改标题，切换缓存状态），不会更改目录配置，就是说重新重目录配置处创建该标签会使用目录的配置
+                    </el-button>
+                </p>
                 <el-form
                     :model="dataContainer.form"
                     ref="FormElRef" :inline="true" 
@@ -60,13 +67,6 @@
                     @click="handleSubmit">
                     提交
                 </el-button>
-                <p>
-                    <el-button 
-                        @click="handleClick_2"
-                        type="primary">
-                        更新标签信息（修改标题，切换缓存状态），不会更改目录配置，就是说重新重目录配置处创建该标签会使用目录的配置
-                    </el-button>
-                </p>
             </div>
         </div>
     </el-scrollbar>
@@ -107,7 +107,7 @@ export default defineComponent({
             nowTime:new Date(),
             nowTime_1:new Date().getTime(),
             rules:{
-                name: [{ required: true, message: '请输入仓储点位', trigger: 'blur' }],
+                name: [{ required: true, message: '请输入数据', trigger: 'blur' }],
             },
         });
         /** 
