@@ -12,8 +12,10 @@
                 <p>
                     标签页下面有小横条的表示有缓存，有两种页面列表管理，一种是修改添加会打开新页面，另一种是以对话框形式操作数据。其中对话框已经封装完善。
                 </p>
-                <EchartContainer
-                    ref="EchartContainerRef"></EchartContainer>
+                <div class="echart-container">
+                    <EchartContainer
+                        ref="EchartContainerRef"></EchartContainer>
+                </div>
             </div>
         </div>
     </DefinScrollbar>
@@ -120,7 +122,7 @@ export default defineComponent({
         .container{
             background-color: white;
             width: 100%;
-            height: 800px;
+            min-height: 800px;
             border-radius: 5px;
             padding: 15px;
             box-sizing: border-box;
@@ -129,6 +131,10 @@ export default defineComponent({
                 &:last-child{
                     margin: 0;
                 }
+            }
+            >.echart-container{
+                width: 100%;
+                height: 700px;
             }
         }
     }
