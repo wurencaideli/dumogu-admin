@@ -10,12 +10,20 @@ import {
 } from "@/router/Common";
 
 /** 
+ * 免登录
  * 权限白名单
  * 包含路径，和目录名
  *  */
 const whiteList = [
     '/login', '/auth-redirect', '/bind', '/register','/404','/401',
     'main-redirect',
+];
+/** 
+ * 登录后的白名单
+ * 登录之后可以任意访问的白名单
+ */
+const whiteList_1 = [
+    'navigate',
 ];
 
 router.beforeEach(async (to, from, next) => {
@@ -38,6 +46,14 @@ router.beforeEach(async (to, from, next) => {
     /** 如果没有菜单则先获取用户数据 */
     if(userData.showMenuList.length == 0){
         await getUserData().catch(()=>{});
+    }
+    /** 
+     * 如果是白名单中的路由直接放行
+     * 登录后的白名单
+     *  */
+    if(whiteList_1.includes(toPath) || whiteList_1.includes(toName)){
+        next();
+        return;
     }
     /** 
      * 判断用户是否有该目录权限

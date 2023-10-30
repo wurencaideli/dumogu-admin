@@ -271,6 +271,7 @@ export default {
                     background-color: #dfdfdf;
                     color: #5240ff;
                     font-weight: bold;
+                    box-shadow: inset 0 1px 4px #00000034;
                     // border:1px solid rgb(196, 196, 196);
                 }
                 >.sign{
@@ -303,14 +304,16 @@ export default {
         }
     }
     >.right{
-        width: 50px;
+        width: 40px;
         height: 100%;
         border-left: 1px solid rgb(218, 218, 218);
+        box-sizing: border-box;
         display: flex;
         flex-direction: row;
         justify-content: center;
         align-items: center;
         position: relative;
+        box-shadow: inset 0 1px 4px #0000001f;
         >.bt{
             width: 100%;
             height: 100%;

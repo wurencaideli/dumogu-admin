@@ -142,7 +142,7 @@ export default {
         align-items: center;
         position: relative;
         >*{
-            margin-right: 5px;
+            margin-right: 10px;
         }
         >.sign{
             right: 0;

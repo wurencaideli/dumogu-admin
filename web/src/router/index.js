@@ -161,6 +161,11 @@ router.beforeEach((to, from, next) => {
 });
 router.afterEach(() => {
     NProgress.done();
+    /** 清除loading标记 */
+    let loadingEl = document.querySelector('#html-loading-el');
+    if(loadingEl){
+        loadingEl.remove();
+    }
 });
 
 export default router;

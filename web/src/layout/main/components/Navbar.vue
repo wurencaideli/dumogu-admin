@@ -41,28 +41,28 @@
             target="_blank"
             class="bt">
             <SvgIcon
-                :style="'width:60px;height:25px;'"
-                name="github"></SvgIcon>
+                :style="'width:22px;height:22px;'"
+                name="git-hub"></SvgIcon>
         </a>
         <a
             href="https://txc.qq.com/products/613546"
             target="_blank"
             class="bt">
             <SvgIcon
-                :style="'width:23px;height:23px;'"
+                :style="'width:22px;height:22px;'"
                 name="fankui"></SvgIcon>
         </a>
         <div
             class="bt">
             <SvgIcon
-                :style="'width:25px;height:25px;'"
+                :style="'width:22px;height:22px;'"
                 name="commentlines-fill"></SvgIcon>
         </div>
         <div
             @click="toggleFullScreen" 
             class="bt">
             <SvgIcon
-                :style="'width:25px;height:25px;'"
+                :style="'width:22px;height:22px;'"
                 name="Navbar-full"></SvgIcon>
         </div>
         <div class="bt user">
@@ -72,6 +72,9 @@
                 fit="cover" />
             <div class="name">
                 管理员
+                <div class="other">
+                    2458885747
+                </div>
             </div>
             <div class="option">
                 <SvgIcon
@@ -208,7 +211,7 @@ export default {
         align-items: center;
         height: 100%;
         >.logo-container{
-            padding: 0 15px;
+            padding: 0 10px;
             box-sizing: border-box;
             width: var(--menu-width);
             height: 100%;
@@ -242,38 +245,59 @@ export default {
         flex-direction: row;
         justify-content: flex-end;
         align-items: center;
-        padding: 0 15px 0 0;
+        padding: 0 10px 0 0;
         box-sizing: border-box;
         >*{
             margin-left: 15px;
         }
         >.bt{
-            width: fit-content;
-            height: fit-content;
+            width: 40px;
+            height: 40px;
             display: flex;
             flex-direction: row;
             justify-content: center;
             align-items: center;
             cursor: pointer;
+            border:1px solid #e7e7e9;
+            border-radius: 12px;
+            box-sizing: border-box;
+            transition: all 0.2s;
+            &:hover{
+                background-color: #eeeeee72;
+            }
         }
         >.user{
+            width: fit-content;
+            height: fit-content;
             cursor: pointer;
             border-radius: 5px;
             transition: all 0.2s;
             position: relative;
+            border: none;
             &:hover{
-                background-color: rgba(194, 224, 255, 0.5);
+                background-color: #dfdfdf;
             }
             >.img{
-                width: 40px;
-                height: 40px;
-                border-radius: 5px;
+                width: 45px;
+                min-width: 45px;
+                height: 45px;
+                border-radius: 50%;
                 margin-right: 10px;
+                // border: 2px solid #949494;
+                box-shadow: #00000071 2px 2px 5px;
             }
             >.name{
-                font-size: 15px;
-                margin-right: 10px;
+                font-size: 14px;
+                font-weight: bold;
+                margin-right: 5px;
                 color:#444954;
+                display: flex;
+                flex-direction: column;
+                >.other{
+                    font-size: 13px;
+                    opacity: 0.6;
+                    margin-top: 2px;
+                }
             }
             >.option{
                 width: fit-content;

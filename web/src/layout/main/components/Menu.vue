@@ -74,17 +74,35 @@ export default {
     :deep(.el-menu){
         border:none !important;
         --el-menu-base-level-padding:15px !important;
+        --el-menu-level-padding:15px !important;
         --el-menu-icon-width:calc(15px + 0) !important; 
         --el-menu-item-height:55px !important;
         --el-menu-sub-item-height:55px !important;
         --el-menu-active-color:#5240ff !important;
         --el-menu-item-font-size:16px !important;
         --el-menu-text-color:rgb(91, 91, 91) !important;
+        --active-sub-bg-color:rgba(255, 255, 255, 0) !important;
+        --el-menu-hover-bg-color:#f1f1f1af !important;
         --active-item-bg-color:#dfdfdf;
-        --active-sub-bg-color:#f1f1f1af;
+        --active-sub-bg-color_1:#f1f1f1af;
+        padding: 10px;
+        box-sizing: border-box;
+        .el-sub-menu__icon-arrow{
+            margin-top: 0 !important;
+            top:initial !important;
+        }
+        .el-menu{
+            padding: 0;
+        }
         .el-sub-menu{
+            >.el-sub-menu__title{
+                border-radius: 5px;
+            }
             &.is-active{
                 background-color: var(--active-sub-bg-color);
+                >.el-sub-menu__title{
+                    background-color: var(--active-sub-bg-color_1);
+                }
             }
             .el-sub-menu__icon-arrow{
                 font-size: 17px !important;
@@ -94,17 +112,23 @@ export default {
                     background-color: var(--active-item-bg-color);
                     font-weight: bold;
                     color: var(--el-menu-active-color);
+                    box-shadow: inset 0 1px 4px #0000001f;
                 }
             }
             /** 表示有已经活动的sub目录 */
             &:has(.is-sub-defin-active){
                 background-color: var(--active-sub-bg-color);
+                >.el-sub-menu__title{
+                    background-color: var(--active-sub-bg-color_1);
+                }
             }
         }
         .el-menu-item{
+            border-radius: 5px;
             &.is-active{
                 background-color: var(--active-item-bg-color);
                 font-weight: bold;
+                box-shadow: inset 0 1px 4px #0000001f;
             }
         }
     }
