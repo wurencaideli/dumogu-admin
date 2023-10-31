@@ -11,6 +11,9 @@ import {throttleFn_1 as throttleFn} from '@/common/DebounceAndThrottle';
 import { verifiedData } from "@/common/VerifiedTools";
 import { Select,ArrowRightBold,SemiSelect } from '@element-plus/icons-vue';
 import {userData} from "@/store/User";
+import img_1 from "@/assets/login-imgs/img-1.gif";
+import img_2 from "@/assets/login-imgs/login-bg.svg";
+import img_3 from "@/assets/login-imgs/code.png";
 
 export default defineComponent({
     name:'LoginView',
@@ -31,6 +34,11 @@ export default defineComponent({
             captchaSvg:'',
             captchaId:'',
             loading_1:false,
+            img:{
+                img_1,
+                img_2,
+                img_3,
+            },
         });
         /** 验证信息 */
         function validBase(data){
@@ -145,7 +153,12 @@ export default defineComponent({
 </script>
 
 <template>
-    <div class="login-view">
+    <div 
+        class="login-view"
+        :style="{
+            '--bg-img-1':`url(${dataContainer.img.img_1})`,
+            '--bg-img-2':`url(${dataContainer.img.img_2})`,
+        }">
         <div class="container">
             <div class="left">
             </div>
@@ -203,7 +216,7 @@ export default defineComponent({
                             }"
                             v-model="dataContainer.form.password" />
                     </div>
-                    <div class="input-container">
+                    <div class="input-container code">
                         <SvgIcon
                             :style="'width:20px;height:20px;margin-right:10px;'"
                             name="cat-code"></SvgIcon>
@@ -215,7 +228,7 @@ export default defineComponent({
                         </el-input>
                         <el-image 
                             class="img"
-                            :src="'https://cn.bing.com/th?id=OHR.AdelieWPD_ZH-CN8434233391_1920x1080.jpg&rf=LaDigue_1920x1080.jpg&pid=hp'" fit="cover" />
+                            :src="dataContainer.img.img_3" fit="contain" />
                     </div>
                     <div class="bt-list">
                         <el-button
@@ -236,7 +249,7 @@ export default defineComponent({
             </div>
         </div>
         <div class="bottom">
-            版权所有 @www.dumogu.top 毒蘑菇 - 管理
+            版权所有 @admin.dumogu.top 毒蘑菇 - 管理
             <a
                 href="https://github.com/wurencaideli/dumogu-admin"
                 target="_blank"
@@ -256,9 +269,14 @@ export default defineComponent({
     display: flex;
     justify-content: center;
     align-items: center;
-    background-image: url(https://cn.bing.com/th?id=OHR.RebelBase_ZH-CN0484516261_1920x1080.jpg&rf=LaDigue_1920x1080.jpg&pid=hp);
-    background-size: cover;
-    backdrop-filter: blur(12px);
+    background-image: var(--bg-img-2);
+    // background-size: cover;
+    // backdrop-filter: blur(12px);
+    background-size: contain;
+    background-position: center bottom;
+    background-repeat: no-repeat;
+    // background: #007FFF;
+    // background: linear-gradient(to right,rgba(0, 128, 255, 0.421),rgba(0, 89, 178, 0.421));
     padding: 15px;
     box-sizing: border-box;
     color: rgb(32, 32, 32);
@@ -268,14 +286,16 @@ export default defineComponent({
         width: 100%;
         max-width: 900px;
         background-color: rgb(255, 255, 255);
-        border-radius: 12px;
+        border-radius: 8px;
         overflow: hidden;
-        box-shadow: 0 3px 8px 0 rgba(0, 0, 0, .408);
+        box-shadow: 2px 2px 5px 0 rgba(0, 0, 0, 0.449);
         >.left{
             flex: 1 1 0;
             width: 0;
-            background-image: url(https://cn.bing.com/th?id=OHR.IdahoBarn_ZH-CN6472682534_1920x1080.jpg&rf=LaDigue_1920x1080.jpg&pid=hp);
+            background-image: var(--bg-img-1);
             background-size: cover;
+            // box-shadow: inset 1px 0px 4px #0000006b;
+            background-repeat: no-repeat;
         }
         >.right{
             flex: 1 1 0;
@@ -361,11 +381,16 @@ export default defineComponent({
                             }
                         }
                     }
+                    &.code{
+                        padding: 0 5px 0 15px;
+                    }
                     >.img{
                         width: 100px;
-                        height: 100%;
+                        height: calc(100% - 10px);
                         margin-left: 15px;
                         cursor: pointer;
+                        border-radius: 5px;
+                        border:1px solid rgb(177, 177, 177);
                     }
                 }
                 >.bt-list{

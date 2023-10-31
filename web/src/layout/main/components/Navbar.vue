@@ -55,12 +55,12 @@
                     :style="'width:22px;height:22px;'"
                     name="fankui"></SvgIcon>
             </a>
-            <div
+            <!-- <div
                 class="bt">
                 <SvgIcon
                     :style="'width:22px;height:22px;'"
                     name="commentlines-fill"></SvgIcon>
-            </div>
+            </div> -->
             <div
                 @click="toggleFullScreen" 
                 class="bt">
@@ -275,7 +275,7 @@ export default {
                 align-items: center;
                 cursor: pointer;
                 border:1px solid #e7e7e9;
-                border-radius: 12px;
+                border-radius: 8px;
                 box-sizing: border-box;
                 transition: all 0.2s;
                 &:hover{
