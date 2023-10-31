@@ -182,7 +182,10 @@ export default {
         }
         /** 退出登录 */
         function onLogout() {
-            confirm('是否确认退出登录').then(()=>{
+            confirm(
+                '是否确认退出登录',
+                '提示',
+            ).then(()=>{
                 logout();
                 toPath('/login');
             }).catch(()=>{
@@ -278,6 +281,7 @@ export default {
                 border-radius: 8px;
                 box-sizing: border-box;
                 transition: all 0.2s;
+                box-shadow: inset 0 1px 4px #0000001f;
                 &:hover{
                     background-color: #eeeeee72;
                 }
@@ -286,12 +290,14 @@ export default {
                 width: fit-content;
                 height: fit-content;
                 cursor: pointer;
-                border-radius: 5px;
+                border-radius:99px 20px 20px 99px;
                 transition: all 0.2s;
                 position: relative;
                 border: none;
+                box-shadow: none;
                 &:hover{
-                    background-color: #dfdfdf;
+                    background-color: #f0f0f0;
+                    box-shadow: inset 0 1px 4px #0000002a;
                 }
                 >.img{
                     width: 45px;
@@ -350,6 +356,7 @@ export default {
                         transition: all 0.2s;
                         &:hover{
                             background-color: rgba(194, 224, 255, 0.5);
+                            box-shadow: inset 0 1px 4px #0000001f;
                             :deep(a){
                                 color: #0072E5;
                             }
@@ -371,6 +378,7 @@ export default {
                         transition: all 0.2s;
                         text-align: center;
                         &:hover{
+                            box-shadow: inset 0 1px 4px #0000001f;
                             color: #f14242;
                         }
                     }

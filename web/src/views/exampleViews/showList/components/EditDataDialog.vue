@@ -5,6 +5,7 @@
         width="700px"
         :close-on-click-modal="false"
         append-to-body
+        destroy-on-close
         @close="handleClose"
         class="edit-data-dialog"
     >
@@ -13,8 +14,32 @@
                 :model="dataContainer.form"
                 ref="FormElRef" :inline="true" 
                 :rules="dataContainer.rules"
-                label-width="120px">
+                label-width="100px">
                 <el-row :gutter="0">
+                    <el-col :span="8" :xs="6">
+                        <el-form-item label="数据名称" prop="name">
+                            <el-input
+                                v-model="dataContainer.form.name"
+                                placeholder="请输入"
+                                clearable/>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="8" :xs="6">
+                        <el-form-item label="名称" prop="name">
+                            <el-input
+                                v-model="dataContainer.form.name"
+                                placeholder="请输入"
+                                clearable/>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="8" :xs="6">
+                        <el-form-item label="名称" prop="name">
+                            <el-input
+                                v-model="dataContainer.form.name"
+                                placeholder="请输入"
+                                clearable/>
+                        </el-form-item>
+                    </el-col>
                     <el-col :span="8" :xs="6">
                         <el-form-item label="名称" prop="name">
                             <el-input
@@ -180,7 +205,10 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-// .edit-data-dialog {
-    
-// }
+.edit-data-dialog {
+    .dialog-container{
+        padding: 15px 15px 0 15px;
+        box-sizing: border-box;
+    }
+}
 </style>

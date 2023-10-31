@@ -83,7 +83,7 @@ export default {
         --el-menu-text-color:rgb(91, 91, 91) !important;
         --active-sub-bg-color:rgba(255, 255, 255, 0) !important;
         --el-menu-hover-bg-color:#f1f1f1af !important;
-        --active-item-bg-color:#dfdfdf;
+        --active-item-bg-color:#5240ff30;
         --active-sub-bg-color_1:#f1f1f1af;
         padding: 10px;
         box-sizing: border-box;

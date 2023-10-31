@@ -112,7 +112,7 @@
                             <el-button
                                 :text="true"
                                 @click="handleEdit(scope.row,{
-                                    isShow:true,
+                                    isShow:false,
                                     afterTitle:' - 编辑',
                                 })">
                                 编辑

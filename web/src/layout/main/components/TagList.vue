@@ -268,7 +268,7 @@ export default {
                     margin-right: 5px;
                 }
                 &.active{
-                    background-color: #dfdfdf;
+                    background-color: #5240ff30;
                     color: #5240ff;
                     font-weight: bold;
                     box-shadow: inset 0 1px 4px #00000034;
@@ -364,6 +364,7 @@ export default {
                 &:hover{
                     background-color: rgba(194, 224, 255, 0.5);
                     color: #0072E5;
+                    box-shadow: inset 0 1px 4px #0000001f;
                 }
                 &.re-bt{
                     background-color: rgba(194, 224, 255, 0.5);
