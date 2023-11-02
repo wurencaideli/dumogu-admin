@@ -13,6 +13,14 @@ console.log(
     router,
     sysMeluList,
 );
+/** 提示重复菜单 */
+sysMeluList.reduce((c,i)=>{
+    if(c[i.name]){
+        console.log('重复菜单 name',i);
+    }
+    c[i.name] = true;
+    return c;
+},{});
 /** 挂载到全局方便操作 */
 window.router = router;
 

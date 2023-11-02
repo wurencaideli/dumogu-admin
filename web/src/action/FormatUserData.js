@@ -108,6 +108,19 @@ export function getUserData(){
                 iconName:"all-fill",
             },
             {
+                title:'系统管理',
+                iconName:"cog-fill",
+                childs:[
+                    {
+                        name:"menu",
+                        title:'菜单管理',
+                        isCache:true,
+                        content:'用户目录配置',
+                        iconName:"alignleft-fill",
+                    },
+                ],
+            },
+            {
                 name:"show-list",
                 title:'展示列表',
                 iconName:"laptop-check",
@@ -335,6 +348,19 @@ export function getUserData_1(){
         /** 写入权限菜单数据 */
         userDataStore.setHasSysMenuConfigMap(transData.hasSysMenuConfigMap);
     });
+}
+/** 
+ * 写入目录信息
+ * 由外部指定
+ *  */
+export function setMenuData(treeList){
+    const userDataStore = userData();
+    let menuList = treeList;
+    let transData = transUserMenu(menuList);
+    /** 写入展示菜单数据 */
+    userDataStore.setShowMenuList(transData.showMenuList);
+    /** 写入权限菜单数据 */
+    userDataStore.setHasSysMenuConfigMap(transData.hasSysMenuConfigMap);
 }
 /** 
  * 用户退出登录

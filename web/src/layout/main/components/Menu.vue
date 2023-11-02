@@ -74,10 +74,10 @@ export default {
     :deep(.el-menu){
         border:none !important;
         --el-menu-base-level-padding:15px !important;
-        --el-menu-level-padding:15px !important;
+        --el-menu-level-padding:20px !important;
         --el-menu-icon-width:calc(15px + 0) !important; 
-        --el-menu-item-height:50px !important;
-        --el-menu-sub-item-height:50px !important;
+        --el-menu-item-height:55px !important;
+        --el-menu-sub-item-height:55px !important;
         --el-menu-active-color:#5240ff !important;
         --el-menu-item-font-size:16px !important;
         --el-menu-text-color:rgb(91, 91, 91) !important;
