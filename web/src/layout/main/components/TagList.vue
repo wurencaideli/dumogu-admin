@@ -52,7 +52,7 @@
                 class="item"
                 @click="handleOptionClick(1)">
                 <SvgIcon
-                    :style="'width:16px;height:16px;'"
+                    :style="'width:16px;height:16px;color:#f86464;'"
                     name="times"></SvgIcon>
                 关闭当前标签页
             </div>
@@ -61,8 +61,8 @@
                 class="item"
                 @click="handleOptionClick(2)">
                 <SvgIcon
-                    :style="'width:16px;height:16px;'"
-                    name="times"></SvgIcon>
+                    :style="'width:16px;height:16px;color:#f86464;'"
+                    name="borderverticle-fill"></SvgIcon>
                 关闭其他标签页
             </div>
             <div 
@@ -70,8 +70,8 @@
                 class="item"
                 @click="handleOptionClick(3)">
                 <SvgIcon
-                    :style="'width:16px;height:16px;'"
-                    name="times"></SvgIcon>
+                    :style="'width:16px;height:16px;color:#f86464;'"
+                    name="arrow-left"></SvgIcon>
                 关闭左边标签页
             </div>
             <div 
@@ -79,15 +79,15 @@
                 class="item"
                 @click="handleOptionClick(4)">
                 <SvgIcon
-                    :style="'width:16px;height:16px;'"
-                    name="times"></SvgIcon>
+                    :style="'width:16px;height:16px;color:#f86464;'"
+                    name="arrow-right"></SvgIcon>
                 关闭右边标签页
             </div>
             <div 
                 class="item re-bt"
                 @click="handleOptionClick(5)">
                 <SvgIcon
-                    :style="'width:16px;height:16px;'"
+                    :style="'width:16px;height:16px;color:#0072E5;'"
                     name="redo"></SvgIcon>
                 刷新当前标签页
             </div>
@@ -349,7 +349,7 @@ export default {
                 width: auto;
                 min-width: max-content;
                 transition: all 0.2s;
-                padding: 15px 15px;
+                padding: 13px 15px;
                 box-sizing: border-box;
                 display: block;
                 color: #6b7386;
@@ -359,16 +359,20 @@ export default {
                 align-items: center;
                 justify-content: flex-start;
                 >*{
-                    margin-right: 5px;
+                    margin-right: 10px;
                 }
                 &:hover{
-                    background-color: rgba(194, 224, 255, 0.5);
-                    color: #0072E5;
                     box-shadow: inset 0 1px 4px #0000001f;
+                    background-color: #fef0f0;
+                    color: #f56c6c;
                 }
                 &.re-bt{
                     background-color: rgba(194, 224, 255, 0.5);
                     color: #0072E5;
+                    &:hover{
+                        background-color: rgba(194, 224, 255, 0.5);
+                        color: #0072E5;
+                    }
                 }
             }
         }

@@ -274,11 +274,13 @@ export default defineComponent({
                 </div>
                 <div class="view-container">
                     <router-view v-slot="{ Component,route }">
-                        <keep-alive 
-                            :include="cacheTagList">
-                            <component 
-                                :is="formatComponentInstance(Component,route)"/>
-                        </keep-alive>
+                        <transition name="el-fade-in">
+                            <keep-alive 
+                                :include="cacheTagList">
+                                <component 
+                                    :is="formatComponentInstance(Component,route)"/>
+                            </keep-alive>
+                        </transition>
                     </router-view>
                 </div>
             </div>
