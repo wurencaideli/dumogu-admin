@@ -73,10 +73,10 @@ export default {
     width: 100%;
     /** 基础目录配置 */
     --local-active-text-color:#ffffff;
-    --local-active-bg-color:#5240ff94;
+    --local-active-bg-color:#5240ff96;
     --local-active-sub-bg-color:#3634ac57;
     --local-hover-color:#3634ac57;
-    --local-font-size:16px;
+    --local-font-size:15px;
     --local-text-color:#b6cce2;
     --local-box-shadow: 0 1px 4px #001247;
     --local-border-radius:8px;

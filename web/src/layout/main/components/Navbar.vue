@@ -15,23 +15,28 @@
     <div class="right">
         <div class="left">
             <div class="path-list-container">
-                <el-breadcrumb separator="/">
+                <el-breadcrumb separator="">
                     <!-- <el-breadcrumb-item 
                         :to="{ path: '/main/index' }">
                         首页    
                     </el-breadcrumb-item> -->
                     <el-breadcrumb-item
                         v-for="item,index in dataContainer.breadcrumbList"
+                        :key="`${index}--${item.path}`"
                         :to="item.path?{
                             path:item.path,
-                        }:''">
+                        }:''"
+                        :class="{
+                            'has-path':!!item.path,
+                        }">
                         <a 
                             v-if="item.isLink"
                             :href="item.path"
+                            class="item"
                             target="_blank">
                             {{item.title}}
                         </a>
-                        <span v-else>
+                        <span v-else class="item">
                             {{item.title}}
                         </span>
                     </el-breadcrumb-item>
@@ -263,6 +268,32 @@ export default {
             >.path-list-container{
                 padding: 0 15px;
                 box-sizing: border-box;
+                :deep(.el-breadcrumb){
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    flex-wrap: wrap;
+                    .el-breadcrumb__separator{
+                        display: none;
+                    }
+                    .el-breadcrumb__item{
+                        background-color: #f1efef;
+                        padding: 10px 15px;
+                        border-radius: 5px 0px 0 5px;
+                        font-size: 13px;
+                        display: block;
+                        clip-path: polygon(0 0,calc(100% - 8px) 0,100% 50%,calc(100% - 8px) 100%,0 100%,8px 50%);
+                        &:first-child{
+                            clip-path: polygon(0 0,calc(100% - 8px) 0,100% 50%,calc(100% - 8px) 100%,0 100%);
+                        }
+                        &:last-child{
+                            background-color: #f1efef !important;
+                        }
+                        &.has-path{
+                            background-color: #cacaca;
+                        }
+                    }
+                }
             }
         }
         >.right{
