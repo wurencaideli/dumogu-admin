@@ -169,18 +169,19 @@ export function getUserData(){
             },
             
             {
-                title:'角色管理',
+                title:'多级菜单',
                 iconName:"alignleft-fill",
                 childs:[
                     {
                         title:'可点击父级',
                         path:'/main/show-list/update/erterter',
+                        iconName:"aligncenter-fill",
                         childs:[
                             {
                                 name:"show-list-update",
                                 path:'/main/show-list/update/123123',
-                                title:'数据编辑 - 测试',
-                                iconName:"plus-square-fill",
+                                title:'可点击父级',
+                                iconName:"aligncenter-fill",
                                 childs:[
                                     {
                                         name:"show-list-update",
@@ -191,13 +192,13 @@ export function getUserData(){
                                 ],
                             },
                             {
-                                title:'数据编辑 - 测试',
-                                iconName:"plus-square-fill",
+                                title:'父级',
+                                iconName:"aligncenter-fill",
                                 childs:[
                                     {
                                         name:"show-list-update",
                                         path:'/main/show-list/update/1235123',
-                                        title:'数据编辑 - 测试',
+                                        title:'数据编辑 - 测试1',
                                         iconName:"plus-square-fill",
                                     },
                                 ],

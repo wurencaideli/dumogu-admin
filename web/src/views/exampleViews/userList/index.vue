@@ -12,16 +12,26 @@
                     label-width="110px">
                     <el-row :gutter="0">
                         <el-col :span="6" :xs="6">
-                            <el-form-item label="编号" prop="code">
+                            <el-form-item label="用户名称" prop="name">
                                 <el-input
-                                    v-model="dataContainer.form.code"
+                                    v-model="dataContainer.form.name"
                                     placeholder="请输入"
                                     clearable
                                     @clear="handleQuery"
                                     @keyup.enter="handleQuery"/>
                             </el-form-item>
                         </el-col>
-                        <el-col :span="8" :xs="8">
+                        <el-col :span="6" :xs="6">
+                            <el-form-item label="角色标识" prop="sign">
+                                <el-input
+                                    v-model="dataContainer.form.sign"
+                                    placeholder="请输入"
+                                    clearable
+                                    @clear="handleQuery"
+                                    @keyup.enter="handleQuery"/>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="6" :xs="6">
                             <el-form-item label=" ">
                                 <el-button
                                     type="primary"
@@ -67,7 +77,20 @@
                     </el-button>
                 </div>
                 <div class="right">
-                    
+                    <el-button
+                        circle 
+                        @click="resetQuery">
+                        <SvgIcon 
+                            :style="'width:15px;height:15px;'"
+                            name="redo"></SvgIcon>
+                    </el-button>
+                    <el-button
+                        circle 
+                        @click="dataContainer.showSearch=!dataContainer.showSearch">
+                        <SvgIcon 
+                            :style="'width:15px;height:15px;'"
+                            name="search-bt"></SvgIcon>
+                    </el-button>
                 </div>
             </div>
             <div class="table-container">
@@ -80,24 +103,62 @@
                     height="100%">
                     <el-table-column type="index" align="center" label="序号" width="60" fixed="left"/>
                     <el-table-column
-                        label="编号"
+                        label="用户名称"
                         show-overflow-tooltip
                         align="center"
                         min-width="170"
-                        prop="code"
-                        sortable="custom"
-                        :sort-orders="['descending', 'ascending']"/>
+                        prop="name"/>
                     <el-table-column
-                        label="名称"
+                        label="用户账号"
                         show-overflow-tooltip
                         align="center"
-                        prop="name"
-                        min-width="150"
-                        sortable="custom"
-                        :sort-orders="['descending', 'ascending']"/>
+                        min-width="170"
+                        prop="number"/>
+                    <el-table-column
+                        label="角色标识"
+                        show-overflow-tooltip
+                        align="center"
+                        prop="sign"
+                        min-width="150"/>
+                    <el-table-column
+                        label="排序"
+                        show-overflow-tooltip
+                        align="center"
+                        prop="sort"
+                        width="100"/>
+                    <el-table-column
+                        label="用户状态"
+                        show-overflow-tooltip
+                        align="center"
+                        prop="status"
+                        width="100">
+                        <template #default="scope">
+                            <el-tag
+                                v-if="scope.row.status">
+                                启用
+                            </el-tag>
+                            <el-tag
+                                v-else
+                                type="info">
+                                禁用
+                            </el-tag>
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                        label="用户描述"
+                        show-overflow-tooltip
+                        align="center"
+                        prop="content"
+                        min-width="150"/>
+                    <el-table-column
+                        label="创建时间"
+                        show-overflow-tooltip
+                        align="center"
+                        prop="createTime"
+                        min-width="220"/>
                     <el-table-column
                         label="操作"
-                        width="250"
+                        width="200"
                         fixed="right"
                         class-name="small-padding fixed-width">
                         <template #default="scope">
@@ -119,6 +180,7 @@
                             </el-button>
                             <el-button
                                 :text="true"
+                                type="danger"
                                 @click="handleDelete([scope.row])">
                                 删除
                             </el-button>
@@ -203,11 +265,6 @@ export default defineComponent({
                 .then(res => {
                     dataContainer.list = res.rows || [];
                     dataContainer.config.total = res.total;
-                    /** 默认不选择 */
-                    dataContainer.list.forEach(item=>{
-                        item.checked_ = false;
-                    });
-                    dataContainer.checked_ = false;
                 })
                 .catch(() => {
                     return;

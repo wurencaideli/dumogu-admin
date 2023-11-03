@@ -2,7 +2,7 @@
     <el-dialog
         :title="configData.title+configData.afterTitle"
         v-model="configData.open"
-        width="700px"
+        width="800px"
         :close-on-click-modal="false"
         append-to-body
         destroy-on-close
@@ -16,36 +16,74 @@
                 :rules="dataContainer.rules"
                 label-width="100px">
                 <el-row :gutter="0">
-                    <el-col :span="8" :xs="6">
-                        <el-form-item label="数据名称" prop="name">
+                    <el-col :span="12" :xs="6">
+                        <el-form-item label="角色名称" prop="name">
                             <el-input
                                 v-model="dataContainer.form.name"
                                 placeholder="请输入"
+                                :disabled="configData.isShow"
                                 clearable/>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="8" :xs="6">
-                        <el-form-item label="名称" prop="name">
+                    <el-col :span="12" :xs="6">
+                        <el-form-item label="角色标识" prop="sign">
                             <el-input
-                                v-model="dataContainer.form.name"
+                                v-model="dataContainer.form.sign"
                                 placeholder="请输入"
+                                :disabled="configData.isShow"
                                 clearable/>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="8" :xs="6">
-                        <el-form-item label="名称" prop="name">
-                            <el-input
-                                v-model="dataContainer.form.name"
-                                placeholder="请输入"
-                                clearable/>
+                    <el-col :span="12" :xs="6">
+                        <el-form-item label="排序" prop="sort">
+                            <el-input-number
+                                style="width:100%;"
+                                v-model="dataContainer.form.sort"
+                                :min="1"
+                                :max="999"
+                                controls-position="right"
+                                :disabled="configData.isShow"
+                                clearable
+                            />
                         </el-form-item>
                     </el-col>
-                    <el-col :span="8" :xs="6">
-                        <el-form-item label="名称" prop="name">
+                    <el-col :span="12" :xs="6">
+                        <el-form-item label="状态" prop="status">
+                            <el-switch
+                                v-model="dataContainer.form.status"
+                                :disabled="configData.isShow"
+                                active-text="启用"
+                                inactive-text="禁用"
+                            />
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="24" :xs="6">
+                        <el-form-item label="角色描述" prop="content">
                             <el-input
-                                v-model="dataContainer.form.name"
+                                v-model="dataContainer.form.content"
+                                :rows="2"
+                                type="textarea"
+                                :disabled="configData.isShow"
                                 placeholder="请输入"
-                                clearable/>
+                            />
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="24" :xs="6">
+                        <el-form-item label="菜单权限" prop="menu">
+                            <el-tree 
+                                style="
+                                    width: 100%;
+                                    border: 1px solid var(--el-border-color);
+                                    border-radius: 5px;
+                                "
+                                :data="dataContainer.treeData" 
+                                :disabled="configData.isShow"
+                                :props="{
+                                    children: 'children',
+                                    label: 'label',
+                                    disabled: 'disabled',
+                                }" 
+                                show-checkbox />
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -88,7 +126,7 @@ const configMap = {
         default: false,
     },
     title: {
-        default: '数据',
+        default: '角色数据',
     },
     afterTitle: {
         default: '',
@@ -113,8 +151,47 @@ export default defineComponent({
             reject:undefined,
             form:{},
             rules:{
-                name: [{ required: true, message: '请输入仓储点位', trigger: 'blur' }],
+                name: [{ required: true, message: '请输入角色名称', trigger: 'blur' }],
             },
+            treeData:[
+                {
+                    id: 1,
+                    label: 'Level one 1',
+                    children: [
+                    {
+                        id: 3,
+                        label: 'Level two 2-1',
+                        children: [
+                        {
+                            id: 4,
+                            label: 'Level three 3-1-1',
+                        },
+                        {
+                            id: 5,
+                            label: 'Level three 3-1-2',
+                            disabled: true,
+                        },
+                        ],
+                    },
+                    {
+                        id: 2,
+                        label: 'Level two 2-2',
+                        disabled: true,
+                        children: [
+                        {
+                            id: 6,
+                            label: 'Level three 3-2-1',
+                        },
+                        {
+                            id: 7,
+                            label: 'Level three 3-2-2',
+                            disabled: true,
+                        },
+                        ],
+                    },
+                    ],
+                },
+            ],
         });
         const otherDataContainer = {
             castParams:{},  //向外部传递的参数
@@ -143,7 +220,8 @@ export default defineComponent({
             otherDataContainer.castParams = {};
             configData.open = show;
             nextTick(() => {
-                getDataInfo();
+                dataContainer.form = data;
+                // getDataInfo();
             });
             return new Promise((r,j)=>{
                 dataContainer.resolve = r;

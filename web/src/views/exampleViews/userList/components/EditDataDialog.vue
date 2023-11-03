@@ -2,7 +2,7 @@
     <el-dialog
         :title="configData.title+configData.afterTitle"
         v-model="configData.open"
-        width="700px"
+        width="800px"
         :close-on-click-modal="false"
         append-to-body
         destroy-on-close
@@ -16,36 +16,75 @@
                 :rules="dataContainer.rules"
                 label-width="100px">
                 <el-row :gutter="0">
-                    <el-col :span="8" :xs="6">
-                        <el-form-item label="数据名称" prop="name">
+                    <el-col :span="12" :xs="6">
+                        <el-form-item label="用户名称" prop="name">
                             <el-input
                                 v-model="dataContainer.form.name"
                                 placeholder="请输入"
+                                :disabled="configData.isShow"
                                 clearable/>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="8" :xs="6">
-                        <el-form-item label="名称" prop="name">
+                    <el-col :span="12" :xs="6">
+                        <el-form-item label="用户账号" prop="number">
                             <el-input
-                                v-model="dataContainer.form.name"
+                                v-model="dataContainer.form.number"
                                 placeholder="请输入"
+                                :disabled="configData.isShow"
                                 clearable/>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="8" :xs="6">
-                        <el-form-item label="名称" prop="name">
-                            <el-input
-                                v-model="dataContainer.form.name"
-                                placeholder="请输入"
-                                clearable/>
+                    <el-col :span="12" :xs="6">
+                        <el-form-item label="角色标识" prop="sign">
+                            <el-select 
+                                style="width:100%;"
+                                v-model="dataContainer.form.sign"
+                                placeholder="请选择"
+                                :disabled="configData.isShow"
+                                clearable>
+                                <el-option
+                                    v-for="item in [
+                                        {label:'超级管理员',value:'1'},
+                                        {label:'超级管理员1',value:'2'},
+                                    ]"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.value"/>
+                            </el-select>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="8" :xs="6">
-                        <el-form-item label="名称" prop="name">
+                    <el-col :span="12" :xs="6">
+                        <el-form-item label="排序" prop="sort">
+                            <el-input-number
+                                style="width:100%;"
+                                v-model="dataContainer.form.sort"
+                                :min="1"
+                                :max="999"
+                                controls-position="right"
+                                :disabled="configData.isShow"
+                                clearable
+                            />
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="12" :xs="6">
+                        <el-form-item label="状态" prop="status">
+                            <el-switch
+                                v-model="dataContainer.form.status"
+                                :disabled="configData.isShow"
+                                active-text="启用"
+                                inactive-text="禁用"
+                            />
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="24" :xs="6">
+                        <el-form-item label="用户描述" prop="content">
                             <el-input
-                                v-model="dataContainer.form.name"
+                                v-model="dataContainer.form.content"
+                                :rows="2"
+                                type="textarea"
+                                :disabled="configData.isShow"
                                 placeholder="请输入"
-                                clearable/>
+                            />
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -88,7 +127,7 @@ const configMap = {
         default: false,
     },
     title: {
-        default: '数据',
+        default: '用户数据',
     },
     afterTitle: {
         default: '',
@@ -113,7 +152,7 @@ export default defineComponent({
             reject:undefined,
             form:{},
             rules:{
-                name: [{ required: true, message: '请输入仓储点位', trigger: 'blur' }],
+                name: [{ required: true, message: '请输入用户名称', trigger: 'blur' }],
             },
         });
         const otherDataContainer = {
@@ -143,7 +182,8 @@ export default defineComponent({
             otherDataContainer.castParams = {};
             configData.open = show;
             nextTick(() => {
-                getDataInfo();
+                dataContainer.form = data;
+                // getDataInfo();
             });
             return new Promise((r,j)=>{
                 dataContainer.resolve = r;

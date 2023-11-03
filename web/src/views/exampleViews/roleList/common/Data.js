@@ -5,27 +5,22 @@
 export let responseData = {
     "total": 314,
     "rows": [
-        {
-            date: '2016-05-03',
-            name: 'Tom',
-            address: 'No. 189, Grove St, Los Angeles',
-        },
-        {
-            date: '2016-05-02',
-            name: 'Tom',
-            address: 'No. 189, Grove St, Los Angeles',
-        },
-        {
-            date: '2016-05-04',
-            name: 'Tom',
-            address: 'No. 189, Grove St, Los Angeles',
-        },
-        {
-            date: '2016-05-01',
-            name: 'Tom',
-            address: 'No. 189, Grove St, Los Angeles',
-        },
+        
     ],
     "code": 200,
     "msg": "查询成功"
 };
+
+const data = [];
+for (let i = 0; i < 20; i++) {
+    data.push({
+        name: i === 0 ? '超级管理员' : '普通用户',
+        sign: i === 0 ? 'admin' : 'common',
+        content: `测试角色${i + 1}`,
+        sort: i,
+        status: true,
+        createTime: new Date().toLocaleString(),
+    });
+}
+responseData.rows = data;
+responseData.total = responseData.rows.length;
