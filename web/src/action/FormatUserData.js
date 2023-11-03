@@ -125,6 +125,20 @@ export function getUserData(){
                         content:'与菜单分开',
                         iconName:"borderverticle-fill",
                     },
+                    {
+                        name:"user-list",
+                        title:'用户管理',
+                        isCache:true,
+                        content:'',
+                        iconName:"user-fill",
+                    },
+                    {
+                        name:"role-list",
+                        title:'角色列表',
+                        isCache:true,
+                        content:'',
+                        iconName:"user-group-fill",
+                    },
                 ],
             },
             {
@@ -153,24 +167,11 @@ export function getUserData(){
                 content:'(有缓存)',
                 iconName:"Navbar-full",
             },
-            {
-                name:"user-list",
-                title:'用户列表',
-                isCache:true,
-                content:'(有缓存)',
-                iconName:"database",
-            },
+            
             {
                 title:'角色管理',
                 iconName:"alignleft-fill",
                 childs:[
-                    {
-                        name:"role-list",
-                        title:'角色列表',
-                        isCache:true,
-                        content:'(有缓存)',
-                        iconName:"database",
-                    },
                     {
                         title:'可点击父级',
                         path:'/main/show-list/update/erterter',

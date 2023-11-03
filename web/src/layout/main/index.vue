@@ -335,6 +335,7 @@ export default defineComponent({
             flex-direction: column;
             position: relative;
             z-index: 8;
+            overflow: hidden;
             >.top{
                 height: var(--tags-height);
                 width: 100%;

@@ -6,7 +6,7 @@
             <el-image 
                 @click="toPath({path:'/'})"
                 class="logo"
-                :src="'https://cn.bing.com/th?id=OHR.AdelieWPD_ZH-CN8434233391_1920x1080.jpg&rf=LaDigue_1920x1080.jpg&pid=hp'" fit="cover" />
+                :src="dataContainer.img.img_1" fit="cover" />
             <div class="name">
                 毒蘑菇 - 管理
             </div>
@@ -122,6 +122,7 @@ import { useRouter } from "vue-router";
 import SvgIcon from "@/components/svgIcon/index.vue";
 import {logout} from "@/action/FormatUserData";
 import {confirm} from "@/action/MessagePrompt";
+import img_1 from "@/assets/logo.png";
 
 export default {
     name: 'Navbar',
@@ -147,6 +148,9 @@ export default {
         const dataContainer = reactive({
             breadcrumbList:toRef(props,'breadcrumbList'),
             userInfo:toRef(props,'userInfo'),
+            img:{
+                img_1,
+            },
         });
         /** 全屏事件 */
         function toggleFullScreen() {
@@ -229,12 +233,12 @@ export default {
             align-items: center;
             box-shadow: 0 0px 5px rgba(0, 0, 0, 0.177);
             >.logo{
-                flex:1 1 0;
-                width: 0;
+                // flex:1 1 0;
+                width: 50px;
                 height: 50px;
                 border-radius: 5px;
                 cursor: pointer;
-                margin-right: 15px;
+                margin-right: 10px;
             }
             >.name{
                 width: max-content;

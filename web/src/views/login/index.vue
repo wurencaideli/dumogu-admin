@@ -13,7 +13,7 @@ import { Select,ArrowRightBold,SemiSelect } from '@element-plus/icons-vue';
 import {userData} from "@/store/User";
 import img_1 from "@/assets/login-imgs/img-1.gif";
 import img_2 from "@/assets/login-imgs/login-bg.svg";
-import img_3 from "@/assets/login-imgs/code.png";
+import img_3 from "@/assets/login-imgs/code.svg";
 import img_4 from "@/assets/login-imgs/login-bg-1.svg";
 import img_5 from "@/assets/login-imgs/login-bg-2.svg";
 import img_6 from "@/assets/login-imgs/login-bg-3.svg";

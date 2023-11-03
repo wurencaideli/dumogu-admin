@@ -71,20 +71,27 @@ export default {
 .menu-container {
     height: 100%;
     width: 100%;
+    /** 基础目录配置 */
+    --local-active-text-color:#5240ff;
+    --local-active-bg-color:#5240ff30;
+    --local-active-sub-bg-color:#f1f1f1af;
+    --local-hover-color:#f1f1f1af;
+    --local-font-size:16px;
+    --local-text-color:rgb(91, 91, 91);
     :deep(.el-menu){
         border:none !important;
+        --el-menu-active-color:var(--local-active-text-color) !important;
+        --el-menu-item-font-size:var(--local-font-size) !important;
+        --el-menu-text-color:var(--local-text-color) !important;
+        --el-menu-hover-bg-color:var(--local-hover-color) !important;
+        --active-item-bg-color:var(--local-active-bg-color) !important;
+        --el-menu-bg-color:transparent !important;
         --el-menu-base-level-padding:15px !important;
         --el-menu-level-padding:20px !important;
         --el-menu-icon-width:calc(15px + 0) !important; 
         --el-menu-item-height:55px !important;
         --el-menu-sub-item-height:55px !important;
-        --el-menu-active-color:#5240ff !important;
-        --el-menu-item-font-size:16px !important;
-        --el-menu-text-color:rgb(91, 91, 91) !important;
-        --active-sub-bg-color:rgba(255, 255, 255, 0) !important;
-        --el-menu-hover-bg-color:#f1f1f1af !important;
-        --active-item-bg-color:#5240ff30;
-        --active-sub-bg-color_1:#f1f1f1af;
+        --active-sub-bg-color:transparent !important;
         padding: 10px;
         box-sizing: border-box;
         .el-sub-menu__icon-arrow{
@@ -101,7 +108,7 @@ export default {
             &.is-active{
                 background-color: var(--active-sub-bg-color);
                 >.el-sub-menu__title{
-                    background-color: var(--active-sub-bg-color_1);
+                    background-color: var(--local-active-sub-bg-color);
                 }
             }
             .el-sub-menu__icon-arrow{
@@ -119,7 +126,7 @@ export default {
             &:has(.is-sub-defin-active){
                 background-color: var(--active-sub-bg-color);
                 >.el-sub-menu__title{
-                    background-color: var(--active-sub-bg-color_1);
+                    background-color: var(--local-active-sub-bg-color);
                 }
             }
         }
