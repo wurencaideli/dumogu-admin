@@ -118,6 +118,13 @@ export function getUserData(){
                         content:'用户目录配置',
                         iconName:"alignleft-fill",
                     },
+                    {
+                        name:"bt-permission",
+                        title:'按钮权限管理',
+                        isCache:true,
+                        content:'与菜单分开',
+                        iconName:"borderverticle-fill",
+                    },
                 ],
             },
             {

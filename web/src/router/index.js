@@ -142,6 +142,14 @@ export const constantRoutes = [
                     isMenu:true,
                 },
             },
+            {
+                path: 'system/bt-permission',
+                component: () => import('@/views/system/btPermission/index.vue'),
+                name: 'bt-permission',
+                meta: { 
+                    isMenu:true,
+                },
+            },
         ],
     },
     /** 404页面 */

@@ -19,73 +19,23 @@
                     <el-col :span="24">
                         <el-form-item label="提示">
                             <p style="opacity: 0.8;">
-                                上级菜单不允许选比自己层级小的层级，其中路由名称表示页面的名称（只能选系统有的），路由地址表示跳转地址，没有的话会根据路由名称自动匹配，可以定义外部链接
+                                按钮可以是任何地方，不一定必须跟页面挂钩，而且菜单配置也只是配置菜单而已，权限可以控制跳转到那个页面也可以控制有那些按钮。
                             </p>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="24">
-                        <el-form-item label="上级菜单" prop="parentId">
-                            <el-tree-select
-                                style="width:100%;"
-                                v-model="dataContainer.form.parentId"
-                                placeholder="请选择"
-                                :disabled="configData.isShow"
-                                clearable
-                                :data="dataContainer.menuList"
-                                check-strictly
-                                :render-after-expand="false"
-                                show-checkbox
-                                :check-on-click-node="true"
-                                value-key="id"
-                                :props="{ 
-                                    children: 'childs',
-                                    label: 'title',
-                                    value:'id',
-                                    disabled(data){
-                                        return data.treeLevels >= dataContainer.form.treeLevels;
-                                    },
-                                }"
-                            />
-                        </el-form-item>
-                    </el-col>
                     <el-col :span="12" :xs="6">
-                        <el-form-item label="菜单名称" prop="title">
+                        <el-form-item label="权限按钮名称" prop="name">
                             <el-input
-                                v-model="dataContainer.form.title"
+                                v-model="dataContainer.form.name"
                                 placeholder="请输入"
                                 :disabled="configData.isShow"
                                 clearable/>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12" :xs="6">
-                        <el-form-item label="菜单简介" prop="content">
+                        <el-form-item label="权限字符" prop="content">
                             <el-input
                                 v-model="dataContainer.form.content"
-                                placeholder="请输入"
-                                :disabled="configData.isShow"
-                                clearable/>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="12" :xs="6">
-                        <el-form-item label="路由名称(跳转页面)" prop="name">
-                            <el-select 
-                                placeholder="请选择"
-                                style="width:100%;"
-                                :disabled="configData.isShow"
-                                v-model="dataContainer.form.name"
-                                clearable>
-                                <el-option
-                                    v-for="item,index in dataContainer.sysMeluList"
-                                    :key="index"
-                                    :label="item.name"
-                                    :value="item.name"/>
-                            </el-select>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="12" :xs="6">
-                        <el-form-item label="路由地址/链接" prop="path">
-                            <el-input
-                                v-model="dataContainer.form.path"
                                 placeholder="请输入"
                                 :disabled="configData.isShow"
                                 clearable/>
@@ -101,57 +51,6 @@
                                 controls-position="right"
                                 :disabled="configData.isShow"
                                 clearable
-                            />
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="12" :xs="6">
-                        <el-form-item label="图标" prop="iconName">
-                            <IconSlect
-                                :name="dataContainer.form.iconName"
-                                :isShow="configData.isShow"
-                                @change="e=>{
-                                    dataContainer.form.iconName = e;
-                                }">
-                            </IconSlect>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="12" :xs="6">
-                        <el-form-item label="是否缓存" prop="isCache">
-                            <el-switch
-                                v-model="dataContainer.form.isCache"
-                                :disabled="configData.isShow"
-                                active-text="是"
-                                inactive-text="否"
-                            />
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="12" :xs="6">
-                        <el-form-item label="是否隐藏" prop="hidden">
-                            <el-switch
-                                v-model="dataContainer.form.hidden"
-                                :disabled="configData.isShow"
-                                active-text="是"
-                                inactive-text="否"
-                            />
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="12" :xs="6">
-                        <el-form-item label="是否外部链接" prop="isLink">
-                            <el-switch
-                                v-model="dataContainer.form.isLink"
-                                :disabled="configData.isShow"
-                                active-text="是"
-                                inactive-text="否"
-                            />
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="12" :xs="6">
-                        <el-form-item label="是否标签页固定" prop="fixed">
-                            <el-switch
-                                v-model="dataContainer.form.fixed"
-                                :disabled="configData.isShow"
-                                active-text="是"
-                                inactive-text="否"
                             />
                         </el-form-item>
                     </el-col>
@@ -192,14 +91,13 @@ import { verifiedData } from "@/common/VerifiedTools";
 import {messageError} from "@/action/MessagePrompt.js";
 import SvgIcon from "@/components/svgIcon/index.vue";
 import IconSlect from "@/components/IconSlect.vue";
-import {sysMeluList} from "@/router/Common";
 //配置信息，初始化时使用
 const configMap = {
     open: {
         default: false,
     },
     title: {
-        default: '菜单数据',
+        default: '按钮权限数据',
     },
     afterTitle: {
         default: '',
@@ -226,10 +124,9 @@ export default defineComponent({
             reject:undefined,
             form:{},
             rules:{
-                title: [{ required: true, message: '请输入菜单名称', trigger: 'blur' }],
+                name: [{ required: true, message: '请输入名称', trigger: 'blur' }],
             },
             menuList:[],
-            sysMeluList:sysMeluList,
         });
         const otherDataContainer = {
             castParams:{},  //向外部传递的参数
@@ -259,7 +156,6 @@ export default defineComponent({
             configData.open = show;
             nextTick(() => {
                 dataContainer.form = data;
-                dataContainer.menuList = option.menuList || [];
                 // getDataInfo();
                 
             });
