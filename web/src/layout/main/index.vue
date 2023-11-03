@@ -327,6 +327,7 @@ export default defineComponent({
             position: relative;
             z-index: 9;
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.177);
+            background-color: #153451;
         }
         >.right{
             flex: 1 1 0;

@@ -232,6 +232,9 @@ export default {
             justify-content: flex-start;
             align-items: center;
             box-shadow: 0 0px 5px rgba(0, 0, 0, 0.177);
+            background-color: #153451;
+            // color:#444954;
+            color: #d2dde9;
             >.logo{
                 // flex:1 1 0;
                 width: 50px;
@@ -244,7 +247,6 @@ export default {
                 width: max-content;
                 font-size: 20px;
                 font-weight: bold;
-                color:#444954;
             }
         }
     }

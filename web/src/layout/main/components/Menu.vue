@@ -72,12 +72,14 @@ export default {
     height: 100%;
     width: 100%;
     /** 基础目录配置 */
-    --local-active-text-color:#5240ff;
-    --local-active-bg-color:#5240ff30;
-    --local-active-sub-bg-color:#f1f1f1af;
-    --local-hover-color:#f1f1f1af;
+    --local-active-text-color:#ffffff;
+    --local-active-bg-color:#5240ff94;
+    --local-active-sub-bg-color:#3634ac57;
+    --local-hover-color:#3634ac57;
     --local-font-size:16px;
-    --local-text-color:rgb(91, 91, 91);
+    --local-text-color:#b6cce2;
+    --local-box-shadow: 0 1px 4px #001247;
+    --local-border-radius:8px;
     :deep(.el-menu){
         border:none !important;
         --el-menu-active-color:var(--local-active-text-color) !important;
@@ -103,7 +105,7 @@ export default {
         }
         .el-sub-menu{
             >.el-sub-menu__title{
-                border-radius: 5px;
+                border-radius: var(--local-border-radius);
             }
             &.is-active{
                 background-color: var(--active-sub-bg-color);
@@ -117,9 +119,9 @@ export default {
             &.is-sub-defin-active{
                 >.el-sub-menu__title{
                     background-color: var(--active-item-bg-color);
-                    font-weight: bold;
+                    // font-weight: bold;
                     color: var(--el-menu-active-color);
-                    box-shadow: inset 0 1px 4px #0000001f;
+                    box-shadow: var(--local-box-shadow);
                 }
             }
             /** 表示有已经活动的sub目录 */
@@ -131,11 +133,11 @@ export default {
             }
         }
         .el-menu-item{
-            border-radius: 5px;
+            border-radius: var(--local-border-radius);
             &.is-active{
                 background-color: var(--active-item-bg-color);
-                font-weight: bold;
-                box-shadow: inset 0 1px 4px #0000001f;
+                // font-weight: bold;
+                box-shadow: var(--local-box-shadow);
             }
         }
     }
