@@ -251,7 +251,11 @@ export default defineComponent({
 </script>
 
 <template>
-    <div class="main-layout">    
+    <div 
+        :class="{
+            'main-layout':true,
+            'is-view-full-screen':false,
+        }">    
         <div class="head-container">
             <Navbar
                 :userInfo="dataContainer.userInfo"
@@ -302,6 +306,30 @@ export default defineComponent({
     background-color: white;
     position: relative;
     z-index: 9;
+    /** 内容页面全屏展示 */
+    &.is-view-full-screen{
+        >.head-container{
+            z-index: 1;
+        }
+        >.content-container{
+            z-index: 2;
+            >.left{
+                z-index: 2;
+            }
+            >.right{
+                z-index: 3;
+                >.view-container{
+                    z-index: 4;
+                    position:fixed;
+                    top: 0;
+                    left: 0;
+                    flex: initial;
+                    height: 100vh;
+                    width: 100vw;
+                }
+            }
+        }
+    }
     >.head-container{
         width: 100%;
         background-color: white;

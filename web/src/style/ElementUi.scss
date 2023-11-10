@@ -132,6 +132,9 @@
         &.is-vertical{
             width: 8px !important;
         }
+        &.is-horizontal{
+            height: 8px !important;
+        }
         .el-scrollbar__thumb{
             background-color: rgba(0, 0, 0, 0.51) !important;
             opacity: 1 !important;
