@@ -1,9 +1,18 @@
 <template>
     <div 
         class="svg-icon"
-        v-show="dataContainer.imgMap[dataContainer.name]"
-        v-html="dataContainer.imgMap[dataContainer.name]"
+        v-show="iconData.name"
         :style="dataContainer.style">
+        <div
+            class="icon-container-svg"
+            v-if="iconData.type=='svg'"
+            v-html="iconData.svg">
+        </div>
+        <img 
+            class="icon-container-img"
+            v-if="iconData.type=='img'"
+            :src="iconData.src" 
+            :alt="iconData.name">
     </div>
 </template>
   
@@ -11,8 +20,8 @@
 /** 
  * 自定义的icon组件
  */
-import { defineComponent,ref,reactive,toRef } from 'vue';
-import {imgMap} from "./Common.js";
+import { defineComponent,ref,reactive,toRef, computed } from 'vue';
+import {iconNameMap} from "./Common.js";
 
 export default defineComponent({
     name:'SvgIcon',
@@ -30,10 +39,15 @@ export default defineComponent({
         const dataContainer = reactive({
             name:toRef(props,'name'),
             style:toRef(props,'style'),
-            imgMap:imgMap,
+            iconNameMap:iconNameMap,
+        });
+        /** icon 个体数据 */
+        const iconData = computed(()=>{
+            return iconNameMap[dataContainer.name] || {};
         });
         return {
             dataContainer,
+            iconData,
         };
     },
 });
@@ -44,16 +58,26 @@ export default defineComponent({
     width: 20px;
     height: 20px;
     line-height: 1;
-    :deep(svg){
-        object-fit: cover;
+    >.icon-container-svg{
+        width: 100%;
+        height: 100%;
+        :deep(svg){
+            object-fit: cover;
+            height: 100%;
+            width: 100%;
+            vertical-align: bottom;
+            fill: currentColor;
+            /** 所有的颜色都使用外部的color属性 */
+            path{
+                fill: currentColor;
+            }
+        }
+    }
+    >.icon-container-img{
+        vertical-align: bottom;
         height: 100%;
         width: 100%;
-        vertical-align: bottom;
-        fill: currentColor;
-        /** 所有的颜色都使用外部的color属性 */
-        path{
-            fill: currentColor;
-        }
+        object-fit: cover;
     }
 }
 </style>

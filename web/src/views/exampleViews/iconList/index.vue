@@ -5,7 +5,7 @@
             <div class="container">
                 <div 
                     class="item"
-                    v-for="item,index in dataContainer.imgList"
+                    v-for="item,index in dataContainer.iconList"
                     @click="onClick(item)"
                     :key="index">
                     <SvgIcon
@@ -27,7 +27,7 @@
  */
 import {defineComponent,onBeforeUnmount,ref,reactive,getCurrentInstance,onActivated} from 'vue';
 import SvgIcon from "@/components/svgIcon/index.vue";
-import {imgList} from "@/components/svgIcon/Common.js";
+import {iconList} from "@/components/svgIcon/Common.js";
 import DefinScrollbar from "@/components/DefinScrollbar.vue";
 import { copyValue } from '@/common/OtherTools';
 import {messageSuccess} from "@/action/MessagePrompt";
@@ -39,7 +39,7 @@ export default defineComponent({
     },
     setup() {
         const dataContainer = reactive({
-            imgList:imgList,
+            iconList:iconList,
         });
         /** copy事件 */
         function onClick(item){

@@ -1,6 +1,7 @@
 <template>
     <div class="menu-container">
-        <el-scrollbar height="100%">
+        <el-scrollbar 
+            height="100%">
             <el-menu 
                 ref="ElMenuRef"
                 :default-active="route.path">
@@ -138,6 +139,13 @@ export default {
                 background-color: var(--active-item-bg-color);
                 // font-weight: bold;
                 box-shadow: var(--local-box-shadow);
+            }
+        }
+    }
+    :deep(.el-scrollbar){
+        .el-scrollbar__bar{
+            .el-scrollbar__thumb{
+                background-color: rgba(194, 194, 194, 0.51) !important;
             }
         }
     }

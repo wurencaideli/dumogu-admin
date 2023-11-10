@@ -30,7 +30,7 @@
  */
 import { defineComponent, ref, getCurrentInstance, reactive, nextTick, computed, toRef } from 'vue';
 import SvgIcon from "@/components/svgIcon/index.vue";
-import {imgList} from "@/components/svgIcon/Common.js";
+import {iconList} from "@/components/svgIcon/Common.js";
 
 export default defineComponent({
     name: 'IconSelect',
@@ -63,7 +63,7 @@ export default defineComponent({
         });
         /** 获取icon */
         function getIconDataList(value, callback){
-            callback(imgList.map(item=>{
+            callback(iconList.map(item=>{
                 return {
                     value:item.name,
                 };

@@ -4,20 +4,46 @@
  */
 
 /** 读取所有svg文件为字符串 */
-const imgSrcList = import.meta.glob('./svgs/**/*.svg',{
+const svgIconObj = import.meta.glob('./svgs/**/*.svg',{
     eager:true,
     as: 'raw',
 });
-
-/** 文件名对应资源地址 */
-export let imgList = Object.keys(imgSrcList).map(item => {
+const svgIconList = Object.keys(svgIconObj).map(item => {
     let name = item.match(/([^/]*?)\.[^/.]+$/)[1];
     return {
+        type:'svg',
         name:name,
-        svg:imgSrcList[item],
+        svg:svgIconObj[item],
     };
 });
-export let imgMap = imgList.reduce((c,i)=>{
-    c[i.name] = i.svg;
+/** 读取所有以资源引入的文件 */
+const imgIconObj = import.meta.glob('./imgs/**/*.*',{
+    eager:true,
+});
+const imgIconList = Object.keys(imgIconObj).map(item=>{
+    item = imgIconObj[item];
+    if(!item) return {};
+    let src = item.default;
+    let name = src.match(/([^/]*?)\.[^/.]+$/)[1];
+    return {
+        type:'img',
+        name:name,
+        src:src,
+    };
+});
+
+/**
+ * 导出所有的icon
+ */
+export const iconList = [
+    ...svgIconList,
+    ...imgIconList,
+];
+/**
+ * 导出所有的icon name map 方便使用
+ * icon 不是很多，使用obj当map方便许多
+ */
+export const iconNameMap = iconList.reduce((c,i)=>{
+    c[i.name] = i;
     return c;
 },{});

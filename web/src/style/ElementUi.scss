@@ -129,6 +129,9 @@
 .el-scrollbar{
     .el-scrollbar__bar{
         border-radius: 2px !important;
+        &.is-vertical{
+            width: 8px !important;
+        }
         .el-scrollbar__thumb{
             background-color: rgba(0, 0, 0, 0.51) !important;
             opacity: 1 !important;

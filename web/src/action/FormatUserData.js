@@ -212,7 +212,8 @@ export function getUserData(){
                 title:'icon 列表展示',
                 isCache:true,
                 content:'(有缓存)',
-                iconName:"collection-fill",
+                // iconName:"collection-fill",
+                iconName:"logo",
                 number:20,
             },
             {
