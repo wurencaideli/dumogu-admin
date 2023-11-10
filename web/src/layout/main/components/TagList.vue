@@ -18,9 +18,14 @@
                             'active':dataContainer.activeSign==element.sign,
                         }"
                         @click="handleClick(element)">
+                        <SvgIcon
+                            class="sign icon-sign"
+                            v-if="element.showTagIcon && element.iconName"
+                            :style="'width: 15px;min-width:15px;height: 15px;'"
+                            :name="element.iconName"></SvgIcon>
                         <div 
                             class="sign"
-                            v-if="dataContainer.activeSign==element.sign">
+                            v-else-if="dataContainer.activeSign==element.sign">
                         </div>
                         {{element.title}}
                         <div
@@ -255,14 +260,14 @@ export default {
                 flex-direction: row;
                 justify-content: center;
                 align-items: center;
-                padding: 5px 10px;
+                padding: 5px 8px;
                 box-sizing: border-box;
                 margin-left: 5px;
                 font-size: 13px;
                 height: 30px;
                 width: max-content;
                 border-radius: 3px;
-                color: rgb(91, 91, 91);
+                color: #606266;
                 position: relative;
                 &:last-child{
                     margin-right: 5px;
@@ -280,6 +285,9 @@ export default {
                     border-radius: 50%;
                     background-color: #5240ff;
                     margin-right: 5px;
+                    &.icon-sign{
+                        background-color: transparent;
+                    }
                 }
                 >.bt{
                     width: fit-content;

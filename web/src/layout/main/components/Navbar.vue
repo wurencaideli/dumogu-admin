@@ -337,13 +337,13 @@ export default {
                     box-shadow: inset 0 1px 4px #0000002a;
                 }
                 >.img{
-                    width: 45px;
-                    min-width: 45px;
-                    height: 45px;
+                    width: 43px;
+                    min-width: 43px;
+                    height: 43px;
                     border-radius: 50%;
                     margin-right: 10px;
                     // border: 2px solid #949494;
-                    box-shadow: #00000071 2px 2px 5px;
+                    box-shadow: #0000002a 2px 2px 5px;
                 }
                 >.name{
                     font-size: 14px;

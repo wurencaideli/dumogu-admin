@@ -117,6 +117,7 @@ export function getUserData(){
                         isCache:true,
                         content:'用户目录配置',
                         iconName:"alignleft-fill",
+                        showTagIcon:true,
                     },
                     {
                         name:"bt-permission",
@@ -124,6 +125,7 @@ export function getUserData(){
                         isCache:true,
                         content:'与菜单分开',
                         iconName:"borderverticle-fill",
+                        showTagIcon:true,
                     },
                     {
                         name:"user-list",
@@ -131,6 +133,7 @@ export function getUserData(){
                         isCache:true,
                         content:'',
                         iconName:"user-fill",
+                        showTagIcon:true,
                     },
                     {
                         name:"role-list",
@@ -138,6 +141,7 @@ export function getUserData(){
                         isCache:true,
                         content:'',
                         iconName:"user-group-fill",
+                        showTagIcon:true,
                     },
                 ],
             },
@@ -187,7 +191,8 @@ export function getUserData(){
                                         name:"show-list-update",
                                         path:'/main/show-list/update/1231233',
                                         title:'数据编辑 - 测试',
-                                        iconName:"plus-square-fill",
+                                        iconName:"test-1",
+                                        showTagIcon:true,
                                     },
                                 ],
                             },
@@ -214,6 +219,7 @@ export function getUserData(){
                 content:'(有缓存)',
                 // iconName:"collection-fill",
                 iconName:"logo",
+                showTagIcon:true,
                 number:20,
             },
             {

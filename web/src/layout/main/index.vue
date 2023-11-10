@@ -134,6 +134,8 @@ export default defineComponent({
                 sign:route.path,  //唯一标识
                 isCache:userMenuConfig.isCache,  //表示该标签需要缓存
                 fixed:userMenuConfig.fixed,  //表示该标签需要固定
+                showTagIcon:userMenuConfig.showTagIcon,  //表示该标签是否需要显示icon
+                iconName:userMenuConfig.iconName,  //表示该标签对应的icon
             };
             /** 
              * 必须是系统目录中的，不然不允许添加标签，因为只有属于目录才会有标签

@@ -55,8 +55,10 @@ export default defineComponent({
     <el-scrollbar 
         height="100vh">
         <router-view v-slot="{ Component }">
-            <component 
-                :is="Component" />
+            <transition name="el-fade-in">
+                <component 
+                    :is="Component" />
+            </transition>
         </router-view>
     </el-scrollbar>
 </el-config-provider>
