@@ -21,10 +21,10 @@ const imgIconObj = import.meta.glob('./imgs/**/*.*',{
     eager:true,
 });
 const imgIconList = Object.keys(imgIconObj).map(item=>{
+    let name = item.match(/([^/]*?)\.[^/.]+$/)[1];
     item = imgIconObj[item];
     if(!item) return {};
     let src = item.default;
-    let name = src.match(/([^/]*?)\.[^/.]+$/)[1];
     return {
         type:'img',
         name:name,
