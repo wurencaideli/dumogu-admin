@@ -234,6 +234,14 @@ export default defineComponent({
                 isCache:!item.isCache,
             });
         }
+        /** 切换固定状态 */
+        function handleSwitchFixed(item){
+            if(!item) return;
+            updateTag({
+                ...item,
+                fixed:!item.fixed,
+            });
+        }
         /** 
          * 需要缓存的页面列表
          * 根据标签列表来的，需要改的话只需要处理标签列表
@@ -255,6 +263,7 @@ export default defineComponent({
             handleOptionClick,
             userDataStore,
             handleSwitchCache,
+            handleSwitchFixed,
         };
     },
 });
@@ -287,6 +296,7 @@ export default defineComponent({
                         @onClick="handleTagClick"
                         @onRemove="handleTagRemove"
                         @onSwitchCache="handleSwitchCache"
+                        @onSwitchFixed="handleSwitchFixed"
                         @onOptionClick="handleOptionClick"></TagList>
                 </div>
                 <div class="view-container">
@@ -368,7 +378,7 @@ export default defineComponent({
             position: relative;
             z-index: 9;
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.177);
-            background-color: #153451;
+            background-color: #153451e8;
         }
         >.right{
             flex: 1 1 0;

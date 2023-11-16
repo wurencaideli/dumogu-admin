@@ -117,6 +117,14 @@
                 name="switch"></SvgIcon>
             切换缓存状态
         </div>
+        <div 
+            class="item"
+            @click="handleSwitchFixed()">
+            <SvgIcon
+                :style="'width:16px;height:16px;'"
+                name="nail"></SvgIcon>
+            切换固定状态
+        </div>
     </div>
 </div>
 </template>
@@ -166,7 +174,7 @@ export default {
             default:0,
         },
     },
-    emits:['onChange','onClick','onRemove','onOptionClick','onSwitchCache'],
+    emits:['onChange','onClick','onRemove','onOptionClick','onSwitchCache','onSwitchFixed'],
     setup(props,{emit}){
         const ElScrollbarRef = ref(null);
         const TagListRef = ref(null);
@@ -278,6 +286,14 @@ export default {
             if(!otherDataContainer.activeItem) return;
             emit('onSwitchCache',otherDataContainer.activeItem);
         }
+        /** 
+         * 切换固定状态
+         * 由外部实现
+         *  */
+        function handleSwitchFixed(){
+            if(!otherDataContainer.activeItem) return;
+            emit('onSwitchFixed',otherDataContainer.activeItem);
+        }
         return {
             dataContainer,
             handleClick,
@@ -289,6 +305,7 @@ export default {
             handleClickContext,
             TagListRef,
             handleSwitchCache,
+            handleSwitchFixed,
         };
     },
 }
