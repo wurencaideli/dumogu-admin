@@ -25,7 +25,10 @@
   
 <script>
 /** 根据options 展示value为tag形式 */
-import { defineComponent,ref,reactive,toRef } from 'vue';
+import { 
+    defineComponent,ref,reactive,toRef,
+    computed,
+} from 'vue';
 
 export default defineComponent({
     name:'DictTags',
@@ -35,7 +38,7 @@ export default defineComponent({
             default: [],
         },
         value: {  // 当前的值
-            type:[Number, String, Array],
+            type:[Number, String, Array, Boolean],
             default:'',
         },
         valueKey:{

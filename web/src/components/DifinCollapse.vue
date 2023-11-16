@@ -1,9 +1,30 @@
 <template>
     <div 
-        class="collapse-el"
-        ref="CollapseElRef">
-        <div class="collapse-el-container">
-            <slot></slot>
+        class="collapse-el">
+        <div
+            ref="CollapseElRef" 
+            class="collapse-el-container">
+            <div class="collapse-el-container-container">
+                <slot></slot>
+            </div>
+        </div>
+        <div
+            v-if="showBt" 
+            class="collapse-el-show-container">
+            <div
+                @click="handleClick"
+                class="container">
+                <div
+                    :class="{
+                        'bt':true,
+                        'show':show,
+                    }">
+                    <SvgIcon 
+                        :style="'width:15px;height:15px;'"
+                        name="sort-down"></SvgIcon>
+                </div>
+                {{show?'收缩':'展开'}}
+            </div>
         </div>
     </div>
 </template>
@@ -12,23 +33,37 @@
 /**
  * 折叠组件
  */
-import { defineComponent,ref,toRef } from 'vue';
+import { 
+    defineComponent,ref,toRef,
+    onMounted,
+    watch,onBeforeUnmount,
+} from 'vue';
+import SvgIcon from "@/components/svgIcon/index.vue";
 
 export default defineComponent({
     name:'Collapse',
+    components: {
+        SvgIcon,
+    },
     props:{
         show:{  //是否显示
             type:Boolean,
             default:true,
+        },
+        showBt:{  //是否显示展开按钮
+            type:Boolean,
+            default:false,
         },
         anchorPointSignName:{  //锚点标识（可用querySelector查询出来的标识）
             type:String,
             default:'.anchor-point-target',
         },
     },
-    setup(props){
+    emits:['onClick'],
+    setup(props,{emit}){
         const CollapseElRef = ref(null);
         const show = toRef(props,'show');
+        const showBt = toRef(props,'showBt');
         const anchorPointSignName = toRef(props,'anchorPointSignName');
         onMounted(() => {
             const childEl = CollapseElRef.value.firstChild;
@@ -75,9 +110,15 @@ export default defineComponent({
         onBeforeUnmount(()=>{
             clearTimeout(timer);
         });
+        /** 收缩组件点击事件，向外部抛出 */
+        function handleClick(){
+            emit('onClick');
+        }
         return {
             CollapseElRef,
             show,
+            showBt,
+            handleClick,
         };
     },
 });
@@ -87,15 +128,53 @@ export default defineComponent({
 .collapse-el{
     position: relative;
     width: 100%;
-    overflow: hidden;
-    transition: all 0.2s;
-    height: 0;
+    height: auto;
     >.collapse-el-container{
+        position: relative;
+        width: 100%;
+        overflow: hidden;
+        transition: all 0.2s;
+        height: 0;
+        >.collapse-el-container-container{
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: fit-content;
+        }
+    }
+    >.collapse-el-show-container{
+        display: flex;
+        justify-content: center;
+        align-items: center;
         position: absolute;
-        top: 0;
+        bottom: -7.5px;
         left: 0;
         width: 100%;
-        height: fit-content;
+        pointer-events: none;
+        >.container{
+            width: fit-content;
+            height: fit-content;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+            opacity: 0.5;
+            pointer-events: initial;
+            line-height: 1;
+            >.bt{
+                width: 15px;
+                height: 15px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                transition: all 0.2s;
+                transform: rotate(0deg);
+                &.show{
+                    transform: rotate(180deg);
+                }
+            }
+        }
     }
 }
 </style>

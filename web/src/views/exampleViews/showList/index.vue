@@ -2,97 +2,111 @@
     <div class="page-container main-view">
         <el-row
             :gutter="0"
-            v-show="dataContainer.showSearch"
             class="page-query-box">
-            <el-col :span="24" :xs="24">
-                <el-form
-                    :model="dataContainer.form"
-                    ref="QueryFormRef"
-                    :inline="true"
-                    label-width="110px">
-                    <el-row :gutter="0">
-                        <el-col :span="6" :xs="6">
-                            <el-form-item label="数据名称" prop="code">
-                                <el-input
-                                    v-model="dataContainer.form.code"
-                                    placeholder="请输入"
-                                    clearable
-                                    @clear="handleQuery"
-                                    @keyup.enter="handleQuery"/>
-                            </el-form-item>
-                        </el-col>
-                        <el-col :span="6" :xs="6">
-                            <el-form-item label="数据编号" prop="code">
-                                <el-input
-                                    v-model="dataContainer.form.code"
-                                    placeholder="请输入"
-                                    clearable
-                                    @clear="handleQuery"
-                                    @keyup.enter="handleQuery"/>
-                            </el-form-item>
-                        </el-col>
-                        <el-col :span="6" :xs="6">
-                            <el-form-item label="编号" prop="code">
-                                <el-input
-                                    v-model="dataContainer.form.code"
-                                    placeholder="请输入"
-                                    clearable
-                                    @clear="handleQuery"
-                                    @keyup.enter="handleQuery"/>
-                            </el-form-item>
-                        </el-col>
-                        <el-col :span="6" :xs="6">
-                            <el-form-item label="编号" prop="code">
-                                <el-input
-                                    v-model="dataContainer.form.code"
-                                    placeholder="请输入"
-                                    clearable
-                                    @clear="handleQuery"
-                                    @keyup.enter="handleQuery"/>
-                            </el-form-item>
-                        </el-col>
-                        <el-col :span="6" :xs="6">
-                            <el-form-item label="编号" prop="code">
-                                <el-input
-                                    v-model="dataContainer.form.code"
-                                    placeholder="请输入"
-                                    clearable
-                                    @clear="handleQuery"
-                                    @keyup.enter="handleQuery"/>
-                            </el-form-item>
-                        </el-col>
-                        <el-col :span="6" :xs="6">
-                            <el-form-item label="编号" prop="code">
-                                <el-input
-                                    v-model="dataContainer.form.code"
-                                    placeholder="请输入"
-                                    clearable
-                                    @clear="handleQuery"
-                                    @keyup.enter="handleQuery"/>
-                            </el-form-item>
-                        </el-col>
-                        <el-col :span="8" :xs="8">
-                            <el-form-item label=" ">
-                                <el-button
-                                    type="primary"
-                                    @click="handleQuery">
-                                    <SvgIcon 
-                                        :style="'width:15px;height:15px;margin-right:5px;'"
-                                        name="search-bt"></SvgIcon>
-                                    查询
-                                </el-button>
-                                <el-button
-                                    @click="resetQuery">
-                                    <SvgIcon 
-                                        :style="'width:15px;height:15px;margin-right:5px;'"
-                                        name="redo"></SvgIcon>
-                                    重置
-                                </el-button>
-                            </el-form-item>
-                        </el-col>
-                    </el-row>
-                </el-form>
-            </el-col>
+            <DifinCollapse
+                :show="dataContainer.showSearch"
+                :showBt="true"
+                @onClick="dataContainer.showSearch=!dataContainer.showSearch">
+                <el-col :span="24" :xs="24">
+                    <el-form
+                        :model="dataContainer.form"
+                        ref="QueryFormRef"
+                        :inline="true"
+                        label-width="110px">
+                        <el-row :gutter="0">
+                            <el-col 
+                                class="anchor-point-target"
+                                :span="6" :xs="6">
+                                <el-form-item label="用户名称" prop="userName">
+                                    <el-input
+                                        v-model="dataContainer.form.userName"
+                                        placeholder="请输入"
+                                        clearable
+                                        @clear="handleQuery"
+                                        @keyup.enter="handleQuery"/>
+                                </el-form-item>
+                            </el-col>
+                            <el-col :span="6" :xs="6">
+                                <el-form-item label="昵称" prop="nickName">
+                                    <el-input
+                                        v-model="dataContainer.form.nickName"
+                                        placeholder="请输入"
+                                        clearable
+                                        @clear="handleQuery"
+                                        @keyup.enter="handleQuery"/>
+                                </el-form-item>
+                            </el-col>
+                            <el-col :span="6" :xs="6">
+                                <el-form-item label="数据编号" prop="id">
+                                    <el-input
+                                        v-model="dataContainer.form.id"
+                                        placeholder="请输入"
+                                        clearable
+                                        @clear="handleQuery"
+                                        @keyup.enter="handleQuery"/>
+                                </el-form-item>
+                            </el-col>
+                            <el-col :span="6" :xs="6">
+                                <el-form-item label="手机号码" prop="phone">
+                                    <el-input
+                                        v-model="dataContainer.form.phone"
+                                        placeholder="请输入"
+                                        clearable
+                                        @clear="handleQuery"
+                                        @keyup.enter="handleQuery"/>
+                                </el-form-item>
+                            </el-col>
+                            <el-col :span="6" :xs="6">
+                                <el-form-item label="可选择" prop="disabled">
+                                    <el-select
+                                        v-model="dataContainer.form.disabled"
+                                        placeholder="请选择"
+                                        clearable
+                                        @clear="handleQuery"
+                                        @change="handleQuery"
+                                    >
+                                        <el-option
+                                            v-for="item in dataContainer.optionList"
+                                            :key="item.id"
+                                            :label="item.label"
+                                            :value="item.value"
+                                        ></el-option>
+                                    </el-select>
+                                </el-form-item>
+                            </el-col>
+                            <el-col :span="6" :xs="6">
+                                <el-form-item label="邮箱" prop="email">
+                                    <el-input
+                                        v-model="dataContainer.form.email"
+                                        placeholder="请输入"
+                                        clearable
+                                        @clear="handleQuery"
+                                        @keyup.enter="handleQuery"/>
+                                </el-form-item>
+                            </el-col>
+                            <el-col :span="12" :xs="12">
+                                <el-form-item label=" ">
+                                    <el-button
+                                        type="primary"
+                                        @click="handleQuery">
+                                        <SvgIcon 
+                                            :style="'width:15px;height:15px;margin-right:5px;'"
+                                            name="search-bt"></SvgIcon>
+                                        查询
+                                    </el-button>
+                                    <el-button
+                                        @click="resetQuery">
+                                        <SvgIcon 
+                                            :style="'width:15px;height:15px;margin-right:5px;'"
+                                            name="redo"></SvgIcon>
+                                        重置
+                                    </el-button>
+                                </el-form-item>
+                            </el-col>
+                        </el-row>
+                    </el-form>
+                </el-col>
+            </DifinCollapse>
         </el-row>
         <div class="table-box content-container page-content-box">
             <div class="top-container">
@@ -111,17 +125,28 @@
                     <el-button
                         plain
                         type="danger"
-                        v-if="dataContainer.currDataList.length>0"
-                        @click="handleDelete(dataContainer.currDataList)">
-                        批量删除
+                        v-if="dataContainer.currentRows.length>0"
+                        @click="handleDelete(dataContainer.currentRows)">
+                        批量删除：{{dataContainer.currentRows.length}}
                     </el-button>
+                    <p style="margin:0;padding:0;">
+                        数据编辑以新开页面的形式，搜索栏部分收缩可保留一行。
+                    </p>
                 </div>
                 <div class="right">
                     <el-button
-                        v-if="hasPermi(['yx:apply:apply'])"
-                        type="primary"
-                        @click="handleAdd">
-                        显示搜索
+                        circle 
+                        @click="resetQuery">
+                        <SvgIcon 
+                            :style="'width:15px;height:15px;'"
+                            name="redo"></SvgIcon>
+                    </el-button>
+                    <el-button
+                        circle 
+                        @click="dataContainer.showSearch=!dataContainer.showSearch">
+                        <SvgIcon 
+                            :style="'width:15px;height:15px;'"
+                            name="search-bt"></SvgIcon>
                     </el-button>
                 </div>
             </div>
@@ -133,47 +158,99 @@
                     @cell-dblclick ="handleCopyVale"
                     @sort-change="handleSortChange"
                     height="100%">
+                    <el-table-column
+                        label="多选组件"
+                        align="center"
+                        width="40"
+                        fixed="left"
+                        class-name="small-padding fixed-width"
+                    >
+                        <template #header>
+                            <el-checkbox
+                                style="height: fit-content;"
+                                v-model="dataContainer.checked__"
+                                @change="e=>{
+                                    changeAllCheck(e);
+                                    handleSelectionChange(dataContainer.list.filter(e=>e.checked__));
+                                }"
+                                label="" size="large" />
+                        </template>
+                        <template #default="scope">
+                            <el-checkbox
+                                v-model="scope.row.checked__"
+                                :disabled="isDisabled(scope.row)"
+                                @change="()=>{
+                                    handleSelectionChange(dataContainer.list.filter(e=>e.checked__));
+                                }"
+                                label="" size="large" />
+                        </template>
+                    </el-table-column>
                     <el-table-column type="index" align="center" label="序号" width="60" fixed="left"/>
                     <el-table-column
-                        label="编号"
+                        label="用户名称"
                         show-overflow-tooltip
                         align="center"
                         min-width="170"
-                        prop="code"
+                        prop="userName"
                         sortable="custom"
                         :sort-orders="['descending', 'ascending']"/>
                     <el-table-column
-                        label="名称"
+                        label="昵称"
                         show-overflow-tooltip
                         align="center"
-                        prop="name"
+                        prop="nickName"
                         min-width="150"
                         sortable="custom"
                         :sort-orders="['descending', 'ascending']"/>
                     <el-table-column
-                        label="名称"
+                        label="数据编号"
                         show-overflow-tooltip
                         align="center"
-                        prop="name"
+                        prop="id"
                         min-width="150"
                         sortable="custom"
                         :sort-orders="['descending', 'ascending']"/>
                     <el-table-column
-                        label="名称"
+                        label="手机号码"
                         show-overflow-tooltip
                         align="center"
-                        prop="name"
+                        prop="phone"
+                        min-width="150"
+                        sortable="custom"
+                        :sort-orders="['descending', 'ascending']"/>
+                    <el-table-column
+                        label="可选择"
+                        show-overflow-tooltip
+                        align="center"
+                        prop="disabled"
+                        min-width="150"
+                        sortable="custom"
+                        :sort-orders="['descending', 'ascending']">
+                        <template #default="scope">
+                            <DictTags
+                                :options="dataContainer.optionList"
+                                :value="scope.row.disabled"
+                                valueKey="value"
+                                labelKey="label"></DictTags>
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                        label="邮箱"
+                        show-overflow-tooltip
+                        align="center"
+                        prop="email"
                         min-width="150"
                         sortable="custom"
                         :sort-orders="['descending', 'ascending']"/>
                     <el-table-column
                         label="操作"
-                        width="250"
+                        width="200"
                         fixed="right"
                         class-name="small-padding fixed-width">
                         <template #default="scope">
                             <el-button
-                                :text="true"
+                                link
+                                type="default"
                                 @click="handleDetails(scope.row,{
                                     isShow:true,
                                     afterTitle:' - 查看',
@@ -181,7 +258,8 @@
                                 查看
                             </el-button>
                             <el-button
-                                :text="true"
+                                link
+                                type="primary"
                                 @click="handleEdit(scope.row,{
                                     isShow:true,
                                     afterTitle:' - 编辑',
@@ -189,7 +267,8 @@
                                 编辑
                             </el-button>
                             <el-button
-                                :text="true"
+                                link
+                                type="danger"
                                 @click="handleDelete([scope.row])">
                                 删除
                             </el-button>
@@ -239,17 +318,21 @@ import {responseData} from "./common/Data.js";
 import {messageSuccess,confirm} from "@/action/MessagePrompt.js";
 import SvgIcon from "@/components/svgIcon/index.vue";
 import {hasPermi} from "@/action/PowerTools";
+import DifinCollapse from "@/components/DifinCollapse.vue";
+import { saveAs } from 'file-saver';
 
 export default defineComponent({
     components: {
         DictTags,
         SvgIcon,
+        DifinCollapse,
     },
     setup() {
         const router = useRouter();
         const dataContainer = reactive({
             loading:false,
             showSearch:true,
+            checked__:false,  //是否全选
             form: {},
             params: {
                 //基础参数
@@ -259,29 +342,38 @@ export default defineComponent({
             config: {
                 total: 0,
             },
-            list: [],
-            currDataList:[],
+            list: [],  //当前展示的数据列表
+            currentRows:[],  //当前多选的数据列表
+            optionList:[
+                {value:true,label:'不可选择',elTagType:'danger'},
+                {value:false,label:'可选择',elTagType:'primary'},
+            ],
         });
         /** 获取数据列表 */
         const getDataList = debounceFn(function() {
+            if(dataContainer.loading) return;
             dataContainer.loading = true;
-            Promise.resolve(responseData)
-                .then(res => {
-                    dataContainer.list = res.rows || [];
-                    dataContainer.config.total = res.total;
-                    /** 默认不选择 */
-                    dataContainer.list.forEach(item=>{
-                        item.checked_ = false;
+            setTimeout(()=>{
+                Promise.resolve(responseData)
+                    .then(res => {
+                        dataContainer.list = res.rows || [];
+                        dataContainer.config.total = res.total;
+                        /** 默认不选择 */
+                        dataContainer.list.forEach(item=>{
+                            item.checked__ = false;
+                        });
+                        dataContainer.checked__ = false;
+                        /** 清空当前多选的数据 */
+                        handleSelectionChange([]);
+                    })
+                    .catch(() => {
+                        return;
+                    })
+                    .finally(() => {
+                        dataContainer.loading = false;
                     });
-                    dataContainer.checked_ = false;
-                })
-                .catch(() => {
-                    return;
-                })
-                .finally(() => {
-                    dataContainer.loading = false;
-                });
-        },300);
+            },800);
+        },70);
         getDataList();
         /** 双击单元格，复制单元格内容 */
         function handleCopyVale(_, __, ___, event){
@@ -306,7 +398,10 @@ export default defineComponent({
         }
         /** 导出数据 */
         function handleExport(){
-            
+            let str = '保存字符串的例子！！';
+            let strData = new Blob([str], { type: 'text/plain;charset=utf-8' });
+            saveAs(strData, "测试文件下载.txt");
+            messageSuccess("导出成功！");
         }
         /** 新增按钮操作 */
         function handleAdd() {
@@ -336,7 +431,7 @@ export default defineComponent({
         }
         /** 删除 */
         function handleDelete(rows){
-            confirm('确认删除该数据？').then(()=>{
+            confirm('确认删除所选数据？','提示！').then(()=>{
                 // dataContainer.loading = true;
                 // deleteSalesLeadApi(rows.map(item=>item.id).join(',')).then(() => {
                 //     getDataList();
@@ -347,6 +442,31 @@ export default defineComponent({
                 // });
                 messageSuccess("删除成功");
             }).catch(() => {});
+        }
+        /** 批次确认多选操作 */
+        function changeAllCheck(value){
+            if(!value){
+                dataContainer.list.forEach(item=>{
+                    item.checked__ = false;
+                });
+            }else{
+                dataContainer.list.forEach(item=>{
+                    if(isDisabled(item)) {
+                        item.checked__ = false;
+                        return;
+                    };
+                    item.checked__ = true;
+                });
+            }
+        }
+        /** 计算批量操作按钮的显示隐藏 */
+        function isDisabled(row){
+            /** 如果该条数据是不可选择的话可以设置 */
+            return row.disabled;
+        }
+        // 多选框选中数据
+        function handleSelectionChange(selection) {
+            dataContainer.currentRows = selection || [];
         }
         return {
             dataContainer,
@@ -361,6 +481,9 @@ export default defineComponent({
             handleEdit,
             handleDelete,
             hasPermi,
+            changeAllCheck,
+            isDisabled,
+            handleSelectionChange,
         };
     },
 });
@@ -370,11 +493,13 @@ export default defineComponent({
     .main-view{
         display: flex;
         flex-direction: column;
+        /** 页面间隔css变量，可自行调节 */
+        --view-gap:10px;
         >.page-query-box{
-            margin: 0 0 10px 0 !important;
-            padding: 10px 10px 0px 10px;
+            margin: 0 0 var(--view-gap) 0 !important;
+            padding: var(--view-gap) var(--view-gap) 0px var(--view-gap);
             :deep(.el-form-item){
-                margin-bottom: 10px !important;
+                margin-bottom: var(--view-gap) !important;
             }
             :deep(.el-form-item--default){
                 width: 100%;
@@ -385,14 +510,31 @@ export default defineComponent({
             flex: 1;
             display: flex;
             flex-direction: column;
-            padding: 10px 10px;
+            padding: var(--view-gap) var(--view-gap);
             box-sizing: border-box;
             background: #fff;
             >.top-container{
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
-                margin: 0px 0 10px 0;
+                margin: 0px 0 var(--view-gap) 0;
+                >.left{
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    >*{
+                        margin: 0 var(--view-gap) 0 0 !important;
+                    }
+                }
+                >.right{
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    justify-content: flex-end;
+                    >*{
+                        margin: 0 0px 0 var(--view-gap) !important;
+                    }
+                }
             }
             >.table-container{
                 flex: 1 1 auto;
@@ -404,7 +546,7 @@ export default defineComponent({
             display: flex;
             justify-content: flex-end;
             padding: 0;
-            margin: 10px 0 0 0;
+            margin: var(--view-gap) 0 0 0;
         }
     }
 </style>
