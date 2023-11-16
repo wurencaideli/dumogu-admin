@@ -22,6 +22,7 @@ import {
     deleteLeftTags,
     deleteRightTags,
     getLatelyHisTag,
+    updateTag,
 } from "./Common/TagListTools";
 
 export default defineComponent({
@@ -225,6 +226,14 @@ export default defineComponent({
                     break;
             }
         }
+        /** 切换缓存状态 */
+        function handleSwitchCache(item){
+            if(!item) return;
+            updateTag({
+                ...item,
+                isCache:!item.isCache,
+            });
+        }
         /** 
          * 需要缓存的页面列表
          * 根据标签列表来的，需要改的话只需要处理标签列表
@@ -245,6 +254,7 @@ export default defineComponent({
             cacheTagList,
             handleOptionClick,
             userDataStore,
+            handleSwitchCache,
         };
     },
 });
@@ -276,6 +286,7 @@ export default defineComponent({
                         }"
                         @onClick="handleTagClick"
                         @onRemove="handleTagRemove"
+                        @onSwitchCache="handleSwitchCache"
                         @onOptionClick="handleOptionClick"></TagList>
                 </div>
                 <div class="view-container">

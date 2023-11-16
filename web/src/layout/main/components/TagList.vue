@@ -1,6 +1,7 @@
 <template>
 <div 
-    class="tag-list-cp-container">
+    class="tag-list-cp-container"
+    ref="TagListRef">
     <div 
         class="left"
         @wheel="handleScroll">
@@ -17,7 +18,10 @@
                             'item':true,
                             'active':dataContainer.activeSign==element.sign,
                         }"
-                        @click="handleClick(element)">
+                        @click="handleClick(element)"
+                        @contextmenu.prevent="e=>{
+                            handleClickContext(e,element);
+                        }">
                         <SvgIcon
                             class="sign icon-sign"
                             v-if="element.showTagIcon && element.iconName"
@@ -98,6 +102,22 @@
             </div>
         </div>
     </div>
+    <div 
+        v-if="dataContainer.show"
+        :style="{
+            '--location-x':`${dataContainer.location.x || 0}px`, 
+            '--location-y':`${dataContainer.location.y || 0}px`, 
+        }"
+        class="bt-list-container">
+        <div 
+            class="item"
+            @click="handleSwitchCache()">
+            <SvgIcon
+                :style="'width:16px;height:16px;'"
+                name="switch"></SvgIcon>
+            切换缓存状态
+        </div>
+    </div>
 </div>
 </template>
 <script>
@@ -146,13 +166,19 @@ export default {
             default:0,
         },
     },
-    emits:['onChange','onClick','onRemove','onOptionClick'],
+    emits:['onChange','onClick','onRemove','onOptionClick','onSwitchCache'],
     setup(props,{emit}){
         const ElScrollbarRef = ref(null);
+        const TagListRef = ref(null);
         const dataContainer = reactive({
             tagList:toRef(props,'tagList'),
             activeSign:toRef(props,'activeSign'),
+            show:false,
+            location:{},
         });
+        const otherDataContainer = {
+            activeItem:null,
+        };
         /** 用来排序转换的数组，由外部确定是否转换 */
         const tagListTrans = computed({
             get(){
@@ -218,6 +244,40 @@ export default {
         watch(toRef(props,'activeSign'),()=>{
             autoScroll();
         });
+        /** 鼠标右击，展示自定义右击面板 */
+        function handleClickContext(e,item){
+            if(!TagListRef.value) return;
+            let el = TagListRef.value;
+            let el_1 = e.target;
+            let rect = el.getBoundingClientRect();
+            let rect_1 = el_1.getBoundingClientRect();
+            let location = {
+                x:rect_1.x - rect.x,
+                y:rect_1.y - rect.y + rect_1.height,
+            };
+            dataContainer.location = location;
+            dataContainer.show = true;
+            otherDataContainer.activeItem = item;
+        }
+        /** 初始化隐藏事件 */
+        function initHiddenEvent(){
+            function callbackFn(e){
+                dataContainer.show = false;
+            }
+            document.addEventListener('click', callbackFn);
+            onUnmounted(()=>{
+                document.removeEventListener('click', callbackFn);
+            });
+        }
+        initHiddenEvent();
+        /** 
+         * 切换缓存状态
+         * 由外部实现
+         *  */
+        function handleSwitchCache(){
+            if(!otherDataContainer.activeItem) return;
+            emit('onSwitchCache',otherDataContainer.activeItem);
+        }
         return {
             dataContainer,
             handleClick,
@@ -226,6 +286,9 @@ export default {
             tagListTrans,
             handleScroll,
             ElScrollbarRef,
+            handleClickContext,
+            TagListRef,
+            handleSwitchCache,
         };
     },
 }
@@ -244,6 +307,12 @@ export default {
         flex: 1 1 0;
         width: 0;
         height: 100%;
+        :deep(.el-scrollbar__bar){
+            &.is-horizontal{
+                height: 5px !important;
+                opacity: 0.5;
+            }
+        }
         :deep(.el-scrollbar__view){
             height: 100%;
         }
@@ -388,6 +457,54 @@ export default {
             .bt-list-container{
                 opacity: 1;
                 pointer-events: initial;
+            }
+        }
+    }
+    >.bt-list-container{
+        width: fit-content;
+        min-width: 150px;
+        position: absolute;
+        z-index: 9;
+        top: var(--location-y);
+        left: var(--location-x);
+        background-color: rgb(255, 255, 255);
+        box-shadow: 0 3px 8px 0 rgba(0, 0, 0, 0.5);
+        padding: 10px 0;
+        box-sizing: border-box;
+        border-radius: 2px;
+        overflow: hidden;
+        opacity: 1;
+        transition: opacity 0.2s;
+        font-size: 15px;
+        >.item{
+            cursor: pointer;
+            width: auto;
+            min-width: max-content;
+            transition: all 0.2s;
+            padding: 13px 15px;
+            box-sizing: border-box;
+            display: block;
+            color: #6b7386;
+            text-align: left;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-start;
+            >*{
+                margin-right: 10px;
+            }
+            &:hover{
+                box-shadow: inset 0 1px 4px #0000001f;
+                background-color: #fef0f0;
+                color: #f56c6c;
+            }
+            &.re-bt{
+                background-color: rgba(194, 224, 255, 0.5);
+                color: #0072E5;
+                &:hover{
+                    background-color: rgba(194, 224, 255, 0.5);
+                    color: #0072E5;
+                }
             }
         }
     }

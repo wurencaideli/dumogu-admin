@@ -34,9 +34,13 @@
     }
 }
 /** 进度条颜色 */
-#nprogress .bar {
-    height: 5px !important;
-}
+#nprogress{
+    position: relative;
+    z-index: 99999;
+    .bar {
+        height: 5px !important;
+    }
+} 
 /**
  * 页面容器的css 类名
  * 以查询，内容上下排列

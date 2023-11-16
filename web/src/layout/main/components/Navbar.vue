@@ -110,6 +110,15 @@
                 </div>
             </div>
         </div>
+        <div class="search-container">
+            <div class="container">
+                <div class="left">
+                    <SvgIcon
+                        :style="'width:17px;height:17px;'"
+                        name="search-bt"></SvgIcon>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 </template>
@@ -220,6 +229,28 @@ export default {
     justify-content: space-between;
     align-items: center;
     color:#444954;
+    position: relative;
+    @media (max-width: 1100px) {
+        >.right{
+            >.left{
+                >.path-list-container{
+                    display: none !important;
+                }
+            }
+        }
+    }
+    @media (max-width: 750px) {
+        >.right{
+            >.left{
+                >.path-list-container{
+                    display: none !important;
+                }
+            }
+            >.search-container{
+                display: none !important;
+            }
+        }
+    }
     >.left{
         display: flex;
         flex-direction: row;
@@ -262,6 +293,7 @@ export default {
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
+        position: relative;
         >.left{
             flex: 1 1 0;
             width: 0;
@@ -303,6 +335,7 @@ export default {
             align-items: center;
             padding: 0 10px 0 0;
             box-sizing: border-box;
+            position: relative;
             >*{
                 margin-left: 15px;
             }
@@ -425,6 +458,37 @@ export default {
                         opacity: 1;
                         pointer-events: initial;
                     }
+                }
+            }
+        }
+        >.search-container{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            >.container{
+                width: 200px;
+                height: 40px;
+                background-color: white;
+                border:1px solid #e7e7e9;
+                transition: all 0.2s;
+                box-shadow: inset 0 1px 4px #0000001f;
+                pointer-events: initial;
+                border-radius: 8px;
+                padding: 0 10px;
+                box-sizing: border-box;
+                cursor: pointer;
+                >.left{
+                    height: 100%;
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
                 }
             }
         }
