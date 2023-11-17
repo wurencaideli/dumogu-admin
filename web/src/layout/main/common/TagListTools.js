@@ -192,6 +192,8 @@ export function formatTagsByMenu(){
             isCache:userMenuConfig.isCache,  //表示该标签需要缓存
             fixed:userMenuConfig.fixed,  //表示该标签需要固定
             title:userMenuConfig.title,
+            showTagIcon:userMenuConfig.showTagIcon,  //表示该标签是否需要显示icon
+            iconName:userMenuConfig.iconName,
         };
         tagList_.push(item);
     });

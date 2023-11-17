@@ -263,6 +263,9 @@ export default {
         watch(toRef(props,'activeSign'),()=>{
             autoScroll();
         });
+        onMounted(()=>{
+            autoScroll();
+        });
         /** 鼠标右击，展示自定义右击面板 */
         function handleClickContext(e,item){
             if(!TagListRef.value) return;

@@ -15,6 +15,7 @@ import Menu from "./components/Menu.vue";
 import TagList from "./components/TagList.vue";
 import { useRouter,useRoute } from "vue-router";
 import {userData} from "@/store/User";
+import {publicData} from "@/store/Public";
 import {sysMeluList} from "@/router/Common";
 import {
     deleteCurrentTag,
@@ -40,6 +41,7 @@ export default defineComponent({
     props: {},
     setup() {
         let userDataStore = userData();
+        let publicDataStore = publicData();
         const router = useRouter();
         const route = useRoute();
         const dataContainer = reactive({
@@ -49,7 +51,18 @@ export default defineComponent({
             showMenuList:toRef(userDataStore,'showMenuList'),
             hasSysMenuConfigMap:toRef(userDataStore,'hasSysMenuConfigMap'),
             tagHisList:toRef(userDataStore,'tagHisList'),
+            iframeList:toRef(publicDataStore,'iframeList'),  //当前已打开的iframe数组
             breadcrumbList:[],  //面包屑列表
+        });
+        /** 
+         * iframe list map
+         * 记录已有的iframe个数的path map 方便查找
+         *  */
+        const iframePathMap = computed(()=>{
+            return dataContainer.iframeList.reduce((c,i)=>{
+                c[i.path] = i;
+                return c;
+            },{});
         });
         /** 
          * 需要缓存的页面列表
@@ -293,6 +306,8 @@ export default defineComponent({
             handleSwitchCache,
             handleSwitchFixed,
             handleRefresh,
+            iframePathMap,
+            routeIncetance:route,
         };
     },
 });
@@ -330,7 +345,8 @@ export default defineComponent({
                         @onOptionClick="handleOptionClick"></TagList>
                 </div>
                 <div class="view-container">
-                    <router-view v-slot="{ Component,route }">
+                    <router-view 
+                        v-slot="{ Component,route }">
                         <transition name="el-fade-in">
                             <keep-alive 
                                 :include="cacheTagList">
@@ -339,6 +355,25 @@ export default defineComponent({
                             </keep-alive>
                         </transition>
                     </router-view>
+                    <!-- 当前打开的iframe列表页，防止重新刷新 -->
+                    <div
+                        :style="{
+                            'z-index':iframePathMap[routeIncetance.path]?1:-1,
+                            'opacity':iframePathMap[routeIncetance.path]?1:0,
+                        }"
+                        class="iframe-view">
+                        <iframe 
+                            v-for="item in dataContainer.iframeList"
+                            :key="item.key"
+                            :style="{
+                                'z-index':item.path==routeIncetance.path?1:-1,
+                                'opacity':item.path==routeIncetance.path?1:0,
+                            }"
+                            :src="item.src"
+                            width="100%" height="100%" frameborder="0"
+                            allowfullscreen>
+                        </iframe>
+                    </div>
                 </div>
             </div>
         </div>
@@ -435,6 +470,20 @@ export default defineComponent({
                 position: relative;
                 z-index: 1;
                 background-color: #f1f1f1;
+                >.iframe-view{
+                    width: 100%;
+                    height: 100%;
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    z-index: 1;
+                    >iframe{
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        z-index: -1;
+                    }
+                }
             }
         }
     }
