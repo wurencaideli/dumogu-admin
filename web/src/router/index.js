@@ -150,6 +150,14 @@ export const constantRoutes = [
                     isMenu:true,
                 },
             },
+            {
+                path: 'iframe/:sign(.*)',
+                component: () => import('@/views/system/iframe/index.vue'),
+                name: 'iframe',
+                meta: { 
+                    isMenu:true,
+                },
+            },
         ],
     },
     /** 404页面 */

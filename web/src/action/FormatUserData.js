@@ -146,6 +146,26 @@ export function getUserData(){
                 ],
             },
             {
+                title:'站内链接',
+                iconName:"aligncenter-fill",
+                childs:[
+                    {
+                        path:'/main/iframe/https://www.dumogu.top/',
+                        title:'一篇文字',
+                        iconName:"test-1",
+                        showTagIcon:true,
+                        isCache:true,
+                    },
+                    {
+                        path:'/main/iframe/https://blog.dumogu.top/',
+                        title:'毒蘑菇 - 博客',
+                        iconName:"test-1",
+                        showTagIcon:true,
+                        isCache:false,
+                    },
+                ],
+            },
+            {
                 name:"show-list",
                 title:'展示列表',
                 iconName:"laptop-check",
@@ -171,7 +191,6 @@ export function getUserData(){
                 content:'(有缓存)',
                 iconName:"Navbar-full",
             },
-            
             {
                 title:'多级菜单',
                 iconName:"alignleft-fill",
