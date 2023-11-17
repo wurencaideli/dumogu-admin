@@ -8,6 +8,7 @@ import {
     reactive,watch,
     toRef,
     computed,
+    onMounted,
 } from 'vue';
 import Navbar from "./components/Navbar.vue";
 import Menu from "./components/Menu.vue";
@@ -23,7 +24,11 @@ import {
     deleteRightTags,
     getLatelyHisTag,
     updateTag,
+    refreshTag,
+    deleteTags,
+    formatTagsByMenu,
 } from "./Common/TagListTools";
+import {deepCopyObj} from "@/common/OtherTools";
 
 export default defineComponent({
     name:'MainLayout',
@@ -37,6 +42,27 @@ export default defineComponent({
         let userDataStore = userData();
         const router = useRouter();
         const route = useRoute();
+        const dataContainer = reactive({
+            userInfo:toRef(userDataStore,'userInfo'),
+            tagList:toRef(userDataStore,'tagList'),
+            activeSign:toRef(userDataStore,'activeSign'),
+            showMenuList:toRef(userDataStore,'showMenuList'),
+            hasSysMenuConfigMap:toRef(userDataStore,'hasSysMenuConfigMap'),
+            tagHisList:toRef(userDataStore,'tagHisList'),
+            breadcrumbList:[],  //面包屑列表
+        });
+        /** 
+         * 需要缓存的页面列表
+         * 根据标签列表来的，需要改的话只需要处理标签列表
+         *  */
+        const cacheTagList = computed(()=>{
+            return userDataStore.tagList.filter(item=>{
+                return item.isCache;
+            }).map(item=>{
+                /** 缓存组件是根据path命名来缓存的 */
+                return item.path;
+            });
+        });
         /** 
          * 原本方法根据组件名来缓存，现在根据路由path动态修改组件实例名称来缓存
          * 添加tag时也根据路由path来命名
@@ -49,31 +75,31 @@ export default defineComponent({
             // 重点就是这里，这个组件的名字是完全可控的，
             // 只要自己写好逻辑，每次能找到对应的外壳组件就行，完全可以写成任何自己想要的名字
             // 这就能配合 keep-alive 的 include 属性可控地操作缓存
-            if (component) {
-                /** 根据路由的path来为组件命名 */
-                const wrapperName = route.path;
-                if (wrapperMap.has(wrapperName)) {
-                    wrapper = wrapperMap.get(wrapperName);
-                } else {
-                    wrapper = {
-                        name: wrapperName,
-                        render() {
-                            return h(component);
-                        },
-                    };
-                    wrapperMap.set(wrapperName, wrapper);
-                }
-                return h(wrapper);
+            if (!component) return;
+            /** 根据路由的path来为组件命名 */
+            const wrapperName = route.path;
+            if (wrapperMap.has(wrapperName)) {
+                wrapper = wrapperMap.get(wrapperName);
+            } else {
+                wrapper = {
+                    name: wrapperName,
+                    render() {
+                        return h(component);
+                    },
+                };
+                wrapperMap.set(wrapperName, wrapper);
             }
+            /** 以标签页为主，清除不需要的，减少内存 */
+            let pathList = userDataStore.tagList.map(item=>item.path);
+            wrapperMap.forEach((_,key)=>{
+                if(pathList.includes(key)) return;
+                wrapperMap.delete(key);
+            });
+            return h(wrapper);
         }
-        const dataContainer = reactive({
-            userInfo:toRef(userDataStore,'userInfo'),
-            tagList:toRef(userDataStore,'tagList'),
-            activeSign:toRef(userDataStore,'activeSign'),
-            showMenuList:toRef(userDataStore,'showMenuList'),
-            hasSysMenuConfigMap:toRef(userDataStore,'hasSysMenuConfigMap'),
-            tagHisList:toRef(userDataStore,'tagHisList'),
-            breadcrumbList:[],  //面包屑列表
+        /** 页面加载后重新映射标签页与菜单的关系 */
+        onMounted(()=>{
+            formatTagsByMenu();
         });
         /** 根据系统目录获取用户的目录配置 */
         function getUserMenu(data){
@@ -118,7 +144,7 @@ export default defineComponent({
          * 根据当前路由情况 添加标签
          */
         function addTag(){
-            let tagList = dataContainer.tagList;
+            let tagList = deepCopyObj(dataContainer.tagList);
             let activeSign = dataContainer.activeSign;
             /** 获取该路由对应的用户配置 */
             const userMenuConfig = getUserMenu(route);
@@ -178,6 +204,7 @@ export default defineComponent({
          * 跳转到该标签的地址里，注意是完整地址
          *  */
         function handleTagClick(item){
+            if(!item || !item.fullPath) return;
             router.push(item.fullPath);
         }
         /** 
@@ -189,16 +216,24 @@ export default defineComponent({
             let activeSign = dataContainer.activeSign;
             /** 还剩最后一个标签的话不用删除 */
             if(tagList.length <= 1) return;
-            let index = tagList.findIndex(item=>{
-                return item.sign == tag.sign;
+            let lastTarget = null;
+            let nextTarget = null;
+            let target = tagList.find((item,index)=>{
+                let state = item.sign == tag.sign;
+                if(state){
+                    lastTarget = tagList[index - 1];
+                    nextTarget = tagList[index + 1];
+                }
+                return state;
             });
-            if(index == -1) return;
-            let oldTag = tagList[index];
-            tagList.splice(index,1);
-            userDataStore.setTagList(tagList);
+            if(!target) return;
+            /** 删除此标签页 */
+            deleteTags(target.sign);
             /** 如果删除的是当前的标签页的话跳转到最近的标签 */
-            if(oldTag.sign === activeSign){
+            if(target.sign === activeSign){
                 let latelyHisTag = getLatelyHisTag();
+                /** 没有的话跳转到上一个或者下一个 */
+                latelyHisTag = latelyHisTag || lastTarget || nextTarget;
                 /** 触发该标签的点击事件 */
                 handleTagClick(latelyHisTag);
             }
@@ -242,18 +277,11 @@ export default defineComponent({
                 fixed:!item.fixed,
             });
         }
-        /** 
-         * 需要缓存的页面列表
-         * 根据标签列表来的，需要改的话只需要处理标签列表
-         *  */
-        const cacheTagList = computed(()=>{
-            return userDataStore.tagList.filter(item=>{
-                return item.isCache;
-            }).map(item=>{
-                /** 缓存组件是根据path命名来缓存的 */
-                return item.path;
-            });
-        });
+        /** 刷新指定标签页 */
+        function handleRefresh(item){
+            if(!item) return;
+            refreshTag(item.sign);
+        }
         return {
             formatComponentInstance,
             dataContainer,
@@ -264,6 +292,7 @@ export default defineComponent({
             userDataStore,
             handleSwitchCache,
             handleSwitchFixed,
+            handleRefresh,
         };
     },
 });
@@ -297,6 +326,7 @@ export default defineComponent({
                         @onRemove="handleTagRemove"
                         @onSwitchCache="handleSwitchCache"
                         @onSwitchFixed="handleSwitchFixed"
+                        @onRefresh="handleRefresh"
                         @onOptionClick="handleOptionClick"></TagList>
                 </div>
                 <div class="view-container">

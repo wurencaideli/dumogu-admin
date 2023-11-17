@@ -20,7 +20,12 @@ function createS(key,value){
 const userStorage = ()=>{
     return createS('user-container','');
 }
+/** 保存标签页的标签信息 */
+const tagListStorage = ()=>{
+    return createS('tag-list-container','');
+}
 
 export default {
     userStorage,
+    tagListStorage,
 };

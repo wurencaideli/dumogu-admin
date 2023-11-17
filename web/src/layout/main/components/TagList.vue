@@ -125,6 +125,14 @@
                 name="nail"></SvgIcon>
             切换固定状态
         </div>
+        <div 
+            class="item re-bt"
+            @click="handleRefresh()">
+            <SvgIcon
+                :style="'width:16px;height:16px;color:#0072E5;'"
+                name="redo"></SvgIcon>
+            刷新此标签页
+        </div>
     </div>
 </div>
 </template>
@@ -174,7 +182,10 @@ export default {
             default:0,
         },
     },
-    emits:['onChange','onClick','onRemove','onOptionClick','onSwitchCache','onSwitchFixed'],
+    emits:[
+        'onChange','onClick','onRemove','onOptionClick','onSwitchCache','onSwitchFixed',
+        'onRefresh',
+    ],
     setup(props,{emit}){
         const ElScrollbarRef = ref(null);
         const TagListRef = ref(null);
@@ -294,6 +305,14 @@ export default {
             if(!otherDataContainer.activeItem) return;
             emit('onSwitchFixed',otherDataContainer.activeItem);
         }
+        /** 
+         * 刷新标签页
+         * 由外部实现
+         *  */
+        function handleRefresh(){
+            if(!otherDataContainer.activeItem) return;
+            emit('onRefresh',otherDataContainer.activeItem);
+        }
         return {
             dataContainer,
             handleClick,
@@ -306,6 +325,7 @@ export default {
             TagListRef,
             handleSwitchCache,
             handleSwitchFixed,
+            handleRefresh,
         };
     },
 }
