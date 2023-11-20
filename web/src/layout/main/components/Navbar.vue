@@ -137,6 +137,7 @@ import SvgIcon from "@/components/svgIcon/index.vue";
 import {logout} from "@/action/FormatUserData";
 import {confirm} from "@/action/MessagePrompt";
 import img_1 from "@/assets/logo.png";
+import {toggleFullScreen} from "@/common/OtherTools";
 
 export default {
     name: 'Navbar',
@@ -166,34 +167,6 @@ export default {
                 img_1,
             },
         });
-        /** 全屏事件 */
-        function toggleFullScreen() {
-            var elem = document.documentElement; // 获取文档根元素
-            if (!document.fullscreenElement && // 当前不在全屏模式
-                !document.mozFullScreenElement && 
-                !document.webkitFullscreenElement && 
-                !document.msFullscreenElement) {  // 也适用于IE/Edge
-                if (elem.requestFullscreen) {
-                elem.requestFullscreen();
-                } else if (elem.mozRequestFullScreen) { // Firefox
-                elem.mozRequestFullScreen();
-                } else if (elem.webkitRequestFullscreen) { // Chrome, Safari, and Opera
-                elem.webkitRequestFullscreen();
-                } else if (elem.msRequestFullscreen) { // IE/Edge
-                elem.msRequestFullscreen();
-                }
-            } else { // 当前在全屏模式，退出全屏
-                if (document.exitFullscreen) {
-                document.exitFullscreen();
-                } else if (document.mozCancelFullScreen) { // Firefox
-                document.mozCancelFullScreen();
-                } else if (document.webkitExitFullscreen) { // Chrome, Safari, and Opera
-                document.webkitExitFullscreen();
-                } else if (document.msExitFullscreen) { // IE/Edge
-                document.msExitFullscreen();
-                }
-            }
-        }
         /** 跳转去相应页面 */
         function toPath(params){
             router.push(params);

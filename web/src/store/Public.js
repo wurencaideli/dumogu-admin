@@ -7,6 +7,7 @@ export const publicData = defineStore('publicData', {
         return {
             friendLinkList:[],  //友情链接
             iframeList:[],  //iframe 数组
+            viewFullScreen:false,  //是否视图全屏
         };
     },
     getters: {  },
@@ -16,6 +17,9 @@ export const publicData = defineStore('publicData', {
         },
         setIframeList(value){
             this.iframeList = value || [];
+        },
+        setViewFullScreen(value){
+            this.viewFullScreen = !!value;
         },
     },
 });

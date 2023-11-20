@@ -100,6 +100,14 @@
                     name="redo"></SvgIcon>
                 刷新当前标签页
             </div>
+            <div 
+                class="item"
+                @click="handleOptionClick(6)">
+                <SvgIcon
+                    :style="'width:16px;height:16px;color:#0072E5;'"
+                    name="expand-alt"></SvgIcon>
+                视图全屏(Esc键退出)
+            </div>
         </div>
     </div>
     <div 
@@ -132,6 +140,14 @@
                 :style="'width:16px;height:16px;color:#0072E5;'"
                 name="redo"></SvgIcon>
             刷新此标签页
+        </div>
+        <div 
+            class="item"
+            @click="handleOptionClick(6)">
+            <SvgIcon
+                :style="'width:16px;height:16px;color:#0072E5;'"
+                name="expand-alt"></SvgIcon>
+            视图全屏
         </div>
     </div>
 </div>

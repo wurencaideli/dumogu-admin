@@ -9,6 +9,7 @@ import {
     toRef,
     computed,
     onMounted,
+    onUnmounted,
 } from 'vue';
 import Navbar from "./components/Navbar.vue";
 import Menu from "./components/Menu.vue";
@@ -30,6 +31,7 @@ import {
     formatTagsByMenu,
 } from "./Common/TagListTools";
 import {deepCopyObj} from "@/common/OtherTools";
+import {toggleFullScreen} from "@/common/OtherTools";
 
 export default defineComponent({
     name:'MainLayout',
@@ -52,8 +54,15 @@ export default defineComponent({
             hasSysMenuConfigMap:toRef(userDataStore,'hasSysMenuConfigMap'),
             tagHisList:toRef(userDataStore,'tagHisList'),
             iframeList:toRef(publicDataStore,'iframeList'),  //当前已打开的iframe数组
+            viewFullScreen:toRef(publicDataStore,'viewFullScreen'),  //是否视图全屏
             breadcrumbList:[],  //面包屑列表
+            optionBtShow:true,  //控制按钮的显示
         });
+        const otherDataContainer = {
+            baseCountdown:3,
+            countdown:0,  //控制按钮显示的倒计时
+            timer:null,
+        };
         /** 
          * iframe list map
          * 记录已有的iframe个数的path map 方便查找
@@ -272,6 +281,9 @@ export default defineComponent({
                 case type == 5:
                     refreshCurrentTag();
                     break;
+                case type == 6:
+                    publicDataStore.setViewFullScreen(true);
+                    break;
             }
         }
         /** 切换缓存状态 */
@@ -295,6 +307,39 @@ export default defineComponent({
             if(!item) return;
             refreshTag(item.sign);
         }
+        /** 取消内容全屏 */
+        function handleClick_1(){
+            publicDataStore.setViewFullScreen(false);
+        }
+        /** 按钮消失的倒计时 */
+        otherDataContainer.timer = setInterval(()=>{
+            otherDataContainer.countdown = otherDataContainer.countdown - 1;
+            if(otherDataContainer.countdown <= 0){
+                dataContainer.optionBtShow = false;
+            }
+        },1000);
+        /** 设置显示的事件回调 */
+        function setupShow(){
+            otherDataContainer.countdown = otherDataContainer.baseCountdown;
+            dataContainer.optionBtShow = true;
+        }
+        function setupShow_1(event){
+            // 检查按下的键是否是ESC键
+            if (event.key === 'Escape' || event.key === 'Esc') {
+                otherDataContainer.countdown = otherDataContainer.baseCountdown;
+                dataContainer.optionBtShow = false;
+                publicDataStore.setViewFullScreen(false);
+            }
+        }
+        /** 鼠标移动的时候显示 */
+        window.addEventListener('mousemove',setupShow);
+        /** Esc键按下时退出 */
+        window.addEventListener('keydown',setupShow_1);
+        onUnmounted(()=>{
+            clearInterval(otherDataContainer.timer);
+            window.removeEventListener('mousemove',setupShow);
+            window.removeEventListener('keydown',setupShow_1);
+        });
         return {
             formatComponentInstance,
             dataContainer,
@@ -308,6 +353,8 @@ export default defineComponent({
             handleRefresh,
             iframePathMap,
             routeIncetance:route,
+            toggleFullScreen,
+            handleClick_1,
         };
     },
 });
@@ -317,7 +364,7 @@ export default defineComponent({
     <div 
         :class="{
             'main-layout':true,
-            'is-view-full-screen':false,
+            'is-view-full-screen':dataContainer.viewFullScreen,
         }">    
         <div class="head-container">
             <Navbar
@@ -374,6 +421,20 @@ export default defineComponent({
                             allowfullscreen>
                         </iframe>
                     </div>
+                    <div 
+                        :class="{
+                            'option-bt-list':true,
+                            'show':dataContainer.viewFullScreen && dataContainer.optionBtShow,
+                        }">
+                        <SvgIcon
+                            :style="'width:16px;height:16px;'"
+                            @click="handleClick_1"
+                            name="compress-alt"></SvgIcon>
+                        <SvgIcon
+                            :style="'width:16px;height:16px;'"
+                            @click="toggleFullScreen"
+                            name="Navbar-full"></SvgIcon>
+                    </div>
                 </div>
             </div>
         </div>
@@ -383,8 +444,7 @@ export default defineComponent({
 <style scoped lang="scss">
 .main-layout {
     width: 100vw;
-    min-height: 100vh;
-    height: fit-content;
+    height: 100vh;
     overflow: hidden;
     font-size: 16px;
     display: flex;
@@ -396,22 +456,32 @@ export default defineComponent({
     &.is-view-full-screen{
         >.head-container{
             z-index: 1;
+            display: none;
         }
         >.content-container{
             z-index: 2;
+            position: initial;
             >.left{
                 z-index: 2;
+                display: none;
             }
             >.right{
                 z-index: 3;
+                position: initial;
+                >.top{
+                    display: none;
+                }
                 >.view-container{
                     z-index: 4;
-                    position:fixed;
+                    position:absolute;
                     top: 0;
                     left: 0;
                     flex: initial;
-                    height: 100vh;
-                    width: 100vw;
+                    height: 100%;
+                    width: 100%;
+                    >.option-bt-list{
+                        display: flex;
+                    }
                 }
             }
         }
@@ -482,6 +552,38 @@ export default defineComponent({
                         top: 0;
                         left: 0;
                         z-index: -1;
+                    }
+                }
+                >.option-bt-list{
+                    position: absolute;
+                    right: 15px;
+                    top: 15px;
+                    border-radius: 8px;
+                    background-color: rgb(255, 255, 255);
+                    flex-direction: row;
+                    align-items: center;
+                    padding: 5px;
+                    box-sizing: border-box;
+                    display: none;
+                    width: fit-content;
+                    box-shadow: rgba(0, 0, 0, 0.319) 0px 1px 3px;
+                    opacity: 0;
+                    pointer-events: none;
+                    transition: all 0.2s;
+                    &.show{
+                        opacity: 1;
+                        pointer-events: initial;
+                    }
+                    >*{
+                        margin-right: 5px;
+                        cursor: pointer;
+                        border-radius: 8px;
+                        box-shadow: inset 0 1px 4px #0000001f;
+                        padding: 7px;
+                        color:#444954;
+                        &:last-child{
+                            margin: 0;
+                        }
                     }
                 }
             }
