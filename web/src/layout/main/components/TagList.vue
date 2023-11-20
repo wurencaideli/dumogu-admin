@@ -444,14 +444,14 @@ export default {
     >.right{
         width: 40px;
         height: 100%;
-        border-left: 1px solid rgb(218, 218, 218);
+        border-left: 1px solid var(--border-color);
         box-sizing: border-box;
         display: flex;
         flex-direction: row;
         justify-content: center;
         align-items: center;
         position: relative;
-        box-shadow: inset 0 1px 4px #0000001f;
+        box-shadow: inset 0 1px 4px #00000010;
         >.bt{
             width: 100%;
             height: 100%;

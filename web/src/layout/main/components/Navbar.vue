@@ -296,8 +296,8 @@ export default {
                         opacity: 0.8;
                         clip-path: polygon(0 0,calc(100% - 8px) 0,100% 50%,calc(100% - 8px) 100%,0 100%,8px 50%);
                         &:first-child{
-                            clip-path: polygon(0 0,calc(100% - 8px) 0,100% 50%,calc(100% - 8px) 100%,0 100%);
-                            border-radius: 5px 0px 0 5px;
+                            clip-path: polygon(0 0,calc(100% - 8px) 0,100% 50%,calc(100% - 8px) 100%,0 100%) !important;
+                            border-radius: 5px 0px 0 5px !important;
                         }
                         &:last-child{
                             background-color: #f1efef !important;
@@ -353,8 +353,9 @@ export default {
                 height: 100%;
                 padding: 10px;
                 margin-left: 10px;
-                border-left: 1px solid rgb(223, 223, 223);
+                border-left: 1px solid var(--border-color);
                 box-sizing: border-box;
+                box-shadow: inset 0 1px 4px #00000010;
                 &:hover{
                     background-color: #f0f0f0;
                     box-shadow: inset 0 1px 4px #0000002a;
