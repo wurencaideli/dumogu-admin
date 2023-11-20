@@ -457,7 +457,7 @@ export default {
             cursor: pointer;
         }
         >.bt-list-container{
-            width: fit-content;
+            width: max-content;
             min-width: 150px;
             position: absolute;
             z-index: 9;
@@ -517,7 +517,7 @@ export default {
         }
     }
     >.bt-list-container{
-        width: fit-content;
+        width: max-content;
         min-width: 150px;
         position: absolute;
         z-index: 9;
