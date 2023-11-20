@@ -20,7 +20,6 @@ export const constantRoutes = [
     {
         path: '/login',
         component: () => import('@/views/login/index.vue'),
-        hidden: true
     },
     /** 定义首页重定向地址 */
     {
@@ -45,6 +44,15 @@ export const constantRoutes = [
                     isMenu:false,
                 },
             },
+            // {
+            //     path: '401',
+            //     name:'main-401',
+            //     component: () => import('@/views/error/401.vue'),
+            //     meta: { 
+            //         /** 该页面属于此操作页面，但是不算菜单，不允许添加到标签页上 */
+            //         isMenu:false,
+            //     },
+            // },
             /** 一些页面例子 */
             {
                 path: 'index',
@@ -164,13 +172,11 @@ export const constantRoutes = [
     {
         path: "/:pathMatch(.*)*",
         component: () => import('@/views/error/404.vue'),
-        hidden: true,
     },
     /** 401页面 */
     {
         path: '/401',
         component: () => import('@/views/error/401.vue'),
-        hidden: true
     },
 ];
 

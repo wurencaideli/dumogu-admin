@@ -4,12 +4,21 @@
  */
 import { defineComponent,ref,getCurrentInstance,reactive,toRef, computed,onMounted,watch } from "vue";
 import svg401 from "@/assets/img-list/401.svg";
+import { useRoute, useRouter } from 'vue-router';
 
 export default defineComponent({
     setup(){
+        const route = useRoute();
         const dataContainer = reactive({
             svg401:svg401,
+            path:'',
         });
+        /** 初始化 */
+        function initData(){
+            let params = route.query || {};
+            dataContainer.path = params.path || '';
+        }
+        initData();
         return {
             dataContainer,
         };
@@ -26,6 +35,9 @@ export default defineComponent({
         <div class="right">
             <div class="title">
                 401错误!无访问权限
+            </div>
+            <div class="content">
+                所访问地址：{{dataContainer.path}}
             </div>
             <div class="content">
                 对不起，您正在寻找的页面没有访问权限。尝试检查URL的错误，然后按浏览器上的刷新按钮或尝试在我们的应用程序中找到其他内容。或者向管理员申请访问权限。
@@ -54,13 +66,20 @@ export default defineComponent({
         display: flex;
         flex-direction: row;
         align-items: center;
+        width: 100%;
+        max-width: 1000px;
         >img{
-            width:500px;
+            flex: 1 1 0;
+            width: 0;
             height:500px;
+            border: 1px solid #e1e1e1;
+            border-radius: 12px;
+            box-sizing: border-box;
         }
         >.right{
             margin-left:30px;
-            max-width:500px;
+            flex: 1 1 0;
+            width: 0;
             >.title{
                 font-size: 32px;
                 font-weight: bold;
@@ -73,11 +92,10 @@ export default defineComponent({
                 line-height: 21px;
                 color: grey;
                 margin-bottom: 40px;
-                max-width:300px;
             }
             >.bt{
-                width: 110px;
-                height: 36px;
+                width: 130px;
+                height: 46px;
                 background: #1482f0;
                 border-radius: 100px;
                 text-align: center;

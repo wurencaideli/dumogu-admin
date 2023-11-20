@@ -394,6 +394,7 @@ export default {
                 border-radius: 3px;
                 color: #606266;
                 position: relative;
+                transition: all 0.2s;
                 &:last-child{
                     margin-right: 5px;
                 }
@@ -403,6 +404,10 @@ export default {
                     font-weight: bold;
                     box-shadow: inset 0 1px 4px #00000034;
                     // border:1px solid rgb(196, 196, 196);
+                }
+                &:hover{
+                    background-color: #5240ff30;
+                    color: #5240ff;
                 }
                 >.sign{
                     width: 10px;

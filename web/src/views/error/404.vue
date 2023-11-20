@@ -54,13 +54,20 @@ export default defineComponent({
         display: flex;
         flex-direction: row;
         align-items: center;
+        width: 100%;
+        max-width: 1000px;
         >img{
-            width:456px;
+            flex: 1 1 0;
+            width: 0;
             height:262px;
+            border: 1px solid #e1e1e1;
+            border-radius: 12px;
+            box-sizing: border-box;
         }
         >.right{
             margin-left:30px;
-            max-width:456px;
+            flex: 1 1 0;
+            width: 0;
             >.title{
                 font-size: 32px;
                 font-weight: bold;
@@ -75,8 +82,8 @@ export default defineComponent({
                 margin-bottom: 40px;
             }
             >.bt{
-                width: 110px;
-                height: 36px;
+                width: 130px;
+                height: 46px;
                 background: #1482f0;
                 border-radius: 100px;
                 text-align: center;
