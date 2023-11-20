@@ -114,8 +114,12 @@
             <div class="container">
                 <div class="left">
                     <SvgIcon
-                        :style="'width:17px;height:17px;'"
+                        :style="'width:17px;height:17px;margin-right:10px;'"
                         name="search-bt"></SvgIcon>
+                    搜索
+                </div>
+                <div class="right">
+                    Alt S
                 </div>
             </div>
         </div>
@@ -246,8 +250,8 @@ export default {
             color: #d2dde9;
             >.logo{
                 // flex:1 1 0;
-                width: 50px;
-                height: 50px;
+                width: 45px;
+                height: 45px;
                 border-radius: 5px;
                 cursor: pointer;
                 margin-right: 10px;
@@ -267,35 +271,42 @@ export default {
         justify-content: space-between;
         align-items: center;
         position: relative;
+        height: 100%;
         >.left{
             flex: 1 1 0;
             width: 0;
             >.path-list-container{
                 padding: 0 15px;
                 box-sizing: border-box;
+                mask-image: linear-gradient(90deg,#000 0%,#000 calc(100% - 50px),transparent);
                 :deep(.el-breadcrumb){
                     display: flex;
                     flex-direction: row;
                     align-items: center;
-                    flex-wrap: wrap;
+                    flex-wrap: nowrap;
+                    width: max-content;
                     .el-breadcrumb__separator{
                         display: none;
                     }
                     .el-breadcrumb__item{
                         background-color: #f1efef;
                         padding: 10px 15px;
-                        border-radius: 5px 0px 0 5px;
                         font-size: 13px;
                         display: block;
+                        opacity: 0.8;
                         clip-path: polygon(0 0,calc(100% - 8px) 0,100% 50%,calc(100% - 8px) 100%,0 100%,8px 50%);
                         &:first-child{
                             clip-path: polygon(0 0,calc(100% - 8px) 0,100% 50%,calc(100% - 8px) 100%,0 100%);
+                            border-radius: 5px 0px 0 5px;
                         }
                         &:last-child{
                             background-color: #f1efef !important;
+                            clip-path: polygon(0 0,100% 0,100% 100%,0 100%,8px 50%);
+                            border-radius: 0 5px 5px 0;
+                            opacity: 1;
                         }
                         &.has-path{
-                            background-color: #cacaca;
+                            background-color: #e2e2e2;
                         }
                     }
                 }
@@ -306,9 +317,10 @@ export default {
             flex-direction: row;
             justify-content: flex-end;
             align-items: center;
-            padding: 0 10px 0 0;
+            padding: 0 0 0 0;
             box-sizing: border-box;
             position: relative;
+            height: 100%;
             >*{
                 margin-left: 15px;
             }
@@ -320,7 +332,7 @@ export default {
                 justify-content: center;
                 align-items: center;
                 cursor: pointer;
-                border:1px solid #e7e7e9;
+                // border:1px solid #e7e7e9;
                 border-radius: 8px;
                 box-sizing: border-box;
                 transition: all 0.2s;
@@ -333,11 +345,16 @@ export default {
                 width: fit-content;
                 height: fit-content;
                 cursor: pointer;
-                border-radius:99px 20px 20px 99px;
+                border-radius:0 0 0 0;
                 transition: all 0.2s;
                 position: relative;
                 border: none;
                 box-shadow: none;
+                height: 100%;
+                padding: 10px;
+                margin-left: 10px;
+                border-left: 1px solid rgb(223, 223, 223);
+                box-sizing: border-box;
                 &:hover{
                     background-color: #f0f0f0;
                     box-shadow: inset 0 1px 4px #0000002a;
@@ -378,7 +395,7 @@ export default {
                     position: absolute;
                     z-index: 9;
                     top: calc(100% + 0px);
-                    right: 0;
+                    right: 10px;
                     background-color: rgb(255, 255, 255);
                     box-shadow: 0 3px 8px 0 rgba(0, 0, 0, 0.5);
                     padding: 10px 0;
@@ -446,7 +463,7 @@ export default {
             width: 100%;
             height: 100%;
             >.container{
-                width: 200px;
+                width: 300px;
                 height: 40px;
                 background-color: white;
                 border:1px solid #e7e7e9;
@@ -457,11 +474,25 @@ export default {
                 padding: 0 10px;
                 box-sizing: border-box;
                 cursor: pointer;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
                 >.left{
                     height: 100%;
                     display: flex;
                     flex-direction: row;
                     align-items: center;
+                    font-size: 15px;
+                    color: rgb(94, 94, 94);
+                }
+                >.right{
+                    border: 1px solid rgb(209, 209, 209);
+                    padding: 3px 5px;
+                    font-size: 12px;
+                    border-radius: 5px;
+                    font-weight: bold;
+                    color: rgb(121, 121, 121);
                 }
             }
         }
