@@ -1,0 +1,215 @@
+<template>
+    <DefinScrollbar 
+        height="100%">
+        <div class="page-container other-view">
+            <p>
+                天气插件，使用iframe的形式（推荐）
+            </p>
+            <iframe srcdoc='
+                <html>
+                <head>
+                    <meta charset="utf-8">
+                    <title>文档标题</title>
+                    <style>
+                        #he-plugin-standard{
+                            width: 100vw !important;
+                            height: 100vh !important;
+                        }
+                        body{
+                            margin:0;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div id="he-plugin-standard"></div>
+                    <script>
+                        WIDGET = {
+                        "CONFIG": {
+                            "layout": "1",
+                            "width": "450",
+                            "height": "150",
+                            "background": "1",
+                            "dataColor": "FFFFFF",
+                            "key": "ceef05b95bbf49738dfdcd99abef4495"
+                        }
+                        }
+                    </script>
+                    <script src="https://widget.qweather.net/standard/static/js/he-standard-common.js?v=2.0"></script>
+                </body>
+                </html>'>
+            </iframe>
+            <p>
+                天气插件，使用脚本加载的形式，会与页面中的高德地图起冲突
+            </p>
+            <div id="he-plugin-standard">
+            </div>
+            <div class="bt-list">
+                <p>
+                    文档生成以及自定义打印操作
+                </p>
+                <el-button
+                    type="primary"
+                    @click="handleClick">
+                    生成DOC
+                </el-button>
+                <el-button
+                    type="primary"
+                    @click="handleClick_1">
+                    自定义打印
+                </el-button>
+            </div>
+        </div>
+    </DefinScrollbar>
+</template>
+
+<script>
+import { defineComponent,ref,toRef,reactive, watch, nextTick,onUnmounted,onMounted } from 'vue';
+import {createDoc} from "./generateDocx/index";
+import { table_0 } from "./printTemp/Template";
+import { handlePrint } from "./printTemp/Base";
+
+export default defineComponent({
+    components: {
+    },
+    setup(){
+        const dataContainer = reactive({
+
+        });
+        const otherContainer = {
+        };
+        /** 加载天气脚本 */
+        function loadWeatherWidget() {
+            // 创建一个新的 <script> 元素用于配置 WIDGET 对象
+            var widgetConfigScript = document.createElement('script');
+            // 设置脚本的内容为 WIDGET 对象的配置信息
+            widgetConfigScript.innerHTML = 'WIDGET = {\n' +
+                '  "CONFIG": {\n' +
+                '    "layout": "1",\n' +
+                '    "width": "450",\n' +
+                '    "height": "150",\n' +
+                '    "background": "1",\n' +
+                '    "dataColor": "FFFFFF",\n' +
+                '    "key": "00484b70a8cb4791a05a277c7774b177"\n' +
+                '  }\n' +
+                '}';
+            // 将配置脚本附加到文档的 <head> 元素中
+            document.head.appendChild(widgetConfigScript);
+            // 创建一个新的 <script> 元素用于加载天气小部件脚本
+            var widgetScript = document.createElement('script');
+            // 设置脚本的 src 属性，即天气小部件脚本的 URL
+            widgetScript.src = "https://widget.qweather.net/standard/static/js/he-standard-common.js?v=2.0";
+            // 将天气小部件脚本附加到文档的 <body> 元素中，这将触发脚本的加载和执行
+            document.body.appendChild(widgetScript);
+        }
+        onMounted(()=>{
+            /** 
+             * 使用脚本加载
+             * 此方式使用的话如果页面中有使用高德地图的话会有冲突，因为该天气组件也使用了高德地图
+             * 所有使用iframe会更好点
+             *  */
+            loadWeatherWidget();
+        });
+        /** 获取字符串的可视宽度 */
+        function getVisibleWidth(str) {
+            let font = '12px Microsoft YaHei';
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            context.font = font;
+            const metrics = context.measureText(str);
+            return metrics.width;
+        }
+        /** 截取到指定长度 */
+        function truncateStringToWidth(str, maxWidth) {
+            let truncatedStr = str;
+            while (getVisibleWidth(truncatedStr) > maxWidth && truncatedStr.length > 0) {
+                truncatedStr = truncatedStr.slice(0, -1);
+            }
+            return truncatedStr;
+        }
+        /** 生成模板 */
+        function handleClick(){
+            let imgUrl = generateAndDownloadImage();
+            createDoc({
+                imgUrl:imgUrl,
+                form:{
+                    name:'哈哈哈',
+                },
+            });
+        }
+        /** 打印模板 */
+        function handleClick_1(){
+            let html =  table_0.render({
+                list:[
+                    {},
+                ],
+            });
+            handlePrint({
+                html:`
+                    ${html}
+                `,
+                css:table_0.css,
+            });
+        }
+        /** 创建一张图片用作生成doc文件 */
+        function generateAndDownloadImage() {
+            // 创建一个Canvas元素
+            var canvas = document.createElement('canvas');
+            canvas.width = 400;
+            canvas.height = 200;
+            // 获取Canvas上下文
+            var context = canvas.getContext('2d');
+            // 在Canvas上绘制文本
+            context.font = '30px Arial';
+            context.fillText('Hello, World!', 50, 50);
+            // 获取Canvas上的图像数据
+            var imageData = canvas.toDataURL('image/png');
+            return imageData;
+        }
+        return {
+            dataContainer,
+            handleClick,
+            handleClick_1,
+        };
+    },
+});
+</script>
+
+<style lang='scss' scoped>
+.other-view{
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 60px;
+    box-sizing: border-box;
+    >*{
+        margin: 0 0 15px 0;
+        &:last-child{
+            margin: 0;
+        }
+    }
+    >iframe{
+        width: 500px;
+        height: 200px;
+        border: none;
+    }
+    :deep(#he-plugin-standard){
+        width: 500px !important;
+        height: 200px !important;
+        margin: 0 0 15px 0 !important;
+        border: none;
+    }
+    >.bt-list{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        >*{
+            margin: 0 15px 0 0;
+            &:last-child{
+                margin: 0;
+            }
+        }
+    }
+}
+</style>

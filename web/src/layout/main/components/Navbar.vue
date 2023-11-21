@@ -73,23 +73,37 @@
                     :style="'width:22px;height:22px;'"
                     name="Navbar-full"></SvgIcon>
             </div>
-            <div class="bt user">
-                <el-image 
-                    class="img"
-                    :src="dataContainer.userInfo.avatar"
-                    fit="cover" />
-                <div class="name">
-                    管理员
-                    <div class="other">
-                        2458885747
+            <div
+                ref="RightOptionRef"  
+                :class="{
+                    'bt':true,
+                    'user':true,
+                    'active':dataContainer.show_1,
+                }">
+                <div 
+                    @click="()=>{
+                        dataContainer.show_1 = !dataContainer.show_1;
+                    }"
+                    class="container">
+                    <el-image 
+                        class="img"
+                        :src="dataContainer.userInfo.avatar"
+                        fit="cover" />
+                    <div class="name">
+                        管理员
+                        <div class="other">
+                            2458885747
+                        </div>
+                    </div>
+                    <div class="option">
+                        <SvgIcon
+                            :style="'width:15px;height:15px;'"
+                            name="sort-down"></SvgIcon>
                     </div>
                 </div>
-                <div class="option">
-                    <SvgIcon
-                        :style="'width:15px;height:15px;'"
-                        name="sort-down"></SvgIcon>
-                </div>
-                <div class="bt-list-container">
+                <div
+                    v-if="dataContainer.show_1"
+                    class="bt-list-container">
                     <div class="item">
                         <router-link 
                             to="/main/mine?activeTab=0">
@@ -164,9 +178,11 @@ export default {
     },
     setup(props){
         const router = useRouter();
+        const RightOptionRef = ref(null);
         const dataContainer = reactive({
             breadcrumbList:toRef(props,'breadcrumbList'),
             userInfo:toRef(props,'userInfo'),
+            show_1:false,
             img:{
                 img_1,
             },
@@ -187,11 +203,26 @@ export default {
                 return;
             });
         }
+        /** 初始化隐藏事件 */
+        function initHiddenEvent_1(){
+            function callbackFn(e){
+                if(!RightOptionRef.value) return;
+                if(!e || !e.target) return;
+                if(RightOptionRef.value.contains(e.target)) return;
+                dataContainer.show_1 = false;
+            }
+            document.addEventListener('click', callbackFn);
+            onUnmounted(()=>{
+                document.removeEventListener('click', callbackFn);
+            });
+        }
+        initHiddenEvent_1();
         return {
             dataContainer,
             toPath,
             toggleFullScreen,
             onLogout,
+            RightOptionRef,
         };
     },
 }
@@ -342,53 +373,60 @@ export default {
                 }
             }
             >.user{
-                width: fit-content;
-                height: fit-content;
+                width: auto;
+                height: 100%;
                 cursor: pointer;
                 border-radius:0 0 0 0;
                 transition: all 0.2s;
                 position: relative;
                 border: none;
                 box-shadow: none;
-                height: 100%;
-                padding: 10px;
                 margin-left: 10px;
                 border-left: 1px solid var(--border-color);
                 box-sizing: border-box;
                 box-shadow: inset 0 1px 4px #00000010;
-                &:hover{
+                &.active{
                     background-color: #f0f0f0;
                     box-shadow: inset 0 1px 4px #0000002a;
                 }
-                >.img{
-                    width: 43px;
-                    min-width: 43px;
-                    height: 43px;
-                    border-radius: 50%;
-                    margin-right: 10px;
-                    // border: 2px solid #949494;
-                    box-shadow: #0000002a 2px 2px 5px;
-                }
-                >.name{
-                    font-size: 14px;
-                    font-weight: bold;
-                    margin-right: 5px;
-                    color:#444954;
-                    display: flex;
-                    flex-direction: column;
-                    >.other{
-                        font-size: 13px;
-                        opacity: 0.6;
-                        margin-top: 2px;
-                    }
-                }
-                >.option{
-                    width: fit-content;
-                    height: fit-content;
+                >.container{
                     display: flex;
                     flex-direction: row;
                     justify-content: center;
                     align-items: center;
+                    cursor: pointer;
+                    padding: 10px;
+                    box-sizing: border-box;
+                    >.img{
+                        width: 43px;
+                        min-width: 43px;
+                        height: 43px;
+                        border-radius: 50%;
+                        margin-right: 10px;
+                        // border: 2px solid #949494;
+                        box-shadow: #0000002a 2px 2px 5px;
+                    }
+                    >.name{
+                        font-size: 14px;
+                        font-weight: bold;
+                        margin-right: 5px;
+                        color:#444954;
+                        display: flex;
+                        flex-direction: column;
+                        >.other{
+                            font-size: 13px;
+                            opacity: 0.6;
+                            margin-top: 2px;
+                        }
+                    }
+                    >.option{
+                        width: fit-content;
+                        height: fit-content;
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: center;
+                        align-items: center;
+                    }
                 }
                 >.bt-list-container{
                     width: fit-content;
@@ -403,14 +441,8 @@ export default {
                     box-sizing: border-box;
                     border-radius: 3px;
                     overflow: hidden;
-                    opacity: 0;
                     transition: opacity 0.2s;
-                    pointer-events: none;
                     font-size: 15px;
-                    &:hover{
-                        opacity: 1;
-                        pointer-events: initial;
-                    }
                     >.item{
                         width: auto;
                         min-width: max-content;
@@ -444,12 +476,6 @@ export default {
                         }
                     }
                 }
-                &:hover{
-                    .bt-list-container{
-                        opacity: 1;
-                        pointer-events: initial;
-                    }
-                }
             }
         }
         >.search-container{
@@ -464,7 +490,7 @@ export default {
             width: 100%;
             height: 100%;
             >.container{
-                width: 300px;
+                width: max(300px,25vw);
                 height: 40px;
                 background-color: white;
                 border:1px solid #e7e7e9;

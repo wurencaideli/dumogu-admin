@@ -166,6 +166,14 @@ export const constantRoutes = [
                     isMenu:true,
                 },
             },
+            {
+                path: 'other-view',
+                component: () => import('@/views/exampleViews/otherView/index.vue'),
+                name: 'other-view',
+                meta: { 
+                    isMenu:true,
+                },
+            },
         ],
     },
     /** 404页面 */

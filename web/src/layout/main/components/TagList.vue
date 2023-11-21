@@ -48,14 +48,37 @@
             </draggable>
         </el-scrollbar>
     </div>
-    <div class="right">
+    <div class="bt-list">
+        <div 
+            class="bt"
+            @click="handleToLeft()">
+            <SvgIcon
+                :style="'width:15px;height:15px;'"
+                name="arrow-left"></SvgIcon>
+        </div>
+        <div 
+            class="bt"
+            @click="handleToRight()">
+            <SvgIcon
+                :style="'width:15px;height:15px;'"
+                name="arrow-right"></SvgIcon>
+        </div>
+    </div>
+    <div
+        ref="RightOptionRef" 
+        class="right">
         <div
+            @click="()=>{
+                dataContainer.show_1 = !dataContainer.show_1;
+            }"
             class="bt">
             <SvgIcon
                 :style="'width:20px;height:20px;'"
                 name="icon-drag"></SvgIcon>
         </div>
-        <div class="bt-list-container">
+        <div
+            v-if="dataContainer.show_1" 
+            class="bt-list-container">
             <div 
                 v-if="dataContainer.tagList.length>1"
                 class="item"
@@ -205,11 +228,13 @@ export default {
     setup(props,{emit}){
         const ElScrollbarRef = ref(null);
         const TagListRef = ref(null);
+        const RightOptionRef = ref(null);
         const dataContainer = reactive({
             tagList:toRef(props,'tagList'),
             activeSign:toRef(props,'activeSign'),
             show:false,
             location:{},
+            show_1:false,
         });
         const otherDataContainer = {
             activeItem:null,
@@ -246,9 +271,9 @@ export default {
             let el = ElScrollbarRef.value.wrapRef;
             let scrollLeft = el.scrollLeft;
             if(e.deltaY < 0){
-                scrollLeft = scrollLeft - 20;
+                scrollLeft = scrollLeft - 30;
             }else{
-                scrollLeft = scrollLeft + 20;
+                scrollLeft = scrollLeft + 30;
             }
             el.scrollLeft = scrollLeft;
         }
@@ -332,6 +357,40 @@ export default {
             if(!otherDataContainer.activeItem) return;
             emit('onRefresh',otherDataContainer.activeItem);
         }
+        /** 跳转到右侧 */
+        function handleToRight(){
+            let index = dataContainer.tagList.findIndex(item=>{
+                return item.sign == dataContainer.activeSign;
+            });
+            if(index == -1) return;
+            let target = dataContainer.tagList[index + 1];
+            if(!target) return;
+            handleClick(target);
+        }
+        /** 跳转到左侧 */
+        function handleToLeft(){
+            let index = dataContainer.tagList.findIndex(item=>{
+                return item.sign == dataContainer.activeSign;
+            });
+            if(index == -1) return;
+            let target = dataContainer.tagList[index - 1];
+            if(!target) return;
+            handleClick(target);
+        }
+        /** 初始化隐藏事件 */
+        function initHiddenEvent_1(){
+            function callbackFn(e){
+                if(!RightOptionRef.value) return;
+                if(!e || !e.target) return;
+                if(RightOptionRef.value.contains(e.target)) return;
+                dataContainer.show_1 = false;
+            }
+            document.addEventListener('click', callbackFn);
+            onUnmounted(()=>{
+                document.removeEventListener('click', callbackFn);
+            });
+        }
+        initHiddenEvent_1();
         return {
             dataContainer,
             handleClick,
@@ -345,6 +404,9 @@ export default {
             handleSwitchCache,
             handleSwitchFixed,
             handleRefresh,
+            handleToRight,
+            handleToLeft,
+            RightOptionRef,
         };
     },
 }
@@ -359,6 +421,7 @@ export default {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    color: var(--text-color);
     >.left{
         flex: 1 1 0;
         width: 0;
@@ -441,6 +504,34 @@ export default {
             }
         }
     }
+    >.bt-list{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding: 0 10px;
+        box-sizing: border-box;
+        border-left: 1px solid var(--border-color);
+        box-shadow: inset 0 1px 4px #00000010;
+        height: 100%;
+        >*{
+            margin: 0 10px 0 0;
+            &:last-child{
+                margin: 0;
+            }
+        }
+        >.bt{
+            cursor: pointer;
+            transition: all 0.2s;
+            height: 100%;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            &:hover{
+                color: #5240ff;
+            }
+        }
+    }
     >.right{
         width: 40px;
         height: 100%;
@@ -460,6 +551,10 @@ export default {
             justify-content: center;
             align-items: center;
             cursor: pointer;
+            transition: all 0.2s;
+            &:hover{
+                color: #5240ff;
+            }
         }
         >.bt-list-container{
             width: max-content;
@@ -474,14 +569,8 @@ export default {
             box-sizing: border-box;
             border-radius: 2px;
             overflow: hidden;
-            opacity: 0;
             transition: opacity 0.2s;
-            pointer-events: none;
             font-size: 15px;
-            &:hover{
-                opacity: 1;
-                pointer-events: initial;
-            }
             >.item{
                 cursor: pointer;
                 width: auto;
@@ -512,12 +601,6 @@ export default {
                         color: #0072E5;
                     }
                 }
-            }
-        }
-        &:hover{
-            .bt-list-container{
-                opacity: 1;
-                pointer-events: initial;
             }
         }
     }

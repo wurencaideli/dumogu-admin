@@ -189,6 +189,12 @@ export function getUserData(){
                 number:4,
             },
             {
+                name:"other-view",
+                title:'其他功能展示',
+                iconName:"map-fill",
+                isCache:true,
+            },
+            {
                 name:"show-list-info",
                 title:'数据详情',
                 hidden:true,
