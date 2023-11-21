@@ -294,7 +294,7 @@ export default {
                     let scroll = rect.x - rect_1.x;
                     el.scrollLeft = el.scrollLeft - scroll - 5;
                 }
-                if(rect_1.x > (rect.x + rect.width)){
+                if((rect_1.x + rect_1.width) > (rect.x + rect.width)){
                     // 表示在右边遮挡
                     let scroll = rect_1.x - (rect.x + rect.width);
                     el.scrollLeft = el.scrollLeft + scroll + rect_1.width + 5;
