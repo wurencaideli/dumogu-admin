@@ -4,7 +4,8 @@
             height="100%">
             <el-menu 
                 ref="ElMenuRef"
-                :default-active="route.path">
+                :default-active="route.path"
+                :router="false">
                 <MenuItem
                     v-for="item,index in dataContainer.dataList"
                     :key="item.path"
