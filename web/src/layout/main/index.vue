@@ -32,6 +32,7 @@ import {
 } from "./Common/TagListTools";
 import {deepCopyObj} from "@/common/OtherTools";
 import {toggleFullScreen} from "@/common/OtherTools";
+import {guid} from "@/common/Guid";
 
 export default defineComponent({
     name:'MainLayout',
@@ -180,7 +181,7 @@ export default defineComponent({
                 menuName:userMenuConfig.name,
                 path:route.path,
                 fullPath:route.fullPath,
-                sign:route.path,  //唯一标识
+                sign:guid(),  //唯一标识
                 isCache:userMenuConfig.isCache,  //表示该标签需要缓存
                 fixed:userMenuConfig.fixed,  //表示该标签需要固定
                 showTagIcon:userMenuConfig.showTagIcon,  //表示该标签是否需要显示icon
@@ -192,8 +193,10 @@ export default defineComponent({
             if(!sysMeluList.find(item=>item.name == route.name)) return;
             /** 
              * 不重复添加
+             * 相同path的判断为重复
              *  */
-            if(!tagList.find(item=>item.path == newTag.sign)){
+            let target = tagList.find(item=>item.path == newTag.path);
+            if(!target){
                 // 添加进入标签列表，添加到当前标签的右边
                 let index = tagList.findIndex(item=>{
                     return item.sign == activeSign;
@@ -203,9 +206,11 @@ export default defineComponent({
                 }else{
                     tagList.push(newTag);
                 }
+                /** 设置当前所显示的标签 */
+                activeSign = newTag.sign;
+            }else{
+                activeSign = target.sign;
             }
-            /** 设置当前所显示的标签 */
-            activeSign = newTag.sign;
             userDataStore.setTagList(tagList);
             userDataStore.setActiveSign(activeSign);
             /** 添加历史记录 */
