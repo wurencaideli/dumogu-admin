@@ -124,8 +124,8 @@ export default defineComponent({
             }
             /** 设置当前所显示的标签 */
             activeSign = newTag.sign;
-            userDataStore.setTagList(tagList);
-            userDataStore.setActiveSign(activeSign);
+            TagData.setTagList(tagList);
+            TagData.setActiveSign(activeSign);
         }
         /** 监听路由，
          * 当路由发生变化时将符合条件的标签添加到标签列表中 

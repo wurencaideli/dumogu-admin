@@ -209,7 +209,7 @@ export function getUserData(){
                     },
                     {
                         title:'示例2',
-                        isCache:true,
+                        isCache:false,
                         content:'使用Rem',
                         iconName:"laptop",
                         isLink:true,
