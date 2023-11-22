@@ -176,6 +176,49 @@ export const constantRoutes = [
             },
         ],
     },
+    {
+        path: '/big-screen',
+        component:() => import('@/layout/bigScreen/index.vue'),
+        children: [
+            /** 
+             * 重定向页面
+             * 用来刷新标签页
+             *  */
+            {
+                path: 'redirect/:path(.*)',
+                name:'big-screen-redirect',
+                component: () => import('@/views/redirect/index.vue'),
+                meta: { 
+                    /** 该页面属于此操作页面，但是不算菜单，不允许添加到标签页上 */
+                    isMenu:false,
+                },
+            },
+            {
+                path: 'show_1',
+                component: () => import('@/views/bigScreen/show_1/index.vue'),
+                name: 'big-screen-show_1',
+                meta: { 
+                    isMenu:true,
+                },
+            },
+            {
+                path: 'show_2',
+                component: () => import('@/views/bigScreen/show_2/index.vue'),
+                name: 'big-screen-show_2',
+                meta: { 
+                    isMenu:true,
+                },
+            },
+            {
+                path: 'show_3',
+                component: () => import('@/views/bigScreen/show_3/index.vue'),
+                name: 'big-screen-show_3',
+                meta: { 
+                    isMenu:true,
+                },
+            },
+        ],
+    },
     /** 404页面 */
     {
         path: "/:pathMatch(.*)*",

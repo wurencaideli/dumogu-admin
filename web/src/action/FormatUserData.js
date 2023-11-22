@@ -195,6 +195,37 @@ export function getUserData(){
                 isCache:true,
             },
             {
+                title:'大屏展示',
+                content:'多种方式',
+                iconName:"laptop",
+                childs:[
+                    {
+                        title:'示例1',
+                        isCache:true,
+                        content:'使用缩放',
+                        iconName:"laptop",
+                        isLink:true,
+                        path:'/big-screen/show_1',
+                    },
+                    {
+                        title:'示例2',
+                        isCache:true,
+                        content:'使用Rem',
+                        iconName:"laptop",
+                        isLink:true,
+                        path:'/big-screen/show_2',
+                    },
+                    {
+                        title:'示例3',
+                        isCache:true,
+                        content:'固定宽高',
+                        iconName:"laptop",
+                        isLink:true,
+                        path:'/big-screen/show_3',
+                    },
+                ],
+            },
+            {
                 name:"show-list-info",
                 title:'数据详情',
                 hidden:true,
