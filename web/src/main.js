@@ -1,4 +1,6 @@
 import "@/common/RequestAnimationFrameExpand";
+/** 引入 rem计算 */
+import "@/common/Rem";
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 

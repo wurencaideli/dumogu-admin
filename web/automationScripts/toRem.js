@@ -9,8 +9,8 @@ const fs = require('fs');
 /** 
  * 遍历需要替换的文件
  */
-// glob('src/views/bigScreen/**/*.vue', {
-glob('src/views/rem/**/*.vue', {
+glob('src/views/bigScreen/show_2/**/*.vue', {
+// glob('src/views/rem/**/*.vue', {
     ignore:['node_modules/**','dist/**','biuld.js','.git/**'],
     dot:true,
 }).then((files) =>{

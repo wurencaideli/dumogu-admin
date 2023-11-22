@@ -59,7 +59,7 @@ export default defineComponent({
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 15px;
+    padding: 0 0.938rem;
     box-sizing: border-box;
     background-image: var(--bg-img);
     background-repeat: no-repeat;
@@ -70,7 +70,7 @@ export default defineComponent({
         flex-direction: row;
         justify-content: flex-start;
         align-items: center;
-        font-size: 15px;
+        font-size: 0.938rem;
         font-family: PingFangSC-Semibold, PingFang SC;
         font-weight: 600;
         color: #FFFFFF;
@@ -80,13 +80,13 @@ export default defineComponent({
         flex-direction: row;
         justify-content: center;
         align-items: center;
-        font-size: 42px;
+        font-size: 2.625rem;
         line-height: 1;
         font-weight: normal;
         font-stretch: normal;
-        letter-spacing: 2px;
+        letter-spacing: 0.125rem;
         color: #ffffff;
-        transform: translateY(-11px);
+        transform: translateY(-0.688rem);
         font-family: Avenir, sans-serif;
     }
     >.right{
@@ -94,7 +94,7 @@ export default defineComponent({
         flex-direction: row;
         justify-content: flex-end;
         align-items: center;
-        font-size: 15px;
+        font-size: 0.938rem;
         font-family: PingFangSC-Semibold, PingFang SC;
         font-weight: 600;
         color: #FFFFFF;

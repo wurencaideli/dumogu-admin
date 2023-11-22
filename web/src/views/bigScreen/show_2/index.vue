@@ -90,7 +90,7 @@ export default defineComponent({
     background-size: 100% 100%;
     background-position: center;
     >.head{
-        height: 91px;
+        height: 5.688rem;
     }
     >.content{
         display: flex;
@@ -100,7 +100,7 @@ export default defineComponent({
         height: 0;
         >.top{
             width: 100%;
-            height: 199px;
+            height: 12.438rem;
         }
         >.content{
             display: flex;
@@ -109,7 +109,7 @@ export default defineComponent({
             flex: 1 1 0;
             width: 100%;
             height: 0;
-            padding: 0 15px 15px 15px;
+            padding: 0 0.938rem 0.938rem 0.938rem;
             box-sizing: border-box;
             >.left,>.right{
                 display: flex;
@@ -122,7 +122,7 @@ export default defineComponent({
                     background-repeat: no-repeat;
                     background-size: 100% 100%;
                     background-position: center;
-                    margin: 0 0 15px 0;
+                    margin: 0 0 0.938rem 0;
                     background-color: rgba(255, 0, 0, 0.442);
                     &:last-child{
                         margin: 0;
@@ -131,11 +131,11 @@ export default defineComponent({
             }
             >.left{
                 height: 100%;
-                width: 550px;
+                width: 34.375rem;
             }
             >.right{
                 height: 100%;
-                width: 550px;
+                width: 34.375rem;
             }
         }
     }

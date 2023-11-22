@@ -1,8 +1,10 @@
 {
   "name": "my-vue-app",
   "private": true,
-  "version": "0.0.0",
-  "type": "module",
+  "version": "0.0.1",
+  "description": "毒蘑菇 - 管理",
+  "author": "23朵毒蘑菇",
+  "license": "MIT",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -21,6 +23,7 @@
     "echarts": "^5.4.3",
     "element-plus": "^2.2.28",
     "file-saver": "^2.0.5",
+    "glob": "^10.3.4",
     "js-md5": "^0.7.3",
     "jsoneditor": "^9.9.2",
     "nprogress": "^0.2.0",
