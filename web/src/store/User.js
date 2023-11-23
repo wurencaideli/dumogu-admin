@@ -3,7 +3,6 @@
 import { defineStore } from 'pinia';
 import allStorage from "@/action/StorageManage";
 
-
 export const userData = defineStore('userData', {
     state: () => {
         const userStorage = allStorage.userStorage();

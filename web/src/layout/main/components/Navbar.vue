@@ -1,7 +1,11 @@
 <template>
 <div 
     class="navbar-cp-container">
-    <div class="left">
+    <div 
+        :class="{
+            'left':true,
+            'hidden':!dataContainer.showLogo,
+        }">
         <div class="logo-container">
             <el-image 
                 @click="toPath({path:'/'})"
@@ -14,6 +18,12 @@
     </div>
     <div class="right">
         <div class="left">
+            <div class="hidden-bt">
+                <SvgIcon
+                    @click="switchShowLogo"
+                    :style="'width:22px;height:22px;'"
+                    :name="dataContainer.showLogo?'outdent':'indent'"></SvgIcon>
+            </div>
             <div class="path-list-container">
                 <el-breadcrumb separator="">
                     <!-- <el-breadcrumb-item 
@@ -107,18 +117,27 @@
                     <div class="item">
                         <router-link 
                             to="/main/mine?activeTab=0">
+                            <SvgIcon
+                                :style="'width:16px;height:16px;'"
+                                name="user-fill"></SvgIcon>
                             个人中心
                         </router-link>
                     </div>
                     <div class="item">
                         <router-link 
                             to="/main/mine?activeTab=2">
+                            <SvgIcon
+                                :style="'width:16px;height:16px;'"
+                                name="supervise"></SvgIcon>
                             密码修改
                         </router-link>
                     </div>
                     <div 
                         class="logout-bt"
                         @click.stop="onLogout">
+                        <SvgIcon
+                            :style="'width:16px;height:16px;color:#f56c6c;'"
+                            name="poweroff"></SvgIcon>
                         退出登录
                     </div>
                 </div>
@@ -175,13 +194,19 @@ export default {
                 return {};
             },
         },
+        showLogo:{
+            type:Boolean,
+            default:true,
+        },
     },
-    setup(props){
+    emits:['switchShowLogo'],
+    setup(props,{emit}){
         const router = useRouter();
         const RightOptionRef = ref(null);
         const dataContainer = reactive({
             breadcrumbList:toRef(props,'breadcrumbList'),
             userInfo:toRef(props,'userInfo'),
+            showLogo:toRef(props,'showLogo'),
             show_1:false,
             img:{
                 img_1,
@@ -217,12 +242,17 @@ export default {
             });
         }
         initHiddenEvent_1();
+        /** 切换显示状态 */
+        function switchShowLogo(){
+            emit('switchShowLogo');
+        }
         return {
             dataContainer,
             toPath,
             toggleFullScreen,
             onLogout,
             RightOptionRef,
+            switchShowLogo,
         };
     },
 }
@@ -266,11 +296,16 @@ export default {
         align-items: center;
         height: 100%;
         width: fit-content;
+        width: var(--menu-width);
+        &.hidden{
+            width: 0;
+            display: none;
+        }
         >.logo-container{
             padding: 0 10px;
             box-sizing: border-box;
-            width: var(--menu-width);
             height: 100%;
+            width: 100%;
             display: flex;
             flex-direction: row;
             justify-content: flex-start;
@@ -306,7 +341,28 @@ export default {
         >.left{
             flex: 1 1 0;
             width: 0;
+            height: 100%;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-start;
+            >.hidden-bt{
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: flex-start;
+                margin-left: 15px;
+                >*{
+                    cursor: pointer;
+                    transition: all 0.2s;
+                    &:hover{
+                        color: #0072E5;
+                    }
+                }
+            }
             >.path-list-container{
+                flex: 1 1 0;
+                width: 0;
                 padding: 0 15px;
                 box-sizing: border-box;
                 mask-image: linear-gradient(90deg,#000 0%,#000 calc(100% - 50px),transparent);
@@ -429,8 +485,8 @@ export default {
                     }
                 }
                 >.bt-list-container{
-                    width: fit-content;
-                    min-width: 150px;
+                    width: max-content;
+                    min-width: 100px;
                     position: absolute;
                     z-index: 9;
                     top: calc(100% + 0px);
@@ -455,21 +511,32 @@ export default {
                             }
                         }
                         :deep(a){
-                            padding: 13px 15px;
+                            padding: 11px 15px;
                             box-sizing: border-box;
                             display: block;
                             color: #6b7386;
                             text-align: center;
+                            display: flex;
+                            align-items: center;
+                            justify-content: flex-start;
+                            >*{
+                                margin: 0 10px 0 0;
+                            }
                         }
                     }
                     >.logout-bt{
                         cursor: pointer;
-                        padding: 13px 15px;
+                        padding: 11px 15px;
                         box-sizing: border-box;
                         background-color: #fef0f0;
                         color: #f56c6c;
                         transition: all 0.2s;
-                        text-align: center;
+                        display: flex;
+                        align-items: center;
+                        justify-content: flex-start;
+                        >*{
+                            margin: 0 10px 0 0;
+                        }
                         &:hover{
                             box-shadow: inset 0 1px 4px #0000001f;
                             color: #f14242;

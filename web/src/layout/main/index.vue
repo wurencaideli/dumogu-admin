@@ -56,6 +56,7 @@ export default defineComponent({
             tagHisList:toRef(userDataStore,'tagHisList'),
             iframeList:toRef(publicDataStore,'iframeList'),  //当前已打开的iframe数组
             viewFullScreen:toRef(publicDataStore,'viewFullScreen'),  //是否视图全屏
+            showMenu:toRef(publicDataStore,'showMenu'),  //是否显示目录
             breadcrumbList:[],  //面包屑列表
             optionBtShow:true,  //控制按钮的显示
         });
@@ -345,6 +346,10 @@ export default defineComponent({
             window.removeEventListener('mousemove',setupShow);
             window.removeEventListener('keydown',setupShow_1);
         });
+        /** 切换目录展示 */
+        function switchShowMenu(state){
+            publicDataStore.setShowMenu(state);
+        }
         return {
             formatComponentInstance,
             dataContainer,
@@ -360,6 +365,7 @@ export default defineComponent({
             routeIncetance:route,
             toggleFullScreen,
             handleClick_1,
+            switchShowMenu,
         };
     },
 });
@@ -373,11 +379,17 @@ export default defineComponent({
         }">    
         <div class="head-container">
             <Navbar
+                :showLogo="dataContainer.showMenu"
+                @switchShowLogo="()=>{
+                    switchShowMenu(!dataContainer.showMenu);
+                }"
                 :userInfo="dataContainer.userInfo"
                 :breadcrumbList="dataContainer.breadcrumbList"></Navbar>
         </div>
         <div class="content-container">
-            <div class="left">
+            <div
+                v-if="dataContainer.showMenu" 
+                class="left">
                 <Menu
                     :dataList="dataContainer.showMenuList"></Menu>
             </div>

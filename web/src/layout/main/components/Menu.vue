@@ -4,6 +4,7 @@
             height="100%">
             <el-menu 
                 ref="ElMenuRef"
+                :collapse="false"
                 :default-active="route.path"
                 :router="false">
                 <MenuItem
