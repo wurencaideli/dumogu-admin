@@ -189,6 +189,11 @@ export function getUserData(){
                 number:4,
             },
             {
+                name:"merge-table",
+                title:'合并表格展示列表',
+                iconName:"laptop-check",
+            },
+            {
                 name:"other-view",
                 title:'其他功能展示',
                 iconName:"map-fill",

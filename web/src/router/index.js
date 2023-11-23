@@ -174,6 +174,14 @@ export const constantRoutes = [
                     isMenu:true,
                 },
             },
+            {
+                path: 'merge-table',
+                component: () => import('@/views/exampleViews/mergeTable/index.vue'),
+                name: 'merge-table',
+                meta: { 
+                    isMenu:true,
+                },
+            },
         ],
     },
     {

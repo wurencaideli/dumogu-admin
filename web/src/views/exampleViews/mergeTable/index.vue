@@ -131,7 +131,7 @@
                         批量删除：{{dataContainer.currentRows.length}}
                     </el-button>
                     <p style="margin:0;padding:0;">
-                        数据编辑以新开页面的形式，搜索栏部分收缩可保留一行。
+                        表格分组展示（按照部门+性别分组），数据编辑以新开页面的形式，搜索栏部分收缩可保留一行。
                     </p>
                 </div>
                 <div class="right">
@@ -158,11 +158,14 @@
                     border
                     @cell-dblclick ="handleCopyVale"
                     @sort-change="handleSortChange"
+                    :span-method="arraySpanMethod"
+                    :summary-method="getSummaries"
+                    show-summary
                     height="100%">
                     <el-table-column
                         label="多选组件"
                         align="center"
-                        width="40"
+                        width="60"
                         fixed="left"
                         class-name="small-padding fixed-width"
                     >
@@ -187,6 +190,38 @@
                         </template>
                     </el-table-column>
                     <el-table-column type="index" align="center" label="序号" width="60" fixed="left"/>
+                    <el-table-column
+                        label="部门"
+                        show-overflow-tooltip
+                        align="center"
+                        min-width="170"
+                        prop="department"
+                        sortable="custom"
+                        :sort-orders="['descending', 'ascending']"/>
+                    <el-table-column
+                        label="性别"
+                        show-overflow-tooltip
+                        align="center"
+                        prop="sex"
+                        min-width="250"
+                        sortable="custom"
+                        :sort-orders="['descending', 'ascending']">
+                        <template #default="scope">
+                            <DictTags
+                                :options="dataContainer.optionList_1"
+                                :value="scope.row.sex"
+                                valueKey="value"
+                                labelKey="label"></DictTags>
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                        label="工资"
+                        show-overflow-tooltip
+                        align="center"
+                        min-width="150"
+                        prop="money"
+                        sortable="custom"
+                        :sort-orders="['descending', 'ascending']"/>
                     <el-table-column
                         label="用户名称"
                         show-overflow-tooltip
@@ -313,6 +348,8 @@
 import {defineComponent,onBeforeUnmount,ref,reactive,getCurrentInstance,onActivated} from 'vue';
 import { useRouter } from "vue-router";
 import { copyValue } from '@/common/OtherTools';
+import { groupList } from '@/common/OtherTools';
+import { numberToFixed } from '@/common/OtherTools';
 import DictTags from '@/components/DictTags.vue';
 import {debounceFn} from "@/common/DebounceAndThrottle";
 import {responseData} from "./common/Data.js";
@@ -321,6 +358,7 @@ import SvgIcon from "@/components/svgIcon/index.vue";
 import {hasPermi} from "@/action/PowerTools";
 import DifinCollapse from "@/components/DifinCollapse.vue";
 import { saveAs } from 'file-saver';
+import {guid} from '@/common/Guid';
 
 export default defineComponent({
     components: {
@@ -349,7 +387,34 @@ export default defineComponent({
                 {value:true,label:'不可选择',elTagType:'danger'},
                 {value:false,label:'可选择',elTagType:'primary'},
             ],
+            optionList_1:[
+                {value:'1',label:'男员工',elTagType:'primary'},
+                {value:'-1',label:'女员工',elTagType:'success'},
+            ],
         });
+        //需要合并的字段
+        const needMergeColumn = {
+            index__:{
+                spanKey:'colspan__1',
+            },
+            department:{
+                spanKey:'colspan__1',
+            },
+            sex:{
+                spanKey:'colspan__2',
+            },
+        };
+        /** 合并表格列和行 */
+        function arraySpanMethod(data){
+            const {
+                row,
+                column,
+            } = data;
+            let target = needMergeColumn[column.property];
+            if(!target) return [1,1];
+            if(row[target.spanKey] === undefined) return [0,0];
+            return [row[target.spanKey],1];
+        }
         /** 获取数据列表 */
         const getDataList = debounceFn(function() {
             if(dataContainer.loading) return;
@@ -357,7 +422,8 @@ export default defineComponent({
             setTimeout(()=>{
                 Promise.resolve(responseData)
                     .then(res => {
-                        dataContainer.list = res.rows || [];
+                        let list = res.rows || [];
+                        dataContainer.list = groupDataList(list);
                         dataContainer.config.total = res.total;
                         /** 默认不选择 */
                         dataContainer.list.forEach(item=>{
@@ -366,6 +432,8 @@ export default defineComponent({
                         dataContainer.checked__ = false;
                         /** 清空当前多选的数据 */
                         handleSelectionChange([]);
+                        console.log(dataContainer.list);
+                        
                     })
                     .catch(() => {
                         return;
@@ -376,6 +444,30 @@ export default defineComponent({
             },800);
         },70);
         getDataList();
+        /** 数据分组 */
+        function groupDataList(list){
+            /** 根据部门分组 */
+            const list_1 = groupList(list,['department'],{
+                isDetailed:true,
+                forEach(item){
+                    delete item.colspan__1;
+                    delete item.colspan__2;
+                },
+                groupPretreat(list_){
+                    /** 根据性别分组 */
+                    list_ = groupList(list_,['sex'],{
+                        isDetailed:true,
+                        groupPretreat(list__){
+                            list__[0].colspan__2 = list__.length;
+                            return list__;
+                        },
+                    }).list;
+                    list_[0].colspan__1 = list_.length;
+                    return list_;
+                },
+            }).list;
+            return list_1;
+        }
         /** 双击单元格，复制单元格内容 */
         function handleCopyVale(_, __, ___, event){
             copyValue(event.target.innerText);
@@ -469,6 +561,52 @@ export default defineComponent({
         function handleSelectionChange(selection) {
             dataContainer.currentRows = selection || [];
         }
+        /** 表格数据合计 */
+        function getSummaries(params){
+            const { columns, data } = params;
+            const sums = [];
+            const needFildList = [  //需要合计的字段
+                {
+                    property:'department',lable:'自定义取值：',
+                    getValue(target,key){   //合计的时候获取值的函数，参数 当前行数据 合计的字段
+                        return Number(target[key]) || 1;
+                    },
+                },
+                {property:'money',lable:'合计：'},
+            ];  //需要汇总的字段列表
+            columns.forEach((column, index) => {
+                if (index === 0) {
+                    sums[index] = '汇总';
+                    return;
+                }
+                if (!column.property) {
+                    sums[index] = '';
+                    return;
+                }
+                const needFild = needFildList[needFildList.findIndex(item=>{
+                    return column.property == item.property;
+                })];
+                if (!needFild) {
+                    sums[index] = '';
+                    return;
+                }
+                const values = data.map((item) =>{
+                    if(needFild.getValue){
+                        return needFild.getValue(item,column.property);
+                    }
+                    return Number(item[column.property]);
+                });
+                sums[index] = `${needFild.lable}${numberToFixed(values.reduce((prev, curr) => {
+                    const value = Number(curr);
+                    if (!Number.isNaN(value)) {
+                        return prev + curr;
+                    } else {
+                        return prev;
+                    }
+                }, 0),2)}`;
+            });
+            return sums;
+        }
         return {
             dataContainer,
             getDataList,
@@ -485,6 +623,8 @@ export default defineComponent({
             changeAllCheck,
             isDisabled,
             handleSelectionChange,
+            arraySpanMethod,
+            getSummaries,
         };
     },
 });
