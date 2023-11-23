@@ -85,6 +85,24 @@
                                         @keyup.enter="handleQuery"/>
                                 </el-form-item>
                             </el-col>
+                            <el-col :span="6" :xs="6">
+                                <el-form-item label="选择" prop="email">
+                                    <el-button
+                                        type="primary"
+                                        @click="handleSelectData">
+                                        选择数据
+                                    </el-button>
+                                </el-form-item>
+                            </el-col>
+                            <el-col :span="6" :xs="6">
+                                <el-form-item label="选择" prop="email">
+                                    <el-button
+                                        type="primary"
+                                        @click="handleSelectData_1">
+                                        选择数据（多选）
+                                    </el-button>
+                                </el-form-item>
+                            </el-col>
                             <el-col :span="12" :xs="12">
                                 <el-form-item label=" ">
                                     <el-button
@@ -338,6 +356,8 @@
                 />
             </div>
         </div>
+        <SelectDataDialog
+            ref="SelectDataDialogRef"></SelectDataDialog>
     </div>
 </template>
 
@@ -357,6 +377,7 @@ import {messageSuccess,confirm} from "@/action/MessagePrompt.js";
 import SvgIcon from "@/components/svgIcon/index.vue";
 import {hasPermi} from "@/action/PowerTools";
 import DifinCollapse from "@/components/DifinCollapse.vue";
+import SelectDataDialog from "./components/SelectDataDialog.vue";
 import { saveAs } from 'file-saver';
 import {guid} from '@/common/Guid';
 
@@ -365,8 +386,10 @@ export default defineComponent({
         DictTags,
         SvgIcon,
         DifinCollapse,
+        SelectDataDialog,
     },
     setup() {
+        const SelectDataDialogRef = ref(null);  //组件实例
         const router = useRouter();
         const dataContainer = reactive({
             loading:false,
@@ -607,6 +630,30 @@ export default defineComponent({
             });
             return sums;
         }
+        /** 选择数据 */
+        function handleSelectData(){
+            if(!SelectDataDialogRef.value) return;
+            SelectDataDialogRef.value.initData(true,{},{
+                afterTitle:' - 单选',
+                useRowClick:true,
+            }).then(r=>{
+                messageSuccess("单选"+JSON.stringify(r));
+            }).catch(()=>{
+                return;
+            });
+        }
+        /** 选择数据 */
+        function handleSelectData_1(){
+            if(!SelectDataDialogRef.value) return;
+            SelectDataDialogRef.value.initData(true,{},{
+                afterTitle:' - 多选',
+                isMultiple:true,
+            }).then(r=>{
+                messageSuccess("多选"+JSON.stringify(r));
+            }).catch(()=>{
+                return;
+            });
+        }
         return {
             dataContainer,
             getDataList,
@@ -625,6 +672,9 @@ export default defineComponent({
             handleSelectionChange,
             arraySpanMethod,
             getSummaries,
+            handleSelectData,
+            SelectDataDialogRef,
+            handleSelectData_1,
         };
     },
 });
