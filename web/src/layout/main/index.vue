@@ -439,18 +439,21 @@ export default defineComponent({
                         </iframe>
                     </div>
                     <div 
+                        v-if="dataContainer.viewFullScreen"
                         :class="{
                             'option-bt-list':true,
-                            'show':dataContainer.viewFullScreen && dataContainer.optionBtShow,
+                            'show':dataContainer.optionBtShow,
                         }">
-                        <SvgIcon
-                            :style="'width:16px;height:16px;'"
-                            @click="handleClick_1"
-                            name="compress-alt"></SvgIcon>
-                        <SvgIcon
-                            :style="'width:16px;height:16px;'"
-                            @click="toggleFullScreen"
-                            name="Navbar-full"></SvgIcon>
+                        <div class="container">
+                            <SvgIcon
+                                :style="'width:16px;height:16px;'"
+                                @click="handleClick_1"
+                                name="compress-alt"></SvgIcon>
+                            <SvgIcon
+                                :style="'width:16px;height:16px;'"
+                                @click="toggleFullScreen"
+                                name="Navbar-full"></SvgIcon>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -496,9 +499,6 @@ export default defineComponent({
                     flex: initial;
                     height: 100%;
                     width: 100%;
-                    >.option-bt-list{
-                        display: flex;
-                    }
                 }
             }
         }
@@ -573,33 +573,40 @@ export default defineComponent({
                 }
                 >.option-bt-list{
                     position: absolute;
-                    right: 15px;
-                    top: 15px;
-                    border-radius: 8px;
-                    background-color: rgb(255, 255, 255);
-                    flex-direction: row;
-                    align-items: center;
-                    padding: 5px;
-                    box-sizing: border-box;
-                    display: none;
-                    width: fit-content;
-                    box-shadow: rgba(0, 0, 0, 0.319) 0px 1px 3px;
+                    top: 5px;
+                    left: 0;
+                    width: 100%;
                     opacity: 0;
                     pointer-events: none;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
                     transition: all 0.2s;
+                    z-index: 9;
                     &.show{
                         opacity: 1;
                         pointer-events: initial;
                     }
-                    >*{
-                        margin-right: 5px;
-                        cursor: pointer;
-                        border-radius: 8px;
-                        box-shadow: inset 0 1px 4px #0000001f;
-                        padding: 7px;
-                        color:#444954;
-                        &:last-child{
-                            margin: 0;
+                    >.container{
+                        width: auto;
+                        border-radius: 3px;
+                        background-color: rgb(255, 255, 255);
+                        display: flex;
+                        flex-direction: row;
+                        align-items: center;
+                        padding: 5px;
+                        box-sizing: border-box;
+                        box-shadow: rgba(0, 0, 0, 0.476) 0px 1px 3px;
+                        >*{
+                            margin-right: 5px;
+                            cursor: pointer;
+                            border-radius: 3px;
+                            box-shadow: inset 0 1px 4px #0000001f;
+                            padding: 7px;
+                            color:#444954;
+                            &:last-child{
+                                margin: 0;
+                            }
                         }
                     }
                 }
