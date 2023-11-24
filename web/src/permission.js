@@ -40,7 +40,7 @@ router.beforeEach(async (to, from, next) => {
      */
     let token = userData.userInfo.token;
     if(!token){
-        next(`/login?redirect=${to.fullPath}`); // 否则跳转到登录页
+        next(`/login?from=${encodeURIComponent(to.fullPath)}`); // 否则跳转到登录页
         return;
     }
     /** 如果没有菜单则先获取用户数据 */

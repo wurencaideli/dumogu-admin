@@ -129,7 +129,12 @@ export default defineComponent({
                  * 登录成功，跳转到首页
                  * 其他用户信息会在路由跳转是获取到
                  *  */
-                router.push('/');
+                let routeParams = route.query || {};
+                if(routeParams.from) {
+                    router.push(decodeURIComponent(routeParams.from));
+                }else{
+                    router.push('/');
+                }
             }).catch((res)=>{
                 ElMessage.error('登录失败：'+res.msg);
             }).finally(()=>{
