@@ -16,6 +16,7 @@ export function refreshTag(sign){
         return item.sign == sign;
     });
     if(!target) return;
+    if(!target.redirectPath) return;
     let isCache = target.isCache;
     /** 取消缓存 */
     target.isCache = false;
@@ -31,12 +32,7 @@ export function refreshTag(sign){
         myAfterEach = null;
     });
     /** 跳转到重定向页面 */
-    router.push({
-        name:'big-screen-redirect',
-        params:{
-            path:target.fullPath,
-        },
-    });
+    router.push(target.redirectPath);
 }
 /** 刷新当前标签 */
 export function refreshCurrentTag(){

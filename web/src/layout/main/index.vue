@@ -187,6 +187,12 @@ export default defineComponent({
                 fixed:userMenuConfig.fixed,  //表示该标签需要固定
                 showTagIcon:userMenuConfig.showTagIcon,  //表示该标签是否需要显示icon
                 iconName:userMenuConfig.iconName,  //表示该标签对应的icon
+                redirectPath:{  //刷新重定向路由地址参数
+                    name:'main-redirect',
+                    params:{
+                        path:route.fullPath,
+                    },
+                },
             };
             /** 
              * 必须是系统目录中的，不然不允许添加标签，因为只有属于目录才会有标签

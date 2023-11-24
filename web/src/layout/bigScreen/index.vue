@@ -104,6 +104,12 @@ export default defineComponent({
                 fullPath:route.fullPath,
                 sign:guid(),  //唯一标识
                 isCache:userMenuConfig.isCache,  //表示该标签需要缓存
+                redirectPath:{  //刷新重定向路由地址参数
+                    name:'big-screen-redirect',
+                    params:{
+                        path:route.fullPath,
+                    },
+                },
             };
             /** 
              * 必须是系统目录中的，不然不允许添加标签，因为只有属于目录才会有标签
