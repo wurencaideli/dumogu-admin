@@ -6,7 +6,8 @@
             'left':true,
             'hidden':!dataContainer.showLogo,
         }">
-        <div class="logo-container">
+        <div
+            class="logo-container">
             <el-image 
                 @click="toPath({path:'/'})"
                 class="logo"
@@ -297,9 +298,12 @@ export default {
         height: 100%;
         width: fit-content;
         width: var(--menu-width);
+        transition: width 0.2s;
+        overflow: hidden;
         &.hidden{
             width: 0;
-            display: none;
+            // display: none;
+            pointer-events: none;
         }
         >.logo-container{
             padding: 0 10px;

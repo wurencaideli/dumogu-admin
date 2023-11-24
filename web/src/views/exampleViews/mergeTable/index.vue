@@ -455,8 +455,6 @@ export default defineComponent({
                         dataContainer.checked__ = false;
                         /** 清空当前多选的数据 */
                         handleSelectionChange([]);
-                        console.log(dataContainer.list);
-                        
                     })
                     .catch(() => {
                         return;

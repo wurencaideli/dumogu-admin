@@ -396,7 +396,10 @@ export default defineComponent({
         </div>
         <div class="content-container">
             <div
-                v-if="dataContainer.showMenu" 
+                :class="{
+                    'left':true,
+                    'hidden':!dataContainer.showMenu,
+                }"
                 class="left">
                 <Menu
                     :dataList="dataContainer.showMenuList"></Menu>
@@ -539,6 +542,13 @@ export default defineComponent({
             z-index: 9;
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.177);
             background-color: #153451e8;
+            transition: width 0.2s;
+            overflow: hidden;
+            &.hidden{
+                width: 0;
+                // display: none;
+                pointer-events: none;
+            }
         }
         >.right{
             flex: 1 1 0;
