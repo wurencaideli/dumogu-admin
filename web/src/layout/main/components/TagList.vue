@@ -51,6 +51,13 @@
     <div class="bt-list">
         <div 
             class="bt"
+            @click="handleOptionClick(5)">
+            <SvgIcon
+                :style="'width:15px;height:15px;'"
+                name="redo"></SvgIcon>
+        </div>
+        <div 
+            class="bt"
             @click="handleToLeft()">
             <SvgIcon
                 :style="'width:15px;height:15px;'"

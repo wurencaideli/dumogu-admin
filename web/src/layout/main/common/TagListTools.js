@@ -49,7 +49,11 @@ export function refreshTag(sign){
         return item.sign == sign;
     });
     if(!target) return;
-    if(!target.redirectPath) return;
+    if(!target.redirectPath) {
+        /** 没有刷新地址的跳回原地址 */
+        router.push(target.fullPath);
+        return;
+    };
     let isCache = target.isCache;
     /** 取消缓存 */
     target.isCache = false;

@@ -134,6 +134,8 @@ export default defineComponent({
                 activeSign = newTag.sign;
             }else{
                 activeSign = target.sign;
+                /** 防止没有刷新地址 */
+                target.redirectPath = target.redirectPath || newTag.redirectPath;
             }
             TagData.setTagList(tagList);
             TagData.setActiveSign(activeSign);
