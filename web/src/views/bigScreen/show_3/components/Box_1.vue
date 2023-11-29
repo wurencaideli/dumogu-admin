@@ -38,6 +38,12 @@ export default defineComponent({
     <div class="box-cp-container">
         <div class="container">
             宽高固定，可视区域宽高不匹配会导致裁剪
+            <a 
+                style="color: inherit;background-color: #0039ff;padding: 5px 10px;border-radius: 5px;"
+                href="https://github.com/wurencaideli/dumogu-admin/blob/master/web/src/views/bigScreen/show_3/index.vue" 
+                target="_blank" rel="noopener noreferrer">
+                源码地址
+            </a>
         </div>
     </div>
 </template>

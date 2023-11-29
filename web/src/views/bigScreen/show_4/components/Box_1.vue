@@ -40,6 +40,12 @@ export default defineComponent({
             使用rem进行大小切换，保持宽高比例使其可全部展现在可视区域。（强烈推荐）
             懒得手动转换的可以试试 npm run to-rem 命令使用脚本替换，方便。
             其中执行的js文件在根目录下的automationScripts文件夹中，可以选择替换。
+            <a 
+                style="color: inherit;background-color: #0039ff;padding: 5px 10px;border-radius: 5px;"
+                href="https://github.com/wurencaideli/dumogu-admin/blob/master/web/src/views/bigScreen/show_4/index.vue" 
+                target="_blank" rel="noopener noreferrer">
+                源码地址
+            </a>
         </div>
     </div>
 </template>

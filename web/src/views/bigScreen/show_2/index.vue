@@ -164,7 +164,6 @@ export default defineComponent({
                     background-size: 100% 100%;
                     background-position: center;
                     margin: 0 0 0.938rem 0;
-                    background-color: rgba(255, 0, 0, 0.442);
                     &:last-child{
                         margin: 0;
                     }

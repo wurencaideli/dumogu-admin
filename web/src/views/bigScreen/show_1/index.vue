@@ -13,6 +13,7 @@ import Box_2 from "./components/Box_2.vue";
 import Box_3 from "./components/Box_3.vue";
 import Box_4 from "./components/Box_4.vue";
 import Box_5 from "./components/Box_5.vue";
+import Box_6 from "./components/Box_6.vue";
 
 export default defineComponent({
     name:'BigScreenView',
@@ -24,6 +25,7 @@ export default defineComponent({
         Box_3,
         Box_4,
         Box_5,
+        Box_6,
     },
     setup(){
         const dataContainer = reactive({
@@ -78,6 +80,9 @@ export default defineComponent({
                         </div>
                     </div>
                 </div>
+                <div class="centre-box">
+                    <Box_6></Box_6> 
+                </div>
             </div>
         </AutoScalContainer>
     </div>
@@ -99,8 +104,11 @@ export default defineComponent({
         background-repeat: no-repeat;
         background-size: 100% 100%;
         background-position: center;
+        position: relative;
         >.head{
             height: 91px;
+            position: relative;
+            z-index: 2;
         }
         >.content{
             display: flex;
@@ -108,9 +116,13 @@ export default defineComponent({
             flex: 1 1 0;
             width: 100%;
             height: 0;
+            position: relative;
+            z-index: 2;
+            pointer-events: none;
             >.top{
                 width: 100%;
                 height: 199px;
+                pointer-events: initial;
             }
             >.content{
                 display: flex;
@@ -133,7 +145,7 @@ export default defineComponent({
                         background-size: 100% 100%;
                         background-position: center;
                         margin: 0 0 15px 0;
-                        background-color: rgba(255, 0, 0, 0.442);
+                        pointer-events: initial;
                         &:last-child{
                             margin: 0;
                         }
@@ -148,6 +160,14 @@ export default defineComponent({
                     width: 550px;
                 }
             }
+        }
+        >.centre-box{
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
         }
     }
 }
