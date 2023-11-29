@@ -22,3 +22,6 @@ npm install
     不仅仅是用的地方多就要拆分，平衡解耦拆分，修改方便性，可读性之间的度。
 
 灵活可控，保证稳定性，什么华丽花哨的不考虑。做到稳如泰山的代码，一眼就能看明白。
+
+[官网DEMO](https://admin.dumogu.top/)
+[开源地址](https://github.com/wurencaideli/dumogu-admin)

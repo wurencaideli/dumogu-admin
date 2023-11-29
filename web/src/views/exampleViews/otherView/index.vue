@@ -58,6 +58,31 @@
                     自定义打印
                 </el-button>
             </div>
+            <p>
+                展示shadow-dom
+            </p>
+            <div class="shadow-container">
+                <ShadowHtml
+                    :htmlValue="dataContainer.htmlValue"
+                    :cssValue="dataContainer.cssValue"></ShadowHtml>
+            </div>
+            <p>
+                tab切换
+            </p>
+            <div class="tab-container">
+                <MyTabs
+                    class="my-tabs"
+                    :activeIndex="dataContainer.activeIndex"
+                    :tabLength="5">
+                    <div
+                        v-for="item,index in 5" 
+                        :key="index"
+                        @click="dataContainer.activeIndex=index"
+                        class="item">
+                        item{{index}}
+                    </div>
+                </MyTabs>
+            </div>
         </div>
     </DefinScrollbar>
 </template>
@@ -67,13 +92,19 @@ import { defineComponent,ref,toRef,reactive, watch, nextTick,onUnmounted,onMount
 import {createDoc} from "./generateDocx/index";
 import { table_0 } from "./printTemp/Template";
 import { handlePrint } from "./printTemp/Base";
+import ShadowHtml from "@/components/ShadowHtml.vue";
+import MyTabs from "@/components/MyTabs.vue";
 
 export default defineComponent({
     components: {
+        ShadowHtml,
+        MyTabs,
     },
     setup(){
         const dataContainer = reactive({
-
+            htmlValue:'<p>展示一个红色字体的p标签，且不影响系统其他样式</p>',
+            cssValue:'p{color:red;}',
+            activeIndex:0,
         });
         const otherContainer = {
         };
@@ -208,6 +239,27 @@ export default defineComponent({
             margin: 0 15px 0 0;
             &:last-child{
                 margin: 0;
+            }
+        }
+    }
+    >.shadow-container{
+        background-color: rgb(231, 231, 231);
+        padding: 15px;
+        box-sizing: border-box;
+        border-radius: 5px;
+    }
+    >.tab-container{
+        :deep(.my-tabs){
+            --my-tabs-padding: 15px;
+            --my-tabs-border-radius: 5px;
+            background-color:rgb(233, 233, 233);
+            >.item{
+                padding: 15px;
+                box-sizing: border-box;
+                cursor: pointer;
+            }
+            >.my-tabs-active-item-bg{
+                background-color: #0084ff24;
             }
         }
     }
