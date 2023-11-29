@@ -81,7 +81,10 @@ export default defineComponent({
                     </div>
                 </div>
                 <div class="centre-box">
-                    <Box_6></Box_6> 
+                    <div class="v-height"></div>
+                    <div class="container">
+                        <Box_6></Box_6> 
+                    </div>
                 </div>
             </div>
         </AutoScalContainer>
@@ -168,6 +171,17 @@ export default defineComponent({
             width: 100%;
             height: 100%;
             z-index: 1;
+            display: flex;
+            flex-direction: column;
+            >.v-height{
+                width: 100%;
+                height: 270px;
+            }
+            >.container{
+                flex: 1 1 0;
+                height: 0;
+                width: 100%;
+            }
         }
     }
 }
