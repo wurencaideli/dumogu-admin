@@ -1,5 +1,7 @@
 <template>
-    <div class="auto-scal-container">
+    <div 
+        class="auto-scal-container"
+        ref="AutoScalContainerRef">
         <div 
             ref="DomRef" 
             class="auto-scal-container-inner">
@@ -11,6 +13,7 @@
 <script>
 /** 
  * 自动缩放容器
+ * 使用transform进行缩放
  *  */
 import { 
     defineComponent,ref,getCurrentInstance,reactive,toRef, 
@@ -29,11 +32,10 @@ export default defineComponent({
             default:1080,
         },
     },
-    components: {
-        
-    },
-    setup(props){
+    emits:['onResizeScreen'],
+    setup(props,{emit}){
         const DomRef = ref(null);  //组件实例
+        const AutoScalContainerRef = ref(null);  //组件实例
         const dataContainer = reactive({
             height:toRef(props,'height'),
             width:toRef(props,'width'),
@@ -45,9 +47,12 @@ export default defineComponent({
         }
         /** 自动缩放 */
         function autoResizeScreen(){
+            if(!AutoScalContainerRef.value) return;
             if(!DomRef.value) return;
             if(!isActive) return;
-            const { clientWidth, clientHeight } = document.body;
+            let rect = AutoScalContainerRef.value.getBoundingClientRect();
+            let clientWidth = rect.width;
+            let clientHeight = rect.height;
             var width = dataContainer.width;
             var height = dataContainer.height;
             let left;
@@ -69,6 +74,8 @@ export default defineComponent({
                 left: `${left}px`,
                 top: `${top}px`,
             });
+            /** 向外部通知已经计算缩放 */
+            emit('onResizeScreen');
         }
         /** 防抖 */
         let timer_1;
@@ -76,11 +83,11 @@ export default defineComponent({
             clearTimeout(timer_1);
             setTimeout(()=>{
                 autoResizeScreen();
-            },300);
+            },16);
         }
         let timer = setInterval(()=>{
             fnContainer();
-        },3000);
+        },300);
         onMounted(() => {
             autoResizeScreen();
         });
@@ -92,6 +99,7 @@ export default defineComponent({
         return {
             dataContainer,
             DomRef,
+            AutoScalContainerRef,
         };
     },
 });
@@ -102,11 +110,11 @@ export default defineComponent({
     width: 100%;
     height: 100%;
     position: relative;
+    overflow: hidden;
     >.auto-scal-container-inner {
         overflow: hidden;
         transform-origin: left top;
         z-index: 999;
-        transition: all 0.15s;
         width: max-content;
         height: max-content;
         position: absolute;

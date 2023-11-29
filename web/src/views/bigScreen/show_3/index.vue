@@ -4,7 +4,6 @@
  * 采用缩放的形式进行适配，搭配rem的话很方便实用
  *  */
 import { defineComponent,ref,getCurrentInstance,reactive,toRef, computed,onMounted,onActivated,watch } from "vue";
-import AutoScalContainer from "./components/AutoScalContainer.vue";
 import ViewHead from "./components/ViewHead.vue";
 import img_1 from "./assets/bg.png";
 import img_2 from "./assets/1-1-bg.png";
@@ -17,7 +16,6 @@ import Box_5 from "./components/Box_5.vue";
 export default defineComponent({
     name:'BigScreenView',
     components: {
-        AutoScalContainer,
         ViewHead,
         Box_1,
         Box_2,
@@ -41,40 +39,43 @@ export default defineComponent({
 </script>
 
 <template>
-    <div 
-        class="big-screen-view"
-        :style="{
-            '--bg-img-1':`url(${dataContainer.img.img_1})`,
-            '--bg-img-2':`url(${dataContainer.img.img_2})`,
-        }" >
-        <div class="head">
-            <ViewHead
-                title="数据可视化大屏展示"></ViewHead>
-        </div>
-        <div class="content">
-            <div class="top">
-                <Box_1></Box_1> 
+    <el-scrollbar 
+        height="100vh">
+        <div 
+            class="big-screen-view"
+            :style="{
+                '--bg-img-1':`url(${dataContainer.img.img_1})`,
+                '--bg-img-2':`url(${dataContainer.img.img_2})`,
+            }" >
+            <div class="head">
+                <ViewHead
+                    title="数据可视化大屏展示"></ViewHead>
             </div>
             <div class="content">
-                <div class="left">
-                    <div class="box">
-                        <Box_2></Box_2> 
-                    </div>
-                    <div class="box">
-                        <Box_3></Box_3> 
-                    </div>
+                <div class="top">
+                    <Box_1></Box_1> 
                 </div>
-                <div class="right">
-                    <div class="box">
-                        <Box_4></Box_4> 
+                <div class="content">
+                    <div class="left">
+                        <div class="box">
+                            <Box_2></Box_2> 
+                        </div>
+                        <div class="box">
+                            <Box_3></Box_3> 
+                        </div>
                     </div>
-                    <div class="box">
-                        <Box_5></Box_5> 
+                    <div class="right">
+                        <div class="box">
+                            <Box_4></Box_4> 
+                        </div>
+                        <div class="box">
+                            <Box_5></Box_5> 
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </el-scrollbar>
 </template>
 
 <style lang="scss" scoped>

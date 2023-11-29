@@ -4,8 +4,9 @@
  * 采用缩放的形式进行适配，搭配rem的话很方便实用
  *  */
 import { defineComponent,ref,getCurrentInstance,reactive,toRef, computed,onMounted,onActivated,watch } from "vue";
-import AutoScalContainer from "@/components/AutoScalContainer.vue";
+import AutoScalContainerV2 from "@/components/AutoScalContainerV2.vue";
 import ViewHead from "./components/ViewHead.vue";
+import {setRem} from "@/common/Rem.js";
 import img_1 from "./assets/bg.png";
 import img_2 from "./assets/1-1-bg.png";
 import Box_1 from "./components/Box_1.vue";
@@ -17,7 +18,7 @@ import Box_5 from "./components/Box_5.vue";
 export default defineComponent({
     name:'BigScreenView',
     components: {
-        AutoScalContainer,
+        AutoScalContainerV2,
         ViewHead,
         Box_1,
         Box_2,
@@ -33,8 +34,23 @@ export default defineComponent({
                 img_2,
             },
         }); 
+        /** 
+         * 缩放计算事件
+         *  */
+        function handleResizeScreen(rect){
+            rect = rect || {};
+            /** 
+             * 计算缩放倍数 1920 * 1080
+             * 根据设计图自己配置
+             *  */
+            let baseSize = 16;  //基础大小，相当于1rem = 16像素
+            let scale = rect.width / 1920;
+            let fontSize = Math.round(baseSize * scale*100)/100 + 'px';
+            setRem(fontSize);
+        }
         return {
             dataContainer,
+            handleResizeScreen,
         };
     },
 });
@@ -42,9 +58,9 @@ export default defineComponent({
 
 <template>
     <div class="big-screen-view">
-        <AutoScalContainer
-            :height="1080"
-            :width="1920">
+        <AutoScalContainerV2
+            :ratio="1920/1080"
+            @onResizeScreen="handleResizeScreen">
             <div 
                 class="big-screen-view-container"
                 :style="{
@@ -79,7 +95,7 @@ export default defineComponent({
                     </div>
                 </div>
             </div>
-        </AutoScalContainer>
+        </AutoScalContainerV2>
     </div>
 </template>
 
@@ -90,8 +106,8 @@ export default defineComponent({
     overflow: hidden;
     background-color: #031045c7;
     .big-screen-view-container{
-        width: 1920px;
-        height: 1080px;
+        width: 100%;
+        height: 100%;
         background-color: rgb(169, 169, 169);
         display: flex;
         flex-direction: column;
@@ -100,7 +116,7 @@ export default defineComponent({
         background-size: 100% 100%;
         background-position: center;
         >.head{
-            height: 91px;
+            height: 5.688rem;
         }
         >.content{
             display: flex;
@@ -110,7 +126,7 @@ export default defineComponent({
             height: 0;
             >.top{
                 width: 100%;
-                height: 199px;
+                height: 12.438rem;
             }
             >.content{
                 display: flex;
@@ -119,7 +135,7 @@ export default defineComponent({
                 flex: 1 1 0;
                 width: 100%;
                 height: 0;
-                padding: 0 15px 15px 15px;
+                padding: 0 0.938rem 0.938rem 0.938rem;
                 box-sizing: border-box;
                 >.left,>.right{
                     display: flex;
@@ -132,7 +148,7 @@ export default defineComponent({
                         background-repeat: no-repeat;
                         background-size: 100% 100%;
                         background-position: center;
-                        margin: 0 0 15px 0;
+                        margin: 0 0 0.938rem 0;
                         background-color: rgba(255, 0, 0, 0.442);
                         &:last-child{
                             margin: 0;
@@ -141,11 +157,11 @@ export default defineComponent({
                 }
                 >.left{
                     height: 100%;
-                    width: 550px;
+                    width: 34.375rem;
                 }
                 >.right{
                     height: 100%;
-                    width: 550px;
+                    width: 34.375rem;
                 }
             }
         }

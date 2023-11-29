@@ -1,5 +1,7 @@
 <template>
-    <div class="auto-scal-container">
+    <div 
+        class="auto-scal-container"
+        ref="AutoScalContainerRef">
         <div 
             ref="DomRef" 
             class="auto-scal-container-inner">
@@ -10,7 +12,8 @@
 
 <script>
 /** 
- * 自动缩放容器
+ * 自动缩放容器，改变宽高进行缩放
+ * 容器内显示指定的比例
  *  */
 import { 
     defineComponent,ref,getCurrentInstance,reactive,toRef, 
@@ -28,15 +31,20 @@ export default defineComponent({
             type:Number,
             default:1080,
         },
+        /** 内部容器的宽高比例 */
+        ratio:{
+            type:Number,
+            default:1920 / 1080,
+        },
     },
-    components: {
-        
-    },
-    setup(props){
+    emits:['onResizeScreen'],
+    setup(props,{emit}){
         const DomRef = ref(null);  //组件实例
+        const AutoScalContainerRef = ref(null);  //组件实例
         const dataContainer = reactive({
             height:toRef(props,'height'),
             width:toRef(props,'width'),
+            ratio:toRef(props,'ratio'),
         });
         /** 是否是文档上 */
         function isActive(){
@@ -45,29 +53,35 @@ export default defineComponent({
         }
         /** 自动缩放 */
         function autoResizeScreen(){
+            if(!AutoScalContainerRef.value) return;
             if(!DomRef.value) return;
             if(!isActive) return;
-            const { clientWidth, clientHeight } = document.body;
-            var width = dataContainer.width;
-            var height = dataContainer.height;
-            let left;
-            let top;
-            let scale;
+            let rect = AutoScalContainerRef.value.getBoundingClientRect();
+            let clientWidth = rect.width;
+            let clientHeight = rect.height;
+            let width = dataContainer.width;
+            let height = dataContainer.height;
+            let domWidth = 0;
+            let domHeight = 0;
+            /** 使用外部传入的比例或者传入的宽高计算比例 */
+            let ratio = dataContainer.ratio || (width / height);
             // 获取比例  可视化区域的宽高比与 屏幕的宽高比  来进行对应屏幕的缩放
-            if ((clientWidth / clientHeight) > (width / height)) {
-                scale = clientHeight / height;
-                top = 0;
-                left = (clientWidth - width * scale) / 2;
+            if ((clientWidth / clientHeight) > ratio) {
+                domHeight = clientHeight;
+                domWidth = ratio * domHeight;
             } else {
-                scale = clientWidth / width;
-                left = 0;
-                top = (clientHeight - height * scale) / 2;
+                domWidth = clientWidth;
+                domHeight = domWidth / ratio;
             }
             // 防止组件销毁后还执行设置状态s
             Object.assign(DomRef.value.style, {
-                transform: `scale(${scale})`,
-                left: `${left}px`,
-                top: `${top}px`,
+                width: `${domWidth}px`,
+                height: `${domHeight}px`,
+            });
+            /** 向外部通知已经计算缩放 */
+            emit('onResizeScreen',{
+                width:domWidth,
+                height:domHeight,
             });
         }
         /** 防抖 */
@@ -76,11 +90,11 @@ export default defineComponent({
             clearTimeout(timer_1);
             setTimeout(()=>{
                 autoResizeScreen();
-            },300);
+            },16);
         }
         let timer = setInterval(()=>{
             fnContainer();
-        },3000);
+        },300);
         onMounted(() => {
             autoResizeScreen();
         });
@@ -92,6 +106,7 @@ export default defineComponent({
         return {
             dataContainer,
             DomRef,
+            AutoScalContainerRef,
         };
     },
 });
@@ -102,14 +117,15 @@ export default defineComponent({
     width: 100%;
     height: 100%;
     position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     >.auto-scal-container-inner {
+        position: absolute;
         overflow: hidden;
         transform-origin: left top;
-        z-index: 999;
-        transition: all 0.15s;
-        width: max-content;
-        height: max-content;
-        position: absolute;
+        width: 0;
+        height: 0;
     }
 }
 </style>

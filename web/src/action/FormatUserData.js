@@ -228,6 +228,14 @@ export function getUserData(){
                         isLink:true,
                         path:'/big-screen/show_3',
                     },
+                    {
+                        title:'示例4(推荐)',
+                        isCache:true,
+                        content:'宽高缩放',
+                        iconName:"laptop",
+                        isLink:true,
+                        path:'/big-screen/show_4',
+                    },
                 ],
             },
             {

@@ -225,6 +225,14 @@ export const constantRoutes = [
                     isMenu:true,
                 },
             },
+            {
+                path: 'show_4',
+                component: () => import('@/views/bigScreen/show_4/index.vue'),
+                name: 'big-screen-show_4',
+                meta: { 
+                    isMenu:true,
+                },
+            },
         ],
     },
     /** 404页面 */

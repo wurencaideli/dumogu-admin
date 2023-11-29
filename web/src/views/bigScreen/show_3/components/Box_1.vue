@@ -37,7 +37,7 @@ export default defineComponent({
 <template>
     <div class="box-cp-container">
         <div class="container">
-
+            宽高固定，可视区域宽高不匹配会导致裁剪
         </div>
     </div>
 </template>
@@ -52,6 +52,10 @@ export default defineComponent({
         background-color: rgba(255, 0, 0, 0.442);
         width: 100%;
         height: 100%;
+        font-size: 1.250rem;
+        color: white;
+        padding: 0.938rem;
+        box-sizing: border-box;
     }
 }
 </style>
