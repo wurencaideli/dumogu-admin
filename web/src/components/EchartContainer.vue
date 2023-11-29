@@ -6,7 +6,7 @@
  */
 import { 
     defineComponent,ref,getCurrentInstance,reactive,nextTick, computed,onUnmounted,
-    onActivated,
+    onActivated,onMounted,
 } from "vue";
 import * as echarts from 'echarts';
 
@@ -14,6 +14,7 @@ export default defineComponent({
     name:'EchartContainer',
     setup(){
         const ChartRef = ref(null);
+        const ChartCpRef = ref(null);
         const otherContainer = {
             optionData:{},
             myChart:'',
@@ -31,6 +32,16 @@ export default defineComponent({
             if(otherContainer.myChart){
                 otherContainer.myChart.resize();
             }
+        }
+        /** 当元素大小发生变化时 */
+        if(typeof ResizeObserver === 'function'){
+            let resizeObserver = new ResizeObserver(() => {
+                if(!ChartCpRef.value) return;
+                resizeChart();
+            });
+            onMounted(()=>{
+                resizeObserver.observe(ChartCpRef.value);
+            });
         }
         /** 当屏幕缩放时 */
         window.addEventListener('resize', resizeChart);
@@ -68,13 +79,16 @@ export default defineComponent({
             ChartRef,
             initData,
             disposeChart,
+            ChartCpRef,
         };
     },
 });
 </script>
 
 <template>
-    <div class="chart-cp-container">
+    <div
+        ref="ChartCpRef" 
+        class="chart-cp-container">
         <div class="chart" ref="ChartRef">
 
         </div>

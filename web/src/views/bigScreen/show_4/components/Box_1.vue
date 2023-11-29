@@ -51,13 +51,14 @@ export default defineComponent({
     padding: 0.938rem;
     box-sizing: border-box;
     >.container{
-        background-color: rgba(255, 0, 0, 0.442);
+        background-color: rgba(0, 128, 255, 0.313);
         width: 100%;
         height: 100%;
         font-size: 1.250rem;
         color: white;
         padding: 0.938rem;
         box-sizing: border-box;
+        border-radius: 0.5rem;
     }
 }
 </style>
