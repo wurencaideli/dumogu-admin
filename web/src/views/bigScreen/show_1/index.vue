@@ -14,6 +14,7 @@ import Box_3 from "./components/Box_3.vue";
 import Box_4 from "./components/Box_4.vue";
 import Box_5 from "./components/Box_5.vue";
 import Box_6 from "./components/Box_6.vue";
+import { useRoute } from "vue-router";
 
 export default defineComponent({
     name:'BigScreenView',
@@ -28,13 +29,25 @@ export default defineComponent({
         Box_6,
     },
     setup(){
+        let route = useRoute();
         const dataContainer = reactive({
             loading:false,
             img:{
                 img_1,
                 img_2,
             },
+            fit:'contain',
         }); 
+        watch(route,()=>{
+            let queryParams = route.query || {};
+            let fitMap = {
+                'cover':'cover',
+                'contain':'contain',
+            };
+            dataContainer.fit = fitMap[queryParams.fit] || 'contain';
+        },{
+            immediate:true,
+        });
         return {
             dataContainer,
         };
@@ -46,7 +59,8 @@ export default defineComponent({
     <div class="big-screen-view">
         <AutoScalContainer
             :height="1080"
-            :width="1920">
+            :width="1920"
+            :fit="dataContainer.fit">
             <div 
                 class="big-screen-view-container"
                 :style="{

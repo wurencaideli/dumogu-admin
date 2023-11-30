@@ -14,6 +14,7 @@ import Box_2 from "./components/Box_2.vue";
 import Box_3 from "./components/Box_3.vue";
 import Box_4 from "./components/Box_4.vue";
 import Box_5 from "./components/Box_5.vue";
+import { useRoute } from "vue-router";
 
 export default defineComponent({
     name:'BigScreenView',
@@ -27,12 +28,14 @@ export default defineComponent({
         Box_5,
     },
     setup(){
+        let route = useRoute();
         const dataContainer = reactive({
             loading:false,
             img:{
                 img_1,
                 img_2,
             },
+            fit:'contain',
         }); 
         /** 
          * 缩放计算事件
@@ -48,6 +51,16 @@ export default defineComponent({
             let fontSize = Math.round(baseSize * scale*100)/100 + 'px';
             setRem(fontSize);
         }
+        watch(route,()=>{
+            let queryParams = route.query || {};
+            let fitMap = {
+                'cover':'cover',
+                'contain':'contain',
+            };
+            dataContainer.fit = fitMap[queryParams.fit] || 'contain';
+        },{
+            immediate:true,
+        });
         return {
             dataContainer,
             handleResizeScreen,
@@ -60,7 +73,8 @@ export default defineComponent({
     <div class="big-screen-view">
         <AutoScalContainerV2
             :ratio="1920/1080"
-            @onResizeScreen="handleResizeScreen">
+            @onResizeScreen="handleResizeScreen"
+            :fit="dataContainer.fit">
             <div 
                 class="big-screen-view-container"
                 :style="{

@@ -31,6 +31,20 @@ export default defineComponent({
             type:Number,
             default:1080,
         },
+        /** 内部容器的宽高比例 */
+        ratio:{
+            type:Number,
+            default:1920 / 1080,
+        },
+        /** 
+         * fit，原理同img的object-fit
+         * contain : 被替换的内容将被缩放，以在填充元素的内容框时保持其宽高比。
+         * cover : 被替换的内容在保持其宽高比的同时填充元素的整个内容框。如果对象的宽高比与内容框不相匹配，该对象将被剪裁以适应内容框。
+         *  */
+        fit:{
+            type:String,
+            default:'contain',
+        },
     },
     emits:['onResizeScreen'],
     setup(props,{emit}){
@@ -39,6 +53,8 @@ export default defineComponent({
         const dataContainer = reactive({
             height:toRef(props,'height'),
             width:toRef(props,'width'),
+            ratio:toRef(props,'ratio'),
+            fit:toRef(props,'fit'),
         });
         /** 是否是文档上 */
         function isActive(){
@@ -55,18 +71,29 @@ export default defineComponent({
             let clientHeight = rect.height;
             var width = dataContainer.width;
             var height = dataContainer.height;
-            let left;
-            let top;
-            let scale;
+            let left = 0;
+            let top = 0;
+            let scale = 0;
+            /** 使用外部传入的比例或者传入的宽高计算比例 */
+            let ratio = dataContainer.ratio || (width / height);
             // 获取比例  可视化区域的宽高比与 屏幕的宽高比  来进行对应屏幕的缩放
-            if ((clientWidth / clientHeight) > (width / height)) {
-                scale = clientHeight / height;
-                top = 0;
-                left = (clientWidth - width * scale) / 2;
-            } else {
-                scale = clientWidth / width;
-                left = 0;
-                top = (clientHeight - height * scale) / 2;
+            if(dataContainer.fit == 'contain'){
+                if ((clientWidth / clientHeight) > ratio) {
+                    scale = clientHeight / height;
+                    top = 0;
+                    left = (clientWidth - width * scale) / 2;
+                } else {
+                    scale = clientWidth / width;
+                    left = 0;
+                    top = (clientHeight - height * scale) / 2;
+                }
+            }
+            if(dataContainer.fit == 'cover'){
+                if ((clientWidth / clientHeight) > ratio) {
+                    scale = clientWidth / width;
+                } else {
+                    scale = clientHeight / height;
+                }
             }
             // 防止组件销毁后还执行设置状态s
             Object.assign(DomRef.value.style, {
@@ -81,9 +108,9 @@ export default defineComponent({
         let timer_1;
         function fnContainer(){
             clearTimeout(timer_1);
-            setTimeout(()=>{
+            // timer_1 = setTimeout(()=>{
                 autoResizeScreen();
-            },16);
+            // },16);
         }
         let timer = setInterval(()=>{
             fnContainer();
@@ -110,7 +137,13 @@ export default defineComponent({
     width: 100%;
     height: 100%;
     position: relative;
-    overflow: hidden;
+    overflow: auto;
+    /** 隐藏滚动条 */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+        display: none;
+    }
     >.auto-scal-container-inner {
         overflow: hidden;
         transform-origin: left top;
@@ -118,6 +151,8 @@ export default defineComponent({
         width: max-content;
         height: max-content;
         position: absolute;
+        top: 0;
+        left: 0;
     }
 }
 </style>
