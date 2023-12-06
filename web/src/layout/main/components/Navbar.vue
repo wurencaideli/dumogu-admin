@@ -448,7 +448,7 @@ export default {
                     bottom: 0;
                     right: -5px;
                     >.container{
-                        transform: scale(0.8);
+                        transform: scale(0.8) translateY(3px);
                         font-size: 12px;
                         background-color: #fef0f0;
                         color: #f56c6c;
