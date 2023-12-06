@@ -11,6 +11,7 @@
             <draggable 
                 class="scrollbar-container"
                 item-key="sign"
+                :disabled="!dataContainer.isPc"
                 v-model="tagListTrans">
                 <template #item="{element}">
                     <div
@@ -195,6 +196,7 @@ import {
 } from "vue";
 import SvgIcon from "@/components/svgIcon/index.vue";
 import draggable from 'vuedraggable';
+import {isPc} from "@/common/OtherTools";
 
 export default {
     name: 'TagList',
@@ -242,6 +244,7 @@ export default {
             show:false,
             location:{},
             show_1:false,
+            isPc:isPc(),  //是否是PC端
         });
         const otherDataContainer = {
             activeItem:null,

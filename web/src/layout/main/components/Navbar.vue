@@ -70,6 +70,11 @@
                 <SvgIcon
                     :style="'width:22px;height:22px;'"
                     name="fankui"></SvgIcon>
+                <div class="number">
+                    <div class="container">
+                        12
+                    </div>
+                </div>
             </a>
             <!-- <div
                 class="bt">
@@ -428,8 +433,31 @@ export default {
                 box-sizing: border-box;
                 transition: all 0.2s;
                 box-shadow: inset 0 1px 4px #0000001f;
+                position: relative;
                 &:hover{
                     background-color: #eeeeee72;
+                }
+                >.number{
+                    height: 200%;
+                    width: auto;
+                    position: absolute;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: center;
+                    align-items: center;
+                    bottom: 0;
+                    right: -5px;
+                    >.container{
+                        transform: scale(0.8);
+                        font-size: 12px;
+                        background-color: #fef0f0;
+                        color: #f56c6c;
+                        border-radius: 5px;
+                        padding: 0px 3px;
+                        line-height: 1.2;
+                        border: 1px solid #fab6b6;
+                        font-weight: bold;
+                    }
                 }
             }
             >.user{
