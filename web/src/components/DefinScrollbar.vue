@@ -1,6 +1,7 @@
 <template>
     <el-scrollbar 
         ref="ElScrollbarRef"
+        @scroll="handleScroll"
         :height="dataContainer.height">
         <slot></slot>
     </el-scrollbar>
@@ -17,8 +18,9 @@ import {
     computed,
     onDeactivated,
     toRef,
+    watch,
+    nextTick,
 } from 'vue';
-import { onBeforeRouteLeave } from 'vue-router';
 
 export default defineComponent({
     props:{
@@ -32,18 +34,26 @@ export default defineComponent({
         });
         const otherDataContainer = {
             top:0,  //记录滚动条
+            left:0,
         };
+        /** 重新加载时候赋予旧值 */
         onActivated(()=>{
-            if(!ElScrollbarRef.value) return;
-            ElScrollbarRef.value.setScrollTop(otherDataContainer.top);
+            nextTick(()=>{
+                if(!ElScrollbarRef.value) return;
+                ElScrollbarRef.value.setScrollTop(otherDataContainer.top);
+                ElScrollbarRef.value.setScrollLeft(otherDataContainer.left);
+            });
         });
-        onBeforeRouteLeave(()=>{
-            if(!ElScrollbarRef.value) return;
-            otherDataContainer.top = ElScrollbarRef.value.wrapRef.scrollTop;
-        });
+        /** 滚动事件 */
+        function handleScroll(e){
+            e = e || {};
+            otherDataContainer.top = e.scrollTop;
+            otherDataContainer.left = e.scrollLeft;
+        }
         return {
             dataContainer,
             ElScrollbarRef,
+            handleScroll,
         };
     },
 });

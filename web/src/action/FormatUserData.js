@@ -110,6 +110,7 @@ export function getUserData(){
             {
                 name:"new-tag-page",
                 title:'新标签页',
+                isCache:true,
                 hidden:true,
             },
             {
