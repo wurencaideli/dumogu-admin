@@ -53,6 +53,14 @@ export const constantRoutes = [
             //         isMenu:false,
             //     },
             // },
+            {
+                path: 'new-tag-page/:sign',
+                component: () => import('@/views/system/newTagPage/index.vue'),
+                name: 'new-tag-page',
+                meta: { 
+                    isMenu:true,
+                },
+            },
             /** 一些页面例子 */
             {
                 path: 'index',

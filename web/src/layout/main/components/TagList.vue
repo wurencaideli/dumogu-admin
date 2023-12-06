@@ -46,6 +46,16 @@
                             class="cache"></div>
                     </div>
                 </template>
+                <template #footer>
+                    <div 
+                        v-if="dataContainer.showTagAdd"
+                        class="item add-bt"
+                        @click="handleAdd">
+                        <SvgIcon
+                            :style="'width:16px;height:16px;'"
+                            name="plus"></SvgIcon>
+                    </div>
+                </template>
             </draggable>
         </el-scrollbar>
     </div>
@@ -195,6 +205,10 @@ import {
     nextTick,
 } from "vue";
 import SvgIcon from "@/components/svgIcon/index.vue";
+/** 
+ * vuedraggable 文档
+ * https://www.npmjs.com/package/vuedraggable/v/4.1.0
+ *  */
 import draggable from 'vuedraggable';
 import {isPc} from "@/common/OtherTools";
 
@@ -229,10 +243,15 @@ export default {
             type:[Number,String],
             default:0,
         },
+        /** 是否显示添加标签页 */
+        showTagAdd:{
+            type:Boolean,
+            default:false,
+        },
     },
     emits:[
         'onChange','onClick','onRemove','onOptionClick','onSwitchCache','onSwitchFixed',
-        'onRefresh',
+        'onRefresh','onAdd',
     ],
     setup(props,{emit}){
         const ElScrollbarRef = ref(null);
@@ -241,6 +260,7 @@ export default {
         const dataContainer = reactive({
             tagList:toRef(props,'tagList'),
             activeSign:toRef(props,'activeSign'),
+            showTagAdd:toRef(props,'showTagAdd'),
             show:false,
             location:{},
             show_1:false,
@@ -401,6 +421,10 @@ export default {
             });
         }
         initHiddenEvent_1();
+        /** 添加一个标签 */
+        function handleAdd(){
+            emit('onAdd');
+        }
         return {
             dataContainer,
             handleClick,
@@ -417,6 +441,7 @@ export default {
             handleToRight,
             handleToLeft,
             RightOptionRef,
+            handleAdd,
         };
     },
 }
@@ -500,6 +525,10 @@ export default {
                     justify-content: center;
                     align-items: center;
                     margin-left: 5px;
+                    transition: all 0.2s;
+                    &:hover{
+                        color: red;
+                    }
                 }
                 >.cache{
                     width: 30%;
@@ -511,6 +540,17 @@ export default {
                     position: absolute;
                     bottom: 0;
                 }
+            }
+            .add-bt{
+                width: 30px;
+                background-color: rgb(241, 241, 241);
+                border-radius: 50%;
+                padding: 0;
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                color: rgb(111, 111, 111);
             }
         }
     }

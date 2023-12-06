@@ -358,6 +358,40 @@ export default defineComponent({
         function switchShowMenu(state){
             publicDataStore.setShowMenu(state);
         }
+        /** 添加一个标签 */
+        function handleAdd(){
+            let tagList = deepCopyObj(dataContainer.tagList);
+            let path = `/main/new-tag-page/${new Date().getTime()}`;
+            /** 获取用户配置信息 */
+            const userMenuConfig = getUserMenu({
+                name:'new-tag-page',
+            });
+            let newTag = {
+                title:userMenuConfig.title,
+                menuName:userMenuConfig.name,
+                path:path,
+                fullPath:path,
+                sign:guid(),  //唯一标识
+                isCache:userMenuConfig.isCache,  //表示该标签需要缓存
+                fixed:userMenuConfig.fixed,  //表示该标签需要固定
+                showTagIcon:userMenuConfig.showTagIcon,  //表示该标签是否需要显示icon
+                iconName:userMenuConfig.iconName,  //表示该标签对应的icon
+                redirectPath:{  //刷新重定向路由地址参数
+                    name:'main-redirect',
+                    params:{
+                        path:path,
+                    },
+                },
+            };
+            tagList.push(newTag);
+            userDataStore.setTagList(tagList);
+            /** 模拟点击 */
+            handleTagClick(newTag);
+        }
+        /** 是否显示添加标签按钮 */
+        const showTagAdd = computed(()=>{
+            return !!dataContainer.hasSysMenuConfigMap['new-tag-page'];
+        });
         return {
             formatComponentInstance,
             dataContainer,
@@ -374,6 +408,8 @@ export default defineComponent({
             toggleFullScreen,
             handleClick_1,
             switchShowMenu,
+            handleAdd,
+            showTagAdd,
         };
     },
 });
@@ -417,6 +453,8 @@ export default defineComponent({
                         @onSwitchCache="handleSwitchCache"
                         @onSwitchFixed="handleSwitchFixed"
                         @onRefresh="handleRefresh"
+                        @onAdd="handleAdd"
+                        :showTagAdd="showTagAdd"
                         @onOptionClick="handleOptionClick"></TagList>
                 </div>
                 <div class="view-container">

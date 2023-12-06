@@ -108,6 +108,11 @@ export function getUserData(){
                 iconName:"all-fill",
             },
             {
+                name:"new-tag-page",
+                title:'新标签页',
+                hidden:true,
+            },
+            {
                 title:'系统管理',
                 iconName:"cog-fill",
                 childs:[
