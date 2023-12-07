@@ -1,6 +1,7 @@
 <template>
     <DefinScrollbar 
-        height="100%">
+        height="100%"
+        :showUpBt="true">
         <div class="page-container new-tag-page-view">
             <div class="container">
                 <div class="search">

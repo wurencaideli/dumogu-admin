@@ -1,6 +1,7 @@
 <template>
     <DefinScrollbar 
-        height="100%">
+        height="100%"
+        :showUpBt="true">
         <div class="page-container other-view">
             <p>
                 天气插件，使用iframe的形式（推荐）
