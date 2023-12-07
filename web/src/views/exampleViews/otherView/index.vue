@@ -84,6 +84,16 @@
                     </div>
                 </MyTabs>
             </div>
+            <p>
+                图片裁剪
+            </p>
+            <div class="cropper-img-container">
+                <CropperImg
+                    @onCrop="handleCrop"
+                    ref="CropperImgRef"></CropperImg>
+                <img 
+                    :src="dataContainer.imgUrl_1" alt="">
+            </div>
         </div>
     </DefinScrollbar>
 </template>
@@ -95,17 +105,22 @@ import { table_0 } from "./printTemp/Template";
 import { handlePrint } from "./printTemp/Base";
 import ShadowHtml from "@/components/ShadowHtml.vue";
 import MyTabs from "@/components/MyTabs.vue";
+import CropperImg from "@/components/CropperImg.vue";
 
 export default defineComponent({
     components: {
         ShadowHtml,
         MyTabs,
+        CropperImg,
     },
     setup(){
+        const CropperImgRef = ref(null);
         const dataContainer = reactive({
             htmlValue:'<p>展示一个红色字体的p标签，且不影响系统其他样式</p>',
             cssValue:'p{color:red;}',
             activeIndex:0,
+            imgUrl:'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
+            imgUrl_1:'',
         });
         const otherContainer = {
         };
@@ -140,6 +155,10 @@ export default defineComponent({
              * 所有使用iframe会更好点
              *  */
             loadWeatherWidget();
+            /** 
+             * 初始化图片裁剪
+             */
+            initData();
         });
         /** 获取字符串的可视宽度 */
         function getVisibleWidth(str) {
@@ -197,10 +216,25 @@ export default defineComponent({
             var imageData = canvas.toDataURL('image/png');
             return imageData;
         }
+        function initData(){
+            if(!CropperImgRef.value) return;
+            CropperImgRef.value.initData({
+                imgUrl:dataContainer.imgUrl,
+            });
+        }
+        /** 绘制 */
+        function handleCrop(res){
+            res = res || {};
+            let canvas = res.canvas;
+            if(!canvas) return;
+            dataContainer.imgUrl_1 = canvas.toDataURL('image/jpeg');
+        }
         return {
             dataContainer,
             handleClick,
             handleClick_1,
+            handleCrop,
+            CropperImgRef,
         };
     },
 });
@@ -263,6 +297,11 @@ export default defineComponent({
                 background-color: #0084ff24;
             }
         }
+    }
+    .cropper-img-container{
+        width: 500px;
+        max-width: 500px;
+        height: 500px;
     }
 }
 </style>

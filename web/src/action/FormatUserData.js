@@ -32,29 +32,37 @@ function transUserMenu(menuList){
         },
     });
     menuList.forEach(item=>{
-        /** 根据目录配置找到对应的系统menu */
-        /** 有路由地址，但没菜单名称 */
-        if(item.path && !item.name) {
-            let sysMenu = sysMeluPathMap[item.path] || {};
-            item.name = sysMenu.name;
-        };
-        /** 没路由地址，但有菜单名称 */
-        if(!item.path && item.name) {
-            let sysMenu = sysMeluNameMap[item.name] || {};
-            item.path = sysMenu.path;
-        };
         /** 
+         * 根据目录配置找到对应的系统menu
          * 添加权限，添加已有的权限列表
          * 因为path属于name的子集，所哟name,path都应该有自己的配置
+         * 赋予正确的名称，并添加以path为优先，name次之的权限
          *  */
-        if(item.name){
+        let path = item.path;
+        let name = item.name;
+        if(!!path && !name) {
+            /** 
+             * 有路由地址，但没菜单名称
+             *  */
+            let sysMenu = sysMeluPathMap[item.path] || {};
+            item.name = sysMenu.name;
+            hasSysMenuConfigMap[item.path] = item;
+        };
+        if(!path && !!name) {
+            /** 没路由地址，但有菜单名称 */
+            let sysMenu = sysMeluNameMap[item.name] || {};
+            item.path = sysMenu.path;
             hasSysMenuConfigMap[item.name] = item;
-        }
-        if(item.path){
+        };
+        if(!!path && !!name) {
+            /** 
+             * 有路由地址，有菜单名称
+             * 以路由为准
+             *  */
             hasSysMenuConfigMap[item.path] = item;
         }
         /** 有唯一标识的也添加，方便查找，可以替换一些信息 */
-        if(item.sign){
+        if(!!item.sign){
             hasSysMenuConfigMap[item.sign] = {
                 ...item,
             };
