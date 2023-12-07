@@ -193,6 +193,9 @@
         font-size: 14px;
         opacity: 0.8;
     }
+    img{
+        display: block !important;
+    }
 }
 .el-table {
     --el-table-header-text-color:rgb(44, 44, 44) !important;

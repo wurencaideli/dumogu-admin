@@ -65,7 +65,8 @@ export default defineComponent({
             object-fit: cover;
             height: 100%;
             width: 100%;
-            vertical-align: bottom;
+            // vertical-align: bottom;
+            display: block;
             fill: currentColor;
             /** 所有的颜色都使用外部的color属性 */
             path{
@@ -74,7 +75,8 @@ export default defineComponent({
         }
     }
     >.icon-container-img{
-        vertical-align: bottom;
+        // vertical-align: bottom;
+        display: block;
         height: 100%;
         width: 100%;
         object-fit: cover;
