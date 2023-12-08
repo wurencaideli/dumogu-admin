@@ -107,6 +107,23 @@
                     class="img"
                     :src="dataContainer.imgUrl_1" alt="">
             </div>
+            <p>
+                头像图片上传，可有外部指定文件手动上传
+            </p>
+            <div>
+                <UploadSingleImg
+                    :imgUrl="dataContainer.imgUrl_3"
+                    :showCancelBt="!!dataContainer.imgUrl_3"
+                    :maxSize="1024 * 1024 * 7"
+                    :minSize="1024 * 7"
+                    :needAccept="'image/png,image/jpeg'"
+                    :autoUpload="true"
+                    :uploadApi="'/upload-api/upload'"
+                    @onChange="handleUploadChange"
+                    @onSuccess="handleUploadSuccess"
+                    @onFail="handleUploadFail"
+                    @onCancel="handleUploadCancel"></UploadSingleImg>
+            </div>
         </div>
     </DefinScrollbar>
 </template>
@@ -119,6 +136,7 @@ import { handlePrint } from "./printTemp/Base";
 import ShadowHtml from "@/components/ShadowHtml.vue";
 import MyTabs from "@/components/MyTabs.vue";
 import CropperImg from "@/components/CropperImg.vue";
+import UploadSingleImg from "@/components/UploadSingleImg.vue";
 import {
     chooseFile,getMime,getMimeExtension,
     getSuffix,formatFileSize,
@@ -132,6 +150,7 @@ export default defineComponent({
         ShadowHtml,
         MyTabs,
         CropperImg,
+        UploadSingleImg,
     },
     setup(){
         const CropperImgRef = ref(null);
@@ -141,6 +160,7 @@ export default defineComponent({
             activeIndex:0,
             imgUrl:'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
             imgUrl_1:'',
+            imgUrl_3:'',
         });
         const otherContainer = {
         };
@@ -283,6 +303,24 @@ export default defineComponent({
                 return;
             });
         }
+        /** 上传组件选择事件 */
+        function handleUploadChange(file){
+            if(!file) return;
+            dataContainer.imgUrl_3 = URL.createObjectURL(file);
+        }
+        /** 上传组件成功事件 */
+        function handleUploadSuccess(){
+            messageSuccess(`文件上传成功`);
+        }
+        /** 上传组件失败事件 */
+        function handleUploadFail(){
+            messageError(`文件上传失败`);
+        }
+        /** 上传组件取消事件 */
+        function handleUploadCancel(){
+            messageSuccess(`文件上传已取消`);
+            dataContainer.imgUrl_3 = '';
+        }
         return {
             dataContainer,
             handleClick,
@@ -290,6 +328,10 @@ export default defineComponent({
             handleCrop,
             CropperImgRef,
             handleChooseFile,
+            handleUploadChange,
+            handleUploadSuccess,
+            handleUploadFail,
+            handleUploadCancel,
         };
     },
 });

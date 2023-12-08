@@ -76,7 +76,13 @@ export default defineConfig(({
                     target: 'https://s.dumogu.top',
                     changeOrigin: true,
                     rewrite: (p) => p.replace(/^\/api/, '/api')
-                }
+                },
+                /** 用作测试的上传接口 */
+                '/upload-api': {
+                    target: 'https://d6hqs7.lafyun.com:443',
+                    changeOrigin: true,
+                    rewrite: (p) => p.replace(/^\/upload-api/, '')
+                },
             }
         },
     };

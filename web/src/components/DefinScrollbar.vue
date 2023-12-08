@@ -120,7 +120,7 @@ export default defineComponent({
         cursor: pointer;
         color: rgb(25, 137, 250);
         font-size: 20px;
-        font-family: math;
+        font-family: serif;
         box-shadow: 0px 0px 6px rgba(0, 0, 0, .3);
         &.show{
             opacity: 1;
