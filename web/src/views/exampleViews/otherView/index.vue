@@ -85,13 +85,26 @@
                 </MyTabs>
             </div>
             <p>
+                文件选择，可选择图片文件进行裁剪
+            </p>
+            <div>
+                <el-button
+                    type="primary"
+                    @click="handleChooseFile">
+                    点击选择
+                </el-button>
+            </div>
+            <p>
                 图片裁剪
             </p>
             <div class="cropper-img-container">
                 <CropperImg
                     @onCrop="handleCrop"
                     ref="CropperImgRef"></CropperImg>
+            </div>
+            <div class="cropper-img-container">
                 <img 
+                    class="img"
                     :src="dataContainer.imgUrl_1" alt="">
             </div>
         </div>
@@ -106,6 +119,13 @@ import { handlePrint } from "./printTemp/Base";
 import ShadowHtml from "@/components/ShadowHtml.vue";
 import MyTabs from "@/components/MyTabs.vue";
 import CropperImg from "@/components/CropperImg.vue";
+import {
+    chooseFile,getMime,getMimeExtension,
+    getSuffix,formatFileSize,
+} from "@/common/FileSelectTools"; 
+import {
+    messageSuccess,messageError,
+} from "@/action/MessagePrompt";
 
 export default defineComponent({
     components: {
@@ -229,12 +249,47 @@ export default defineComponent({
             if(!canvas) return;
             dataContainer.imgUrl_1 = canvas.toDataURL('image/jpeg');
         }
+        let maxSize = 1024 * 1024 * 7;  //最大大小
+        let minSize = 1024 * 0;  //最小大小
+        let needMimeType = 'image/png,image/jpeg,.txt';  //文件限制
+        function handleChooseFile(){
+            chooseFile({
+                multiple:false,
+                accept:'*',
+            }).then(file=>{
+                let type = getSuffix(file.name);  //获取文件后缀类型
+                let mimeType = file.type || getMime(file.name) || '';
+                let mimeExtension = getMimeExtension(mimeType);
+                let size = file.size;
+                /** 验证文件合法性 */
+                if(
+                    !needMimeType.includes(mimeType) 
+                    && !needMimeType.includes(mimeExtension)
+                    && !needMimeType.includes(type)){
+                    messageError(`文件类型${mimeType}不正确，正确类型:${needMimeType}`);
+                    return;
+                }
+                if((size > maxSize) || (size < minSize)){
+                    messageError(`文件大小${formatFileSize(size)}超出范围：${formatFileSize(minSize)} - ${formatFileSize(maxSize)}之间。`);
+                    return;
+                }
+                messageSuccess(`已选文件:${file.name}`);
+                /** 渲染进入裁剪区域 */
+                if(!CropperImgRef.value) return;
+                CropperImgRef.value.initData({
+                    imgUrl:URL.createObjectURL(file),
+                });
+            }).catch(()=>{
+                return;
+            });
+        }
         return {
             dataContainer,
             handleClick,
             handleClick_1,
             handleCrop,
             CropperImgRef,
+            handleChooseFile,
         };
     },
 });
@@ -299,9 +354,16 @@ export default defineComponent({
         }
     }
     .cropper-img-container{
-        width: 500px;
-        max-width: 500px;
-        height: 500px;
+        width: 400px;
+        max-width: 400px;
+        height: 400px;
+        overflow: hidden;
+        >.img{
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: cover;
+        }
     }
 }
 </style>

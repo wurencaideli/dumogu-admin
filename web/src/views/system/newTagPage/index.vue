@@ -56,6 +56,9 @@ import {
     deleteCurrentTag,
 } from "@/layout/main/Common/TagListTools";
 import DefinScrollbar from "@/components/DefinScrollbar.vue";
+import {
+    messageSuccess,messageError,
+} from "@/action/MessagePrompt";
 
 export default defineComponent({
     components: {
@@ -98,7 +101,10 @@ export default defineComponent({
         initData();
         /** 跳转相应链接 */
         function handleClick(params){
-            if(!params.path) return;
+            if(!params.path) {
+                messageError('没有可用于跳转的链接');
+                return;
+            };
             /** 如果是一个链接的话直接跳转 */
             if(params.isLink){
                 window.open(params.path);
