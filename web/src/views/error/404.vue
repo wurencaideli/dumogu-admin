@@ -42,8 +42,8 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .main-404-view{
-    height: 100vh;
-    width:100vw;
+    height: 100%;
+    width:100%;
     font-weight: bold;
     line-height: 1.5;
     display: flex;

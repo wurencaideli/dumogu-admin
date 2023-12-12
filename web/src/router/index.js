@@ -44,15 +44,22 @@ export const constantRoutes = [
                     isMenu:false,
                 },
             },
-            // {
-            //     path: '401',
-            //     name:'main-401',
-            //     component: () => import('@/views/error/401.vue'),
-            //     meta: { 
-            //         /** 该页面属于此操作页面，但是不算菜单，不允许添加到标签页上 */
-            //         isMenu:false,
-            //     },
-            // },
+            {
+                path: '401',
+                name:'main-401',
+                component: () => import('@/views/error/401.vue'),
+                meta: { 
+                    isMenu:true,
+                },
+            },
+            {
+                path: '404',
+                name:'main-404',
+                component: () => import('@/views/error/404.vue'),
+                meta: { 
+                    isMenu:true,
+                },
+            },
             {
                 path: 'new-tag-page/:sign',
                 component: () => import('@/views/system/newTagPage/index.vue'),
@@ -186,6 +193,14 @@ export const constantRoutes = [
                 path: 'merge-table',
                 component: () => import('@/views/exampleViews/mergeTable/index.vue'),
                 name: 'merge-table',
+                meta: { 
+                    isMenu:true,
+                },
+            },
+            {
+                path: 'big-screen/show_1',
+                component: () => import('@/views/bigScreen/show_1/index.vue'),
+                name: 'main-big-screen',
                 meta: { 
                     isMenu:true,
                 },

@@ -1,3 +1,4 @@
+/** 引入帧动画函数（防止部分浏览器不支持） */
 import "@/common/RequestAnimationFrameExpand";
 /** 引入 rem计算 */
 import "@/common/Rem";
@@ -26,9 +27,6 @@ sysMeluList.reduce((c,i)=>{
 /** 挂载到全局方便操作 */
 window.router = router;
 
-// element 其他组件已使用按需引入插件
-import 'element-plus/es/components/message/style/css';
-import 'element-plus/es/components/message-box/style/css';
 /** 添加公共样式 */
 import "@/style/index.scss";
 

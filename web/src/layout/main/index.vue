@@ -29,6 +29,7 @@ import {
     refreshTag,
     deleteTags,
     formatTagsByMenu,
+    getTag,
 } from "./Common/TagListTools";
 import {deepCopyObj} from "@/common/OtherTools";
 import {toggleFullScreen} from "@/common/OtherTools";
@@ -55,7 +56,6 @@ export default defineComponent({
             hasSysMenuConfigMap:toRef(userDataStore,'hasSysMenuConfigMap'),
             tagHisList:toRef(userDataStore,'tagHisList'),
             iframeList:toRef(publicDataStore,'iframeList'),  //当前已打开的iframe数组
-            viewFullScreen:toRef(publicDataStore,'viewFullScreen'),  //是否视图全屏
             showMenu:toRef(publicDataStore,'showMenu'),  //是否显示目录
             breadcrumbList:[],  //面包屑列表
             optionBtShow:true,  //控制按钮的显示
@@ -86,6 +86,11 @@ export default defineComponent({
                 /** 缓存组件是根据path命名来缓存的 */
                 return item.path;
             });
+        });
+        /** 当前活动的标签 */
+        const activeTag = computed(()=>{
+            let tag = dataContainer.tagList.find(item=>item.sign == dataContainer.activeSign);
+            return tag || {};
         });
         /** 
          * 原本方法根据组件名来缓存，现在根据路由path动态修改组件实例名称来缓存
@@ -129,7 +134,7 @@ export default defineComponent({
         function getUserMenu(data){
             /** 优先使用当前的path判断获取映射 */
             let target = dataContainer.hasSysMenuConfigMap[data.path] || dataContainer.hasSysMenuConfigMap[data.name];
-            return target || {};
+            return target;
         }
         /** 
          * 获取面包屑列表
@@ -137,6 +142,7 @@ export default defineComponent({
          *  */
         function getBreadcrumbList(){
             const userMenuConfig = getUserMenu(route);
+            if(!userMenuConfig) return;
             if(!userMenuConfig.path) return;
             let list = [];
             function findP(target){
@@ -172,6 +178,8 @@ export default defineComponent({
             let activeSign = dataContainer.activeSign;
             /** 获取该路由对应的用户配置 */
             const userMenuConfig = getUserMenu(route);
+            /** 如果没有该路由配置表示不允许添加标签页 */
+            if(!userMenuConfig) return;
             /** 
              * 创建一个新标签，配置其属性
              * 其中sign是唯一标识，很重要，必填 
@@ -187,6 +195,8 @@ export default defineComponent({
                 fixed:userMenuConfig.fixed,  //表示该标签需要固定
                 showTagIcon:userMenuConfig.showTagIcon,  //表示该标签是否需要显示icon
                 iconName:userMenuConfig.iconName,  //表示该标签对应的icon
+                viewFullScreen:userMenuConfig.viewFullScreen,  //表示该标签视图全屏
+                hiddenViewFullScreenBt:userMenuConfig.hiddenViewFullScreenBt,  //表示该标签视图全屏时隐藏全屏按钮
                 redirectPath:{  //刷新重定向路由地址参数
                     name:'main-redirect',
                     params:{
@@ -275,7 +285,9 @@ export default defineComponent({
             }
         }
         /** 操作事件 */
-        function handleOptionClick(type){
+        function handleOptionClick(type,tagParams){
+            tagParams = tagParams || {};
+            let tag;
             switch(true){
                 case type == 1:
                     deleteCurrentTag();
@@ -296,7 +308,22 @@ export default defineComponent({
                     refreshCurrentTag();
                     break;
                 case type == 6:
-                    publicDataStore.setViewFullScreen(true);
+                    tag = getTag(dataContainer.activeSign);
+                    if(tag){
+                        updateTag({
+                            ...tag,
+                            viewFullScreen:true,
+                        });
+                    }
+                    break;
+                case type == 7:
+                    tag = getTag(tagParams.sign);
+                    if(tag){
+                        updateTag({
+                            ...tag,
+                            viewFullScreen:true,
+                        });
+                    }
                     break;
             }
         }
@@ -323,7 +350,13 @@ export default defineComponent({
         }
         /** 取消内容全屏 */
         function handleClick_1(){
-            publicDataStore.setViewFullScreen(false);
+            let item = getTag(dataContainer.activeSign);
+            if(item){
+                updateTag({
+                    ...item,
+                    viewFullScreen:false,
+                });
+            };
         }
         /** 按钮消失的倒计时 */
         otherDataContainer.timer = setInterval(()=>{
@@ -342,7 +375,13 @@ export default defineComponent({
             if (event.key === 'Escape' || event.key === 'Esc') {
                 otherDataContainer.countdown = otherDataContainer.baseCountdown;
                 dataContainer.optionBtShow = false;
-                publicDataStore.setViewFullScreen(false);
+                let item = getTag(dataContainer.activeSign);
+                if(item){
+                    updateTag({
+                        ...item,
+                        viewFullScreen:false,
+                    });
+                };
             }
         }
         /** 鼠标移动的时候显示 */
@@ -366,6 +405,7 @@ export default defineComponent({
             const userMenuConfig = getUserMenu({
                 name:'new-tag-page',
             });
+            if(!userMenuConfig) return;
             let newTag = {
                 title:userMenuConfig.title,
                 menuName:userMenuConfig.name,
@@ -376,6 +416,8 @@ export default defineComponent({
                 fixed:userMenuConfig.fixed,  //表示该标签需要固定
                 showTagIcon:userMenuConfig.showTagIcon,  //表示该标签是否需要显示icon
                 iconName:userMenuConfig.iconName,  //表示该标签对应的icon
+                viewFullScreen:userMenuConfig.viewFullScreen,  //表示该标签视图全屏
+                hiddenViewFullScreenBt:userMenuConfig.hiddenViewFullScreenBt,  //表示该标签视图全屏时隐藏全屏按钮
                 redirectPath:{  //刷新重定向路由地址参数
                     name:'main-redirect',
                     params:{
@@ -410,6 +452,7 @@ export default defineComponent({
             switchShowMenu,
             handleAdd,
             showTagAdd,
+            activeTag,
         };
     },
 });
@@ -419,8 +462,8 @@ export default defineComponent({
     <div 
         :class="{
             'main-layout':true,
-            'is-view-full-screen':dataContainer.viewFullScreen,
-        }">    
+            'is-view-full-screen':!!activeTag.viewFullScreen,
+        }">  
         <div class="head-container">
             <Navbar
                 :showLogo="dataContainer.showMenu"
@@ -488,7 +531,7 @@ export default defineComponent({
                         </iframe>
                     </div>
                     <div 
-                        v-if="dataContainer.viewFullScreen"
+                        v-if="!!activeTag.viewFullScreen && !activeTag.hiddenViewFullScreenBt"
                         :class="{
                             'option-bt-list':true,
                             'show':dataContainer.optionBtShow,
@@ -638,7 +681,7 @@ export default defineComponent({
                     justify-content: center;
                     align-items: center;
                     transition: all 0.2s;
-                    z-index: 9;
+                    z-index: 999;
                     &.show{
                         opacity: 1;
                         pointer-events: initial;

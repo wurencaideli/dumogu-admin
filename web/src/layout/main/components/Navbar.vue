@@ -228,8 +228,14 @@ export default {
                 '是否确认退出登录',
                 '提示',
             ).then(()=>{
-                logout();
                 toPath('/login');
+                /** 跳转成功后注销用户 */
+                let myAfterEach = router.afterEach(() => {
+                    logout();
+                    /** 注销此函数 */
+                    myAfterEach();
+                    myAfterEach = null;
+                });
             }).catch(()=>{
                 return;
             });

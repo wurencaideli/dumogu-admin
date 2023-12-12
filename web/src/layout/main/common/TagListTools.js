@@ -17,6 +17,7 @@ export function getTag(sign){
     let target = tagList.find(item=>{
         return item.sign == sign;
     });
+    if(!target) return target;
     return deepCopyObj(target);
 }
 /** 

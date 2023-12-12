@@ -5,10 +5,10 @@
 import axios from "axios";
 import Const from "./Const";
 import {userData as userDataStore} from "@/store/User";
-import { ElMessageBox } from 'element-plus';
 import {
     messageSuccess,
     messageError,
+    confirm,
 } from "@/action/MessagePrompt";
 import router from '@/router';
 
@@ -47,7 +47,7 @@ service.interceptors.response.use(
             case 401: //表示需要重新登录
                 if(!modelShow){
                     modelShow = true;
-                    ElMessageBox.confirm(
+                    confirm(
                         '登录已经失效，是否重新登录？',
                         '登录失效',
                         {

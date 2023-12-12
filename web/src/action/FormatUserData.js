@@ -122,6 +122,18 @@ export function getUserData(){
                 hidden:true,
             },
             {
+                name:"main-401",
+                title:'401页面',
+                isCache:true,
+                hidden:true,
+            },
+            {
+                name:"main-404",
+                title:'404页面',
+                isCache:true,
+                hidden:true,
+            },
+            {
                 title:'系统管理',
                 iconName:"cog-fill",
                 childs:[
@@ -249,6 +261,16 @@ export function getUserData(){
                         iconName:"laptop",
                         isLink:true,
                         path:'/big-screen/show_4',
+                    },
+                    {
+                        title:'示例1(测试)',
+                        isCache:true,
+                        content:'内容全屏',
+                        iconName:"laptop",
+                        isLink:false,
+                        path:'/main/big-screen/show_1',
+                        viewFullScreen:true,
+                        hiddenViewFullScreenBt:true,
                     },
                 ],
             },

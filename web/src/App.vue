@@ -52,16 +52,11 @@ export default defineComponent({
 
 <template>
 <el-config-provider :locale="locale">
-    <el-scrollbar 
-        height="100vh">
-        <router-view v-slot="{ Component }">
-            <transition name="el-fade-in">
-                <component 
-                    :is="Component" />
-            </transition>
-        </router-view>
-    </el-scrollbar>
+    <router-view v-slot="{ Component }">
+        <transition name="el-fade-in">
+            <component 
+                :is="Component" />
+        </transition>
+    </router-view>
 </el-config-provider>
 </template>
-
-<style scoped></style>

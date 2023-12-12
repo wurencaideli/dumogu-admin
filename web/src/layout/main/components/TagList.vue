@@ -184,7 +184,7 @@
         </div>
         <div 
             class="item"
-            @click="handleOptionClick(6)">
+            @click="handleOptionClick(7)">
             <SvgIcon
                 :style="'width:16px;height:16px;color:#0072E5;'"
                 name="expand-alt"></SvgIcon>
@@ -288,7 +288,7 @@ export default {
         }
         /** 操作事件 */
         function handleOptionClick(type){
-            emit('onOptionClick',type);
+            emit('onOptionClick',type,otherDataContainer.activeItem);
         }
         /** 
          * 鼠标滚动事件

@@ -5,7 +5,10 @@
 import { defineComponent,ref,reactive, computed,onMounted,onActivated } from "vue";
 import publicApi from '@/http/Public.js';
 import userApi from '@/http/User.js';
-import { ElMessage, ElMessageBox } from 'element-plus';
+import {
+    messageSuccess,
+    messageError,
+} from "@/action/MessagePrompt";
 import { useRoute,useRouter } from 'vue-router';
 import {throttleFn_1 as throttleFn} from '@/common/DebounceAndThrottle';
 import { verifiedData } from "@/common/VerifiedTools";
@@ -94,7 +97,7 @@ export default defineComponent({
                 dataContainer.captchaSvg = data.svg;
                 dataContainer.form.captchaText = '';
             }).catch(()=>{
-                ElMessage.error('验证码获取失败');
+                messageError('验证码获取失败');
             }).finally(()=>{
                 dataContainer.loading_1 = false;
             });
@@ -105,7 +108,7 @@ export default defineComponent({
             if(dataContainer.loading) return;
             const verifiedData = validBase(dataContainer.form);
             if(verifiedData){
-                ElMessage.error('参数错误！'+verifiedData[0].label);
+                messageError('参数错误！'+verifiedData[0].label);
                 return;
             };
             dataContainer.loading = true;
@@ -121,10 +124,7 @@ export default defineComponent({
                 userDataStore.setUserInfo({
                     token:data.token || '',
                 });
-                ElMessage({
-                    type: 'success',
-                    message: '登录成功',
-                });
+                messageSuccess('登录成功');
                 /** 
                  * 登录成功，跳转到首页
                  * 其他用户信息会在路由跳转是获取到
@@ -136,7 +136,7 @@ export default defineComponent({
                     router.push('/');
                 }
             }).catch((res)=>{
-                ElMessage.error('登录失败：'+res.msg);
+                messageError('登录失败：'+res.msg);
             }).finally(()=>{
                 dataContainer.loading = false;
                 getCaptcha();

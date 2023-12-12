@@ -18,6 +18,10 @@ export default defineConfig(({
     let base = '/';
     let plugins = [
         vue(),
+        /** 
+         * 使用element按需引入的插件
+         * https://element-plus.gitee.io/zh-CN/guide/quickstart.html#%E6%8C%89%E9%9C%80%E5%AF%BC%E5%85%A5
+         *  */
         AutoImport({
             resolvers: [ElementPlusResolver()],
         }),
