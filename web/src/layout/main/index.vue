@@ -323,6 +323,8 @@ export default defineComponent({
                             ...tag,
                             viewFullScreen:true,
                         });
+                        /** 触发该标签的点击事件 */
+                        handleTagClick(tag);
                     }
                     break;
             }
