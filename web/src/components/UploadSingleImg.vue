@@ -129,47 +129,52 @@ export default defineComponent({
         }
         /** 
          * 文件上传操作
-         * 可由外部调用
+         * 可由外部调用，外部调用可以直接使用promise的形式
          *  */
         let cancelSource;
-        async function handleUpload(file){
-            /** 如果设置的是手动上传，则file文件由外部指定 */
-            if(!dataContainer.autoUpload){
-                otherDataContainer.file = file;
-            }
-            if(!otherDataContainer.file){
-                return;
-            }
-            /** 如果还有任务的话取消 */
-            if(cancelSource) {
-                cancelSource.cancel(); 
-            }
-            dataContainer.status = '';
-            const formData = new FormData();
-            formData.append('file', otherDataContainer.file);
-            const CancelToken = axios.CancelToken;
-            cancelSource = CancelToken.source(); // 创建一个新的CancelToken的源。
-            const config = {
-                onUploadProgress: (progressEvent) => {
-                    const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-                    dataContainer.percentCompleted = percentCompleted;
-                },
-                cancelToken: cancelSource.token // 将源与请求关联起来。
-            };
-            axios.post(dataContainer.uploadApi, formData, config) // 使用axios发送POST请求进行文件上传，并传递配置对象包含onUploadProgress处理程序。
-                .then(response => { // 上传成功处理程序
-                    /** 向外部抛出 */
-                    emit('onSuccess',response);
-                })
-                .catch(error => { // 上传失败处理程序
-                    dataContainer.percentCompleted = 0;
-                    if (axios.isCancel(error)) {
-                        return;
-                    }
-                    dataContainer.status = 'fail';
-                    /** 向外部抛出 */
-                    emit('onFail',error);
-                });
+        function handleUpload(file){
+            return new Promise((r,j)=>{
+                /** 如果设置的是手动上传，则file文件由外部指定 */
+                if(!dataContainer.autoUpload){
+                    otherDataContainer.file = file;
+                }
+                if(!otherDataContainer.file){
+                    return;
+                }
+                /** 如果还有任务的话取消 */
+                if(cancelSource) {
+                    cancelSource.cancel(); 
+                }
+                dataContainer.status = '';
+                dataContainer.percentCompleted = '';
+                const formData = new FormData();
+                formData.append('file', otherDataContainer.file);
+                const CancelToken = axios.CancelToken;
+                cancelSource = CancelToken.source(); // 创建一个新的CancelToken的源。
+                const config = {
+                    onUploadProgress: (progressEvent) => {
+                        const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+                        dataContainer.percentCompleted = percentCompleted;
+                    },
+                    cancelToken: cancelSource.token // 将源与请求关联起来。
+                };
+                axios.post(dataContainer.uploadApi, formData, config) // 使用axios发送POST请求进行文件上传，并传递配置对象包含onUploadProgress处理程序。
+                    .then(response => { // 上传成功处理程序
+                        /** 向外部抛出 */
+                        emit('onSuccess',response);
+                        r(response);
+                    })
+                    .catch(error => { // 上传失败处理程序
+                        j(error);
+                        dataContainer.percentCompleted = 0;
+                        if (axios.isCancel(error)) {
+                            return;
+                        }
+                        dataContainer.status = 'fail';
+                        /** 向外部抛出 */
+                        emit('onFail',error);
+                    });
+            });
         }
         /** 
          * 取消上传
@@ -252,8 +257,8 @@ export default defineComponent({
         align-items: center;
         justify-content: center;
         background-color: rgb(218, 218, 218);
-        width: 150px;
-        height: 150px;
+        width: 100%;
+        height: 100%;
         border-radius: 5px;
         overflow: hidden;
         &:hover{
@@ -265,6 +270,7 @@ export default defineComponent({
             width: 100%;
             height: 100%;
             object-fit: contain;
+            display: block;
         }
         >.cancel-bt{
             cursor: pointer;

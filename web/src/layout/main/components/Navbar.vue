@@ -106,9 +106,9 @@
                         :src="dataContainer.userInfo.avatar"
                         fit="cover" />
                     <div class="name">
-                        管理员
+                        {{dataContainer.userInfo.nickName}}
                         <div class="other">
-                            2458885747
+                            {{dataContainer.userInfo.userName}}
                         </div>
                     </div>
                     <div class="option">
@@ -122,7 +122,7 @@
                     class="bt-list-container">
                     <div class="item">
                         <router-link 
-                            to="/main/mine?activeTab=0">
+                            to="/main/mine/info">
                             <SvgIcon
                                 :style="'width:16px;height:16px;'"
                                 name="user-fill"></SvgIcon>
@@ -131,7 +131,7 @@
                     </div>
                     <div class="item">
                         <router-link 
-                            to="/main/mine?activeTab=2">
+                            to="/main/mine/info-password">
                             <SvgIcon
                                 :style="'width:16px;height:16px;'"
                                 name="supervise"></SvgIcon>
@@ -503,12 +503,12 @@ export default {
                     >.name{
                         font-size: 14px;
                         font-weight: bold;
-                        margin-right: 5px;
+                        margin-right: 10px;
                         color:#444954;
                         display: flex;
                         flex-direction: column;
                         >.other{
-                            font-size: 13px;
+                            font-size: 12px;
                             opacity: 0.6;
                             margin-top: 2px;
                         }

@@ -134,6 +134,24 @@ export function getUserData(){
                 hidden:true,
             },
             {
+                name:"main-mine-info",
+                title:'个人中心',
+                isCache:true,
+                hidden:true,
+            },
+            {
+                name:"main-mine-info-update",
+                title:'个人信息修改',
+                isCache:true,
+                hidden:true,
+            },
+            {
+                name:"main-mine-info-password",
+                title:'修改密码',
+                isCache:true,
+                hidden:true,
+            },
+            {
                 title:'系统管理',
                 iconName:"cog-fill",
                 childs:[

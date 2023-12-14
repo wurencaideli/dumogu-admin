@@ -205,6 +205,30 @@ export const constantRoutes = [
                     isMenu:true,
                 },
             },
+            {
+                path: 'mine/info',
+                component: () => import('@/views/system/mine/index.vue'),
+                name: 'main-mine-info',
+                meta: { 
+                    isMenu:true,
+                },
+            },
+            {
+                path: 'mine/info-update',
+                component: () => import('@/views/system/mine/update.vue'),
+                name: 'main-mine-info-update',
+                meta: { 
+                    isMenu:true,
+                },
+            },
+            {
+                path: 'mine/info-password',
+                component: () => import('@/views/system/mine/password.vue'),
+                name: 'main-mine-info-password',
+                meta: { 
+                    isMenu:true,
+                },
+            },
         ],
     },
     {
