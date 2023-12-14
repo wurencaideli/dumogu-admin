@@ -73,6 +73,37 @@ export function refreshTag(sign){
     router.push(target.redirectPath);
 }
 /** 
+ * 刷新所有标签页
+ */
+export function refreshAllTag(){
+    let userDataStore = userData();
+    let activeSign = userDataStore.activeSign;
+    let tagList = deepCopyObj(userDataStore.tagList);
+    let tagList_1 = deepCopyObj(userDataStore.tagList);
+    tagList.forEach(item=>{
+        item.isCache = false;
+    });
+    userDataStore.setTagList(tagList);
+    /** 路由解析完后还原标签的缓存属性 */
+    let myAfterEach = router.afterEach(() => {
+        userDataStore.setTagList(tagList_1);
+        /** 注销此函数 */
+        myAfterEach();
+        myAfterEach = null;
+    });
+    /** 跳转到重定向页面 */
+    let target = tagList.find(item=>{
+        return item.sign == activeSign;
+    });
+    if(!target) return;
+    if(!target.redirectPath) {
+        /** 没有刷新地址的跳回原地址 */
+        router.push(target.fullPath);
+        return;
+    };
+    router.push(target.redirectPath);
+}
+/** 
  * 修改标签
  * 参数是一个tag对象数据
  *  */

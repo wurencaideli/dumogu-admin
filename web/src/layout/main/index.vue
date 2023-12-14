@@ -30,6 +30,7 @@ import {
     deleteTags,
     formatTagsByMenu,
     getTag,
+    refreshAllTag,
 } from "./Common/TagListTools";
 import {deepCopyObj} from "@/common/OtherTools";
 import {toggleFullScreen} from "@/common/OtherTools";
@@ -326,6 +327,9 @@ export default defineComponent({
                         /** 触发该标签的点击事件 */
                         handleTagClick(tag);
                     }
+                    break;
+                case type == 8:
+                    refreshAllTag();
                     break;
             }
         }

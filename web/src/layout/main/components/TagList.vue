@@ -143,6 +143,14 @@
             </div>
             <div 
                 class="item"
+                @click="handleOptionClick(8)">
+                <SvgIcon
+                    :style="'width:16px;height:16px;color:#f86464;'"
+                    name="redo"></SvgIcon>
+                刷新所有标签页
+            </div>
+            <div 
+                class="item"
                 @click="handleOptionClick(6)">
                 <SvgIcon
                     :style="'width:16px;height:16px;color:#0072E5;'"
