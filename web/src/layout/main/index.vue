@@ -18,6 +18,7 @@ import { useRouter,useRoute } from "vue-router";
 import {userData} from "@/store/User";
 import {publicData} from "@/store/Public";
 import {sysMeluList} from "@/router/Common";
+import img_1 from "@/assets/logo.png";
 import {
     deleteCurrentTag,
     refreshCurrentTag,
@@ -50,6 +51,9 @@ export default defineComponent({
         const router = useRouter();
         const route = useRoute();
         const dataContainer = reactive({
+            img:{
+                img_1,
+            },
             userInfo:toRef(userDataStore,'userInfo'),
             tagList:toRef(userDataStore,'tagList'),
             activeSign:toRef(userDataStore,'activeSign'),
@@ -471,13 +475,28 @@ export default defineComponent({
             'is-view-full-screen':!!activeTag.viewFullScreen,
         }">  
         <div class="head-container">
-            <Navbar
-                :showLogo="dataContainer.showMenu"
-                @switchShowLogo="()=>{
-                    switchShowMenu(!dataContainer.showMenu);
-                }"
-                :userInfo="dataContainer.userInfo"
-                :breadcrumbList="dataContainer.breadcrumbList"></Navbar>
+            <div
+                :class="{
+                    'left':true,
+                    'hidden':!dataContainer.showMenu,
+                }">
+                <el-image 
+                    @click="toPath({path:'/'})"
+                    class="logo"
+                    :src="dataContainer.img.img_1" fit="cover" />
+                <div class="name">
+                    毒蘑菇 - 管理
+                </div>
+            </div>
+            <div class="right">
+                <Navbar
+                    :showLogo="dataContainer.showMenu"
+                    @switchShowLogo="()=>{
+                        switchShowMenu(!dataContainer.showMenu);
+                    }"
+                    :userInfo="dataContainer.userInfo"
+                    :breadcrumbList="dataContainer.breadcrumbList"></Navbar>
+            </div>
         </div>
         <div class="content-container">
             <div
@@ -609,7 +628,55 @@ export default defineComponent({
         box-sizing: border-box;
         position: relative;
         z-index: 9;
-        box-shadow: 0 0 5px rgba(0, 0, 0, 0.177);
+        display: flex;
+        flex-direction: row;
+        >.left{
+            width: var(--menu-width);
+            height: 100%;
+            padding: 0 10px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: center;
+            background-color: #153451e8;
+            // color:#444954;
+            color: #f0f0f0;
+            transition: all 0.2s;
+            overflow: hidden;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.238);
+            &.hidden{
+                width: 0;
+                padding: 0;
+                // display: none;
+                pointer-events: none;
+                >.name{
+                    font-size: 0;
+                }
+            }
+            >.logo{
+                // flex:1 1 0;
+                width: 45px;
+                height: 45px;
+                border-radius: 5px;
+                cursor: pointer;
+                margin-right: 10px;
+            }
+            >.name{
+                width: max-content;
+                font-size: 22px;
+                font-weight: bold;
+                transition: all 0.2s;
+                font-family: cursive;
+            }
+        }
+        >.right{
+            flex: 1 1 0;
+            width: 0;
+            height: 100%;
+            border-bottom: 1px solid var(--border-color);
+            box-sizing: border-box;
+        }
     }
     >.content-container{
         flex: 1 1 0;

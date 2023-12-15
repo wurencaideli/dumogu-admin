@@ -569,7 +569,6 @@ export default {
         padding: 0 10px;
         box-sizing: border-box;
         border-left: 1px solid var(--border-color);
-        box-shadow: inset 0 1px 4px #00000010;
         height: 100%;
         >*{
             margin: 0 10px 0 0;
@@ -600,7 +599,6 @@ export default {
         justify-content: center;
         align-items: center;
         position: relative;
-        box-shadow: inset 0 1px 4px #00000010;
         >.bt{
             width: 100%;
             height: 100%;

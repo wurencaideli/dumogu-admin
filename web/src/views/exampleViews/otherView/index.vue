@@ -111,18 +111,20 @@
                 头像图片上传，可有外部指定文件手动上传
             </p>
             <div>
-                <UploadSingleImg
-                    :imgUrl="dataContainer.imgUrl_3"
-                    :showCancelBt="!!dataContainer.imgUrl_3"
-                    :maxSize="1024 * 1024 * 7"
-                    :minSize="1024 * 7"
-                    :needAccept="'image/png,image/jpeg'"
-                    :autoUpload="true"
-                    :uploadApi="'/upload-api/upload'"
-                    @onChange="handleUploadChange"
-                    @onSuccess="handleUploadSuccess"
-                    @onFail="handleUploadFail"
-                    @onCancel="handleUploadCancel"></UploadSingleImg>
+                <div style="width:150px;height:150px;">
+                    <UploadSingleImg
+                        :imgUrl="dataContainer.imgUrl_3"
+                        :showCancelBt="!!dataContainer.imgUrl_3"
+                        :maxSize="1024 * 1024 * 7"
+                        :minSize="1024 * 7"
+                        :needAccept="'image/png,image/jpeg'"
+                        :autoUpload="true"
+                        :uploadApi="'/upload-api/upload'"
+                        @onChange="handleUploadChange"
+                        @onSuccess="handleUploadSuccess"
+                        @onFail="handleUploadFail"
+                        @onCancel="handleUploadCancel"></UploadSingleImg>
+                </div>
             </div>
         </div>
     </DefinScrollbar>
