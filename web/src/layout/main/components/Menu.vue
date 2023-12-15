@@ -80,7 +80,7 @@ export default {
     --local-active-sub-bg-color:#3634ac57;
     --local-hover-color:#3634ac57;
     --local-font-size:15px;
-    --local-text-color:#b6cce2;
+    --local-text-color:#a8bacc;
     --local-box-shadow: 0 1px 4px #001247;
     --local-border-radius:8px;
     :deep(.el-menu){

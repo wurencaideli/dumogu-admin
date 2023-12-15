@@ -10,7 +10,6 @@
                     <el-col :span="24">
                         <el-form-item label="用户头像" prop="">
                             <div>
-
                                 <div class="img-upload">
                                     <UploadSingleImg
                                         ref="UploadSingleImgRef"
@@ -142,6 +141,7 @@ export default defineComponent({
             let userInfo = userDataStore.userInfo;
             /** 使用一份新数据 */
             dataContainer.form = deepCopyObj(userInfo);
+            dataContainer.imgUrl_3 = dataContainer.form.avatar;
         }
         initData();
         /** 提交数据 */

@@ -71,7 +71,7 @@ export const constantRoutes = [
             /** 一些页面例子 */
             {
                 path: 'index',
-                component: () => import('@/views/exampleViews/main/index.vue'),
+                component: () => import('@/views/system/main/index.vue'),
                 name: 'main-index',
                 meta: { 
                     isMenu:true,
@@ -111,7 +111,7 @@ export const constantRoutes = [
             },
             {
                 path: 'user-list',
-                component: () => import('@/views/exampleViews/userList/index.vue'),
+                component: () => import('@/views/system/userList/index.vue'),
                 name: 'user-list',
                 meta: { 
                     isMenu:true,
@@ -119,7 +119,7 @@ export const constantRoutes = [
             },
             {
                 path: 'role-list',
-                component: () => import('@/views/exampleViews/roleList/index.vue'),
+                component: () => import('@/views/system/roleList/index.vue'),
                 name: 'role-list',
                 meta: { 
                     isMenu:true,
@@ -127,7 +127,7 @@ export const constantRoutes = [
             },
             {
                 path: 'icon-list',
-                component: () => import('@/views/exampleViews/iconList/index.vue'),
+                component: () => import('@/views/system/iconList/index.vue'),
                 name: 'icon-list',
                 meta: { 
                     isMenu:true,
@@ -135,7 +135,7 @@ export const constantRoutes = [
             },
             {
                 path: 'mine',
-                component: () => import('@/views/exampleViews/mine/index.vue'),
+                component: () => import('@/views/system/mine/index.vue'),
                 name: 'mine',
                 meta: { 
                     isMenu:true,
