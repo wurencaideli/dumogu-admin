@@ -377,12 +377,11 @@ export default {
             justify-content: center;
             align-items: center;
             cursor: pointer;
-            // border:1px solid #e7e7e9;
+            border:1px solid #ebebeb;
             border-radius: 999px;
             box-sizing: border-box;
             transition: all 0.2s;
             position: relative;
-            margin-left: 10px;
             &:hover{
                 background-color: #eeeeeeaf;
             }
@@ -431,8 +430,9 @@ export default {
                 justify-content: center;
                 align-items: center;
                 cursor: pointer;
-                padding: 10px 10px 10px 15px;
+                padding: 0px 15px;
                 box-sizing: border-box;
+                height: 100%;
                 >.img{
                     width: 43px;
                     min-width: 43px;
@@ -453,6 +453,7 @@ export default {
                         font-size: 12px;
                         opacity: 0.6;
                         margin-top: 2px;
+                        font-weight: 400;
                     }
                 }
                 >.option{
@@ -466,11 +467,11 @@ export default {
             }
             >.bt-list-container{
                 width: max-content;
-                min-width: 100px;
+                min-width: 120px;
                 position: absolute;
                 z-index: 9;
                 top: calc(100% + 0px);
-                right: 10px;
+                right: 15px;
                 background-color: rgb(255, 255, 255);
                 box-shadow: 0 3px 8px 0 rgba(0, 0, 0, 0.5);
                 padding: 10px 0;

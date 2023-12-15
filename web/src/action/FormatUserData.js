@@ -95,7 +95,7 @@ export function getUserData(){
             ...userInfo,
             "userName": "admin",
             "nickName": "管理员",
-            "avatar":'https://cn.bing.com/th?id=OHR.AdelieWPD_ZH-CN8434233391_1920x1080.jpg&rf=LaDigue_1920x1080.jpg&pid=hp',
+            "avatar":'https://s11.ax1x.com/2023/12/15/pihx4js.jpg',
         });
         /** 
          * 用户目录列表

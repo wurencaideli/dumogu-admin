@@ -618,7 +618,7 @@ export default {
             position: absolute;
             z-index: 9;
             top: calc(100% + 0px);
-            right: 5px;
+            right: 10px;
             background-color: rgb(255, 255, 255);
             box-shadow: 0 3px 8px 0 rgba(0, 0, 0, 0.5);
             padding: 10px 0;

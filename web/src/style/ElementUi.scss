@@ -212,3 +212,10 @@
 .el-overlay{
     background-color:rgba(0, 0, 0, 0.66) !important;
 }
+.el-input-number{
+    &.is-disabled{
+        .el-input-number__increase,.el-input-number__decrease{
+            color: #9f9f9f !important;
+        }
+    }
+}

@@ -639,12 +639,12 @@ export default defineComponent({
             flex-direction: row;
             justify-content: flex-start;
             align-items: center;
-            background-color: #153451e8;
+            background-color: #153451;
             // color:#444954;
             color: #f0f0f0;
             transition: all 0.2s;
             overflow: hidden;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.238);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.435);
             &.hidden{
                 width: 0;
                 padding: 0;
@@ -695,7 +695,7 @@ export default defineComponent({
             position: relative;
             z-index: 9;
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.177);
-            background-color: #153451e8;
+            background-color: #153451;
             transition: width 0.2s;
             overflow: hidden;
             &.hidden{
