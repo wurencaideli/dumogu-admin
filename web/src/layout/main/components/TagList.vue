@@ -34,7 +34,7 @@
                         </div>
                         {{element.title}}
                         <div
-                            v-if="!element.fixed"
+                            v-if="!element.fixed && (tagListTrans.length > 1)"
                             @click.stop="handleRemove(element)" 
                             class="bt">
                             <SvgIcon
