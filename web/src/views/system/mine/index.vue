@@ -131,6 +131,7 @@ export default defineComponent({
                     align-items: center;
                     font-size: 16px;
                     border-bottom: 1px solid rgb(214, 214, 214);
+                    color: #4a4a4a;
                     &:last-child{
                         border: none;
                     }
@@ -138,7 +139,7 @@ export default defineComponent({
                         display: flex;
                         flex-direction: row;
                         align-items: center;
-                        opacity: 0.8;
+                        opacity: 0.7;
                     }
                     >.right{
                         width: 0;

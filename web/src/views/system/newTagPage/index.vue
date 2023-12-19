@@ -2,14 +2,18 @@
     <DefinScrollbar 
         height="100%"
         :showUpBt="true">
-        <div class="page-container new-tag-page-view">
+        <div
+            :style="{
+                '--bg-img_1':`url(${dataContainer.img.img_1})`,
+            }" 
+            class="page-container new-tag-page-view">
             <div class="container">
                 <div class="search">
                     <el-input 
                         v-model="dataContainer.input" 
                         @change="handleSearch"
                         @input="handleSearch"
-                        placeholder="请输入菜单名称" />
+                        placeholder="请输入菜单名称进行过滤" />
                 </div>
                 <div class="item-list">
                     <div
@@ -59,6 +63,7 @@ import DefinScrollbar from "@/components/DefinScrollbar.vue";
 import {
     messageSuccess,messageError,
 } from "@/action/MessagePrompt";
+import img_1 from "./pro-upgrade-bg.svg";
 
 export default defineComponent({
     components: {
@@ -79,6 +84,9 @@ export default defineComponent({
             menuList:[],
             menuList_v:[],
             input:[],
+            img:{
+                img_1,
+            },
         });
         /** 
          * 数据初始化
@@ -147,10 +155,11 @@ export default defineComponent({
             display: flex;
             flex-direction: column;
             align-items: center;
-            background-image: url(https://www.webjike.com/images/bg6.jpg);
+            background-image: url(https://cn.bing.com/th?id=OHR.KirkilaiTower_ZH-CN4058404632_1920x1080.jpg&rf=LaDigue_1920x1080.jpg&pid=hp);
             background-size: cover;
+            background-repeat: no-repeat;
             box-shadow: 1px 1px 3px 0 rgba(0, 0, 0, 0.319);
-            background-position: center bottom;
+            background-position: center top;
             >.search{
                 display: flex;
                 flex-wrap: wrap;
@@ -186,6 +195,7 @@ export default defineComponent({
                         justify-content: center;
                         position: relative;
                         cursor: pointer;
+                        color: white;
                         &:hover{
                             >.icon{
                                 transform: scale(1.1);
@@ -209,6 +219,7 @@ export default defineComponent({
                             border: 2px solid rgba(3,3,3,.215686);
                             box-sizing: border-box;
                             box-shadow: 1px 1px 1px 0 rgba(0,0,0,.653);
+                            color: rgb(56, 56, 56);
                         }
                         >.name{
                             transition: all 0.2s;

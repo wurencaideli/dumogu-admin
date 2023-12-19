@@ -92,7 +92,7 @@
             class="bt">
             <SvgIcon
                 :style="'width:20px;height:20px;'"
-                name="icon-drag"></SvgIcon>
+                name="gallery-view"></SvgIcon>
         </div>
         <div
             v-if="dataContainer.show_1" 
@@ -330,12 +330,12 @@ export default {
                 if(rect_1.x < rect.x){
                     // 表示在左边遮挡
                     let scroll = rect.x - rect_1.x;
-                    el.scrollLeft = el.scrollLeft - scroll - 5;
+                    el.scrollLeft = el.scrollLeft - scroll - 10;
                 }
                 if((rect_1.x + rect_1.width) > (rect.x + rect.width)){
                     // 表示在右边遮挡
                     let scroll = rect_1.x - (rect.x + rect.width);
-                    el.scrollLeft = el.scrollLeft + scroll + rect_1.width + 5;
+                    el.scrollLeft = el.scrollLeft + scroll + rect_1.width + 10;
                 }
             });
         }
@@ -465,10 +465,12 @@ export default {
     justify-content: space-between;
     align-items: center;
     color: var(--text-color);
+    --item-gap:10px;
     >.left{
         flex: 1 1 0;
         width: 0;
         height: 100%;
+        mask-image: linear-gradient(90deg, #000 0%, #000 calc(100% - 10px), transparent);
         :deep(.el-scrollbar__bar){
             &.is-horizontal{
                 height: 5px !important;
@@ -485,6 +487,8 @@ export default {
             align-items: center;
             width: fit-content;
             height: 100%;
+            padding: 0 var(--item-gap);
+            box-sizing: border-box;
             .item{
                 cursor: pointer;
                 display: flex;
@@ -493,7 +497,7 @@ export default {
                 align-items: center;
                 padding: 5px 8px;
                 box-sizing: border-box;
-                margin-left: 5px;
+                margin: 0 5px 0 0;
                 font-size: 13px;
                 height: 30px;
                 width: max-content;
@@ -502,7 +506,7 @@ export default {
                 position: relative;
                 transition: all 0.2s;
                 &:last-child{
-                    margin-right: 5px;
+                    margin: 0px;
                 }
                 &.active{
                     background-color: #5240ff30;
@@ -566,12 +570,15 @@ export default {
         display: flex;
         flex-direction: row;
         align-items: center;
-        padding: 0 10px;
+        padding: 0 0px 0 0px;
         box-sizing: border-box;
-        border-left: 1px solid var(--border-color);
+        // border-left: 1px solid var(--border-color);
         height: 100%;
         >*{
-            margin: 0 10px 0 0;
+            margin: 0 var(--item-gap) 0 0;
+            &:first-child{
+                margin-left: var(--item-gap);
+            }
             &:last-child{
                 margin: 0;
             }
@@ -590,9 +597,10 @@ export default {
         }
     }
     >.right{
-        width: 40px;
+        // width: 40px;
+        padding: 0 var(--item-gap);
         height: 100%;
-        border-left: 1px solid var(--border-color);
+        // border-left: 1px solid var(--border-color);
         box-sizing: border-box;
         display: flex;
         flex-direction: row;
@@ -618,7 +626,7 @@ export default {
             position: absolute;
             z-index: 9;
             top: calc(100% + 0px);
-            right: 10px;
+            right: var(--item-gap);
             background-color: rgb(255, 255, 255);
             box-shadow: 0 3px 8px 0 rgba(0, 0, 0, 0.5);
             padding: 10px 0;

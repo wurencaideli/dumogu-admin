@@ -79,12 +79,14 @@ export default defineComponent({
         width: 100%;
         max-width: 100%;
         height: 100%;
+        background-color: rgb(241, 241, 241);
         >.img{
             width: 100%;
             max-width: 100%;
             height: 100%;
             max-height: 100%;
             display: block;
+            object-fit: contain;
         }
     }
 </style>

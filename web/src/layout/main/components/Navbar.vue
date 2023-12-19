@@ -4,7 +4,7 @@
         <div class="hidden-bt">
             <SvgIcon
                 @click="switchShowLogo"
-                :style="'width:22px;height:22px;'"
+                :style="'width:20px;height:20px;'"
                 :name="dataContainer.showLogo?'outdent':'indent'"></SvgIcon>
         </div>
         <div class="path-list-container">
@@ -279,6 +279,7 @@ export default {
     align-items: center;
     color:#444954;
     position: relative;
+    --item-gap:10px;
     @media (max-width: 1100px) {
         >.left{
             >.path-list-container{
@@ -309,7 +310,7 @@ export default {
             flex-direction: row;
             align-items: center;
             justify-content: flex-start;
-            margin-left: 15px;
+            margin-left: var(--item-gap);
             >*{
                 cursor: pointer;
                 transition: all 0.2s;
@@ -321,7 +322,7 @@ export default {
         >.path-list-container{
             flex: 1 1 0;
             width: 0;
-            padding: 0 15px;
+            padding: 0 var(--item-gap);
             box-sizing: border-box;
             mask-image: linear-gradient(90deg,#000 0%,#000 calc(100% - 50px),transparent);
             :deep(.el-breadcrumb){
@@ -367,7 +368,7 @@ export default {
         position: relative;
         height: 100%;
         >*{
-            margin-left: 15px;
+            margin-left: var(--item-gap);
         }
         >.bt{
             width: 40px;
@@ -417,7 +418,7 @@ export default {
             position: relative;
             border: none;
             box-shadow: none;
-            margin-left: 15px;
+            margin-left: var(--item-gap);
             border-left: 1px solid var(--border-color);
             box-sizing: border-box;
             &.active{
@@ -430,7 +431,7 @@ export default {
                 justify-content: center;
                 align-items: center;
                 cursor: pointer;
-                padding: 0px 15px;
+                padding: 0px var(--item-gap);
                 box-sizing: border-box;
                 height: 100%;
                 >.img{
@@ -438,14 +439,14 @@ export default {
                     min-width: 43px;
                     height: 43px;
                     border-radius: 50%;
-                    margin-right: 10px;
+                    margin-right: var(--item-gap);
                     // border: 2px solid #949494;
                     box-shadow: #0000002a 2px 2px 5px;
                 }
                 >.name{
                     font-size: 14px;
                     font-weight: bold;
-                    margin-right: 10px;
+                    margin-right: var(--item-gap);
                     color:#444954;
                     display: flex;
                     flex-direction: column;
@@ -471,7 +472,7 @@ export default {
                 position: absolute;
                 z-index: 9;
                 top: calc(100% + 0px);
-                right: 15px;
+                right: var(--item-gap);
                 background-color: rgb(255, 255, 255);
                 box-shadow: 0 3px 8px 0 rgba(0, 0, 0, 0.5);
                 padding: 10px 0;
@@ -552,13 +553,14 @@ export default {
             flex-direction: row;
             align-items: center;
             justify-content: space-between;
+            color: #4E5058;
             >.left{
                 height: 100%;
                 display: flex;
                 flex-direction: row;
                 align-items: center;
                 font-size: 15px;
-                color: rgb(94, 94, 94);
+                // color: rgb(94, 94, 94);
             }
             >.right{
                 border: 1px solid rgb(209, 209, 209);
@@ -566,7 +568,7 @@ export default {
                 font-size: 12px;
                 border-radius: 5px;
                 font-weight: bold;
-                color: rgb(121, 121, 121);
+                // color: rgb(121, 121, 121);
             }
         }
     }
