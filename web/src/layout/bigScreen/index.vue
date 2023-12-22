@@ -15,7 +15,7 @@ import {userData} from "@/store/User";
 import {deepCopyObj} from "@/common/OtherTools";
 import { useRouter,useRoute } from "vue-router";
 import {sysMeluList} from "@/router/Common";
-import TagData from "./common/TagData";
+import tagDataStore from "./common/TagData";
 import {guid} from "@/common/Guid";
 
 export default defineComponent({
@@ -28,8 +28,8 @@ export default defineComponent({
         const route = useRoute();
         let userDataStore = userData();
         const dataContainer = reactive({
-            tagList:toRef(TagData,'tagList'),
-            activeSign:toRef(TagData,'activeSign'),
+            tagList:toRef(tagDataStore,'tagList'),
+            activeSign:toRef(tagDataStore,'activeSign'),
             hasSysMenuConfigMap:toRef(userDataStore,'hasSysMenuConfigMap'),
         });
         /** 
@@ -137,8 +137,8 @@ export default defineComponent({
                 /** 防止没有刷新地址 */
                 target.redirectPath = target.redirectPath || newTag.redirectPath;
             }
-            TagData.setTagList(tagList);
-            TagData.setActiveSign(activeSign);
+            tagDataStore.setTagList(tagList);
+            tagDataStore.setActiveSign(activeSign);
         }
         /** 监听路由，
          * 当路由发生变化时将符合条件的标签添加到标签列表中 

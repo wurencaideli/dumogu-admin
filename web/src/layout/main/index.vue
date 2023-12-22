@@ -32,10 +32,11 @@ import {
     formatTagsByMenu,
     getTag,
     refreshAllTag,
-} from "./Common/TagListTools";
+} from "./common/TagListTools";
 import {deepCopyObj} from "@/common/OtherTools";
 import {toggleFullScreen} from "@/common/OtherTools";
 import {guid} from "@/common/Guid";
+import tagDataStore from "./common/TagData";
 
 export default defineComponent({
     name:'MainLayout',
@@ -55,11 +56,11 @@ export default defineComponent({
                 img_1,
             },
             userInfo:toRef(userDataStore,'userInfo'),
-            tagList:toRef(userDataStore,'tagList'),
-            activeSign:toRef(userDataStore,'activeSign'),
+            tagList:toRef(tagDataStore,'tagList'),
+            activeSign:toRef(tagDataStore,'activeSign'),
             showMenuList:toRef(userDataStore,'showMenuList'),
             hasSysMenuConfigMap:toRef(userDataStore,'hasSysMenuConfigMap'),
-            tagHisList:toRef(userDataStore,'tagHisList'),
+            tagHisList:toRef(tagDataStore,'tagHisList'),
             iframeList:toRef(publicDataStore,'iframeList'),  //当前已打开的iframe数组
             showMenu:toRef(publicDataStore,'showMenu'),  //是否显示目录
             breadcrumbList:[],  //面包屑列表
@@ -85,7 +86,7 @@ export default defineComponent({
          * 根据标签列表来的，需要改的话只需要处理标签列表
          *  */
         const cacheTagList = computed(()=>{
-            return userDataStore.tagList.filter(item=>{
+            return dataContainer.tagList.filter(item=>{
                 return item.isCache;
             }).map(item=>{
                 /** 缓存组件是根据path命名来缓存的 */
@@ -124,7 +125,7 @@ export default defineComponent({
                 wrapperMap.set(wrapperName, wrapper);
             }
             /** 以标签页为主，清除不需要的，减少内存 */
-            let pathList = userDataStore.tagList.map(item=>item.path);
+            let pathList = dataContainer.tagList.map(item=>item.path);
             wrapperMap.forEach((_,key)=>{
                 if(pathList.includes(key)) return;
                 wrapperMap.delete(key);
@@ -173,7 +174,7 @@ export default defineComponent({
             if(!activeTag) return;
             /** 添加到数据管理 */
             tagHisList.push(activeTag);
-            userDataStore.setTagHisList(tagHisList);
+            tagDataStore.setTagHisList(tagHisList);
         }
         /**
          * 根据当前路由情况 添加标签
@@ -235,8 +236,8 @@ export default defineComponent({
                 /** 防止没有刷新地址 */
                 target.redirectPath = target.redirectPath || newTag.redirectPath;
             }
-            userDataStore.setTagList(tagList);
-            userDataStore.setActiveSign(activeSign);
+            tagDataStore.setTagList(tagList);
+            tagDataStore.setActiveSign(activeSign);
             /** 添加历史记录 */
             addHisTagList();
         }
@@ -436,7 +437,7 @@ export default defineComponent({
                 },
             };
             tagList.push(newTag);
-            userDataStore.setTagList(tagList);
+            tagDataStore.setTagList(tagList);
             /** 模拟点击 */
             handleTagClick(newTag);
         }
@@ -451,7 +452,6 @@ export default defineComponent({
             handleTagRemove,
             cacheTagList,
             handleOptionClick,
-            userDataStore,
             handleSwitchCache,
             handleSwitchFixed,
             handleRefresh,
@@ -463,6 +463,7 @@ export default defineComponent({
             handleAdd,
             showTagAdd,
             activeTag,
+            tagDataStore,
         };
     },
 });
@@ -514,7 +515,7 @@ export default defineComponent({
                         :tagList="dataContainer.tagList"
                         :activeSign="dataContainer.activeSign"
                         @onChange="e=>{
-                            userDataStore.setTagList(e);
+                            tagDataStore.setTagList(e);
                         }"
                         @onClick="handleTagClick"
                         @onRemove="handleTagRemove"

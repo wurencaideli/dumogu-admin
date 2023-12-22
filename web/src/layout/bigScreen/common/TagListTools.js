@@ -2,7 +2,7 @@
  * 标签数组的操作
  * 包含刷新当前标签页，操作标签数组，添加删除标签数组
  */
-import TagData from "./TagData";
+import tagDataStore from "./TagData";
 import router from '@/router';
 import {deepCopyObj} from "@/common/OtherTools";
 
@@ -11,7 +11,7 @@ import {deepCopyObj} from "@/common/OtherTools";
  * params 标签唯一标识
  *  */
 export function refreshTag(sign){
-    let tagList = deepCopyObj(TagData.tagList);
+    let tagList = deepCopyObj(tagDataStore.tagList);
     let target = tagList.find(item=>{
         return item.sign == sign;
     });
@@ -24,13 +24,13 @@ export function refreshTag(sign){
     let isCache = target.isCache;
     /** 取消缓存 */
     target.isCache = false;
-    TagData.setTagList(tagList);
+    tagDataStore.setTagList(tagList);
     /** 路由解析完后还原该标签的缓存属性 */
     let myAfterEach = router.afterEach(() => {
         if(!target) return;
         target.isCache = isCache;
         target = null;
-        TagData.setTagList(deepCopyObj(tagList));
+        tagDataStore.setTagList(deepCopyObj(tagList));
         /** 注销此函数 */
         myAfterEach();
         myAfterEach = null;
@@ -40,7 +40,7 @@ export function refreshTag(sign){
 }
 /** 刷新当前标签 */
 export function refreshCurrentTag(){
-    let activeSign = TagData.activeSign;
+    let activeSign = tagDataStore.activeSign;
     refreshTag(activeSign);
 }
 /** 
@@ -48,6 +48,6 @@ export function refreshCurrentTag(){
  * 返回新对象，防止获取了就直接修改
  *  */
 export function getCurrentTag(){
-    let activeSign = TagData.activeSign;
+    let activeSign = tagDataStore.activeSign;
     return getTag(activeSign);
 }

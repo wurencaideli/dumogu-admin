@@ -5,6 +5,7 @@
 import {userData} from "@/store/User";
 import router from '@/router';
 import {deepCopyObj} from "@/common/OtherTools";
+import tagDataStore from "./TagData";
 
 /** 
  * 获取标签
@@ -12,8 +13,7 @@ import {deepCopyObj} from "@/common/OtherTools";
  * * 参数 标签唯一标识
  *  */
 export function getTag(sign){
-    let userDataStore = userData();
-    let tagList = userDataStore.tagList;
+    let tagList = tagDataStore.tagList;
     let target = tagList.find(item=>{
         return item.sign == sign;
     });
@@ -31,21 +31,19 @@ export function deleteTags(signs){
     if(!Array.isArray(signs)){
         signs = [signs];
     }
-    let userDataStore = userData();
     /** 深度克隆一份，表示不利用自身的属性监听，干干净净 */
-    let tagList = deepCopyObj(userDataStore.tagList);
+    let tagList = deepCopyObj(tagDataStore.tagList);
     tagList = tagList.filter(item=>{
         return !signs.includes(item.sign);
     });
-    userDataStore.setTagList(tagList);
+    tagDataStore.setTagList(tagList);
 }
 /** 
  * 刷新指定标签页
  * params 标签唯一标识
  *  */
 export function refreshTag(sign){
-    let userDataStore = userData();
-    let tagList = deepCopyObj(userDataStore.tagList);
+    let tagList = deepCopyObj(tagDataStore.tagList);
     let target = tagList.find(item=>{
         return item.sign == sign;
     });
@@ -58,13 +56,13 @@ export function refreshTag(sign){
     let isCache = target.isCache;
     /** 取消缓存 */
     target.isCache = false;
-    userDataStore.setTagList(tagList);
+    tagDataStore.setTagList(tagList);
     /** 路由解析完后还原该标签的缓存属性 */
     let myAfterEach = router.afterEach(() => {
         if(!target) return;
         target.isCache = isCache;
         target = null;
-        userDataStore.setTagList(deepCopyObj(tagList));
+        tagDataStore.setTagList(deepCopyObj(tagList));
         /** 注销此函数 */
         myAfterEach();
         myAfterEach = null;
@@ -76,17 +74,16 @@ export function refreshTag(sign){
  * 刷新所有标签页
  */
 export function refreshAllTag(){
-    let userDataStore = userData();
-    let activeSign = userDataStore.activeSign;
-    let tagList = deepCopyObj(userDataStore.tagList);
-    let tagList_1 = deepCopyObj(userDataStore.tagList);
+    let activeSign = tagDataStore.activeSign;
+    let tagList = deepCopyObj(tagDataStore.tagList);
+    let tagList_1 = deepCopyObj(tagDataStore.tagList);
     tagList.forEach(item=>{
         item.isCache = false;
     });
-    userDataStore.setTagList(tagList);
+    tagDataStore.setTagList(tagList);
     /** 路由解析完后还原标签的缓存属性 */
     let myAfterEach = router.afterEach(() => {
-        userDataStore.setTagList(tagList_1);
+        tagDataStore.setTagList(tagList_1);
         /** 注销此函数 */
         myAfterEach();
         myAfterEach = null;
@@ -109,8 +106,7 @@ export function refreshAllTag(){
  *  */
 export function updateTag(tag){
     if(!tag || !tag.sign) return;
-    let userDataStore = userData();
-    let tagList = deepCopyObj(userDataStore.tagList);
+    let tagList = deepCopyObj(tagDataStore.tagList);
     let target = tagList.find(item=>{
         return item.sign == tag.sign;
     });
@@ -119,16 +115,15 @@ export function updateTag(tag){
     Object.keys(tag).forEach(key=>{
         target[key] = tag[key];
     });
-    userDataStore.setTagList(tagList);
+    tagDataStore.setTagList(tagList);
 }
 /** 
  * 删除当前的标签
  * 只负责删除标签
  *  */
 export function deleteCurrentTag(){
-    let userDataStore = userData();
-    let tagList = userDataStore.tagList;
-    let activeSign = userDataStore.activeSign;
+    let tagList = tagDataStore.tagList;
+    let activeSign = tagDataStore.activeSign;
     let target = tagList.find(item=>{
         return item.sign == activeSign && !item.fixed;
     });
@@ -137,8 +132,7 @@ export function deleteCurrentTag(){
 }
 /** 刷新当前标签 */
 export function refreshCurrentTag(){
-    let userDataStore = userData();
-    let activeSign = userDataStore.activeSign;
+    let activeSign = tagDataStore.activeSign;
     refreshTag(activeSign);
 }
 /** 
@@ -146,9 +140,8 @@ export function refreshCurrentTag(){
  * 固定的除外
  *  */
 export function deleteOtherTags(){
-    let userDataStore = userData();
-    let tagList = userDataStore.tagList;
-    let activeSign = userDataStore.activeSign;
+    let tagList = tagDataStore.tagList;
+    let activeSign = tagDataStore.activeSign;
     let signs = tagList.filter(item=>{
         return item.sign != activeSign && !item.fixed;
     }).map(item=>item.sign);
@@ -159,9 +152,8 @@ export function deleteOtherTags(){
  * 固定的除外
  *  */
 export function deleteLeftTags(){
-    let userDataStore = userData();
-    let tagList = userDataStore.tagList;
-    let activeSign = userDataStore.activeSign;
+    let tagList = tagDataStore.tagList;
+    let activeSign = tagDataStore.activeSign;
     let index = tagList.findIndex(item=>{
         return item.sign == activeSign;
     });
@@ -175,9 +167,8 @@ export function deleteLeftTags(){
  * 固定的除外
  *  */
 export function deleteRightTags(){
-    let userDataStore = userData();
-    let tagList = userDataStore.tagList;
-    let activeSign = userDataStore.activeSign;
+    let tagList = tagDataStore.tagList;
+    let activeSign = tagDataStore.activeSign;
     let index = tagList.findIndex(item=>{
         return item.sign == activeSign;
     });
@@ -190,10 +181,9 @@ export function deleteRightTags(){
  * 获取历史记录里最近的一个标签（不在标签列表中的过滤掉）
  */
 export function getLatelyHisTag(){
-    let userDataStore = userData();
-    let tagList = userDataStore.tagList;
+    let tagList = tagDataStore.tagList;
     /** 先处理已经删除了的历史记录 */
-    let tagHisList = deepCopyObj(userDataStore.tagHisList);
+    let tagHisList = deepCopyObj(tagDataStore.tagHisList);
     let signMap = tagList.reduce((c,i)=>{
         c[i.sign] = true;
         return c;
@@ -201,8 +191,8 @@ export function getLatelyHisTag(){
     tagHisList = tagHisList.filter(item=>{
         return signMap[item.sign];
     });
-    userDataStore.setTagHisList(tagHisList);
-    tagHisList = userDataStore.tagHisList;
+    tagDataStore.setTagHisList(tagHisList);
+    tagHisList = tagDataStore.tagHisList;
     return tagHisList[tagHisList.length - 1];
 }
 /** 
@@ -211,7 +201,7 @@ export function getLatelyHisTag(){
  *  */
 export function formatTagsByMenu(){
     let userDataStore = userData();
-    let tagList = deepCopyObj(userDataStore.tagList);
+    let tagList = deepCopyObj(tagDataStore.tagList);
     let hasSysMenuConfigMap = userDataStore.hasSysMenuConfigMap;
     let tagList_ = [];
     tagList.forEach(item=>{
@@ -229,14 +219,13 @@ export function formatTagsByMenu(){
         };
         tagList_.push(item);
     });
-    userDataStore.setTagList(tagList_);
+    tagDataStore.setTagList(tagList_);
 }
 /** 
  * 获取当前的标签
  * 返回新对象，防止获取了就直接修改
  *  */
 export function getCurrentTag(){
-    let userDataStore = userData();
-    let activeSign = userDataStore.activeSign;
+    let activeSign = tagDataStore.activeSign;
     return getTag(activeSign);
 }

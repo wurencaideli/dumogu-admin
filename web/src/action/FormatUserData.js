@@ -9,6 +9,7 @@ import {
 } from "@/router/Common";
 import {toTree,unfoldTreeList} from "@/common/MenuTools";
 import {guid} from "@/common/Guid";
+import mainTagDataStore from "@/layout/main/common/TagData";
 
 /** 
  * 转换用户menu
@@ -527,6 +528,6 @@ export function logout(){
     userDataStore.setUserInfo({});
     userDataStore.setShowMenuList([]);
     userDataStore.setHasSysMenuConfigMap({});
-    userDataStore.setTagList([]);
-    userDataStore.setActiveSign('');
+    mainTagDataStore.setTagList([]);
+    mainTagDataStore.setActiveSign('');
 }
