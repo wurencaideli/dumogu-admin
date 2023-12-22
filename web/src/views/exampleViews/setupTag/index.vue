@@ -66,7 +66,7 @@ import {
     refreshCurrentTag,
     getCurrentTag,
     updateTag,
-} from "@/layout/main/Common/TagListTools";
+} from "@/layout/main/common/TagListTools";
 import DefinScrollbar from "@/components/DefinScrollbar.vue";
 
 export default defineComponent({

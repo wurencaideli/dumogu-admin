@@ -90,7 +90,7 @@ import {messageError} from "@/action/MessagePrompt.js";
 import {
     getCurrentTag,
     updateTag,
-} from "@/layout/main/Common/TagListTools";
+} from "@/layout/main/common/TagListTools";
 
 export default defineComponent({
     components: {

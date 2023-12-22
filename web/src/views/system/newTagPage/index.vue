@@ -58,7 +58,7 @@ import {userData} from "@/store/User";
 import {toTree,unfoldTreeList} from "@/common/MenuTools";
 import {
     deleteCurrentTag,
-} from "@/layout/main/Common/TagListTools";
+} from "@/layout/main/common/TagListTools";
 import DefinScrollbar from "@/components/DefinScrollbar.vue";
 import {
     messageSuccess,messageError,

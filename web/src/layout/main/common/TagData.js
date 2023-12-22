@@ -39,7 +39,12 @@ const TagData = {
 /**
  * 一个标签的属性如下
  * 其中sign是唯一标识，很重要，必填 
- * menuName 必填
+ * menuName 必填表示对应的系统目录，有name才有此系统目录的权限
+ * 有path的可直接跳转
+ * 没path的，根据name获取映射的系统菜单属性进行跳转
+ * isCache 表示该页面是否缓存
+ * hidden 表示该页面是否在左边目录上显示
+ * isLink 表示直接跳转新页面
  * */
 
 export default reactive(TagData);
