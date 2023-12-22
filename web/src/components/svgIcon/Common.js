@@ -9,7 +9,7 @@ const svgIconObj = import.meta.glob('./svgs/**/*.svg',{
     as: 'raw',
 });
 const svgIconList = Object.keys(svgIconObj).map(item => {
-    let name = item.match(/([^/]*?)\.[^/.]+$/)[1];
+    let name = item.replace('./svgs/', 'svg:');
     return {
         type:'svg',
         name:name,
@@ -21,7 +21,7 @@ const imgIconObj = import.meta.glob('./imgs/**/*.*',{
     eager:true,
 });
 const imgIconList = Object.keys(imgIconObj).map(item=>{
-    let name = item.match(/([^/]*?)\.[^/.]+$/)[1];
+    let name = item.replace('./imgs/', 'img:');
     item = imgIconObj[item];
     if(!item) return {};
     let src = item.default;
@@ -41,9 +41,8 @@ export const iconList = [
 ];
 /**
  * 导出所有的icon name map 方便使用
- * icon 不是很多，使用obj当map方便许多
  */
 export const iconNameMap = iconList.reduce((c,i)=>{
-    c[i.name] = i;
+    c.set(i.name,i);
     return c;
-},{});
+},new Map());

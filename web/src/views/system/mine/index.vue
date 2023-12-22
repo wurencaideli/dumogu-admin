@@ -10,7 +10,7 @@
                     <div class="left">
                         <SvgIcon
                             :style="'width:16px;height:16px;margin-right:5px;'"
-                            name="user-fill"></SvgIcon>
+                            name="svg:user-fill.svg"></SvgIcon>
                         用户名称
                     </div>
                     <div class="right">
@@ -21,7 +21,7 @@
                     <div class="left">
                         <SvgIcon
                             :style="'width:16px;height:16px;margin-right:5px;'"
-                            name="laptop"></SvgIcon>
+                            name="svg:laptop.svg"></SvgIcon>
                         手机号码
                     </div>
                     <div class="right">
@@ -32,7 +32,7 @@
                     <div class="left">
                         <SvgIcon
                             :style="'width:16px;height:16px;margin-right:5px;'"
-                            name="commentdots-fill"></SvgIcon>
+                            name="svg:commentdots-fill.svg"></SvgIcon>
                         用户邮件
                     </div>
                     <div class="right">
@@ -43,7 +43,7 @@
                     <div class="left">
                         <SvgIcon
                             :style="'width:16px;height:16px;margin-right:5px;'"
-                            name="compress-alt"></SvgIcon>
+                            name="svg:compress-alt.svg"></SvgIcon>
                         所属部门
                     </div>
                     <div class="right">
@@ -56,7 +56,7 @@
                 to="/main/mine/info-update">
                 <SvgIcon
                     :style="'width:16px;height:16px;'"
-                    name="cog-fill"></SvgIcon>
+                    name="svg:cog-fill.svg"></SvgIcon>
             </router-link>
         </div>
     </div>

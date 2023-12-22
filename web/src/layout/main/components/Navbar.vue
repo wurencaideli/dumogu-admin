@@ -5,7 +5,7 @@
             <SvgIcon
                 @click="switchShowLogo"
                 :style="'width:20px;height:20px;'"
-                :name="dataContainer.showLogo?'outdent':'indent'"></SvgIcon>
+                :name="dataContainer.showLogo?'svg:outdent.svg':'svg:indent.svg'"></SvgIcon>
         </div>
         <div class="path-list-container">
             <el-breadcrumb separator="">
@@ -43,7 +43,7 @@
             class="bt">
             <SvgIcon
                 :style="'width:22px;height:22px;'"
-                name="git-hub"></SvgIcon>
+                name="svg:git-hub.svg"></SvgIcon>
         </a>
         <a
             href="https://txc.qq.com/products/613546"
@@ -51,7 +51,7 @@
             class="bt">
             <SvgIcon
                 :style="'width:22px;height:22px;'"
-                name="fankui"></SvgIcon>
+                name="svg:fankui.svg"></SvgIcon>
             <div class="number">
                 <div class="container">
                     12
@@ -62,14 +62,14 @@
             class="bt">
             <SvgIcon
                 :style="'width:22px;height:22px;'"
-                name="commentlines-fill"></SvgIcon>
+                name="commentlines-fill.svg"></SvgIcon>
         </div> -->
         <div
             @click="toggleFullScreen" 
             class="bt">
             <SvgIcon
                 :style="'width:22px;height:22px;'"
-                name="Navbar-full"></SvgIcon>
+                name="svg:Navbar-full.svg"></SvgIcon>
         </div>
         <div
             ref="RightOptionRef"  
@@ -96,7 +96,7 @@
                 <div class="option">
                     <SvgIcon
                         :style="'width:15px;height:15px;'"
-                        name="sort-down"></SvgIcon>
+                        name="svg:sort-down.svg"></SvgIcon>
                 </div>
             </div>
             <div
@@ -107,7 +107,7 @@
                         to="/main/mine/info">
                         <SvgIcon
                             :style="'width:16px;height:16px;'"
-                            name="user-fill"></SvgIcon>
+                            name="svg:user-fill.svg"></SvgIcon>
                         个人中心
                     </router-link>
                 </div>
@@ -116,7 +116,7 @@
                         to="/main/mine/info-password">
                         <SvgIcon
                             :style="'width:16px;height:16px;'"
-                            name="supervise"></SvgIcon>
+                            name="svg:supervise.svg"></SvgIcon>
                         密码修改
                     </router-link>
                 </div>
@@ -125,7 +125,7 @@
                     @click.stop="onLogout">
                     <SvgIcon
                         :style="'width:16px;height:16px;color:#f56c6c;'"
-                        name="poweroff"></SvgIcon>
+                        name="svg:poweroff.svg"></SvgIcon>
                     退出登录
                 </div>
             </div>
@@ -138,7 +138,7 @@
             <div class="left">
                 <SvgIcon
                     :style="'width:17px;height:17px;margin-right:10px;'"
-                    name="search-bt"></SvgIcon>
+                    name="svg:search-bt.svg"></SvgIcon>
                 搜索目录
             </div>
             <div class="right">

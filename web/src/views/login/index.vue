@@ -236,17 +236,17 @@ export default defineComponent({
                         <div class="item">
                             <SvgIcon
                                 :style="'width:20px;height:20px;'"
-                                name="g"></SvgIcon>
+                                name="svg:g.svg"></SvgIcon>
                         </div>
                         <div class="item">
                             <SvgIcon
                                 :style="'width:20px;height:20px;'"
-                                name="f"></SvgIcon>
+                                name="svg:f.svg"></SvgIcon>
                         </div>
                         <div class="item">
                             <SvgIcon
                                 :style="'width:20px;height:20px;'"
-                                name="weixin"></SvgIcon>
+                                name="svg:weixin.svg"></SvgIcon>
                         </div>
                     </div>
                     <div class="content-1">
@@ -255,7 +255,7 @@ export default defineComponent({
                     <div class="input-container">
                         <SvgIcon
                             :style="'width:20px;height:20px;margin-right:10px;'"
-                            name="zhanghao"></SvgIcon>
+                            name="svg:zhanghao.svg"></SvgIcon>
                         <el-input 
                             clearable
                             @input="()=>{
@@ -269,7 +269,7 @@ export default defineComponent({
                     <div class="input-container">
                         <SvgIcon
                             :style="'width:20px;height:20px;margin-right:10px;'"
-                            name="mima"></SvgIcon>
+                            name="svg:mima.svg"></SvgIcon>
                         <el-input 
                             type="password"
                             clearable
@@ -284,7 +284,7 @@ export default defineComponent({
                     <div class="input-container code">
                         <SvgIcon
                             :style="'width:20px;height:20px;margin-right:10px;'"
-                            name="cat-code"></SvgIcon>
+                            name="svg:cat-code.svg"></SvgIcon>
                         <el-input 
                             v-model="dataContainer.form.captchaText" 
                             placeholder="验证码"
@@ -321,7 +321,7 @@ export default defineComponent({
                 class="bt">
                 <SvgIcon
                     :style="'width:60px;height:25px;'"
-                    name="github"></SvgIcon>
+                    name="svg:github.svg"></SvgIcon>
             </a>
         </div>
     </div>

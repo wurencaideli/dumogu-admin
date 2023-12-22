@@ -19,6 +19,7 @@
 <script>
 /** 
  * 自定义的icon组件
+ * 外部可传入需要使用的icon的名称，注意是全名
  */
 import { defineComponent,ref,reactive,toRef, computed } from 'vue';
 import {iconNameMap} from "./Common.js";
@@ -39,11 +40,10 @@ export default defineComponent({
         const dataContainer = reactive({
             name:toRef(props,'name'),
             style:toRef(props,'style'),
-            iconNameMap:iconNameMap,
         });
         /** icon 个体数据 */
         const iconData = computed(()=>{
-            return iconNameMap[dataContainer.name] || {};
+            return iconNameMap.get(dataContainer.name) || {};
         });
         return {
             dataContainer,

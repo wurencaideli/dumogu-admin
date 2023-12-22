@@ -28,14 +28,14 @@
                                     @click="handleQuery">
                                     <SvgIcon 
                                         :style="'width:15px;height:15px;margin-right:5px;'"
-                                        name="search-bt"></SvgIcon>
+                                        name="svg:search-bt.svg"></SvgIcon>
                                     查询
                                 </el-button>
                                 <el-button
                                     @click="resetQuery">
                                     <SvgIcon 
                                         :style="'width:15px;height:15px;margin-right:5px;'"
-                                        name="redo"></SvgIcon>
+                                        name="svg:redo.svg"></SvgIcon>
                                     重置
                                 </el-button>
                             </el-form-item>
@@ -75,14 +75,14 @@
                         @click="resetQuery">
                         <SvgIcon 
                             :style="'width:15px;height:15px;'"
-                            name="redo"></SvgIcon>
+                            name="svg:redo.svg"></SvgIcon>
                     </el-button>
                     <el-button
                         circle 
                         @click="dataContainer.showSearch=!dataContainer.showSearch">
                         <SvgIcon 
                             :style="'width:15px;height:15px;'"
-                            name="search-bt"></SvgIcon>
+                            name="svg:search-bt.svg"></SvgIcon>
                     </el-button>
                 </div>
             </div>

@@ -565,11 +565,11 @@ export default defineComponent({
                             <SvgIcon
                                 :style="'width:16px;height:16px;'"
                                 @click="handleClick_1"
-                                name="compress-alt"></SvgIcon>
+                                name="svg:compress-alt.svg"></SvgIcon>
                             <SvgIcon
                                 :style="'width:16px;height:16px;'"
                                 @click="toggleFullScreen"
-                                name="Navbar-full"></SvgIcon>
+                                name="svg:Navbar-full.svg"></SvgIcon>
                         </div>
                     </div>
                 </div>

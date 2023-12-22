@@ -29,7 +29,7 @@
                                         class="bt">
                                         <SvgIcon
                                             :style="'width: 25px;min-width:25px;height: 25px;'"
-                                            name="upload"></SvgIcon>
+                                            name="svg:upload.svg"></SvgIcon>
                                     </div>
                                 </div>
                                 <el-button

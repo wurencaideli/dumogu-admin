@@ -234,7 +234,7 @@ export default defineComponent({
             }">
             <SvgIcon
                 :style="'width: 25px;min-width:25px;height: 25px;'"
-                name="upload"></SvgIcon>
+                name="svg:upload.svg"></SvgIcon>
         </div>
         <div
             @click="handleCancel"
@@ -242,7 +242,7 @@ export default defineComponent({
             class="cancel-bt">
             <SvgIcon
                 :style="'width: 15px;min-width:15px;height: 15px;'"
-                name="times"></SvgIcon>
+                name="svg:times.svg"></SvgIcon>
         </div>
     </div>
 </template>

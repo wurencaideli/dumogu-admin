@@ -21,7 +21,7 @@
                     }">
                     <SvgIcon 
                         :style="'width:15px;height:15px;'"
-                        name="sort-down"></SvgIcon>
+                        name="svg:sort-down.svg"></SvgIcon>
                 </div>
                 {{show?'收缩':'展开'}}
             </div>

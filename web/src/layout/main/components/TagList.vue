@@ -39,7 +39,7 @@
                             class="bt">
                             <SvgIcon
                                 :style="'width:12px;height:12px;'"
-                                name="times"></SvgIcon>
+                                name="svg:times.svg"></SvgIcon>
                         </div>
                         <div 
                             v-if="element.isCache"
@@ -53,7 +53,7 @@
                         @click="handleAdd">
                         <SvgIcon
                             :style="'width:16px;height:16px;'"
-                            name="plus"></SvgIcon>
+                            name="svg:plus.svg"></SvgIcon>
                     </div>
                 </template>
             </draggable>
@@ -65,21 +65,21 @@
             @click="handleOptionClick(5)">
             <SvgIcon
                 :style="'width:15px;height:15px;'"
-                name="redo"></SvgIcon>
+                name="svg:redo.svg"></SvgIcon>
         </div>
         <div 
             class="bt"
             @click="handleToLeft()">
             <SvgIcon
                 :style="'width:15px;height:15px;'"
-                name="arrow-left"></SvgIcon>
+                name="svg:arrow-left.svg"></SvgIcon>
         </div>
         <div 
             class="bt"
             @click="handleToRight()">
             <SvgIcon
                 :style="'width:15px;height:15px;'"
-                name="arrow-right"></SvgIcon>
+                name="svg:arrow-right.svg"></SvgIcon>
         </div>
     </div>
     <div
@@ -92,7 +92,7 @@
             class="bt">
             <SvgIcon
                 :style="'width:20px;height:20px;'"
-                name="gallery-view"></SvgIcon>
+                name="svg:gallery-view.svg"></SvgIcon>
         </div>
         <div
             v-if="dataContainer.show_1" 
@@ -103,7 +103,7 @@
                 @click="handleOptionClick(1)">
                 <SvgIcon
                     :style="'width:16px;height:16px;color:#f86464;'"
-                    name="times"></SvgIcon>
+                    name="svg:times.svg"></SvgIcon>
                 关闭当前标签页
             </div>
             <div 
@@ -112,7 +112,7 @@
                 @click="handleOptionClick(2)">
                 <SvgIcon
                     :style="'width:16px;height:16px;color:#f86464;'"
-                    name="borderverticle-fill"></SvgIcon>
+                    name="svg:borderverticle-fill.svg"></SvgIcon>
                 关闭其他标签页
             </div>
             <div 
@@ -121,7 +121,7 @@
                 @click="handleOptionClick(3)">
                 <SvgIcon
                     :style="'width:16px;height:16px;color:#f86464;'"
-                    name="arrow-left"></SvgIcon>
+                    name="svg:arrow-left.svg"></SvgIcon>
                 关闭左边标签页
             </div>
             <div 
@@ -130,7 +130,7 @@
                 @click="handleOptionClick(4)">
                 <SvgIcon
                     :style="'width:16px;height:16px;color:#f86464;'"
-                    name="arrow-right"></SvgIcon>
+                    name="svg:arrow-right.svg"></SvgIcon>
                 关闭右边标签页
             </div>
             <div 
@@ -138,7 +138,7 @@
                 @click="handleOptionClick(5)">
                 <SvgIcon
                     :style="'width:16px;height:16px;color:#0072E5;'"
-                    name="redo"></SvgIcon>
+                    name="svg:redo.svg"></SvgIcon>
                 刷新当前标签页
             </div>
             <div 
@@ -146,7 +146,7 @@
                 @click="handleOptionClick(8)">
                 <SvgIcon
                     :style="'width:16px;height:16px;color:#f86464;'"
-                    name="redo"></SvgIcon>
+                    name="svg:redo.svg"></SvgIcon>
                 刷新所有标签页
             </div>
             <div 
@@ -154,7 +154,7 @@
                 @click="handleOptionClick(6)">
                 <SvgIcon
                     :style="'width:16px;height:16px;color:#0072E5;'"
-                    name="expand-alt"></SvgIcon>
+                    name="svg:expand-alt.svg"></SvgIcon>
                 视图全屏(Esc键退出)
             </div>
         </div>
@@ -171,7 +171,7 @@
             @click="handleSwitchCache()">
             <SvgIcon
                 :style="'width:16px;height:16px;'"
-                name="switch"></SvgIcon>
+                name="svg:switch.svg"></SvgIcon>
             切换缓存状态
         </div>
         <div 
@@ -179,7 +179,7 @@
             @click="handleSwitchFixed()">
             <SvgIcon
                 :style="'width:16px;height:16px;'"
-                name="nail"></SvgIcon>
+                name="svg:nail.svg"></SvgIcon>
             切换固定状态
         </div>
         <div 
@@ -187,7 +187,7 @@
             @click="handleRefresh()">
             <SvgIcon
                 :style="'width:16px;height:16px;color:#0072E5;'"
-                name="redo"></SvgIcon>
+                name="svg:redo.svg"></SvgIcon>
             刷新此标签页
         </div>
         <div 
@@ -195,7 +195,7 @@
             @click="handleOptionClick(7)">
             <SvgIcon
                 :style="'width:16px;height:16px;color:#0072E5;'"
-                name="expand-alt"></SvgIcon>
+                name="svg:expand-alt.svg"></SvgIcon>
             视图全屏
         </div>
     </div>
