@@ -13,6 +13,17 @@ import mainTagDataStore from "@/layout/main/common/TagData";
 import userApi from "@/http/User";
 
 /** 
+ * url 转 path
+ * 防止链接带参数时的一些匹配错误
+ */
+function urlToPath(url){
+    try {
+        return new URL(location.origin + url).pathname;
+    } catch {
+        return url;
+    }
+}
+/** 
  * 转换用户menu
  * 目的是分出用于显示的和用户判断目录权限的
  * 用于判断权限的包含配置信息
@@ -46,22 +57,24 @@ function transUserMenu(menuList){
             /** 
              * 有路由地址，但没菜单名称
              *  */
-            let sysMenu = sysMeluPathMap[item.path] || {};
+            path = urlToPath(path);
+            let sysMenu = sysMeluPathMap[path] || {};
             item.name = sysMenu.name;
-            hasSysMenuConfigMap[item.path] = item;
-        };
+            hasSysMenuConfigMap[path] = item;
+        }
         if(!path && !!name) {
             /** 没路由地址，但有菜单名称 */
-            let sysMenu = sysMeluNameMap[item.name] || {};
+            let sysMenu = sysMeluNameMap[name] || {};
             item.path = sysMenu.path;
-            hasSysMenuConfigMap[item.name] = item;
-        };
+            hasSysMenuConfigMap[name] = item;
+        }
         if(!!path && !!name) {
             /** 
              * 有路由地址，有菜单名称
              * 以路由为准
              *  */
-            hasSysMenuConfigMap[item.path] = item;
+            path = urlToPath(path);
+            hasSysMenuConfigMap[path] = item;
         }
         /** 有唯一标识的也添加，方便查找，可以替换一些信息 */
         if(!!item.sign){
@@ -117,7 +130,6 @@ export function getUserData(){
         }).catch(()=>{
             return [];
         });
-        
         let transData = transUserMenu(menuList);
         /** 写入展示菜单数据 */
         userDataStore.setShowMenuList(transData.showMenuList);

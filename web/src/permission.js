@@ -29,6 +29,7 @@ const whiteList_1 = [
 router.beforeEach(async (to, from, next) => {
     const userData = userDataStore();
     let toPath = to.path;
+    let toFullPath = to.fullPath;
     let toName = to.name;
     /** 如果是白名单中的路由直接放行 */
     if(whiteList.includes(toPath) || whiteList.includes(toName)){
@@ -68,7 +69,7 @@ router.beforeEach(async (to, from, next) => {
             !hasSysMenuConfigMap[toName] && !hasSysMenuConfigMap[toPath]
         )
     ){
-        next(`/401?path=${toPath}`); // 没权限的跳转到401
+        next(`/401?fullPath=${toFullPath}`); // 没权限的跳转到401
         return;
     }
     next();

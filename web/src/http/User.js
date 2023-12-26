@@ -117,7 +117,7 @@ const allApi = {
                 iconName:"svg:aligncenter-fill.svg",
                 childs:[
                     {
-                        path:'/main/iframe/https://www.dumogu.top/',
+                        path:'/main/iframe/yipian?src=https://www.dumogu.top/',
                         title:'一篇文字',
                         content:'有缓存',
                         iconName:"img:logo.png",
@@ -125,14 +125,14 @@ const allApi = {
                         isCache:true,
                     },
                     {
-                        path:'/main/iframe/https://blog.dumogu.top/',
+                        path:'/main/iframe/blog?src=https://blog.dumogu.top/',
                         title:'毒蘑菇 - 博客',
                         iconName:"img:logo.png",
                         showTagIcon:true,
                         isCache:false,
                     },
                     {
-                        path:'/main/iframe/https://cn.vuejs.org/guide/introduction.html',
+                        path:`/main/iframe/vue?src=${encodeURIComponent('https://cn.vuejs.org/guide/introduction.html')}`,
                         title:'VUE3文档',
                         content:'有缓存',
                         iconName:"img:vue.svg",
@@ -140,7 +140,7 @@ const allApi = {
                         isCache:true,
                     },
                     {
-                        path:'/main/iframe/https://www.amap.com/',
+                        path:`/main/iframe/gaode?src=${encodeURIComponent('https://www.amap.com/')}`,
                         title:'高德地图',
                         content:'有缓存',
                         iconName:"img:gaode.svg",

@@ -16,7 +16,7 @@ export default defineComponent({
         /** 初始化 */
         function initData(){
             let params = route.query || {};
-            dataContainer.path = params.path || '';
+            dataContainer.path = params.fullPath || params.path || '';
         }
         initData();
         return {
