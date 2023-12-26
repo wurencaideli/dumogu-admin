@@ -18,24 +18,23 @@
  */
 import {
     defineComponent,onBeforeUnmount,ref,reactive,getCurrentInstance,onActivated,
-    onUnmounted,
+    onUnmounted,toRef,
 } from 'vue';
 import { useRouter, useRoute } from "vue-router";
-import {publicData} from "@/store/Public";
 import {guid} from "@/common/Guid";
 import {deepCopyObj} from "@/common/OtherTools";
-import {Loading} from '@element-plus/icons-vue'
+import {Loading} from '@element-plus/icons-vue';
+import tagDataStore from "@/layout/main/common/TagData";
 
 export default defineComponent({
     components: {
         Loading,
     },
     setup() {
-        let publicDataStore = publicData();
-        const router = useRouter();
         const route = useRoute();
         const dataContainer = reactive({
-            iframe:{},
+            iframe:{},  //当前管理的iframe
+            iframeList:toRef(tagDataStore,'iframeList'),  //当前已打开的iframe数组
         });
         /** 
          * 数据初始化
@@ -45,25 +44,25 @@ export default defineComponent({
             let query = route.query;
             if(!params.sign) return;
             if(!query.src) return;
-            let iframeList = deepCopyObj(publicDataStore.iframeList);
+            let iframeList = deepCopyObj(dataContainer.iframeList);
             dataContainer.iframe = {
                 path:route.path,
                 src:decodeURIComponent(query.src),
                 key:guid(),  //唯一标识，防止刷新时vue重新利用
             };
             iframeList.push(dataContainer.iframe);
-            publicDataStore.setIframeList(iframeList);
+            tagDataStore.setIframeList(iframeList);
         }
         initData();
         /** 组件销毁时删除该iframe */
         onUnmounted(()=>{
-            let iframeList = deepCopyObj(publicDataStore.iframeList);
+            let iframeList = deepCopyObj(tagDataStore.iframeList);
             let index = iframeList.findIndex(item=>{
                 return item.key == dataContainer.iframe.key;
             });
             if(index == -1) return;
             iframeList.splice(index,1);
-            publicDataStore.setIframeList(iframeList);
+            tagDataStore.setIframeList(iframeList);
         });
         return {
             dataContainer,

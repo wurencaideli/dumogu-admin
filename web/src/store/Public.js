@@ -9,7 +9,6 @@ export const publicData = defineStore('publicData', {
         let showMenu = !!showMenuStorage.value;
         return {
             friendLinkList:[],  //友情链接
-            iframeList:[],  //iframe 数组
             showMenu:showMenu,  //是否显示目录
         };
     },
@@ -17,9 +16,6 @@ export const publicData = defineStore('publicData', {
     actions: {
         setFriendLinkList(value){
             this.friendLinkList = value || [];
-        },
-        setIframeList(value){
-            this.iframeList = value || [];
         },
         setShowMenu(value){
             this.showMenu = !!value;

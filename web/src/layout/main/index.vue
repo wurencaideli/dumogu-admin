@@ -61,7 +61,7 @@ export default defineComponent({
             showMenuList:toRef(userDataStore,'showMenuList'),
             hasSysMenuConfigMap:toRef(userDataStore,'hasSysMenuConfigMap'),
             tagHisList:toRef(tagDataStore,'tagHisList'),
-            iframeList:toRef(publicDataStore,'iframeList'),  //当前已打开的iframe数组
+            iframeList:toRef(tagDataStore,'iframeList'),  //当前已打开的iframe数组
             showMenu:toRef(publicDataStore,'showMenu'),  //是否显示目录
             breadcrumbList:[],  //面包屑列表
             optionBtShow:true,  //控制按钮的显示

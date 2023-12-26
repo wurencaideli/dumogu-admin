@@ -20,6 +20,7 @@ const TagData = {
     tagList:tagList,  //标签列表
     activeSign:'',  //当前活动的标签唯一标识
     tagHisList:[],  //标签历史列表，记录标签历史添加列表
+    iframeList:[],  //iframe 数组，iframe也属于标签，跟标签挂钩
     /** 写入tagData */
     setTagList(value){
         this.tagList = value || [];
@@ -33,6 +34,12 @@ const TagData = {
     /** 写入标签历史列表，用来删除切换上一个标签时更加人性化一点 */
     setTagHisList(value){
         this.tagHisList = value || [];
+    },
+    /**
+     * 当标签为内联链接时有用
+     */
+    setIframeList(value){
+        this.iframeList = value || [];
     },
 };
 
