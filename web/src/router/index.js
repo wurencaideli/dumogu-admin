@@ -3,6 +3,7 @@
  * 所有路由必须先手动写好，然后由后端菜单接口来进行匹配并且指定是否显示
  */
 import {createWebHistory,createRouter,createWebHashHistory} from 'vue-router';
+import dumoguConfig from '@/config.js';
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
 //全局进度条的配置 
@@ -295,7 +296,7 @@ export const constantRoutes = [
 ];
 
 const router = createRouter({
-    history: createWebHistory(),
+    history: createWebHistory(dumoguConfig.routeBasePath),
     routes: constantRoutes,
 });
 /** 此处只添加路由进度条动画 */

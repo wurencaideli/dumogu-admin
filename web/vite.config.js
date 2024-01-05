@@ -6,6 +6,8 @@ import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
 import { resolve } from 'path';
 import optionConfig from './oss.config';
 import vitePluginAliOss from 'vite-plugin-ali-oss';
+import dumoguConfig from './dumogu.config';
+import { createHtmlPlugin } from 'vite-plugin-html';
 
 const pathResolve = (dir) => {
     return resolve(__dirname, '.', dir);
@@ -15,7 +17,7 @@ export default defineConfig(({
     mode,
 })=>{
     const prod = process.env.NODE_ENV === 'production';
-    let base = '/';
+    let base = dumoguConfig.biuldBasePath;
     let plugins = [
         vue(),
         /** 
@@ -28,10 +30,20 @@ export default defineConfig(({
         Components({
             resolvers: [ElementPlusResolver()],
         }),
+        /** 配置向html文件中注入数据的插件，向html文件中注入配置数据 */
+        createHtmlPlugin({
+            minify: true,
+            inject:{
+                data:{
+                    ...dumoguConfig,
+                },
+            },
+            template: '/index.html', // 指定根路径下的HTML模板文件
+        }),
     ];
     /** 如果有阿里云配置则使用 */
     if(optionConfig.url){
-        base = prod ? optionConfig.url+'/' : '/';
+        base = prod ? optionConfig.url+'/' : base;
         /** 上传到阿里云OSS上 */
         const options = {
             region: optionConfig.region,
