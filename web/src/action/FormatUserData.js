@@ -29,7 +29,7 @@ function urlToPath(url){
  * 用于判断权限的包含配置信息
  *  */
 function transUserMenu(menuList){
-    let hasSysMenuConfigMap = {};
+    let hasSysMenuConfigObj = {};
     let showMenuList = [];
     /** 
      * 将树形结构展开
@@ -48,7 +48,7 @@ function transUserMenu(menuList){
         /** 
          * 根据目录配置找到对应的系统menu
          * 添加权限，添加已有的权限列表
-         * 因为path属于name的子集，所哟name,path都应该有自己的配置
+         * 因为path属于name的子集，所以name,path都应该有自己的配置
          * 赋予正确的名称，并添加以path为优先，name次之的权限
          *  */
         let path = item.path;
@@ -60,13 +60,13 @@ function transUserMenu(menuList){
             path = urlToPath(path);
             let sysMenu = sysMeluPathMap[path] || {};
             item.name = sysMenu.name;
-            hasSysMenuConfigMap[path] = item;
+            hasSysMenuConfigObj[path] = item;
         }
         if(!path && !!name) {
             /** 没路由地址，但有菜单名称 */
             let sysMenu = sysMeluNameMap[name] || {};
             item.path = sysMenu.path;
-            hasSysMenuConfigMap[name] = item;
+            hasSysMenuConfigObj[name] = item;
         }
         if(!!path && !!name) {
             /** 
@@ -74,11 +74,11 @@ function transUserMenu(menuList){
              * 以路由为准
              *  */
             path = urlToPath(path);
-            hasSysMenuConfigMap[path] = item;
+            hasSysMenuConfigObj[path] = item;
         }
         /** 有唯一标识的也添加，方便查找，可以替换一些信息 */
         if(!!item.sign){
-            hasSysMenuConfigMap[item.sign] = {
+            hasSysMenuConfigObj[item.sign] = {
                 ...item,
             };
         }
@@ -95,7 +95,7 @@ function transUserMenu(menuList){
     });
     return {
         showMenuList,
-        hasSysMenuConfigMap,
+        hasSysMenuConfigObj,
     };
 }
 /** 
@@ -134,7 +134,7 @@ export function getUserData(){
         /** 写入展示菜单数据 */
         userDataStore.setShowMenuList(transData.showMenuList);
         /** 写入权限菜单数据 */
-        userDataStore.setHasSysMenuConfigMap(transData.hasSysMenuConfigMap);
+        userDataStore.setHasSysMenuConfigObj(transData.hasSysMenuConfigObj);
     });
 }
 /** 
@@ -209,7 +209,7 @@ export function getUserData_1(){
         /** 写入展示菜单数据 */
         userDataStore.setShowMenuList(transData.showMenuList);
         /** 写入权限菜单数据 */
-        userDataStore.setHasSysMenuConfigMap(transData.hasSysMenuConfigMap);
+        userDataStore.setHasSysMenuConfigObj(transData.hasSysMenuConfigObj);
     });
 }
 /** 
@@ -223,7 +223,7 @@ export function setMenuData(treeList){
     /** 写入展示菜单数据 */
     userDataStore.setShowMenuList(transData.showMenuList);
     /** 写入权限菜单数据 */
-    userDataStore.setHasSysMenuConfigMap(transData.hasSysMenuConfigMap);
+    userDataStore.setHasSysMenuConfigObj(transData.hasSysMenuConfigObj);
 }
 /** 
  * 用户退出登录
@@ -233,7 +233,7 @@ export function logout(){
     const userDataStore = userData();
     userDataStore.setUserInfo({});
     userDataStore.setShowMenuList([]);
-    userDataStore.setHasSysMenuConfigMap({});
+    userDataStore.setHasSysMenuConfigObj({});
     mainTagDataStore.setTagList([]);
     mainTagDataStore.setActiveSign('');
 }

@@ -30,7 +30,7 @@ export default defineComponent({
         const dataContainer = reactive({
             tagList:toRef(tagDataStore,'tagList'),
             activeSign:toRef(tagDataStore,'activeSign'),
-            hasSysMenuConfigMap:toRef(userDataStore,'hasSysMenuConfigMap'),
+            hasSysMenuConfigObj:toRef(userDataStore,'hasSysMenuConfigObj'),
         });
         /** 
          * 需要缓存的页面列表
@@ -81,7 +81,7 @@ export default defineComponent({
         /** 根据系统目录获取用户的目录配置 */
         function getUserMenu(data){
             /** 优先使用当前的path判断获取映射 */
-            let target = dataContainer.hasSysMenuConfigMap[data.path] || dataContainer.hasSysMenuConfigMap[data.name];
+            let target = dataContainer.hasSysMenuConfigObj[data.path] || dataContainer.hasSysMenuConfigObj[data.name];
             return target || {};
         }
         /**

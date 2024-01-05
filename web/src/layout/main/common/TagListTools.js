@@ -202,11 +202,11 @@ export function getLatelyHisTag(){
 export function formatTagsByMenu(){
     let userDataStore = userData();
     let tagList = deepCopyObj(tagDataStore.tagList);
-    let hasSysMenuConfigMap = userDataStore.hasSysMenuConfigMap;
+    let hasSysMenuConfigObj = userDataStore.hasSysMenuConfigObj;
     let tagList_ = [];
     tagList.forEach(item=>{
         /** 优先取path */
-        let userMenuConfig = hasSysMenuConfigMap[item.path] || hasSysMenuConfigMap[item.menuName];
+        let userMenuConfig = hasSysMenuConfigObj[item.path] || hasSysMenuConfigObj[item.menuName];
         /** 有目录权限的才更新*/
         if(!userMenuConfig) return;
         item = {

@@ -59,7 +59,7 @@ export default defineComponent({
             tagList:toRef(tagDataStore,'tagList'),
             activeSign:toRef(tagDataStore,'activeSign'),
             showMenuList:toRef(userDataStore,'showMenuList'),
-            hasSysMenuConfigMap:toRef(userDataStore,'hasSysMenuConfigMap'),
+            hasSysMenuConfigObj:toRef(userDataStore,'hasSysMenuConfigObj'),
             tagHisList:toRef(tagDataStore,'tagHisList'),
             iframeList:toRef(tagDataStore,'iframeList'),  //当前已打开的iframe数组
             showMenu:toRef(publicDataStore,'showMenu'),  //是否显示目录
@@ -139,7 +139,7 @@ export default defineComponent({
         /** 根据系统目录获取用户的目录配置 */
         function getUserMenu(data){
             /** 优先使用当前的path判断获取映射 */
-            let target = dataContainer.hasSysMenuConfigMap[data.path] || dataContainer.hasSysMenuConfigMap[data.name];
+            let target = dataContainer.hasSysMenuConfigObj[data.path] || dataContainer.hasSysMenuConfigObj[data.name];
             return target;
         }
         /** 
@@ -153,7 +153,7 @@ export default defineComponent({
             let list = [];
             function findP(target){
                 list.unshift(target);
-                let targetP = dataContainer.hasSysMenuConfigMap[target.parentSign];
+                let targetP = dataContainer.hasSysMenuConfigObj[target.parentSign];
                 if(targetP){
                     findP(targetP);
                 }
@@ -443,7 +443,7 @@ export default defineComponent({
         }
         /** 是否显示添加标签按钮 */
         const showTagAdd = computed(()=>{
-            return !!dataContainer.hasSysMenuConfigMap['new-tag-page'];
+            return !!dataContainer.hasSysMenuConfigObj['new-tag-page'];
         });
         return {
             formatComponentInstance,

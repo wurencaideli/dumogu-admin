@@ -62,11 +62,11 @@ router.beforeEach(async (to, from, next) => {
      * 如果有权限的才放行
      * 没权限的跳转到401页面
      *  */
-    let hasSysMenuConfigMap = userData.hasSysMenuConfigMap;
+    let hasSysMenuConfigObj = userData.hasSysMenuConfigObj;
     if(
         !!sysMeluNameMap[toName] && 
         (
-            !hasSysMenuConfigMap[toName] && !hasSysMenuConfigMap[toPath]
+            !hasSysMenuConfigObj[toName] && !hasSysMenuConfigObj[toPath]
         )
     ){
         next(`/401?fullPath=${toFullPath}`); // 没权限的跳转到401

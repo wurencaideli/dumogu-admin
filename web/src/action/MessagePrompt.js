@@ -23,3 +23,6 @@ export function alert(...params){
 export function confirm(...params){
     return ElMessageBox.confirm(...params);
 };
+export function prompt(...params){
+    return ElMessageBox.prompt(...params);
+};
