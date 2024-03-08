@@ -38,6 +38,14 @@
     </div>
     <div class="right">
         <a
+            href="https://gitee.com/wuzhanggui/dumogu-admin"
+            target="_blank"
+            class="bt">
+            <SvgIcon
+                :style="'width:22px;height:22px;'"
+                name="img:gitee.svg"></SvgIcon>
+        </a>
+        <a
             href="https://github.com/wurencaideli/dumogu-admin"
             target="_blank"
             class="bt">
