@@ -3,16 +3,16 @@
  */
 
 /** 进度条颜色 */
-#nprogress{
+#nprogress {
     position: relative;
     z-index: 99999;
     .bar {
         height: 5px !important;
     }
 }
-#app{
+#app {
     width: 100vw;
-    height: 100vh;   
+    height: 100vh;
     overflow: hidden;
 }
 /**
@@ -27,18 +27,18 @@
     box-sizing: border-box;
     overflow: auto;
     /** 查询体 */
-    >.page-query-box{
+    > .page-query-box {
         height: fit-content;
         border-radius: 5px;
         background-color: white;
         box-sizing: border-box;
-        .el-form--inline .el-form-item{
+        .el-form--inline .el-form-item {
             width: 100%;
         }
     }
     /** 内容体 */
-    >.page-content-box{
-        flex:1 0 0;
+    > .page-content-box {
+        flex: 1 0 0;
         height: 0;
         border-radius: 5px;
         overflow: hidden;
