@@ -13,12 +13,21 @@ import {
     watch,
 } from 'vue';
 import svg404 from '@/assets/img-list/404.svg';
+import { useRoute, useRouter } from 'vue-router';
 
 export default defineComponent({
     setup() {
+        const route = useRoute();
         const dataContainer = reactive({
             svg404: svg404,
+            path: '',
         });
+        /** 初始化 */
+        function initData() {
+            let params = route.query || {};
+            dataContainer.path = params.fullPath || params.path || '';
+        }
+        initData();
         return {
             dataContainer,
         };
@@ -32,6 +41,7 @@ export default defineComponent({
             <img :src="dataContainer.svg404" />
             <div class="right">
                 <div class="title">404错误!没找到该页面</div>
+                <div class="content">所访问地址：{{ dataContainer.path }}</div>
                 <div class="content">
                     对不起，您正在寻找的页面不存在。尝试检查URL的错误，然后按浏览器上的刷新按钮或尝试在我们的应用程序中找到其他内容。
                 </div>

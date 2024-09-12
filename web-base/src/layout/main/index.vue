@@ -21,7 +21,6 @@ import { useRouter, useRoute } from 'vue-router';
 import { userDataStore } from '@/store/user';
 import img_1 from '@/assets/logo.png';
 import keepAliveRouter from '@/components/keepAliveRouter.vue';
-import mainHead from './components/mainHead.vue';
 import DefinScrollbar from '@/components/definScrollbar.vue';
 import searchContainer from './components/searchContainer.vue';
 
@@ -29,10 +28,9 @@ export default defineComponent({
     name: 'MainLayout',
     components: {
         Menu,
-        Navbar,
         TagList,
         keepAliveRouter,
-        mainHead,
+        Navbar,
         DefinScrollbar,
         searchContainer,
     },
@@ -91,7 +89,7 @@ export default defineComponent({
 <template>
     <div class="main-layout">
         <div class="left">
-            <mainHead></mainHead>
+            <Navbar></Navbar>
         </div>
         <div class="centre">
             <div class="logo">

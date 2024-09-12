@@ -108,17 +108,49 @@ export const constantRoutes = [
                     redirectName: 'main-redirect', // 重定向的目标
                 },
             },
+            {
+                path: 'mine/info',
+                component: () => import('@/views/system/mine/index.vue'),
+                name: 'main-mine-info',
+                meta: {
+                    layoutName: 'main',
+                    isMenu: true,
+                    redirectName: 'main-redirect', // 重定向的目标
+                },
+            },
+            {
+                path: 'mine/info-update',
+                component: () => import('@/views/system/mine/update.vue'),
+                name: 'main-mine-info-update',
+                meta: {
+                    layoutName: 'main',
+                    isMenu: true,
+                    redirectName: 'main-redirect', // 重定向的目标
+                },
+            },
+            {
+                path: 'mine/info-password',
+                component: () => import('@/views/system/mine/password.vue'),
+                name: 'main-mine-info-password',
+                meta: {
+                    layoutName: 'main',
+                    isMenu: true,
+                    redirectName: 'main-redirect', // 重定向的目标
+                },
+            },
         ],
     },
     /** 404页面 */
     {
-        path: '/:pathMatch(.*)*',
+        path: '/404',
         component: () => import('@/views/system/error/404.vue'),
+        name: '404',
     },
     /** 401页面 */
     {
         path: '/401',
         component: () => import('@/views/system/error/401.vue'),
+        name: '401',
     },
 ];
 

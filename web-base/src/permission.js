@@ -26,6 +26,9 @@ const whiteList_1 = [
     'main-redirect',
     'main-401',
     'main-404',
+    'main-mine-info',
+    'main-mine-info-update',
+    'main-mine-info-password',
 ];
 
 router.beforeEach(async (to, from, next) => {
@@ -61,8 +64,8 @@ router.beforeEach(async (to, from, next) => {
     /**
      * 系统中没定义该目录则转到 404 页面
      */
-    if (!!sysMeluNameMap[toName] && !!sysMeluPathMap[toPath]) {
-        next('/404');
+    if (!sysMeluNameMap[toName] && !sysMeluPathMap[toPath]) {
+        next(`/404?fullPath=${toFullPath}`);
         return;
     }
     /**

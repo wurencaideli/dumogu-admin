@@ -43,13 +43,11 @@ export default defineComponent({
          */
         function initData() {
             let params = route.params;
-            let query = route.query;
             if (!params.sign) return;
-            if (!query.src) return;
             let iframeList = deepCopyObj(dataContainer.iframeList);
             dataContainer.iframe = {
                 path: route.path,
-                src: decodeURIComponent(query.src),
+                src: decodeURIComponent(params.sign),
                 key: getNanoid(), //唯一标识，防止刷新时vue重新利用
             };
             iframeList.push(dataContainer.iframe);

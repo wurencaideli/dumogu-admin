@@ -1,384 +1,327 @@
 <script>
-/*
- * 头部组件
- * 提供类名供外部调整
+/**
+ * navbar组件
  */
 import {
-    defineComponent,
     ref,
+    defineComponent,
+    h,
     reactive,
-    computed,
-    onMounted,
     watch,
     toRef,
+    computed,
+    onMounted,
     onUnmounted,
+    onBeforeUnmount,
 } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import SvgIcon from '@/components/svgIcon/index.vue';
-import { logout } from '@/action/FormatUserData';
-import { confirm } from '@/action/messagePrompt';
-import img_1 from '@/assets/logo.png';
-import { toggleFullScreen } from '@/common/otherTools';
+import userAvatar from '@/components/userAvatar.vue';
+import { userDataStore } from '@/store/user';
 
-export default {
+export default defineComponent({
     name: 'Navbar',
     components: {
         SvgIcon,
+        userAvatar,
     },
-    props: {
-        breadcrumbList: {
-            type: Array,
-            default: () => {
-                return [];
-            },
-        },
-        userInfo: {
-            type: Object,
-            default: () => {
-                return {};
-            },
-        },
-        showLogo: {
-            type: Boolean,
-            default: true,
-        },
-    },
-    emits: ['switchShowLogo'],
+    props: {},
     setup(props, { emit }) {
+        let userData = userDataStore();
         const router = useRouter();
-        const RightOptionRef = ref(null);
+        const route = useRoute();
+        const SetupRef = ref(null);
         const dataContainer = reactive({
-            breadcrumbList: toRef(props, 'breadcrumbList'),
-            userInfo: toRef(props, 'userInfo'),
-            showLogo: toRef(props, 'showLogo'),
-            show_1: false,
-            img: {
-                img_1,
-            },
+            loading: false,
+            userInfo: toRef(userData, 'userInfo'),
+            show: false,
         });
-        /** 跳转去相应页面 */
-        function toPath(params) {
-            router.push(params);
+        function initHiddenEvent(event) {
+            const e = event || window.event;
+            if (!SetupRef.value) return;
+            if (SetupRef.value.contains(e.target)) return; //如果点击事件在组件上不做处理
+            dataContainer.show = false;
+        }
+        document.addEventListener('click', initHiddenEvent);
+        onBeforeUnmount(() => {
+            document.addEventListener('click', initHiddenEvent);
+        });
+        /** 跳转页面 */
+        function toPath(path) {
+            router.push(path);
         }
         /** 退出登录 */
-        function onLogout() {
-            confirm('是否确认退出登录', '提示')
+        function handleLogout() {
+            ElMessageBox.confirm('退出登录？', '确定退出？', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning',
+                showClose: false,
+            })
                 .then(() => {
-                    toPath('/login');
-                    /** 跳转成功后注销用户 */
-                    let myAfterEach = router.afterEach(() => {
-                        logout();
-                        /** 注销此函数 */
-                        myAfterEach();
-                        myAfterEach = null;
-                    });
+                    if (dataContainer.loading) return;
+                    dataContainer.loading = true;
+                    userApi
+                        .logout()
+                        .then(() => {
+                            ElMessage({
+                                type: 'success',
+                                message: '已经成功退出！',
+                            });
+                        })
+                        .catch((res) => {
+                            ElMessage.error('退出失败：' + res.msg);
+                        })
+                        .finally(() => {
+                            userDataStore.setToken('');
+                            userDataStore.setUserInfo({});
+                            router.push('/login');
+                            dataContainer.loading = false;
+                        });
                 })
-                .catch(() => {
-                    return;
-                });
+                .catch(() => {});
         }
-        /** 初始化隐藏事件 */
-        function initHiddenEvent_1() {
-            function callbackFn(e) {
-                if (!RightOptionRef.value) return;
-                if (!e || !e.target) return;
-                if (RightOptionRef.value.contains(e.target)) return;
-                dataContainer.show_1 = false;
-            }
-            document.addEventListener('click', callbackFn);
-            onUnmounted(() => {
-                document.removeEventListener('click', callbackFn);
-            });
-        }
-        initHiddenEvent_1();
-        /** 切换显示状态 */
-        function switchShowLogo() {
-            emit('switchShowLogo');
-        }
-        /** 添加打开新标签页的操作 */
-        function addNewPage() {
-            toPath('/main/new-tag-page/search-new-page');
-        }
-        /** 添加键盘按下事件监听器 */
-        function callBack_1(event) {
-            // 检查是否按下了"Alt + S"组合键
-            if (event.altKey && event.key && event.key.toLowerCase() === 's') {
-                addNewPage();
-            }
-        }
-        document.addEventListener('keydown', callBack_1);
-        onUnmounted(() => {
-            document.removeEventListener('keydown', callBack_1);
-        });
         return {
             dataContainer,
             toPath,
-            toggleFullScreen,
-            onLogout,
-            RightOptionRef,
-            switchShowLogo,
-            addNewPage,
+            SetupRef,
+            handleLogout,
         };
     },
-};
+});
 </script>
 
 <template>
-    <div class="navbar-cp-container">
-        <div class="left">
-            <div class="hidden-bt">
+    <div class="navbar-cp">
+        <div class="top">
+            <div class="user-container">
+                <div @click="toPath('/main/mine/info2')" class="user">
+                    <userAvatar :userInfo="dataContainer.userInfo"></userAvatar>
+                </div>
+                <div class="name">
+                    <SvgIcon
+                        :style="'width: 20px;min-width:20px;height: 20px;'"
+                        :name="'svg:user-fill.svg'"
+                    ></SvgIcon>
+                    <span>
+                        {{ dataContainer.userInfo.userName }}
+                    </span>
+                </div>
+            </div>
+            <div ref="SetupRef" class="setup">
                 <SvgIcon
-                    @click="switchShowLogo"
-                    :style="'width:20px;height:20px;'"
-                    :name="dataContainer.showLogo ? 'svg:outdent.svg' : 'svg:indent.svg'"
+                    :style="'width: 22px;min-width:22px;height: 22px;cursor: pointer;'"
+                    :name="'svg:cog-fill.svg'"
+                    @click="dataContainer.show = !dataContainer.show"
                 ></SvgIcon>
+                <div
+                    :class="{
+                        'bt-list': true,
+                        show: dataContainer.show,
+                    }"
+                >
+                    <div class="item">
+                        <SvgIcon
+                            :style="'width: 15px;min-width:15px;height: 15px;margin-right:10px;'"
+                            :name="'svg:user-fill.svg'"
+                        ></SvgIcon>
+                        修改用户基本信息
+                    </div>
+                    <div class="item">
+                        <SvgIcon
+                            :style="'width: 15px;min-width:15px;height: 15px;margin-right:10px;'"
+                            :name="'svg:cat-code.svg'"
+                        ></SvgIcon>
+                        修改用户密码
+                    </div>
+                    <div class="item logout">
+                        <SvgIcon
+                            :style="'width: 15px;min-width:15px;height: 15px;margin-right:10px;'"
+                            :name="'svg:poweroff.svg'"
+                        ></SvgIcon>
+                        退出登录
+                    </div>
+                </div>
             </div>
-            <div class="path-list-container">
-                <el-breadcrumb separator="">
-                    <!-- <el-breadcrumb-item :to="{ path: '/main/index' }"> 首页 </el-breadcrumb-item> -->
-                    <el-breadcrumb-item
-                        v-for="(item, index) in dataContainer.breadcrumbList"
-                        :key="`${index}--${item.path}`"
-                        :to="
-                            item.path
-                                ? {
-                                      path: item.path,
-                                  }
-                                : ''
-                        "
-                        :class="{
-                            'has-path': !!item.path,
-                        }"
-                    >
-                        <a v-if="item.isLink" :href="item.path" class="item" target="_blank">
-                            {{ item.title }}
-                        </a>
-                        <span v-else class="item">
-                            {{ item.title }}
-                        </span>
-                    </el-breadcrumb-item>
-                </el-breadcrumb>
-            </div>
-        </div>
-        <div class="right">
             <a href="https://gitee.com/wuzhanggui/dumogu-admin" target="_blank" class="bt">
-                <SvgIcon :style="'width:25px;height:25px;'" name="img:gitee.svg"></SvgIcon>
+                <SvgIcon :style="'width:22px;height:22px;'" name="img:gitee.svg"></SvgIcon>
             </a>
             <a href="https://github.com/wurencaideli/dumogu-admin" target="_blank" class="bt">
-                <SvgIcon :style="'width:25px;height:25px;'" name="svg:git-hub.svg"></SvgIcon>
+                <SvgIcon :style="'width:22px;height:22px;'" name="svg:git-hub.svg"></SvgIcon>
             </a>
             <a href="https://txc.qq.com/products/613546" target="_blank" class="bt">
-                <SvgIcon :style="'width:25px;height:25px;'" name="svg:fankui.svg"></SvgIcon>
+                <SvgIcon :style="'width:22px;height:22px;'" name="svg:fankui.svg"></SvgIcon>
                 <div class="number">
                     <div class="container">12</div>
                 </div>
             </a>
-            <!-- <div
-            class="bt">
-            <SvgIcon
-                :style="'width:25px;height:25px;'"
-                name="commentlines-fill.svg"></SvgIcon>
-        </div> -->
-            <div @click="toggleFullScreen" class="bt">
-                <SvgIcon :style="'width:25px;height:25px;'" name="svg:Navbar-full.svg"></SvgIcon>
-            </div>
-            <el-dropdown
-                trigger="click"
-                :popper-options="{
-                    modifiers: [
-                        {
-                            name: 'offset',
-                            options: {
-                                offset: [0, 0],
-                            },
-                        },
-                    ],
-                }"
-            >
-                <div class="user-container">
-                    <el-image class="img" :src="dataContainer.userInfo.avatar" fit="cover" />
-                    <div class="name">
-                        {{ dataContainer.userInfo.nickName }}
-                        <div class="other">
-                            {{ dataContainer.userInfo.userName }}
-                        </div>
-                    </div>
-                    <div class="option">
-                        <SvgIcon
-                            :style="'width:15px;height:15px;'"
-                            name="svg:sort-down.svg"
-                        ></SvgIcon>
-                    </div>
-                </div>
-                <template #dropdown>
-                    <el-dropdown-menu>
-                        <el-dropdown-item>
-                            <div class="item">
-                                <router-link to="/main/mine/info">
-                                    <SvgIcon
-                                        :style="'width:16px;height:16px;'"
-                                        name="svg:user-fill.svg"
-                                    ></SvgIcon>
-                                    个人中心，修改头像
-                                </router-link>
-                            </div>
-                        </el-dropdown-item>
-                        <el-dropdown-item>
-                            <div class="item">
-                                <router-link to="/main/mine/info-password">
-                                    <SvgIcon
-                                        :style="'width:16px;height:16px;'"
-                                        name="svg:supervise.svg"
-                                    ></SvgIcon>
-                                    密码修改
-                                </router-link>
-                            </div>
-                        </el-dropdown-item>
-                        <el-dropdown-item>
-                            <div class="item logout-bt" @click.stop="onLogout">
-                                <SvgIcon
-                                    :style="'width:16px;height:16px;color:#f56c6c;margin-right:10px;'"
-                                    name="svg:poweroff.svg"
-                                ></SvgIcon>
-                                退出登录
-                            </div>
-                        </el-dropdown-item>
-                    </el-dropdown-menu>
-                </template>
-            </el-dropdown>
         </div>
-        <div class="search-container">
-            <div @click="addNewPage" class="container">
-                <div class="left">
-                    <SvgIcon
-                        :style="'width:17px;height:17px;margin-right:10px;'"
-                        name="svg:search-bt.svg"
-                    ></SvgIcon>
-                    搜索目录
-                </div>
-                <div class="right">Alt S</div>
-            </div>
+        <div class="bottom">
+            <router-link to="/" class="index">
+                <SvgIcon
+                    :style="'width: 15px;min-width:15px;height: 15px;margin-right:5px;'"
+                    :name="'svg:arrow-left.svg'"
+                ></SvgIcon>
+                首页
+            </router-link>
         </div>
     </div>
 </template>
 
 <style scoped lang="scss">
-.navbar-cp-container {
-    height: 100%;
-    width: 100%;
-    box-sizing: border-box;
+.navbar-cp {
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+    flex-direction: column;
     align-items: center;
-    color: var(--text-color-1);
-    position: relative;
-    --item-gap: 15px;
-    @media (max-width: 1100px) {
-        > .left {
-            > .path-list-container {
-                display: none !important;
-            }
-        }
-    }
-    @media (max-width: 750px) {
-        > .left {
-            > .path-list-container {
-                display: none !important;
-            }
-        }
-        > .search-container {
-            display: none !important;
-        }
-    }
-    > .left {
-        flex: 1 1 0;
-        width: 0;
-        height: 100%;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: flex-start;
-        > .hidden-bt {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: flex-start;
-            margin-left: var(--item-gap);
-            > * {
-                cursor: pointer;
-                transition: all 0.2s;
-                &:hover {
-                    color: var(--text-color);
-                }
-            }
-        }
-        > .path-list-container {
-            flex: 1 1 0;
-            width: 0;
-            padding: 0 var(--item-gap);
-            box-sizing: border-box;
-            mask-image: linear-gradient(90deg, #000 0%, #000 calc(100% - 50px), transparent);
-            :deep(.el-breadcrumb) {
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                flex-wrap: nowrap;
-                width: max-content;
-                .el-breadcrumb__separator {
-                    display: none;
-                }
-                .el-breadcrumb__item {
-                    background-color: #000000;
-                    padding: 7px 15px;
-                    font-size: 12px;
-                    display: block;
-                    --el-text-color-regular: var(--text-color);
-                    clip-path: polygon(
-                        0 0,
-                        calc(100% - 8px) 0,
-                        100% 50%,
-                        calc(100% - 8px) 100%,
-                        0 100%,
-                        8px 50%
-                    );
-                    &:first-child {
-                        clip-path: polygon(
-                            0 0,
-                            calc(100% - 8px) 0,
-                            100% 50%,
-                            calc(100% - 8px) 100%,
-                            0 100%
-                        ) !important;
-                        border-radius: 5px 0px 0 5px !important;
-                    }
-                    &:last-child {
-                        background-color: #505050 !important;
-                        clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 8px 50%);
-                        border-radius: 0 5px 5px 0;
-                    }
-                    &.has-path {
-                        background-color: #505050;
-                    }
-                }
-            }
-        }
-    }
-    > .right {
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-end;
-        align-items: center;
-        padding: 0px var(--item-gap) 0 0;
+    justify-content: space-between;
+    height: 100%;
+    --text-color: #94abbe;
+    > .top {
         box-sizing: border-box;
-        position: relative;
+        padding: 10px 10px;
         height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        color: var(--text-color);
         > * {
-            margin-left: var(--item-gap);
+            margin-bottom: 30px;
+        }
+        > .user-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            > .user {
+                height: 50px;
+                width: 50px;
+                border-radius: 50%;
+                border: 2px solid var(--text-color);
+                box-sizing: border-box;
+                background-color: #1f364d;
+                cursor: pointer;
+                box-shadow: var(--bt-box-shadow-1);
+                margin-bottom: 15px;
+                position: relative;
+                > .role {
+                    position: absolute;
+                    right: -15px;
+                    bottom: -15px;
+                    transform: scale(0.5);
+                    font-size: 12px;
+                    background-color: rgb(0 90 180);
+                    color: rgb(215, 215, 215);
+                    border: 1px solid;
+                    border-color: rgb(0 127 255);
+                    border-radius: 999px;
+                    padding: 5px 10px;
+                    width: max-content;
+                    box-shadow: var(--bt-box-shadow-1);
+                }
+            }
+            > .name {
+                font-size: 13px;
+                font-weight: bold;
+                width: fit-content;
+                // color: rgb(215, 215, 215);
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                > * {
+                    margin-bottom: 5px;
+                }
+                span {
+                    writing-mode: vertical-rl;
+                    margin: 0;
+                    font-size: 16px;
+                    font-weight: bold;
+                    text-shadow: 1px 3px 0px #000;
+                }
+            }
+        }
+        > .search {
+            width: fit-content;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        > .setup {
+            width: fit-content;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            > .bt-list {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 0;
+                left: calc(100% + 5px);
+                width: max-content;
+                z-index: 9;
+                background-color: #1f1f23;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4), 0 0px 4px rgba(0, 0, 0, 0.4);
+                padding: 20px 0;
+                box-sizing: border-box;
+                border-radius: 12px;
+                border: 1px solid #ffffff12;
+                overflow: hidden;
+                opacity: 0;
+                pointer-events: none;
+                transition: all 0.2s;
+                transform: scale(0);
+                &.show {
+                    opacity: 1;
+                    pointer-events: initial;
+                    transform: scale(1);
+                }
+                > .item {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: flex-start;
+                    align-items: center;
+                    padding: 15px 10px;
+                    box-sizing: border-box;
+                    font-size: 13px;
+                    font-weight: bold;
+                    cursor: pointer;
+                    transition: all 0.2s;
+                    color: rgb(206, 206, 206);
+                    border-bottom: 1px solid #ffffff12;
+                    border-left: none;
+                    border-right: none;
+                    &:hover {
+                        background-color: rgba(145, 145, 162, 0.17);
+                        color: #007fff;
+                    }
+                    &:first-child {
+                        border-top: 1px solid #ffffff12;
+                    }
+                    &.logout {
+                        color: #c95050;
+                    }
+                }
+            }
+        }
+        > .login {
+            width: calc(100% - 10px);
+            padding: 0 5px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: bold;
+            box-sizing: content-box;
+            border: 2px solid #2c4967;
+            color: #9cb3c9;
+            border-radius: 999px;
+            box-shadow: var(--bt-box-shadow-1);
+            > * {
+                font-size: 15px;
+                margin-left: 5px;
+            }
         }
         > .bt {
-            width: 35px;
-            height: 35px;
             display: flex;
             flex-direction: row;
             justify-content: center;
@@ -392,15 +335,15 @@ export default {
                 background-color: #000000af;
             }
             > .number {
-                height: 200%;
+                height: fit-content;
                 width: auto;
                 position: absolute;
                 display: flex;
                 flex-direction: row;
                 justify-content: center;
                 align-items: center;
-                bottom: 0;
-                right: -5px;
+                top: -10px;
+                right: -10px;
                 pointer-events: none;
                 > .container {
                     transform: scale(0.8) translateY(3px);
@@ -415,96 +358,15 @@ export default {
                 }
             }
         }
-        :deep(.el-dropdown) {
-            width: auto;
-            height: 100%;
-            .user-container {
-                width: auto;
-                height: 100%;
-                cursor: pointer;
-                border-radius: 0 0 0 0;
-                transition: all 0.2s;
-                position: relative;
-                border: none;
-                box-shadow: none;
-                box-sizing: border-box;
-                display: flex;
-                flex-direction: row;
-                justify-content: center;
-                align-items: center;
-                > .img {
-                    width: 37px;
-                    min-width: 37px;
-                    height: 37px;
-                    border-radius: 50%;
-                    margin-right: 5px;
-                    // border: 2px solid #949494;
-                    box-shadow: #0000002a 2px 2px 5px;
-                }
-                > .name {
-                    font-size: 14px;
-                    font-weight: bold;
-                    margin-right: 5px;
-                    display: flex;
-                    flex-direction: column;
-                    > .other {
-                        font-size: 12px;
-                        opacity: 0.6;
-                        margin-top: 2px;
-                        font-weight: 400;
-                    }
-                }
-                > .option {
-                    width: fit-content;
-                    height: fit-content;
-                    display: flex;
-                    flex-direction: row;
-                    justify-content: center;
-                    align-items: center;
-                }
-            }
-        }
     }
-    > .search-container {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-        pointer-events: none;
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        > .container {
-            width: max(300px, 25vw);
-            height: 35px;
-            background-color: rgba(0, 0, 0, 0.371);
-            transition: all 0.2s;
-            pointer-events: initial;
-            border-radius: 8px;
-            padding: 0 10px;
-            box-sizing: border-box;
-            cursor: pointer;
+    > .bottom {
+        padding: 10px 0;
+        color: var(--text-color);
+        > .index {
+            font-size: 13px;
             display: flex;
-            flex-direction: row;
+            justify-content: center;
             align-items: center;
-            justify-content: space-between;
-            color: #a3a3a3;
-            > .left {
-                height: 100%;
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                font-size: 15px;
-            }
-            > .right {
-                border: 1px solid #777777;
-                padding: 3px 5px;
-                font-size: 12px;
-                border-radius: 5px;
-                font-weight: bold;
-            }
         }
     }
 }

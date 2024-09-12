@@ -50,6 +50,7 @@ export default defineComponent({
             let pathList = cacheList.value || [];
             wrapperMap.forEach((_, key) => {
                 if (pathList.includes(key)) return;
+                if (key == wrapperName) return; //当前新加的不处理
                 wrapperMap.delete(key);
             });
             return h(wrapper);

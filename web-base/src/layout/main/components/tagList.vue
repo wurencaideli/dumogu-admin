@@ -306,7 +306,13 @@ export default {
                 </draggable>
             </el-scrollbar>
         </div>
-        <div class="bt-list">
+        <div class="right">
+            <div class="bt" @click="handleOptionClick('handleToLeft', dataContainer.activeItem)">
+                <SvgIcon :style="'width:15px;height:15px;'" name="svg:arrow-left.svg"></SvgIcon>
+            </div>
+            <div class="bt" @click="handleOptionClick('handleToRight', dataContainer.activeItem)">
+                <SvgIcon :style="'width:15px;height:15px;'" name="svg:arrow-right.svg"></SvgIcon>
+            </div>
             <div
                 class="bt"
                 @click="
@@ -317,74 +323,71 @@ export default {
             >
                 <SvgIcon :style="'width:15px;height:15px;'" name="svg:redo.svg"></SvgIcon>
             </div>
-            <div class="bt" @click="handleOptionClick('handleToLeft', dataContainer.activeItem)">
-                <SvgIcon :style="'width:15px;height:15px;'" name="svg:arrow-left.svg"></SvgIcon>
-            </div>
-            <div class="bt" @click="handleOptionClick('handleToRight', dataContainer.activeItem)">
-                <SvgIcon :style="'width:15px;height:15px;'" name="svg:arrow-right.svg"></SvgIcon>
-            </div>
-        </div>
-        <div ref="RightOptionRef" class="right">
-            <div
-                @click="
-                    () => {
-                        dataContainer.show_1 = !dataContainer.show_1;
-                    }
-                "
-                class="bt"
-            >
-                <SvgIcon :style="'width:20px;height:20px;'" name="svg:gallery-view.svg"></SvgIcon>
-            </div>
-            <div
-                :class="{
-                    'bt-list-container': true,
-                    show: dataContainer.show_1,
-                }"
-            >
-                <div class="item" @click="handleOptionClick('handleRefreshAll')">
-                    <SvgIcon
-                        :style="'width:16px;height:16px;color:#0072E5;'"
-                        name="svg:redo.svg"
-                    ></SvgIcon>
-                    刷新所有标签页
-                </div>
+            <div ref="RightOptionRef" class="bt-container">
                 <div
-                    v-if="dataContainer.tagList.length > 1"
-                    class="item"
-                    @click="handleOptionClick('handleDeleteOtherTags')"
+                    @click="
+                        () => {
+                            dataContainer.show_1 = !dataContainer.show_1;
+                        }
+                    "
+                    class="bt"
                 >
                     <SvgIcon
-                        :style="'width:16px;height:16px;color:#f86464;'"
-                        name="svg:borderverticle-fill.svg"
+                        :style="'width:20px;height:20px;'"
+                        name="svg:gallery-view.svg"
                     ></SvgIcon>
-                    关闭其他标签页
                 </div>
                 <div
-                    v-if="dataContainer.tagList.length > 1"
-                    class="item"
-                    @click="handleOptionClick('handleDeleteLeftTags')"
+                    :class="{
+                        'bt-list-container': true,
+                        show: dataContainer.show_1,
+                    }"
                 >
-                    <SvgIcon
-                        :style="'width:16px;height:16px;color:#f86464;'"
-                        name="svg:arrow-left.svg"
-                    ></SvgIcon>
-                    关闭左边标签页
-                </div>
-                <div
-                    v-if="dataContainer.tagList.length > 1"
-                    class="item"
-                    @click="handleOptionClick('handleDeleteRightTags')"
-                >
-                    <SvgIcon
-                        :style="'width:16px;height:16px;color:#f86464;'"
-                        name="svg:arrow-right.svg"
-                    ></SvgIcon>
-                    关闭右边标签页
+                    <div class="item" @click="handleOptionClick('handleRefreshAll')">
+                        <SvgIcon
+                            :style="'width:16px;height:16px;color:#0072E5;'"
+                            name="svg:redo.svg"
+                        ></SvgIcon>
+                        刷新所有标签页
+                    </div>
+                    <div
+                        v-if="dataContainer.tagList.length > 1"
+                        class="item"
+                        @click="handleOptionClick('handleDeleteOtherTags')"
+                    >
+                        <SvgIcon
+                            :style="'width:16px;height:16px;color:#f86464;'"
+                            name="svg:borderverticle-fill.svg"
+                        ></SvgIcon>
+                        关闭其他标签页
+                    </div>
+                    <div
+                        v-if="dataContainer.tagList.length > 1"
+                        class="item"
+                        @click="handleOptionClick('handleDeleteLeftTags')"
+                    >
+                        <SvgIcon
+                            :style="'width:16px;height:16px;color:#f86464;'"
+                            name="svg:arrow-left.svg"
+                        ></SvgIcon>
+                        关闭左边标签页
+                    </div>
+                    <div
+                        v-if="dataContainer.tagList.length > 1"
+                        class="item"
+                        @click="handleOptionClick('handleDeleteRightTags')"
+                    >
+                        <SvgIcon
+                            :style="'width:16px;height:16px;color:#f86464;'"
+                            name="svg:arrow-right.svg"
+                        ></SvgIcon>
+                        关闭右边标签页
+                    </div>
                 </div>
             </div>
-        </div>
-        <div @click="toggleFullScreen" class="bt">
-            <SvgIcon :style="'width:25px;height:25px;'" name="svg:Navbar-full.svg"></SvgIcon>
+            <div @click="toggleFullScreen" class="bt">
+                <SvgIcon :style="'width:25px;height:25px;'" name="svg:Navbar-full.svg"></SvgIcon>
+            </div>
         </div>
         <div
             :style="{
@@ -477,6 +480,9 @@ export default {
                 position: relative;
                 transition: all 0.2s;
                 opacity: 0.5;
+                &:last-child {
+                    margin: 0;
+                }
                 &.active {
                     background-color: #5340ff;
                     color: var(--text-color-2);
@@ -534,61 +540,56 @@ export default {
             }
         }
     }
-    > .bt-list {
+    > .right {
         display: flex;
         flex-direction: row;
         align-items: center;
         padding: 0 0px 0 0px;
         box-sizing: border-box;
-        // border-left: 1px solid var(--border-color);
         height: 100%;
         > * {
-            margin: 0 var(--item-gap) 0 0;
+            margin: 0 0 0 12px;
             &:first-child {
-                margin-left: var(--item-gap);
-            }
-            &:last-child {
                 margin: 0;
             }
         }
-    }
-    .bt {
-        cursor: pointer;
-        transition: all 0.2s;
-        height: 100%;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-        &:hover {
-            color: #5240ff;
-        }
-    }
-    > .right {
-        padding: 0 var(--item-gap);
-        height: 100%;
-        box-sizing: border-box;
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        position: relative;
-        > .bt {
-            width: 100%;
+        .bt {
+            cursor: pointer;
+            transition: all 0.2s;
             height: 100%;
             display: flex;
             flex-direction: row;
-            justify-content: center;
             align-items: center;
-            cursor: pointer;
-            transition: all 0.2s;
+            justify-content: center;
             &:hover {
                 color: #5240ff;
             }
         }
-        > .bt-list-container {
-            top: calc(100% + 0px);
-            right: var(--item-gap);
+        > .bt-container {
+            height: 100%;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            > .bt {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+                transition: all 0.2s;
+                &:hover {
+                    color: #5240ff;
+                }
+            }
+            > .bt-list-container {
+                top: calc(100% + 0px);
+                right: 0;
+            }
         }
     }
     .bt-list-container {
@@ -619,7 +620,7 @@ export default {
             flex-direction: row;
             justify-content: flex-start;
             align-items: center;
-            padding: 15px 10px;
+            padding: 15px 15px;
             box-sizing: border-box;
             font-size: 13px;
             font-weight: bold;
