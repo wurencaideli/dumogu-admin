@@ -1,0 +1,65 @@
+/**
+ * 公用的css
+ */
+html{
+    font-size: 16px;
+}
+body{
+    width: 100% !important;
+    margin: 0;
+    overflow:auto !important;
+    word-break:break-all;   /* 强行换行 */
+    background-color: var(--bg-color);
+    color: var(--text-color); /* 去除默认的颜色和点击后变化的颜色 */ 
+    /** 解决ios上手机横屏导致的字体大小不一致 */
+    -webkit-text-size-adjust: 100%;
+}
+/** 整个网站不显示滚动条 */
+body{
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+        display: none;
+    }
+    /** 解决后代想要滚动条的问题 */
+    *:not(.need-scrollbar,.need-scrollbar>*){
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    }
+}
+a{
+    text-align: left;
+    text-decoration: none;
+    outline: none;  /* 去除旧版浏览器的点击后的外虚线框 */
+    color: var(--text-color); /* 去除默认的颜色和点击后变化的颜色 */ 
+}
+img{
+    vertical-align: bottom; //阻止图片出现下边距
+}
+::selection {
+    background: #ffe89e;
+}
+*{  //去除移动端点击事件出现的背景框
+    -webkit-tap-highlight-color:transparent;
+}
+[v-cloak]
+{  
+    display: none; 
+}
+input[type=file]::-webkit-file-upload-button { 
+    width: 0;
+    padding: 0;
+    margin: 0;
+    -webkit-appearance: none;
+    border: none;
+}
+h1,h2,h3,h4,h5,h6,p{
+    margin: 0;
+    padding: 0;
+}
+body{
+    -webkit-text-size-adjust: 100%;
+}

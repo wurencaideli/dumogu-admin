@@ -1,0 +1,270 @@
+/**
+ *自定义ui库样式
+ * 主要是elementui的默认样式的修改
+ */
+
+:root{
+    --el-color-primary-rgb:83, 64, 255 !important;
+    --el-color-primary:#5240ff !important;
+    --el-color-primary-light-1:rgba(83, 64, 255, 0.9) !important;
+    --el-color-primary-light-2:rgba(83, 64, 255, 0.8) !important;
+    --el-color-primary-light-3:rgba(83, 64, 255, 0.7) !important;
+    --el-color-primary-light-4:rgba(83, 64, 255, 0.6) !important;
+    --el-color-primary-light-5:rgba(83, 64, 255, 0.5) !important;
+    --el-color-primary-light-6:rgba(83, 64, 255, 0.4) !important;
+    --el-color-primary-light-7:rgba(83, 64, 255, 0.3) !important;
+    --el-color-primary-light-8:rgba(83, 64, 255, 0.2) !important;
+    --el-color-primary-light-9:rgba(83, 64, 255, 0.1) !important;
+    --el-color-primary-dark-2:#4839ce !important;
+}
+.el-button{
+    line-height: 1.3 !important;
+    >span{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+    }
+}
+.el-row{
+    .el-form-item{
+        width: 100%;
+        margin: 0 0 15px 0 !important;
+    }
+}
+.el-button{
+    // border: none !important;
+}
+.el-button+.el-button{
+    margin-left: 10px !important;
+}
+.el-popup-parent--hidden{  //防止对话框向左边的边距
+    padding-right: 0px !important;
+}
+.el-dialog{
+    border-radius: 5px !important;
+    overflow: hidden;
+    box-shadow: 2px 2px 4px rgba(0,0,0,.6) !important;
+    .el-dialog__header{
+        font-size: 20px;
+        font-weight: bold;
+        margin: 0 !important;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #f1f1f1;
+        height: 55px;
+        padding: 0 15px !important;
+        box-sizing: border-box;
+        border-bottom: var(--my-border-width-1) solid var(--my-border-color);
+        .el-dialog__title{
+            color: var(--text-color);
+        }
+        .el-dialog__headerbtn{
+            font-size: 30px;
+            position: initial;
+            height: fit-content;
+            width: fit-content;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            &:hover,&:focus{
+                .el-icon{
+                    color: rgb(211, 47, 47);
+                }
+            }
+        }
+    }
+    .el-dialog__body{
+        padding: 0px !important;
+        box-sizing: border-box;
+    }
+    .el-dialog__footer{
+        padding: 15px 15px 15px 15px;
+        border-top: var(--my-border-width-1) solid var(--my-border-color);
+    }
+}
+.el-message-box{
+    padding: 0 !important;
+    box-shadow: 2px 2px 4px rgba(0,0,0,.6) !important;
+    .el-message-box__header{
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        padding: 15px !important;
+        .el-message-box__title{
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--text-color);
+        }
+        .el-message-box__headerbtn{
+            font-size: 30px;
+            position: static !important;
+            display: flex !important;
+            justify-content: flex-end !important;
+            align-items: center !important;
+            &:hover,&:focus{
+                .el-icon{
+                    color: rgb(211, 47, 47);
+                }
+            }
+        }
+    }
+    .el-message-box__btns{
+        padding: 15px !important;
+        .el-button{
+            border: none;
+            &.el-button--primary{
+                background-color: rgb(25, 118, 210);
+                box-shadow: 0 3px 3px -2px #00000033, 0 3px 4px 0 #00000024, 0 1px 8px 0 #0000001f;
+            }
+        }
+    }
+}
+.el-overlay-message-box{
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+}
+.el-scrollbar{
+    .el-scrollbar__bar{
+        border-radius: 2px !important;
+        &.is-vertical{
+            width: 8px !important;
+        }
+        &.is-horizontal{
+            height: 8px !important;
+        }
+        .el-scrollbar__thumb{
+            background-color: rgba(0, 0, 0, 0.51) !important;
+            opacity: 1 !important;
+        }
+    }
+}
+.el-drawer{
+    top: 15px !important;
+    right: 15px !important;
+    height: calc(100% - 15px - 15px) !important;
+    border-radius: 7px !important;
+    overflow: hidden !important;
+    box-shadow: 2px 2px 4px rgba(0,0,0,.6) !important;
+    .el-drawer__header{
+        padding: 13px 15px !important;
+        box-sizing: border-box !important;
+        margin: 0 !important;
+        background-color: #0000000c !important;
+        border-bottom: var(--my-border-width-1) solid var(--my-border-color) !important;
+        .el-drawer__title{
+            font-size: 18px !important;
+            font-weight: bold !important;
+            color: var(--text-color) !important;
+        }
+        .el-drawer__close-btn{
+            padding: 0 !important;
+            font-size: 30px;
+            &:hover,&:focus{
+                .el-icon{
+                    color: rgb(211, 47, 47);
+                }
+            }
+        }
+    }
+    .el-drawer__body{
+        padding: 0 !important;
+        overflow: hidden !important;
+    }
+}
+.el-empty{
+    opacity: 0.5;
+    .el-empty__description{
+        p{
+            font-size: 16px;
+            font-style: italic;
+            color: #1f2f3d;
+            letter-spacing: 2px;
+        }
+    }
+}
+.el-image{
+    .el-image__wrapper{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 14px;
+        opacity: 0.8;
+    }
+    img{
+        display: block !important;
+    }
+}
+.el-table {
+    --el-table-header-text-color:rgb(44, 44, 44) !important;
+    --el-text-color-regular:rgb(49, 49, 49) !important;
+    .cell{
+        line-height: 1.3 !important;
+    }
+    .el-button{
+        &.is-text{
+            padding: 0 !important;
+        }
+    }
+}
+.el-overlay{
+    background-color:rgba(0, 0, 0, 0.66) !important;
+}
+.el-input-number{
+    &.is-disabled{
+        .el-input-number__increase,.el-input-number__decrease{
+            color: #9f9f9f !important;
+        }
+    }
+}
+.el-dropdown{
+    &:focus-visible{
+        border: none !important;
+        outline:none !important;
+    }
+}
+.el-dropdown__popper{
+    border-radius: 12px !important;
+    border: 1px solid #393939 !important;
+    overflow: hidden;
+    .el-dropdown-menu{
+        padding: 15px 0 !important;
+        background-color: #151515 !important;
+        .el-dropdown-menu__item{
+            padding: 0 !important;
+            > .item {
+                width: 100%;
+                min-width: max-content;
+                transition: all 0.2s;
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                padding: 15px 15px;
+                box-sizing: border-box;
+                color: #aaacb0;
+                font-size: 14px;
+                min-width: 150px;
+                border-bottom: 1px solid #393939;
+                &:hover {
+                  background-color: rgb(0, 0, 0);
+                }
+                a {
+                  color: inherit;
+                  display: flex;
+                  align-items: center;
+                  justify-content: flex-start;
+                  > * {
+                    margin: 0 10px 0 0;
+                  }
+                }
+              }
+              &:first-child {
+                .item{
+                    border-top: 1px solid #393939;
+                }
+            }
+        }
+    }
+}

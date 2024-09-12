@@ -1,0 +1,78 @@
+/**
+ * 公用的css样式
+ */
+
+/** 自定义类名 */
+.title-after{
+    position: relative;
+    z-index: 1;
+    &::after{
+        position: absolute;
+        content: " ";
+        width: 75%;
+        display: block;
+        border: none;
+        height: 10px;
+        background-color: #228ae6;
+        left: 0;
+        bottom: -4px;
+        z-index: -1;
+        border-radius:3px;
+    }
+}
+.box-container{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: fit-content;
+    padding: 0 15px;
+    box-sizing: border-box;
+    >.container{
+        max-width: var(--container-width,940px);
+        width: 100%;
+    }
+}
+/** 进度条颜色 */
+#nprogress{
+    position: relative;
+    z-index: 99999;
+    .bar {
+        height: 5px !important;
+    }
+} 
+/**
+ * 页面容器的css 类名
+ * 以查询，内容上下排列
+ */
+.page-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: var(--page-gap);
+    box-sizing: border-box;
+    overflow: auto;
+    /** 查询体 */
+    >.page-query-box{
+        height: fit-content;
+        border-radius: 5px;
+        background-color: white;
+        box-sizing: border-box;
+        .el-form--inline .el-form-item{
+            width: 100%;
+        }
+    }
+    /** 内容体 */
+    >.page-content-box{
+        flex:1 0 0;
+        height: 0;
+        border-radius: 5px;
+        overflow: hidden;
+        background-color: white;
+    }
+}
+#app{
+    width: 100vw;
+    height: 100vh;   
+    overflow: hidden;
+}
