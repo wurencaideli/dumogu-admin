@@ -64,10 +64,10 @@ export default defineComponent({
 
 <template>
     <router-view v-slot="{ Component, route }">
-        <transition name="el-fade-in">
-            <keep-alive :include="cacheList">
-                <component :is="formatComponentInstance(Component, route)" />
-            </keep-alive>
-        </transition>
+        <!-- <transition name="el-fade-in"> -->
+        <keep-alive :include="cacheList">
+            <component :is="formatComponentInstance(Component, route)" />
+        </keep-alive>
+        <!-- </transition> -->
     </router-view>
 </template>

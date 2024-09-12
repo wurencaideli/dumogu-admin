@@ -19,7 +19,7 @@ import SvgIcon from '@/components/svgIcon/index.vue';
  * https://www.npmjs.com/package/vuedraggable/v/4.1.0
  *  */
 import draggable from 'vuedraggable';
-import { isPc } from '@/common/otherTools';
+import { deepCopyObj, isPc } from '@/common/otherTools';
 import generateTagListTools from '@/action/tagListTools';
 import { userDataStore } from '@/store/user';
 import { useRouter, useRoute } from 'vue-router';
@@ -174,7 +174,7 @@ export default {
         /** 操作事件 */
         function handleOptionClick(type, tagParams) {
             let tagTools = generateTagListTools(dataContainer.layoutName);
-            tagParams = tagParams || {};
+            tagParams = deepCopyObj(tagParams || {});
             let tag, path;
             switch (true) {
                 /** 跳转去右边标签 */
@@ -607,7 +607,7 @@ export default {
         overflow: hidden;
         opacity: 0;
         pointer-events: none;
-        transition: all 0.2s;
+        transition: transform 0.2s;
         transform: scale(0);
         &.show {
             opacity: 1;

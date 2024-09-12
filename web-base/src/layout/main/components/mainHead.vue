@@ -111,7 +111,7 @@ export default defineComponent({
             </div>
             <div ref="SetupRef" class="setup">
                 <SvgIcon
-                    :style="'width: 20px;min-width:20px;height: 20px;cursor: pointer;'"
+                    :style="'width: 22px;min-width:22px;height: 22px;cursor: pointer;'"
                     :name="'svg:cog-fill.svg'"
                     @click="dataContainer.show = !dataContainer.show"
                 ></SvgIcon>
@@ -145,13 +145,13 @@ export default defineComponent({
                 </div>
             </div>
             <a href="https://gitee.com/wuzhanggui/dumogu-admin" target="_blank" class="bt">
-                <SvgIcon :style="'width:25px;height:25px;'" name="img:gitee.svg"></SvgIcon>
+                <SvgIcon :style="'width:22px;height:22px;'" name="img:gitee.svg"></SvgIcon>
             </a>
             <a href="https://github.com/wurencaideli/dumogu-admin" target="_blank" class="bt">
-                <SvgIcon :style="'width:25px;height:25px;'" name="svg:git-hub.svg"></SvgIcon>
+                <SvgIcon :style="'width:22px;height:22px;'" name="svg:git-hub.svg"></SvgIcon>
             </a>
             <a href="https://txc.qq.com/products/613546" target="_blank" class="bt">
-                <SvgIcon :style="'width:25px;height:25px;'" name="svg:fankui.svg"></SvgIcon>
+                <SvgIcon :style="'width:22px;height:22px;'" name="svg:fankui.svg"></SvgIcon>
                 <div class="number">
                     <div class="container">12</div>
                 </div>
@@ -323,8 +323,6 @@ export default defineComponent({
             }
         }
         > .bt {
-            width: 35px;
-            height: 35px;
             display: flex;
             flex-direction: row;
             justify-content: center;
