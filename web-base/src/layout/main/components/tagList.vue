@@ -472,7 +472,8 @@ export default {
                 padding: 5px 8px;
                 box-sizing: border-box;
                 margin: 0 10px 0 0;
-                font-size: 13px;
+                font-size: 12px;
+                font-weight: bold;
                 height: 30px;
                 width: max-content;
                 border-radius: 5px;
@@ -480,6 +481,7 @@ export default {
                 position: relative;
                 transition: all 0.2s;
                 opacity: 0.5;
+                box-shadow: var(--box-shadow-2);
                 &:last-child {
                     margin: 0;
                 }
@@ -529,6 +531,7 @@ export default {
             }
             .add-bt {
                 width: 30px;
+                height: 30px;
                 background-color: rgb(0, 0, 0);
                 border-radius: 50%;
                 padding: 0;
@@ -562,7 +565,8 @@ export default {
             align-items: center;
             justify-content: center;
             &:hover {
-                color: #5240ff;
+                color: #ffffff;
+                transform: scale(1.2);
             }
         }
         > .bt-container {
@@ -583,7 +587,8 @@ export default {
                 cursor: pointer;
                 transition: all 0.2s;
                 &:hover {
-                    color: #5240ff;
+                    color: #ffffff;
+                    transform: scale(1.2);
                 }
             }
             > .bt-list-container {

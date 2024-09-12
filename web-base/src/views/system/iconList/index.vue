@@ -68,10 +68,11 @@ name="${item.name}"></SvgIcon>`;
     flex-direction: column;
     padding: var(--page-gap);
     box-sizing: border-box;
+    color: var(--text-color-2);
     > .container {
         padding: 15px;
         box-sizing: border-box;
-        background-color: white;
+        background-color: rgba(0, 0, 0, 0.43);
         border-radius: 5px;
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
@@ -88,7 +89,7 @@ name="${item.name}"></SvgIcon>`;
             padding: 15px;
             box-sizing: border-box;
             &:hover {
-                background-color: rgb(231, 231, 231);
+                background-color: rgb(0, 0, 0);
             }
             > .name {
                 font-size: 15px;

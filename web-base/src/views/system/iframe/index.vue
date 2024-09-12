@@ -45,7 +45,7 @@ export default defineComponent({
         function initData() {
             let params = route.params;
             if (!params.sign) return;
-            let tagTools = generateTagListTools(dataContainer.layoutName);
+            let tagTools = generateTagListTools();
             let tag = tagTools.getTag(route.path) || {};
             let iframeList = deepCopyObj(dataContainer.iframeList);
             dataContainer.iframe = {

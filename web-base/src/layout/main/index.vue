@@ -186,6 +186,7 @@ export default defineComponent({
             transition: all 0.2s;
             overflow: hidden;
             box-shadow: var(--box-shadow-2);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.47);
             &.hidden {
                 width: 0;
                 padding: 0;
@@ -245,6 +246,7 @@ export default defineComponent({
             position: relative;
             z-index: 2;
             box-shadow: var(--box-shadow-2);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.47);
         }
         > .view-container {
             flex: 1 1 0;
