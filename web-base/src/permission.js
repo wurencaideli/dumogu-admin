@@ -19,7 +19,6 @@ const whiteList = ['/login', '/register', '/404', '/401'];
  * 登录之后可以任意访问的白名单
  */
 const whiteList_1 = [
-    'navigate',
     'main-index',
     'new-tag-page',
     'icon-list',

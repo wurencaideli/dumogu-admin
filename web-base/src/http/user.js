@@ -56,6 +56,13 @@ const allApi = {
                         isCache: false,
                     },
                     {
+                        path: '/main/iframe/https://codess.dumogu.top/',
+                        title: 'CODESS',
+                        iconName: 'img:logo.png',
+                        showTagIcon: true,
+                        isCache: false,
+                    },
+                    {
                         path: `/main/iframe/${encodeURIComponent(
                             'https://cn.vuejs.org/guide/introduction.html',
                         )}`,

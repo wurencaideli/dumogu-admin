@@ -281,7 +281,7 @@ export default {
                                 :style="'width: 15px;min-width:15px;height: 15px;'"
                                 :name="element.iconName"
                             ></SvgIcon>
-                            {{ element.title }}
+                            {{ element.title || '未知标签' }}
                             <div
                                 v-if="!element.fixed && tagListTrans.length > 1"
                                 @click.stop="handleOptionClick('handleTagRemove', element)"

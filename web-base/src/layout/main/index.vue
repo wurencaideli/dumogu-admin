@@ -43,6 +43,7 @@ export default defineComponent({
             img: {
                 img_1,
             },
+            layoutName: 'main',
             userInfo: toRef(userData, 'userInfo'),
             tagList: toRef(userData, 'tagList'),
             userMenuList: toRef(userData, 'userMenuList'),
@@ -65,7 +66,7 @@ export default defineComponent({
         const cacheTagList = computed(() => {
             return dataContainer.tagList
                 .filter((item) => {
-                    return item.isCache;
+                    return item.layoutName == dataContainer.layoutName && item.isCache;
                 })
                 .map((item) => {
                     /** 缓存组件是根据path命名来缓存的 */
@@ -117,7 +118,7 @@ export default defineComponent({
                 <TagList
                     :tagList="dataContainer.tagList"
                     :activePath="routeIncetance.path"
-                    :layoutName="'main'"
+                    :layoutName="dataContainer.layoutName"
                 ></TagList>
             </div>
             <div class="view-container">
@@ -131,7 +132,9 @@ export default defineComponent({
                     class="iframe-view"
                 >
                     <iframe
-                        v-for="item in dataContainer.iframeList"
+                        v-for="item in dataContainer.iframeList.filter((item) => {
+                            return item.layoutName == dataContainer.layoutName;
+                        })"
                         :key="item.key"
                         :style="{
                             'z-index': item.path == routeIncetance.path ? 1 : -1,
@@ -172,7 +175,7 @@ export default defineComponent({
         flex-direction: column;
         > .logo {
             height: var(--navbar-height);
-            padding: 0 5px;
+            padding: 0 10px;
             box-sizing: border-box;
             display: flex;
             flex-direction: row;
@@ -217,7 +220,7 @@ export default defineComponent({
                     align-items: center;
                     justify-content: center;
                     width: 100%;
-                    padding: 10px 5px;
+                    padding: 10px 10px;
                     box-sizing: border-box;
                 }
             }

@@ -15,7 +15,6 @@ export const userDataStore = defineStore('userDataStore', {
             userInfo: userInfo || {}, //当前登录用户的基础数据
             userMenuConfigMap: [], //已经拥有的系统目录map(使用obj充当map，更方便操作),包含配置信息，可以是path，name，用来判断用户是否拥有页面权限
             userMenuList: [], //用于展示的菜单列表，结构树形化
-            permissionList: [], //权限字符串，根据该字符串可判断按钮权限
             tagList: [], // 页面标签列表
             iframeList: [], //iframe 数组，iframe也属于标签，跟标签挂钩
         };
@@ -33,9 +32,6 @@ export const userDataStore = defineStore('userDataStore', {
         },
         setUserMenuList(value) {
             this.userMenuList = value || [];
-        },
-        setPermissionList(value) {
-            this.permissionList = value || [];
         },
         setTagList(value) {
             this.tagList = value || [];

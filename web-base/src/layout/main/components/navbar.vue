@@ -18,6 +18,7 @@ import { useRouter, useRoute } from 'vue-router';
 import SvgIcon from '@/components/svgIcon/index.vue';
 import userAvatar from '@/components/userAvatar.vue';
 import { userDataStore } from '@/store/user';
+import { messageSuccess, messageError, confirm } from '@/action/messagePrompt';
 
 export default defineComponent({
     name: 'Navbar',
@@ -52,32 +53,15 @@ export default defineComponent({
         }
         /** 退出登录 */
         function handleLogout() {
-            ElMessageBox.confirm('退出登录？', '确定退出？', {
+            confirm('退出登录？', '确定退出？', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning',
                 showClose: false,
             })
                 .then(() => {
-                    if (dataContainer.loading) return;
-                    dataContainer.loading = true;
-                    userApi
-                        .logout()
-                        .then(() => {
-                            ElMessage({
-                                type: 'success',
-                                message: '已经成功退出！',
-                            });
-                        })
-                        .catch((res) => {
-                            ElMessage.error('退出失败：' + res.msg);
-                        })
-                        .finally(() => {
-                            userDataStore.setToken('');
-                            userDataStore.setUserInfo({});
-                            router.push('/login');
-                            dataContainer.loading = false;
-                        });
+                    userData.setUserInfo({});
+                    router.push('/login');
                 })
                 .catch(() => {});
         }
@@ -95,7 +79,7 @@ export default defineComponent({
     <div class="navbar-cp">
         <div class="top">
             <div class="user-container">
-                <div @click="toPath('/main/mine/info2')" class="user">
+                <div @click="toPath('/main/mine/info')" class="user">
                     <userAvatar :userInfo="dataContainer.userInfo"></userAvatar>
                 </div>
                 <div class="name">
@@ -120,21 +104,21 @@ export default defineComponent({
                         show: dataContainer.show,
                     }"
                 >
-                    <div class="item">
+                    <div @click="toPath('/main/mine/info-update')" class="item">
                         <SvgIcon
                             :style="'width: 15px;min-width:15px;height: 15px;margin-right:10px;'"
                             :name="'svg:user-fill.svg'"
                         ></SvgIcon>
                         修改用户基本信息
                     </div>
-                    <div class="item">
+                    <div @click="toPath('/main/mine/info-password')" class="item">
                         <SvgIcon
                             :style="'width: 15px;min-width:15px;height: 15px;margin-right:10px;'"
                             :name="'svg:cat-code.svg'"
                         ></SvgIcon>
                         修改用户密码
                     </div>
-                    <div class="item logout">
+                    <div @click="handleLogout" class="item logout">
                         <SvgIcon
                             :style="'width: 15px;min-width:15px;height: 15px;margin-right:10px;'"
                             :name="'svg:poweroff.svg'"

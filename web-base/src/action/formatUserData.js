@@ -144,13 +144,3 @@ export function getUserData() {
         userData.setUserMenuConfigMap(transData.userMenuConfigMap);
     });
 }
-/**
- * 用户退出登录
- * 清空用户数据
- */
-export function logout() {
-    const userData = userDataStore();
-    userData.setUserInfo({});
-    userData.setUserMenuList([]);
-    userData.setUserMenuConfigMap({});
-}

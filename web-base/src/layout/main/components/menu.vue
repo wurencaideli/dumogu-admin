@@ -72,6 +72,8 @@ export default {
 .menu-container {
     width: 100%;
     border: none !important;
+    padding: 0 10px 10px 10px;
+    box-sizing: border-box;
     /** 基础目录配置 */
     --local-active-text-color: #ffffff;
     --local-active-bg-color: #5240ff96;
@@ -87,14 +89,12 @@ export default {
     --el-menu-hover-bg-color: var(--local-hover-color) !important;
     --active-item-bg-color: var(--local-active-bg-color) !important;
     --el-menu-bg-color: transparent !important;
-    --el-menu-base-level-padding: 15px !important;
-    --el-menu-level-padding: 20px !important;
+    --el-menu-base-level-padding: 10px !important;
+    --el-menu-level-padding: 10px !important;
     --el-menu-icon-width: calc(15px + 0) !important;
-    --el-menu-item-height: 48px !important;
-    --el-menu-sub-item-height: 48px !important;
+    --el-menu-item-height: 45px !important;
+    --el-menu-sub-item-height: 45px !important;
     --active-sub-bg-color: transparent !important;
-    padding: 0 5px 5px 5px;
-    box-sizing: border-box;
     :deep(.menu-item-container) {
         .el-sub-menu__icon-arrow {
             margin-top: 0 !important;
@@ -102,6 +102,12 @@ export default {
         }
         .el-menu {
             padding: 0;
+        }
+        .el-sub-menu__title,
+        .el-menu-item {
+            min-height: var(--el-menu-item-height) !important;
+            height: fit-content !important;
+            line-height: initial !important;
         }
         .el-sub-menu {
             > .el-sub-menu__title {
@@ -114,7 +120,8 @@ export default {
                 }
             }
             .el-sub-menu__icon-arrow {
-                font-size: 17px !important;
+                right: 10px !important;
+                font-size: 20px !important;
             }
             &.is-sub-defin-active {
                 > .el-sub-menu__title {

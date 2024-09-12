@@ -2,37 +2,6 @@
  * 公用的css样式
  */
 
-/** 自定义类名 */
-.title-after{
-    position: relative;
-    z-index: 1;
-    &::after{
-        position: absolute;
-        content: " ";
-        width: 75%;
-        display: block;
-        border: none;
-        height: 10px;
-        background-color: #228ae6;
-        left: 0;
-        bottom: -4px;
-        z-index: -1;
-        border-radius:3px;
-    }
-}
-.box-container{
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: fit-content;
-    padding: 0 15px;
-    box-sizing: border-box;
-    >.container{
-        max-width: var(--container-width,940px);
-        width: 100%;
-    }
-}
 /** 进度条颜色 */
 #nprogress{
     position: relative;
@@ -40,7 +9,12 @@
     .bar {
         height: 5px !important;
     }
-} 
+}
+#app{
+    width: 100vw;
+    height: 100vh;   
+    overflow: hidden;
+}
 /**
  * 页面容器的css 类名
  * 以查询，内容上下排列
@@ -70,9 +44,4 @@
         overflow: hidden;
         background-color: white;
     }
-}
-#app{
-    width: 100vw;
-    height: 100vh;   
-    overflow: hidden;
 }

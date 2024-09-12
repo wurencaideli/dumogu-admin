@@ -116,6 +116,7 @@ export const constantRoutes = [
                     layoutName: 'main',
                     isMenu: true,
                     redirectName: 'main-redirect', // 重定向的目标
+                    title: '个人中心', // 新标签
                 },
             },
             {
@@ -126,6 +127,7 @@ export const constantRoutes = [
                     layoutName: 'main',
                     isMenu: true,
                     redirectName: 'main-redirect', // 重定向的目标
+                    title: '修改个人信息', // 新标签
                 },
             },
             {
@@ -136,6 +138,7 @@ export const constantRoutes = [
                     layoutName: 'main',
                     isMenu: true,
                     redirectName: 'main-redirect', // 重定向的目标
+                    title: '修改密码', // 新标签
                 },
             },
         ],
