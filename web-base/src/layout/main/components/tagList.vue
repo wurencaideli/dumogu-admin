@@ -25,7 +25,7 @@ import { userDataStore } from '@/store/user';
 import { useRouter, useRoute } from 'vue-router';
 import { toggleFullScreen } from '@/common/otherTools';
 
-export default {
+export default defineComponent({
     name: 'TagList',
     components: {
         SvgIcon,
@@ -249,7 +249,7 @@ export default {
             toggleFullScreen,
         };
     },
-};
+});
 </script>
 
 <template>

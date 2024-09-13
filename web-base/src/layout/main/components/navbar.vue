@@ -2,18 +2,7 @@
 /**
  * navbar组件
  */
-import {
-    ref,
-    defineComponent,
-    h,
-    reactive,
-    watch,
-    toRef,
-    computed,
-    onMounted,
-    onUnmounted,
-    onBeforeUnmount,
-} from 'vue';
+import { ref, defineComponent, reactive, toRef, onBeforeUnmount } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import SvgIcon from '@/components/svgIcon/index.vue';
 import userAvatar from '@/components/userAvatar.vue';
@@ -88,7 +77,7 @@ export default defineComponent({
                         :name="'svg:user-fill.svg'"
                     ></SvgIcon>
                     <span>
-                        {{ dataContainer.userInfo.userName }}
+                        {{ dataContainer.userInfo.nickName }}
                     </span>
                 </div>
             </div>

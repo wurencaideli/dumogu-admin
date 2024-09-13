@@ -1,36 +1,9 @@
-<template>
-    <DefinScrollbar height="100%" :showUpBt="true">
-        <div class="page-container icon-list-view">
-            <div class="container">
-                <div
-                    class="item"
-                    v-for="(item, index) in dataContainer.iconList"
-                    @click="onClick(item)"
-                    :key="index"
-                >
-                    <SvgIcon :style="'width:23px;height:23px;'" :name="item.name"></SvgIcon>
-                    <div class="name">
-                        {{ item.name }}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </DefinScrollbar>
-</template>
-
 <script>
 /**
  * 页面例子
  * 显示所有icon
  */
-import {
-    defineComponent,
-    onBeforeUnmount,
-    ref,
-    reactive,
-    getCurrentInstance,
-    onActivated,
-} from 'vue';
+import { defineComponent, reactive } from 'vue';
 import SvgIcon from '@/components/svgIcon/index.vue';
 import { iconList } from '@/components/svgIcon/Common.js';
 import DefinScrollbar from '@/components/definScrollbar.vue';
@@ -61,6 +34,26 @@ name="${item.name}"></SvgIcon>`;
     },
 });
 </script>
+
+<template>
+    <DefinScrollbar height="100%" :showUpBt="true">
+        <div class="page-container icon-list-view">
+            <div class="container">
+                <div
+                    class="item"
+                    v-for="(item, index) in dataContainer.iconList"
+                    @click="onClick(item)"
+                    :key="index"
+                >
+                    <SvgIcon :style="'width:23px;height:23px;'" :name="item.name"></SvgIcon>
+                    <div class="name">
+                        {{ item.name }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </DefinScrollbar>
+</template>
 
 <style lang="scss" scoped>
 .icon-list-view {

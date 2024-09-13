@@ -3,7 +3,7 @@
  * 在这里可以接口请求用户的一些数据
  */
 import { userDataStore } from '@/store/user';
-import { sysMeluNameMap, sysMeluPathMap } from '@/router/common';
+import { sysMeluConfigNameMap, sysMeluConfigPathMap } from '@/router/common';
 import { toTree, unfoldTreeList } from '@/common/treeTools';
 import { getNanoid } from '@/common/guid';
 import { deepCopyObj } from '@/common/otherTools';
@@ -26,7 +26,8 @@ function urlToPath(url) {
  * 用于判断权限的包含配置信息
  *  */
 function transUserMenu(menuList) {
-    let userMenuConfigMap = {};
+    let userMenuConfigNameMap = {};
+    let userMenuConfigPathMap = {};
     let userMenuList = [];
     /**
      * 将树形结构展开
@@ -41,29 +42,25 @@ function transUserMenu(menuList) {
             item.sign = getNanoid();
         },
     });
+    /** 遍历用户目录，生成用户配置 */
     menuList.forEach((item) => {
+        delete item.childs;
         /**
-         * 根据目录配置找到对应的系统menu
-         * 添加权限，添加已有的权限列表
-         * 因为path属于name的子集，所以name,path都应该有自己的配置
-         * 赋予正确的名称，并添加以path为优先，name次之的权限
+         * 根据用户自己的配置生成配置MAP
+         * 添加以path为优先，name次之的配置信息（因为一个name路由可以产生多个path）
          *  */
         let path = item.path;
         let name = item.name;
         if (!!path && !name) {
-            /**
-             * 有路由地址，但没菜单名称
-             *  */
+            /** 有路由地址，但没目录名称 */
             path = urlToPath(path);
-            let sysMenu = sysMeluPathMap[path] || {};
-            item.name = sysMenu.name;
-            userMenuConfigMap[path] = item;
+            userMenuConfigPathMap[path] = item;
         }
         if (!path && !!name) {
             /** 没路由地址，但有菜单名称 */
-            let sysMenu = sysMeluNameMap[name] || {};
-            item.path = sysMenu.path;
-            userMenuConfigMap[name] = item;
+            let sysMenuConfig = sysMeluConfigNameMap[name] || {};
+            item.path = sysMenuConfig.path;
+            userMenuConfigNameMap[name] = item;
         }
         if (!!path && !!name) {
             /**
@@ -71,31 +68,21 @@ function transUserMenu(menuList) {
              * 以路由为准
              *  */
             path = urlToPath(path);
-            userMenuConfigMap[path] = item;
-        }
-        /** 有唯一标识的也添加，方便查找，可以替换一些信息 */
-        if (!!item.sign) {
-            userMenuConfigMap[item.sign] = {
-                ...item,
-            };
+            userMenuConfigPathMap[path] = item;
         }
     });
+    /** 用作展示的目录可以过滤掉不显示的 */
     userMenuList = menuList.filter((item) => !item.hidden);
-    userMenuList = toTree(
-        userMenuList.map((item) => {
-            delete item.childs;
-            return item;
-        }),
-        {
-            pKey: 'parentSign',
-            key: 'sign',
-            childsKey: 'childs',
-            isNew: true,
-        },
-    );
+    userMenuList = toTree(userMenuList, {
+        pKey: 'parentSign',
+        key: 'sign',
+        childsKey: 'childs',
+        isNew: true,
+    });
     return {
         userMenuList,
-        userMenuConfigMap,
+        userMenuConfigNameMap,
+        userMenuConfigPathMap,
     };
 }
 /**
@@ -136,7 +123,8 @@ export function getUserData() {
         /** 写入展示菜单数据 */
         userData.setUserMenuList(transData.userMenuList);
         /** 写入权限菜单数据 */
-        userData.setUserMenuConfigMap(transData.userMenuConfigMap);
+        userData.setUserMenuConfigNameMap(transData.userMenuConfigNameMap);
+        userData.setUserMenuConfigPathMap(transData.userMenuConfigPathMap);
         console.log('格式化用户目录成功', transData.userMenuList);
     });
 }

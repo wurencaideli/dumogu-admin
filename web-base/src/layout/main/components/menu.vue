@@ -1,19 +1,13 @@
 <script>
-import {
-    defineComponent,
-    ref,
-    reactive,
-    computed,
-    onMounted,
-    watch,
-    toRef,
-    onUnmounted,
-} from 'vue';
+/**
+ * 左侧菜单组件
+ */
+import { defineComponent, ref, reactive, onMounted, toRef } from 'vue';
 import SvgIcon from '@/components/svgIcon/index.vue';
 import { useRouter, useRoute } from 'vue-router';
 import MenuItem from './MenuItem.vue';
 
-export default {
+export default defineComponent({
     name: 'Menu',
     components: {
         SvgIcon,
@@ -29,7 +23,6 @@ export default {
         },
     },
     setup(props) {
-        const router = useRouter();
         const route = useRoute();
         const ElMenuRef = ref(null);
         const dataContainer = reactive({
@@ -51,7 +44,7 @@ export default {
             ElMenuRef,
         };
     },
-};
+});
 </script>
 
 <template>

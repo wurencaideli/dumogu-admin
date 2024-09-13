@@ -3,20 +3,7 @@
  * 自定义的滚动条
  * 可以记录滚动位置
  */
-import {
-    defineComponent,
-    onBeforeUnmount,
-    ref,
-    reactive,
-    getCurrentInstance,
-    onActivated,
-    onMounted,
-    computed,
-    onDeactivated,
-    toRef,
-    watch,
-    nextTick,
-} from 'vue';
+import { defineComponent, ref, reactive, onActivated, toRef, nextTick } from 'vue';
 import { simpleRoll } from '@/common/rollTolls';
 
 export default defineComponent({

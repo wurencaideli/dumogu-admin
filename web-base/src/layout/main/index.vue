@@ -3,17 +3,7 @@
  * 操作 layout
  * 负责相应事件的统一分发处理
  */
-import {
-    ref,
-    defineComponent,
-    h,
-    reactive,
-    watch,
-    toRef,
-    computed,
-    onMounted,
-    onUnmounted,
-} from 'vue';
+import { defineComponent, reactive, toRef, computed } from 'vue';
 import Navbar from './components/navbar.vue';
 import Menu from './components/menu.vue';
 import TagList from './components/tagList.vue';
@@ -46,8 +36,8 @@ export default defineComponent({
             },
             layoutName: 'main', // layout分组名
             userInfo: toRef(userData, 'userInfo'),
-            tagList: toRef(userData, 'tagList'),
-            userMenuList: toRef(userData, 'userMenuList'),
+            tagList: toRef(userData, 'tagList'), // 根据用户目录生成的页面的标签列表
+            userMenuList: toRef(userData, 'userMenuList'), // 用户自定义的目录信息，用作左侧目录展示
             iframeList: toRef(userData, 'iframeList'), //当前已打开的iframe数组
         });
         /**

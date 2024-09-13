@@ -2,15 +2,7 @@
 /**
  * 个人信息展示
  */
-import {
-    defineComponent,
-    onBeforeUnmount,
-    ref,
-    reactive,
-    getCurrentInstance,
-    onActivated,
-    toRef,
-} from 'vue';
+import { defineComponent, reactive, toRef } from 'vue';
 import SvgIcon from '@/components/svgIcon/index.vue';
 import { userDataStore } from '@/store/user';
 
@@ -56,7 +48,7 @@ export default defineComponent({
                         手机号码
                     </div>
                     <div class="right">
-                        {{ dataContainer.userInfo.nickName }}
+                        {{ dataContainer.userInfo.phone }}
                     </div>
                 </div>
                 <div class="item">
@@ -68,7 +60,7 @@ export default defineComponent({
                         用户邮件
                     </div>
                     <div class="right">
-                        {{ dataContainer.userInfo.nickName }}
+                        {{ dataContainer.userInfo.email }}
                     </div>
                 </div>
                 <div class="item">
@@ -80,7 +72,7 @@ export default defineComponent({
                         所属部门
                     </div>
                     <div class="right">
-                        {{ dataContainer.userInfo.nickName }}
+                        {{ dataContainer.userInfo.role }}
                     </div>
                 </div>
             </div>

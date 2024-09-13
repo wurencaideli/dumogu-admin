@@ -3,16 +3,7 @@
  * 头部组件
  * 提供类名供外部调整
  */
-import {
-    defineComponent,
-    ref,
-    reactive,
-    computed,
-    onMounted,
-    watch,
-    toRef,
-    onUnmounted,
-} from 'vue';
+import { defineComponent, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
 import SvgIcon from '@/components/svgIcon/index.vue';
 

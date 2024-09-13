@@ -2,24 +2,41 @@
  * 路由列表部分
  * 所有路由必须先手动写好，然后由后端菜单接口来进行匹配并且指定是否显示
  */
-import { createWebHistory, createRouter, createWebHashHistory } from 'vue-router';
-import NProgress from 'nprogress';
-import 'nprogress/nprogress.css';
-//全局进度条的配置
-NProgress.configure({
-    easing: 'ease', // 动画方式
-    speed: 300, // 递增进度条的速度
-    showSpinner: false, // 进度环显示隐藏
-    trickleSpeed: 200, // 自动递增间隔
-    minimum: 0.3, // 更改启动时使用的最小百分比
-    parent: 'body', //指定进度条的父容器
-});
-
+import { createWebHistory, createRouter } from 'vue-router';
+/**
+ * 为路由配置meta相当于为该路由配置了基本信息，配置的属性如下
+ * title 用作标签显示字样的字段
+ * hasTag 可以生成标签
+ * isCache 该标签页面是否缓存
+ * hidden 该标签页面是否在左边目录上显示
+ * isLink 表示直接跳转新页面
+ * iconName 菜单icon图标
+ * fixed 标签是否固定
+ * layoutName layout的名称，用作分组
+ * redirectName 重定向的目标
+ * path 路由地址，唯一键
+ * fullPath
+ * showTagIcon 标签显示的时候是否显示图标
+ * content 菜单显示的详情
+ * number 菜单显示的数字
+ */
 export const constantRoutes = [
     /** 登录注册相关页面 */
     {
         path: '/login',
         component: () => import('@/views/login/index.vue'),
+    },
+    /** 404页面 */
+    {
+        path: '/404',
+        component: () => import('@/views/system/error/404.vue'),
+        name: '404',
+    },
+    /** 401页面 */
+    {
+        path: '/401',
+        component: () => import('@/views/system/error/401.vue'),
+        name: '401',
     },
     /** 定义首页重定向地址 */
     {
@@ -41,8 +58,7 @@ export const constantRoutes = [
                 component: () => import('@/views/system/redirect/index.vue'),
                 meta: {
                     layoutName: 'main',
-                    isMenu: true,
-                    redirectName: 'main-redirect', // 重新向的目标
+                    redirectName: 'main-redirect',
                 },
             },
             {
@@ -51,8 +67,9 @@ export const constantRoutes = [
                 component: () => import('@/views/system/error/401.vue'),
                 meta: {
                     layoutName: 'main',
-                    isMenu: true,
-                    redirectName: 'main-redirect', // 重新向的目标
+                    redirectName: 'main-redirect',
+                    hasTag: true,
+                    title: '401',
                 },
             },
             {
@@ -61,8 +78,9 @@ export const constantRoutes = [
                 component: () => import('@/views/system/error/404.vue'),
                 meta: {
                     layoutName: 'main',
-                    isMenu: true,
-                    redirectName: 'main-redirect', // 重定向的目标
+                    redirectName: 'main-redirect',
+                    hasTag: true,
+                    title: '404',
                 },
             },
             {
@@ -71,9 +89,9 @@ export const constantRoutes = [
                 name: 'new-tag-page',
                 meta: {
                     layoutName: 'main',
-                    isMenu: true,
-                    redirectName: 'main-redirect', // 重定向的目标
-                    title: '新标签', // 新标签
+                    redirectName: 'main-redirect',
+                    title: '新标签',
+                    hasTag: true,
                 },
             },
             {
@@ -82,8 +100,8 @@ export const constantRoutes = [
                 name: 'iframe',
                 meta: {
                     layoutName: 'main',
-                    isMenu: true,
-                    redirectName: 'main-redirect', // 重定向的目标
+                    redirectName: 'main-redirect',
+                    hasTag: true,
                 },
             },
             /** 一些页面例子 */
@@ -93,8 +111,8 @@ export const constantRoutes = [
                 name: 'main-index',
                 meta: {
                     layoutName: 'main',
-                    isMenu: true,
-                    redirectName: 'main-redirect', // 重定向的目标
+                    redirectName: 'main-redirect',
+                    hasTag: true,
                 },
             },
             {
@@ -103,8 +121,8 @@ export const constantRoutes = [
                 name: 'icon-list',
                 meta: {
                     layoutName: 'main',
-                    isMenu: true,
-                    redirectName: 'main-redirect', // 重定向的目标
+                    redirectName: 'main-redirect',
+                    hasTag: true,
                 },
             },
             {
@@ -113,9 +131,9 @@ export const constantRoutes = [
                 name: 'main-mine-info',
                 meta: {
                     layoutName: 'main',
-                    isMenu: true,
-                    redirectName: 'main-redirect', // 重定向的目标
-                    title: '个人中心', // 新标签
+                    redirectName: 'main-redirect',
+                    title: '个人中心',
+                    hasTag: true,
                 },
             },
             {
@@ -124,9 +142,9 @@ export const constantRoutes = [
                 name: 'main-mine-info-update',
                 meta: {
                     layoutName: 'main',
-                    isMenu: true,
-                    redirectName: 'main-redirect', // 重定向的目标
-                    title: '修改个人信息', // 新标签
+                    redirectName: 'main-redirect',
+                    title: '修改个人信息',
+                    hasTag: true,
                 },
             },
             {
@@ -135,43 +153,18 @@ export const constantRoutes = [
                 name: 'main-mine-info-password',
                 meta: {
                     layoutName: 'main',
-                    isMenu: true,
-                    redirectName: 'main-redirect', // 重定向的目标
-                    title: '修改密码', // 新标签
+                    redirectName: 'main-redirect',
+                    title: '修改密码',
+                    hasTag: true,
                 },
             },
         ],
-    },
-    /** 404页面 */
-    {
-        path: '/404',
-        component: () => import('@/views/system/error/404.vue'),
-        name: '404',
-    },
-    /** 401页面 */
-    {
-        path: '/401',
-        component: () => import('@/views/system/error/401.vue'),
-        name: '401',
     },
 ];
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.VITE_APP_routeBasePath),
     routes: constantRoutes,
-});
-/** 此处只添加路由进度条动画 */
-router.beforeEach((to, from, next) => {
-    NProgress.start();
-    next();
-});
-router.afterEach(() => {
-    NProgress.done();
-    /** 清除loading标记 */
-    let loadingEl = document.querySelector('#html-loading-el');
-    if (loadingEl) {
-        loadingEl.remove();
-    }
 });
 
 export default router;

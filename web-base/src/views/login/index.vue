@@ -2,7 +2,7 @@
 /**
  * 登录页面
  *  */
-import { defineComponent, ref, reactive, computed, onMounted, onActivated } from 'vue';
+import { defineComponent, reactive } from 'vue';
 import publicApi from '@/http/public.js';
 import userApi from '@/http/user.js';
 import { messageSuccess, messageError } from '@/action/messagePrompt';

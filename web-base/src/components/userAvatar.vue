@@ -2,18 +2,7 @@
 /**
  * 用户头像组件
  */
-import {
-    ref,
-    defineComponent,
-    h,
-    reactive,
-    watch,
-    toRef,
-    computed,
-    onMounted,
-    onUnmounted,
-    onBeforeUnmount,
-} from 'vue';
+import { defineComponent, reactive, toRef } from 'vue';
 
 export default defineComponent({
     name: 'UserAvatar',

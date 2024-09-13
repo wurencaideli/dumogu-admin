@@ -3,15 +3,17 @@
  * http请求配置
  */
 import axios from 'axios';
-import Const from './const';
 import { userDataStore } from '@/store/user';
 import { messageSuccess, messageError, confirm } from '@/action/messagePrompt';
 import router from '@/router';
 
+let baseApiURL = import.meta.env.VITE_APP_baseApiURL; //api原始链接
+const timeout = 13000; //api请求超时时间
+
 export const service = axios.create({
     //可创建多个 axios实例
-    baseURL: Const.baseApiURL, //设置公共的请求前缀
-    timeout: Const.timeout, //超时终止请求
+    baseURL: baseApiURL, //设置公共的请求前缀
+    timeout: timeout, //超时终止请求
 });
 
 service.interceptors.request.use(

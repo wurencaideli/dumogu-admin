@@ -1,202 +1,115 @@
 <script>
 /**
- * 密码修改页面
+ * 头像修改页面
  */
-import {
-    defineComponent,
-    onBeforeUnmount,
-    ref,
-    reactive,
-    getCurrentInstance,
-    onActivated,
-    onMounted,
-} from 'vue';
-import { useRouter, useRoute } from 'vue-router';
+import { defineComponent, ref, reactive } from 'vue';
 import SvgIcon from '@/components/svgIcon/index.vue';
-import { Delete } from '@element-plus/icons-vue';
-import { deepCopyObj } from '@/common/otherTools';
 import { verifiedData } from '@/common/verifiedTools';
 import { messageError, messageSuccess } from '@/action/messagePrompt.js';
-import ChangeImgDialog from './components/ChangeImgDialog.vue';
+import { toTrim } from '@/common/otherTools';
+import { throttleFn } from '@/common/debounceAndThrottle';
 import { userDataStore } from '@/store/user';
 
 export default defineComponent({
     components: {
         SvgIcon,
-        ChangeImgDialog,
     },
     setup() {
         let userData = userDataStore();
         const FormElRef = ref(null); //组件实例
-        const ChangeImgDialogRef = ref(null); //组件实例
-        const UploadSingleImgRef = ref(null); //组件实例
-        const router = useRouter();
-        const route = useRoute();
         const dataContainer = reactive({
             loading: false,
             form: {},
             rules: {
-                name: [{ required: true, message: '请输入昵称', trigger: 'blur' }],
+                nickName: [{ required: true, message: '请输入昵称', trigger: 'blur' }],
+                avatar: [{ required: true, message: '请输入头像', trigger: 'blur' }],
             },
-            imgUrl_3: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
         });
-        const otherDataContainer = {
-            imgFile: null,
-        };
         /** 初始化数据 */
         function initData() {
-            let userInfo = userData.userInfo;
-            /** 使用一份新数据 */
-            dataContainer.form = deepCopyObj(userInfo);
-            dataContainer.imgUrl_3 = dataContainer.form.avatar;
+            Object.assign(dataContainer.form, userData.userInfo);
         }
         initData();
         /** 提交数据 */
-        function handleSubmit() {
-            /** 使用组件自带方法验证数据 */
-            if (!FormElRef.value) return;
+        /** 保存操作 */
+        const handleSubmit = throttleFn(function () {
+            if (!FormElRef.value || dataContainer.loading) return;
             FormElRef.value.validate((valid, e) => {
-                if (e) {
-                    /** 打印报错信息 */
-                    let msg = e[Object.keys(e)[0]][0].message;
-                    messageError(msg);
+                if (!valid) {
+                    const message = e[Object.keys(e)[0]][0].message;
+                    messageError(message);
                     return;
                 }
-                /** 其他验证 */
-                e = validData(dataContainer.form);
-                if (e) {
-                    messageError(e[0].msg);
+                const verifiedData = validBase(dataContainer.form);
+                if (verifiedData) {
+                    messageError('参数错误！' + verifiedData[0].label);
                     return;
                 }
-                if (!valid) return;
-                /** 向后端提交 */
-                messageSuccess('提交成功！');
+                // 可以提交数据了
+                messageSuccess('数据提交了');
+                userData.setUserInfo(Object.assign({}, userData.userInfo, dataContainer.form));
             });
-        }
+        }, 700);
         /**
          * 数据验证
          * 外部可调用
          *  */
-        function validData(data) {
+        /** 验证信息 */
+        function validBase(data) {
             const failData = verifiedData(data, {
-                name: {
-                    msg: '昵称 不能为空',
+                nickName: {
+                    label: 'nickName:昵称',
                     validate(value, option) {
-                        if (!value && value !== 0) return false;
+                        if (!value && value !== 0) {
+                            option.label = option.label + ' 不能为空';
+                            return false;
+                        }
+                        if (Object.prototype.toString.call(value) !== '[object String]') {
+                            option.label = option.label + ' 必须是一个字符串';
+                            return false;
+                        }
+                        if (value.length > 300) {
+                            option.label = option.label + ' 字符长度长度超出300';
+                            return false;
+                        }
+                        return true;
+                    },
+                },
+                avatar: {
+                    label: 'avatar:头像',
+                    validate(value, option) {
+                        if (!value && value !== 0) {
+                            option.label = option.label + ' 不能为空';
+                            return false;
+                        }
+                        if (Object.prototype.toString.call(value) !== '[object String]') {
+                            option.label = option.label + ' 必须是一个字符串';
+                            return false;
+                        }
+                        if (value.length > 300) {
+                            option.label = option.label + ' 字符长度长度超出300';
+                            return false;
+                        }
                         return true;
                     },
                 },
             });
             return failData;
         }
-        /** 展示图片选择 */
-        function changeImg() {
-            if (!ChangeImgDialogRef.value) return;
-            ChangeImgDialogRef.value
-                .initData(true, {
-                    url: dataContainer.imgUrl_3,
-                })
-                .then((res) => {
-                    dataContainer.imgUrl_3 = res.url || '';
-                    otherDataContainer.imgFile = res.file || null;
-                })
-                .catch(() => {
-                    return;
-                });
-        }
-        /** 手动上传文件 */
-        function handleUpload() {
-            if (!otherDataContainer.imgFile) return;
-            if (!UploadSingleImgRef.value) return;
-            UploadSingleImgRef.value
-                .handleUpload(otherDataContainer.imgFile)
-                .then(() => {
-                    /** 此处可以想后端提交保存的信息 */
-                })
-                .catch(() => {
-                    return;
-                });
-        }
-        /** 上传组件成功事件 */
-        function handleUploadSuccess() {
-            messageSuccess(`文件上传成功`);
-        }
-        /** 上传组件失败事件 */
-        function handleUploadFail() {
-            messageError(`文件上传失败`);
-        }
-        /** 上传组件取消事件 */
-        function handleUploadCancel() {
-            dataContainer.imgUrl_3 = '';
-            otherDataContainer.imgFile = null;
-        }
         return {
             dataContainer,
             FormElRef,
             handleSubmit,
-            ChangeImgDialogRef,
-            changeImg,
-            handleUploadSuccess,
-            handleUploadFail,
-            handleUploadCancel,
-            UploadSingleImgRef,
-            handleUpload,
+            toTrim,
         };
     },
 });
 </script>
 
 <template>
-    <div class="page-container mine-view">
-        <div class="container img-container">
-            <el-form
-                style="width: 100%"
-                :model="dataContainer.form"
-                :inline="false"
-                label-width="120px"
-            >
-                <el-row :gutter="0">
-                    <el-col :span="24">
-                        <el-form-item label="用户头像" prop="">
-                            <div>
-                                <div class="img-upload">
-                                    <UploadSingleImg
-                                        ref="UploadSingleImgRef"
-                                        :imgUrl="dataContainer.imgUrl_3"
-                                        :showCancelBt="!!dataContainer.imgUrl_3"
-                                        :maxSize="1024 * 1024 * 7"
-                                        :minSize="1024 * 7"
-                                        :needAccept="'image/png,image/jpeg'"
-                                        :autoUpload="false"
-                                        :showChooseBt="false"
-                                        :uploadApi="'/upload-api/upload'"
-                                        @onSuccess="handleUploadSuccess"
-                                        @onFail="handleUploadFail"
-                                        @onCancel="handleUploadCancel"
-                                    ></UploadSingleImg>
-                                    <div @click="changeImg" class="bt">
-                                        <SvgIcon
-                                            :style="'width: 25px;min-width:25px;height: 25px;'"
-                                            name="svg:upload.svg"
-                                        ></SvgIcon>
-                                    </div>
-                                </div>
-                                <el-button
-                                    style="margin-top: 15px"
-                                    type="primary"
-                                    @click="handleUpload"
-                                >
-                                    确认修改新头像
-                                </el-button>
-                            </div>
-                        </el-form-item>
-                    </el-col>
-                </el-row>
-            </el-form>
-        </div>
+    <div class="page-container mine-update-view">
         <div class="container">
             <el-form
-                style="width: 100%"
                 :model="dataContainer.form"
                 ref="FormElRef"
                 :inline="false"
@@ -205,82 +118,55 @@ export default defineComponent({
             >
                 <el-row :gutter="0">
                     <el-col :span="24">
-                        <el-form-item label="用户昵称" prop="name">
+                        <el-form-item label="昵称" prop="nickName">
                             <el-input
-                                v-model="dataContainer.form.name"
-                                placeholder="请输入"
-                                clearable
-                            />
+                                @input="
+                                    () => {
+                                        dataContainer.form.nickName = toTrim(
+                                            dataContainer.form.nickName,
+                                        );
+                                    }
+                                "
+                                :clearable="true"
+                                v-model="dataContainer.form.nickName"
+                            >
+                            </el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="24">
-                        <el-form-item label="手机号码" prop="newPassword">
+                        <el-form-item label="头像" prop="avatar">
                             <el-input
-                                v-model="dataContainer.form.newPassword"
-                                placeholder="请输入"
-                                clearable
-                            />
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="24">
-                        <el-form-item label="邮箱" prop="newPassword_1">
-                            <el-input
-                                v-model="dataContainer.form.newPassword_1"
-                                placeholder="请输入"
-                                clearable
-                            />
+                                @input="
+                                    () => {
+                                        dataContainer.form.avatar = toTrim(
+                                            dataContainer.form.avatar,
+                                        );
+                                    }
+                                "
+                                :clearable="true"
+                                v-model="dataContainer.form.avatar"
+                            >
+                            </el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
             </el-form>
-            <el-button type="primary" @click="handleSubmit"> 确定提交 </el-button>
+            <el-button type="primary" @click="handleSubmit"> 提交 </el-button>
         </div>
-        <ChangeImgDialog ref="ChangeImgDialogRef"></ChangeImgDialog>
     </div>
 </template>
 
 <style lang="scss" scoped>
-.mine-view {
+.mine-update-view {
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 15px;
     box-sizing: border-box;
-    > .img-container {
-        margin-bottom: 15px;
-        > * {
-            margin-bottom: 15px;
-            &:last-child {
-                margin: 0;
-            }
-        }
-        .img-upload {
-            width: auto;
-            height: auto;
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 150px;
-            height: 150px;
-            > .bt {
-                position: absolute;
-                cursor: pointer;
-                background-color: rgb(113, 113, 113);
-                border-radius: 5px;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                width: 40px;
-                height: 40px;
-                box-shadow: 2px 5px 8px rgba(60, 64, 67, 0.15), 0px 2px 2px rgba(60, 64, 67, 0.3);
-            }
-        }
-    }
     > .container {
         width: 100%;
         max-width: 700px;
-        padding: 15px 15px 15px 15px;
+        padding: 30px 15px 15px 15px;
         box-sizing: border-box;
         background-color: rgb(113, 113, 113);
         border-radius: 5px;

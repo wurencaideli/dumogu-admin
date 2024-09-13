@@ -2,18 +2,8 @@
 /**
  * 密码修改页面
  */
-import {
-    defineComponent,
-    onBeforeUnmount,
-    ref,
-    reactive,
-    getCurrentInstance,
-    onActivated,
-    onMounted,
-} from 'vue';
-import { useRouter, useRoute } from 'vue-router';
+import { defineComponent, ref, reactive } from 'vue';
 import SvgIcon from '@/components/svgIcon/index.vue';
-import { Delete } from '@element-plus/icons-vue';
 import { verifiedData } from '@/common/verifiedTools';
 import { messageError, messageSuccess } from '@/action/messagePrompt.js';
 import { toTrim } from '@/common/otherTools';
@@ -25,8 +15,6 @@ export default defineComponent({
     },
     setup() {
         const FormElRef = ref(null); //组件实例
-        const router = useRouter();
-        const route = useRoute();
         const dataContainer = reactive({
             loading: false,
             form: {},
@@ -123,7 +111,7 @@ export default defineComponent({
 </script>
 
 <template>
-    <div class="page-container mine-view">
+    <div class="page-container mine-password-view">
         <div class="container">
             <el-form
                 :model="dataContainer.form"
@@ -192,7 +180,7 @@ export default defineComponent({
 </template>
 
 <style lang="scss" scoped>
-.mine-view {
+.mine-password-view {
     display: flex;
     flex-direction: column;
     align-items: center;

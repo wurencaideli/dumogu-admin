@@ -1,14 +1,5 @@
 <script>
-import {
-    defineComponent,
-    ref,
-    reactive,
-    computed,
-    onMounted,
-    watch,
-    toRef,
-    onUnmounted,
-} from 'vue';
+import { reactive, toRef } from 'vue';
 import SvgIcon from '@/components/svgIcon/index.vue';
 import { useRouter, useRoute } from 'vue-router';
 

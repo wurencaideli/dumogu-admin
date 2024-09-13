@@ -2,16 +2,7 @@
 /**
  * 页面例子
  */
-import {
-    defineComponent,
-    onBeforeUnmount,
-    ref,
-    reactive,
-    getCurrentInstance,
-    onActivated,
-    onMounted,
-    toRef,
-} from 'vue';
+import { defineComponent, reactive, toRef } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import SvgIcon from '@/components/svgIcon/index.vue';
 import { Delete } from '@element-plus/icons-vue';

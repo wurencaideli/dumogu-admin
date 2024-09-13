@@ -13,7 +13,8 @@ export const userDataStore = defineStore('userDataStore', {
         }
         return {
             userInfo: userInfo || {}, //当前登录用户的基础数据
-            userMenuConfigMap: [], //已经拥有的系统目录map(使用obj充当map，更方便操作),包含配置信息，可以是path，name，用来判断用户是否拥有页面权限
+            userMenuConfigNameMap: [], //用户自定义的目录name配置（有该配置表示拥有该目录权限）
+            userMenuConfigPathMap: [], //用户自定义的目录path配置（有该配置表示拥有该目录权限）
             userMenuList: [], //用于展示的菜单列表，结构树形化
             tagList: [], // 页面标签列表
             iframeList: [], //iframe 数组，iframe也属于标签，跟标签挂钩
@@ -27,8 +28,11 @@ export const userDataStore = defineStore('userDataStore', {
             const userStorage = allStorage.userStorage();
             userStorage.value = value;
         },
-        setUserMenuConfigMap(value) {
-            this.userMenuConfigMap = value || '';
+        setUserMenuConfigNameMap(value) {
+            this.userMenuConfigNameMap = value || {};
+        },
+        setUserMenuConfigPathMap(value) {
+            this.userMenuConfigPathMap = value || {};
         },
         setUserMenuList(value) {
             this.userMenuList = value || [];

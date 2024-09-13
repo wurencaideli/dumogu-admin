@@ -1,14 +1,5 @@
 <script>
-import {
-    defineComponent,
-    ref,
-    reactive,
-    computed,
-    onMounted,
-    watch,
-    toRef,
-    onUnmounted,
-} from 'vue';
+import { reactive, toRef } from 'vue';
 import SvgIcon from '@/components/svgIcon/index.vue';
 import { useRouter, useRoute } from 'vue-router';
 import linkItem from './linkItem.vue';
@@ -67,7 +58,7 @@ export default {
             <linkItem :dataInfo="dataContainer.dataInfo"></linkItem>
         </el-menu-item>
         <!-- 有子目录且父节点不可点击 -->
-        <el-sub-menu v-else :index="dataContainer.dataInfo.sign">
+        <el-sub-menu v-else :index="dataContainer.dataInfo.title">
             <template #title>
                 <linkItem :dataInfo="dataContainer.dataInfo"></linkItem>
             </template>

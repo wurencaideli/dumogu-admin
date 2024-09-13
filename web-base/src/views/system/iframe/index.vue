@@ -1,26 +1,9 @@
-<template>
-    <div class="iframe-view">
-        <el-icon :size="60" class="is-loading" color="#000000"><Loading /></el-icon>
-        <div class="title">正在加载。。。</div>
-    </div>
-</template>
-
 <script>
 /**
- * 页面例子
  * 站内链接
  * 该页面的组件不实现功能，只管理iframe的链接，route同层级位置实现，防止路由切换不管缓存与否都刷新iframe的情况
  */
-import {
-    defineComponent,
-    onBeforeUnmount,
-    ref,
-    reactive,
-    getCurrentInstance,
-    onActivated,
-    onUnmounted,
-    toRef,
-} from 'vue';
+import { defineComponent, reactive, onUnmounted, toRef } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { getNanoid } from '@/common/guid';
 import { deepCopyObj } from '@/common/otherTools';
@@ -74,6 +57,13 @@ export default defineComponent({
     },
 });
 </script>
+
+<template>
+    <div class="iframe-view">
+        <el-icon :size="60" class="is-loading" color="#000000"><Loading /></el-icon>
+        <div class="title">正在加载。。。</div>
+    </div>
+</template>
 
 <style lang="scss" scoped>
 .iframe-view {
