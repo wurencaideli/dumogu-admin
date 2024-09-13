@@ -5,6 +5,7 @@
 开源地址 https://github.com/wurencaideli/dumogu-admin
 
 线上DEMO https://admin.dumogu.top/
+线上DEMO-Base https://admin.dumogu.top/base
 
 吐槽地址 https://txc.qq.com/products/613546
 
