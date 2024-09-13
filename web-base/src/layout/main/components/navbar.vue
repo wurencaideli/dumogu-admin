@@ -205,9 +205,10 @@ export default defineComponent({
                 span {
                     writing-mode: vertical-rl;
                     margin: 0;
-                    font-size: 16px;
+                    font-size: 15px;
+                    letter-spacing: 1.5px;
                     font-weight: bold;
-                    text-shadow: 1px 3px 0px #000;
+                    text-shadow: 1px 1px 0px #000;
                 }
             }
         }
@@ -252,7 +253,7 @@ export default defineComponent({
                     flex-direction: row;
                     justify-content: flex-start;
                     align-items: center;
-                    padding: 15px 10px;
+                    padding: 15px 20px;
                     box-sizing: border-box;
                     font-size: 13px;
                     font-weight: bold;

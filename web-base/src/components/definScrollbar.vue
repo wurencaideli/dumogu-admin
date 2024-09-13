@@ -126,7 +126,7 @@ export default defineComponent({
         right: 3vw;
         width: 40px;
         height: 40px;
-        background-color: #1f364d;
+        background-color: #282828;
         border-radius: 5px;
         display: flex;
         justify-content: center;

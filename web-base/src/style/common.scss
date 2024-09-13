@@ -14,22 +14,6 @@ body {
     /** 解决ios上手机横屏导致的字体大小不一致 */
     -webkit-text-size-adjust: 100%;
 }
-/** 整个网站不显示滚动条 */
-body {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-    &::-webkit-scrollbar {
-        display: none;
-    }
-    /** 解决后代想要滚动条的问题 */
-    *:not(.need-scrollbar, .need-scrollbar > *) {
-        -ms-overflow-style: none;
-        scrollbar-width: none;
-        &::-webkit-scrollbar {
-            display: none;
-        }
-    }
-}
 a {
     text-align: left;
     text-decoration: none;
@@ -38,9 +22,6 @@ a {
 }
 img {
     vertical-align: bottom; //阻止图片出现下边距
-}
-::selection {
-    background: #ffe89e;
 }
 * {
     //去除移动端点击事件出现的背景框

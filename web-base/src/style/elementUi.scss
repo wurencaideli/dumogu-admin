@@ -2,10 +2,6 @@
  *自定义ui库样式
  * 主要是elementui的默认样式的修改
  */
-.el-overlay-message-box {
-    overflow-x: hidden !important;
-    overflow-y: auto !important;
-}
 .el-scrollbar {
     .el-scrollbar__bar {
         border-radius: 2px !important;
@@ -14,13 +10,6 @@
             opacity: 1 !important;
         }
     }
-}
-.el-popper {
-    padding: 3px 5px !important;
-    background-color: #18212b !important;
-    line-height: initial !important;
-    border: 1px solid #2b3e51 !important;
-    color: #9cb3c9;
 }
 .el-message {
     border-radius: 999px !important;
