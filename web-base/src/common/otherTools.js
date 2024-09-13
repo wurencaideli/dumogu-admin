@@ -310,3 +310,8 @@ export function toggleFullScreen() {
 export function getTypeOf(value) {
     return Object.prototype.toString.call(value);
 }
+/** 去除首尾空格 */
+export function toTrim(str) {
+    str = (str || '').replace(/^\s+|\s+$/g, '');
+    return str;
+}

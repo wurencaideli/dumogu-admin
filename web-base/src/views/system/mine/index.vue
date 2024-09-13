@@ -1,3 +1,35 @@
+<script>
+/**
+ * 个人信息展示
+ */
+import {
+    defineComponent,
+    onBeforeUnmount,
+    ref,
+    reactive,
+    getCurrentInstance,
+    onActivated,
+    toRef,
+} from 'vue';
+import SvgIcon from '@/components/svgIcon/index.vue';
+import { userDataStore } from '@/store/user';
+
+export default defineComponent({
+    components: {
+        SvgIcon,
+    },
+    setup() {
+        let userData = userDataStore();
+        const dataContainer = reactive({
+            userInfo: toRef(userData, 'userInfo'),
+        });
+        return {
+            dataContainer,
+        };
+    },
+});
+</script>
+
 <template>
     <div class="page-container mine-view">
         <div class="container">
@@ -59,38 +91,6 @@
     </div>
 </template>
 
-<script>
-/**
- * 个人信息展示
- */
-import {
-    defineComponent,
-    onBeforeUnmount,
-    ref,
-    reactive,
-    getCurrentInstance,
-    onActivated,
-    toRef,
-} from 'vue';
-import SvgIcon from '@/components/svgIcon/index.vue';
-import { userDataStore } from '@/store/user';
-
-export default defineComponent({
-    components: {
-        SvgIcon,
-    },
-    setup() {
-        let userData = userDataStore();
-        const dataContainer = reactive({
-            userInfo: toRef(userData, 'userInfo'),
-        });
-        return {
-            dataContainer,
-        };
-    },
-});
-</script>
-
 <style lang="scss" scoped>
 .mine-view {
     display: flex;
@@ -103,7 +103,7 @@ export default defineComponent({
         max-width: 500px;
         padding: 30px 15px 15px 15px;
         box-sizing: border-box;
-        background-color: white;
+        background-color: rgb(112, 112, 112);
         border-radius: 5px;
         display: flex;
         flex-wrap: wrap;
@@ -120,7 +120,7 @@ export default defineComponent({
         > .content {
             width: 100%;
             border-radius: 5px;
-            background-color: rgb(238, 238, 238);
+            background-color: rgb(62, 62, 62);
             padding: 0 0;
             box-sizing: border-box;
             > .item {
@@ -131,9 +131,9 @@ export default defineComponent({
                 flex-direction: row;
                 justify-content: space-between;
                 align-items: center;
-                font-size: 16px;
-                border-bottom: 1px solid rgb(214, 214, 214);
-                color: #4a4a4a;
+                font-size: 14px;
+                border-bottom: 1px solid rgb(0, 0, 0);
+                color: #e6e6e6;
                 &:last-child {
                     border: none;
                 }

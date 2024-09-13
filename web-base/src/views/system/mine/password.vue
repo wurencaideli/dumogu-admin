@@ -1,51 +1,3 @@
-<template>
-    <div class="page-container mine-view">
-        <div class="container">
-            <el-form
-                :model="dataContainer.form"
-                ref="FormElRef"
-                :inline="false"
-                :rules="dataContainer.rules"
-                label-width="120px"
-            >
-                <el-row :gutter="0">
-                    <el-col :span="24">
-                        <el-form-item label="原密码" prop="password">
-                            <el-input
-                                v-model="dataContainer.form.password"
-                                type="password"
-                                placeholder="请输入"
-                                clearable
-                            />
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="24">
-                        <el-form-item label="新密码" prop="newPassword">
-                            <el-input
-                                v-model="dataContainer.form.newPassword"
-                                type="password"
-                                placeholder="请输入"
-                                clearable
-                            />
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="24">
-                        <el-form-item label="重新输入新密码" prop="newPassword_1">
-                            <el-input
-                                v-model="dataContainer.form.newPassword_1"
-                                type="password"
-                                placeholder="请输入"
-                                clearable
-                            />
-                        </el-form-item>
-                    </el-col>
-                </el-row>
-            </el-form>
-            <el-button type="primary" @click="handleSubmit"> 提交 </el-button>
-        </div>
-    </div>
-</template>
-
 <script>
 /**
  * 密码修改页面
@@ -64,6 +16,8 @@ import SvgIcon from '@/components/svgIcon/index.vue';
 import { Delete } from '@element-plus/icons-vue';
 import { verifiedData } from '@/common/verifiedTools';
 import { messageError, messageSuccess } from '@/action/messagePrompt.js';
+import { toTrim } from '@/common/otherTools';
+import { throttleFn } from '@/common/debounceAndThrottle';
 
 export default defineComponent({
     components: {
@@ -77,56 +31,82 @@ export default defineComponent({
             loading: false,
             form: {},
             rules: {
-                password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
-                newPassword: [{ required: true, message: '请输入新密码', trigger: 'blur' }],
+                oldPassword: [{ required: true, message: '请输入密码', trigger: 'blur' }],
+                password: [{ required: true, message: '请输入新密码', trigger: 'blur' }],
+                password_: [
+                    { required: true, message: '请确认密码', trigger: 'blur' },
+                    {
+                        validator: (rule, value, callBack) => {
+                            if (value !== dataContainer.form.password) {
+                                callBack(new Error('两次密码不一致'));
+                            }
+                            callBack();
+                        },
+                        trigger: 'blur',
+                    },
+                ],
             },
         });
         /** 提交数据 */
-        function handleSubmit() {
-            /** 使用组件自带方法验证数据 */
-            if (!FormElRef.value) return;
+        /** 保存操作 */
+        const handleSubmit = throttleFn(function () {
+            if (!FormElRef.value || dataContainer.loading) return;
             FormElRef.value.validate((valid, e) => {
-                if (e) {
-                    /** 打印报错信息 */
-                    let msg = e[Object.keys(e)[0]][0].message;
-                    messageError(msg);
+                if (!valid) {
+                    const message = e[Object.keys(e)[0]][0].message;
+                    messageError(message);
                     return;
                 }
-                /** 其他验证 */
-                e = validData(dataContainer.form);
-                if (e) {
-                    messageError(e[0].msg);
+                const verifiedData = validBase(dataContainer.form);
+                if (verifiedData) {
+                    messageError('参数错误！' + verifiedData[0].label);
                     return;
                 }
-                if (!valid) return;
-                /** 向后端提交 */
-                messageSuccess('提交成功！');
+                // 可以提交数据了
+                messageSuccess('数据提交了');
             });
-        }
+        }, 700);
         /**
          * 数据验证
          * 外部可调用
          *  */
-        function validData(data) {
+        /** 验证信息 */
+        function validBase(data) {
             const failData = verifiedData(data, {
+                oldPassword: {
+                    label: 'oldPassword:原密码',
+                    validate(value, option) {
+                        if (!value && value !== 0) {
+                            option.label = option.label + ' 不能为空';
+                            return false;
+                        }
+                        if (Object.prototype.toString.call(value) !== '[object String]') {
+                            option.label = option.label + ' 必须是一个字符串';
+                            return false;
+                        }
+                        if (value.length > 300) {
+                            option.label = option.label + ' 字符长度长度超出300';
+                            return false;
+                        }
+                        return true;
+                    },
+                },
                 password: {
-                    msg: '密码 不能为空',
+                    label: 'password:密码',
                     validate(value, option) {
-                        if (!value && value !== 0) return false;
+                        if (!value && value !== 0) {
+                            option.label = option.label + ' 不能为空';
+                            return false;
+                        }
+                        if (Object.prototype.toString.call(value) !== '[object String]') {
+                            option.label = option.label + ' 必须是一个字符串';
+                            return false;
+                        }
+                        if (value.length > 300) {
+                            option.label = option.label + ' 字符长度长度超出300';
+                            return false;
+                        }
                         return true;
-                    },
-                },
-                newPassword: {
-                    msg: '新密码 不能为空',
-                    validate(value, option) {
-                        if (!value && value !== 0) return false;
-                        return true;
-                    },
-                },
-                newPassword_1: {
-                    msg: '两次密码不一致',
-                    validate(value, option) {
-                        return data.newPassword === value;
                     },
                 },
             });
@@ -136,10 +116,80 @@ export default defineComponent({
             dataContainer,
             FormElRef,
             handleSubmit,
+            toTrim,
         };
     },
 });
 </script>
+
+<template>
+    <div class="page-container mine-view">
+        <div class="container">
+            <el-form
+                :model="dataContainer.form"
+                ref="FormElRef"
+                :inline="false"
+                :rules="dataContainer.rules"
+                label-width="120px"
+            >
+                <el-row :gutter="0">
+                    <el-col :span="24">
+                        <el-form-item label="原密码" prop="oldPassword">
+                            <el-input
+                                show-password
+                                @input="
+                                    () => {
+                                        dataContainer.form.oldPassword = toTrim(
+                                            dataContainer.form.oldPassword,
+                                        );
+                                    }
+                                "
+                                :clearable="true"
+                                v-model="dataContainer.form.oldPassword"
+                            >
+                            </el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="24">
+                        <el-form-item label="新密码" prop="password">
+                            <el-input
+                                show-password
+                                @input="
+                                    () => {
+                                        dataContainer.form.password = toTrim(
+                                            dataContainer.form.password,
+                                        );
+                                    }
+                                "
+                                :clearable="true"
+                                v-model="dataContainer.form.password"
+                            >
+                            </el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="24">
+                        <el-form-item label="确认密码" prop="password_">
+                            <el-input
+                                show-password
+                                @input="
+                                    () => {
+                                        dataContainer.form.password_ = toTrim(
+                                            dataContainer.form.password_,
+                                        );
+                                    }
+                                "
+                                v-model="dataContainer.form.password_"
+                                :clearable="true"
+                            >
+                            </el-input>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+            </el-form>
+            <el-button type="primary" @click="handleSubmit"> 提交 </el-button>
+        </div>
+    </div>
+</template>
 
 <style lang="scss" scoped>
 .mine-view {
@@ -153,7 +203,7 @@ export default defineComponent({
         max-width: 700px;
         padding: 30px 15px 15px 15px;
         box-sizing: border-box;
-        background-color: white;
+        background-color: rgb(113, 113, 113);
         border-radius: 5px;
         display: flex;
         flex-wrap: wrap;

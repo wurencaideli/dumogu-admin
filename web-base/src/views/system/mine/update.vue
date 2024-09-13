@@ -1,96 +1,3 @@
-<template>
-    <div class="page-container mine-view">
-        <div class="container img-container">
-            <el-form
-                style="width: 100%"
-                :model="dataContainer.form"
-                :inline="false"
-                label-width="120px"
-            >
-                <el-row :gutter="0">
-                    <el-col :span="24">
-                        <el-form-item label="用户头像" prop="">
-                            <div>
-                                <div class="img-upload">
-                                    <UploadSingleImg
-                                        ref="UploadSingleImgRef"
-                                        :imgUrl="dataContainer.imgUrl_3"
-                                        :showCancelBt="!!dataContainer.imgUrl_3"
-                                        :maxSize="1024 * 1024 * 7"
-                                        :minSize="1024 * 7"
-                                        :needAccept="'image/png,image/jpeg'"
-                                        :autoUpload="false"
-                                        :showChooseBt="false"
-                                        :uploadApi="'/upload-api/upload'"
-                                        @onSuccess="handleUploadSuccess"
-                                        @onFail="handleUploadFail"
-                                        @onCancel="handleUploadCancel"
-                                    ></UploadSingleImg>
-                                    <div @click="changeImg" class="bt">
-                                        <SvgIcon
-                                            :style="'width: 25px;min-width:25px;height: 25px;'"
-                                            name="svg:upload.svg"
-                                        ></SvgIcon>
-                                    </div>
-                                </div>
-                                <el-button
-                                    style="margin-top: 15px"
-                                    type="primary"
-                                    @click="handleUpload"
-                                >
-                                    确认修改新头像
-                                </el-button>
-                            </div>
-                        </el-form-item>
-                    </el-col>
-                </el-row>
-            </el-form>
-        </div>
-        <div class="container">
-            <el-form
-                style="width: 100%"
-                :model="dataContainer.form"
-                ref="FormElRef"
-                :inline="false"
-                :rules="dataContainer.rules"
-                label-width="120px"
-            >
-                <el-row :gutter="0">
-                    <el-col :span="24">
-                        <el-form-item label="用户昵称" prop="name">
-                            <el-input
-                                v-model="dataContainer.form.name"
-                                placeholder="请输入"
-                                clearable
-                            />
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="24">
-                        <el-form-item label="手机号码" prop="newPassword">
-                            <el-input
-                                v-model="dataContainer.form.newPassword"
-                                placeholder="请输入"
-                                clearable
-                            />
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="24">
-                        <el-form-item label="邮箱" prop="newPassword_1">
-                            <el-input
-                                v-model="dataContainer.form.newPassword_1"
-                                placeholder="请输入"
-                                clearable
-                            />
-                        </el-form-item>
-                    </el-col>
-                </el-row>
-            </el-form>
-            <el-button type="primary" @click="handleSubmit"> 确定提交 </el-button>
-        </div>
-        <ChangeImgDialog ref="ChangeImgDialogRef"></ChangeImgDialog>
-    </div>
-</template>
-
 <script>
 /**
  * 密码修改页面
@@ -239,6 +146,99 @@ export default defineComponent({
 });
 </script>
 
+<template>
+    <div class="page-container mine-view">
+        <div class="container img-container">
+            <el-form
+                style="width: 100%"
+                :model="dataContainer.form"
+                :inline="false"
+                label-width="120px"
+            >
+                <el-row :gutter="0">
+                    <el-col :span="24">
+                        <el-form-item label="用户头像" prop="">
+                            <div>
+                                <div class="img-upload">
+                                    <UploadSingleImg
+                                        ref="UploadSingleImgRef"
+                                        :imgUrl="dataContainer.imgUrl_3"
+                                        :showCancelBt="!!dataContainer.imgUrl_3"
+                                        :maxSize="1024 * 1024 * 7"
+                                        :minSize="1024 * 7"
+                                        :needAccept="'image/png,image/jpeg'"
+                                        :autoUpload="false"
+                                        :showChooseBt="false"
+                                        :uploadApi="'/upload-api/upload'"
+                                        @onSuccess="handleUploadSuccess"
+                                        @onFail="handleUploadFail"
+                                        @onCancel="handleUploadCancel"
+                                    ></UploadSingleImg>
+                                    <div @click="changeImg" class="bt">
+                                        <SvgIcon
+                                            :style="'width: 25px;min-width:25px;height: 25px;'"
+                                            name="svg:upload.svg"
+                                        ></SvgIcon>
+                                    </div>
+                                </div>
+                                <el-button
+                                    style="margin-top: 15px"
+                                    type="primary"
+                                    @click="handleUpload"
+                                >
+                                    确认修改新头像
+                                </el-button>
+                            </div>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+            </el-form>
+        </div>
+        <div class="container">
+            <el-form
+                style="width: 100%"
+                :model="dataContainer.form"
+                ref="FormElRef"
+                :inline="false"
+                :rules="dataContainer.rules"
+                label-width="120px"
+            >
+                <el-row :gutter="0">
+                    <el-col :span="24">
+                        <el-form-item label="用户昵称" prop="name">
+                            <el-input
+                                v-model="dataContainer.form.name"
+                                placeholder="请输入"
+                                clearable
+                            />
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="24">
+                        <el-form-item label="手机号码" prop="newPassword">
+                            <el-input
+                                v-model="dataContainer.form.newPassword"
+                                placeholder="请输入"
+                                clearable
+                            />
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="24">
+                        <el-form-item label="邮箱" prop="newPassword_1">
+                            <el-input
+                                v-model="dataContainer.form.newPassword_1"
+                                placeholder="请输入"
+                                clearable
+                            />
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+            </el-form>
+            <el-button type="primary" @click="handleSubmit"> 确定提交 </el-button>
+        </div>
+        <ChangeImgDialog ref="ChangeImgDialogRef"></ChangeImgDialog>
+    </div>
+</template>
+
 <style lang="scss" scoped>
 .mine-view {
     display: flex;
@@ -266,7 +266,7 @@ export default defineComponent({
             > .bt {
                 position: absolute;
                 cursor: pointer;
-                background-color: white;
+                background-color: rgb(113, 113, 113);
                 border-radius: 5px;
                 display: flex;
                 justify-content: center;
@@ -282,7 +282,7 @@ export default defineComponent({
         max-width: 700px;
         padding: 15px 15px 15px 15px;
         box-sizing: border-box;
-        background-color: white;
+        background-color: rgb(113, 113, 113);
         border-radius: 5px;
         display: flex;
         flex-wrap: wrap;

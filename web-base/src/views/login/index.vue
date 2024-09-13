@@ -259,14 +259,14 @@ export default defineComponent({
                     <div class="title">登 录</div>
                     <div class="other-login-bt">
                         <div class="item">
-                            <SvgIcon :style="'width:20px;height:20px;'" name="svg:g.svg"></SvgIcon>
+                            <SvgIcon :style="'width:25px;height:25px;'" name="svg:g.svg"></SvgIcon>
                         </div>
                         <div class="item">
-                            <SvgIcon :style="'width:20px;height:20px;'" name="svg:f.svg"></SvgIcon>
+                            <SvgIcon :style="'width:25px;height:25px;'" name="svg:f.svg"></SvgIcon>
                         </div>
                         <div class="item">
                             <SvgIcon
-                                :style="'width:20px;height:20px;'"
+                                :style="'width:25px;height:25px;'"
                                 name="svg:weixin.svg"
                             ></SvgIcon>
                         </div>
@@ -388,7 +388,7 @@ export default defineComponent({
         flex-direction: row;
         width: 100%;
         max-width: 900px;
-        background-color: rgb(0, 0, 0);
+        background-color: rgb(56, 56, 56);
         border-radius: 12px;
         overflow: hidden;
         box-shadow: 4px 4px 5px 0 rgba(0, 0, 0, 0.449);
@@ -398,7 +398,7 @@ export default defineComponent({
             // background-image: var(--bg-img-1);
             // background-size: cover;
             // box-shadow: inset 1px 0px 4px #0000006b;
-            background-color: #e9e9e9;
+            background-color: #c6c6c6;
             background-repeat: no-repeat;
             :deep(.el-carousel) {
                 width: 100%;
@@ -516,6 +516,7 @@ export default defineComponent({
                     justify-content: flex-start;
                     align-items: center;
                     background: #eee;
+                    color: #000;
                     border: none;
                     padding: 0 15px;
                     margin: 20px 0 0 0;
@@ -541,7 +542,8 @@ export default defineComponent({
                             background-color: transparent;
                             padding: 0;
                             input {
-                                font-size: 17px;
+                                font-size: 16px;
+                                color: #000;
                             }
                         }
                         .el-input__suffix {
@@ -598,7 +600,7 @@ export default defineComponent({
         display: flex;
         justify-content: center;
         align-items: center;
-        font-size: 17px;
+        font-size: 13px;
         color: white;
         > * {
             margin-left: 5px;
