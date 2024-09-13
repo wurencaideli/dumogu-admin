@@ -107,11 +107,13 @@ export default defineComponent({
             class="page-container new-tag-page-view"
         >
             <div class="container">
+                <div class="title">新标签页</div>
                 <div class="search">
                     <el-input
                         v-model="dataContainer.input"
                         @change="handleSearch"
                         @input="handleSearch"
+                        clearable
                         placeholder="请输入菜单名称进行过滤"
                     />
                 </div>
@@ -145,12 +147,15 @@ export default defineComponent({
     display: flex;
     flex-direction: column;
     width: 100%;
+    justify-content: center;
+    align-items: center;
     > .container {
         background-color: white;
         width: 100%;
+        max-width: 1200px;
         height: fit-content;
-        border-radius: 5px;
-        padding: 60px;
+        border-radius: 12px;
+        padding: 60px 15px;
         box-sizing: border-box;
         display: flex;
         flex-direction: column;
@@ -160,6 +165,16 @@ export default defineComponent({
         background-repeat: no-repeat;
         box-shadow: 1px 1px 3px 0 rgba(0, 0, 0, 0.319);
         background-position: center top;
+        > .title {
+            background: -webkit-linear-gradient(120deg, #8500c3 30%, #5340ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 50px;
+            margin-bottom: 55px;
+            letter-spacing: 5px;
+            font-weight: bold;
+        }
         > .search {
             display: flex;
             flex-wrap: wrap;
@@ -171,13 +186,26 @@ export default defineComponent({
                 width: 100%;
                 max-width: 700px;
                 height: 50px;
-                border: 2px solid rgba(3, 3, 3, 0.215686);
+                border: 2px solid rgb(3, 3, 3);
                 box-shadow: 1px 1px 3px 0 rgba(0, 0, 0, 0.319);
                 border-radius: 12px;
                 overflow: hidden;
                 font-size: 15px;
+                padding: 0 15px;
+                backdrop-filter: blur(12px);
+                background-color: #ffffff3d;
                 .el-input__wrapper {
                     box-shadow: none !important;
+                    padding: 0 !important;
+                    input {
+                        color: rgb(255, 255, 255);
+                    }
+                }
+                .el-input__suffix {
+                    .el-icon {
+                        font-size: 20px !important;
+                        color: #3c3c3c !important;
+                    }
                 }
             }
         }
@@ -216,7 +244,7 @@ export default defineComponent({
                         background-color: rgb(240, 240, 240);
                         border-radius: 50%;
                         transition: all 0.2s;
-                        border: 2px solid rgba(3, 3, 3, 0.215686);
+                        border: 2px solid rgb(3, 3, 3);
                         box-sizing: border-box;
                         box-shadow: 1px 1px 1px 0 rgba(0, 0, 0, 0.653);
                         color: rgb(56, 56, 56);

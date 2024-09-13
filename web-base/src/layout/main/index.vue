@@ -93,13 +93,8 @@ export default defineComponent({
             <Navbar></Navbar>
         </div>
         <div class="centre">
-            <div class="logo">
-                <el-image
-                    @click="toPath({ path: '/' })"
-                    class="img"
-                    :src="dataContainer.img.img_1"
-                    fit="cover"
-                />
+            <div class="logo" @click="toPath({ path: '/' })">
+                <el-image class="img" :src="dataContainer.img.img_1" fit="cover" />
                 <div class="name">毒蘑菇 - 管理</div>
             </div>
             <div class="main-centre-content">
@@ -187,6 +182,7 @@ export default defineComponent({
             overflow: hidden;
             box-shadow: var(--box-shadow-2);
             border-bottom: 1px solid rgba(0, 0, 0, 0.47);
+            cursor: pointer;
             &.hidden {
                 width: 0;
                 padding: 0;
@@ -201,7 +197,6 @@ export default defineComponent({
                 width: 45px;
                 height: 45px;
                 border-radius: 5px;
-                cursor: pointer;
                 margin-right: 10px;
             }
             > .name {

@@ -8,7 +8,7 @@ let configDev = {
     name: '毒蘑菇 - 后台管理',
     title: '最基础的管理端架子 - 毒蘑菇管理',
     baseApiURL: 'https://s.dumogu.top/api',
-    routeBasePath: '/',
+    routeBasePath: '/base',
 };
 
 /** 生产环境配置 */
@@ -16,7 +16,7 @@ let configProd = {
     name: '毒蘑菇 - 后台管理',
     title: '最基础的管理端架子 - 毒蘑菇管理',
     baseApiURL: '/api',
-    routeBasePath: '/',
+    routeBasePath: '/base',
 };
 
 let config = isProd ? configProd : configDev;

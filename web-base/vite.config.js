@@ -24,7 +24,7 @@ const ossOptions = {
 export default defineConfig(({ mode }) => {
     const isProd = mode !== 'development';
     const env = loadEnv(mode, process.cwd(), ''); // 自定义的环境变量
-    let base = '/';
+    let base = '/base';
     let outDir = 'dist';
     let plugins = [
         vue(),
@@ -37,7 +37,7 @@ export default defineConfig(({ mode }) => {
     ];
     /** 如果使用了alioss来储存文件 */
     if (!!ossOptionConfig.url) {
-        base = ossOptionConfig.url + '/';
+        base = ossOptionConfig.url + base;
         plugins.push(vitePluginAliOss(ossOptions));
     }
     return {

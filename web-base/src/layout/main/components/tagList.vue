@@ -481,7 +481,6 @@ export default {
                 position: relative;
                 transition: all 0.2s;
                 opacity: 0.5;
-                box-shadow: var(--box-shadow-2);
                 &:last-child {
                     margin: 0;
                 }
@@ -490,6 +489,7 @@ export default {
                     color: var(--text-color-2);
                     font-weight: bold;
                     opacity: 1;
+                    box-shadow: var(--box-shadow-2);
                 }
                 &:hover {
                     background-color: #5340ff;
