@@ -609,11 +609,11 @@ export default {
         padding: 20px 0;
         box-sizing: border-box;
         border-radius: 12px;
-        border: 1px solid #ffffff12;
+        border: 1px solid #ffffff1d;
         overflow: hidden;
         opacity: 0;
         pointer-events: none;
-        transition: transform 0.2s;
+        transition: transform 0.2s, opacity 0.2s;
         transform: scale(0);
         &.show {
             opacity: 1;
@@ -625,14 +625,14 @@ export default {
             flex-direction: row;
             justify-content: flex-start;
             align-items: center;
-            padding: 15px 15px;
+            padding: 15px 20px;
             box-sizing: border-box;
             font-size: 13px;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.2s;
             color: rgb(206, 206, 206);
-            border-bottom: 1px solid #ffffff12;
+            border-bottom: 1px solid #ffffff1d;
             border-left: none;
             border-right: none;
             > * {
@@ -643,7 +643,7 @@ export default {
                 color: #007fff;
             }
             &:first-child {
-                border-top: 1px solid #ffffff12;
+                border-top: 1px solid #ffffff1d;
             }
             &.logout {
                 color: #c95050;

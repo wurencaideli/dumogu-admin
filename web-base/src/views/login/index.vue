@@ -32,6 +32,7 @@ export default defineComponent({
         const router = useRouter();
         const route = useRoute();
         const dataContainer = reactive({
+            name: import.meta.env.VITE_APP_name,
             form: {
                 name: '',
                 password: '',
@@ -343,7 +344,7 @@ export default defineComponent({
             </div>
         </div>
         <div class="bottom">
-            版权所有 @admin.dumogu.top 毒蘑菇 - 管理
+            版权所有 @admin.dumogu.top {{ dataContainer.name }}
             <a href="https://github.com/wurencaideli/dumogu-admin" target="_blank" class="bt">
                 <SvgIcon :style="'width:60px;height:25px;'" name="svg:github.svg"></SvgIcon>
             </a>

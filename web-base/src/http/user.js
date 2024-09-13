@@ -123,7 +123,6 @@ const allApi = {
                 path: 'https://www.dumogu.top/',
             },
         ];
-        console.log('获取目录', menuList);
         return Promise.resolve({
             msg: '操作成功',
             code: 200,

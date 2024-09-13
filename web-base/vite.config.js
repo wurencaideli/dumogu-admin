@@ -24,7 +24,7 @@ const ossOptions = {
 export default defineConfig(({ mode }) => {
     const isProd = mode !== 'development';
     const env = loadEnv(mode, process.cwd(), ''); // 自定义的环境变量
-    let base = '/base';
+    let base = env.VITE_APP_biuldBase; // 打包的静态资源的burl base
     let outDir = 'dist';
     let plugins = [
         vue(),

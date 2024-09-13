@@ -6,6 +6,7 @@ import { userDataStore } from '@/store/user';
 import { sysMeluNameMap, sysMeluPathMap } from '@/router/common';
 import { toTree, unfoldTreeList } from '@/common/treeTools';
 import { getNanoid } from '@/common/guid';
+import { deepCopyObj } from '@/common/otherTools';
 import userApi from '@/http/user';
 
 /**
@@ -113,21 +114,14 @@ export function getUserData() {
             .catch(() => {
                 return {};
             });
+        console.log('获取用户信息成功', userInfo_);
         /** 写入基本信息  */
-        userData.setUserInfo({
-            ...userInfo,
-            ...userInfo_,
-        });
+        userData.setUserInfo(Object.assign({}, userInfo, userInfo_));
         /**
          * 获取用户目录列表
          * name表示对应的系统目录，有name才有此系统目录的权限
          * 有path的可直接跳转
          * 没path的，根据name获取映射的系统菜单属性进行跳转
-         * isCache 表示该页面是否缓存
-         * hidden 表示该页面是否在左边目录上显示
-         * isLink 表示直接跳转新页面
-         * iconName 菜单icon图标
-         * fixed 标签是否固定
          *  */
         let menuList = await userApi
             .getMenuList()
@@ -137,10 +131,12 @@ export function getUserData() {
             .catch(() => {
                 return [];
             });
+        console.log('获取用户目录成功', deepCopyObj(menuList));
         let transData = transUserMenu(menuList);
         /** 写入展示菜单数据 */
         userData.setUserMenuList(transData.userMenuList);
         /** 写入权限菜单数据 */
         userData.setUserMenuConfigMap(transData.userMenuConfigMap);
+        console.log('格式化用户目录成功', transData.userMenuList);
     });
 }

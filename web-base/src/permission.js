@@ -95,7 +95,7 @@ function getUserMenu(route) {
  * 根据当前路由情况 添加标签
  * 必须是系统目录才添加标签
  */
-let sortNumber = 0;
+let sortNumber = 0; // 用作标识添加顺序，回退标签时需要
 function addTag(route) {
     if (!route.meta || !route.meta.isMenu) return; //必须是系统目录才能添加目录标签
     /** 必须是系统目录中的，不然不允许添加标签，因为只有属于目录才会有标签 */
@@ -107,9 +107,7 @@ function addTag(route) {
     /** 如果没有该路由配置表示不允许添加标签页 */
     sortNumber++;
     /**
-     * 创建一个新标签，配置其属性
-     * 其中sign是唯一标识，很重要，必填
-     * name 必填
+     * 创建一个新标签，配置其属性，配置优先级(当前路由 > 用户自定义配置 > router meta配置)
      * */
     let newTag = Object.assign({}, { ...route.meta }, userMenuConfig, {
         path: route.path,

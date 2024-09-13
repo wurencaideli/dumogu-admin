@@ -1,21 +1,3 @@
-<template>
-    <div class="link-item-cp">
-        <div class="top">
-            <SvgIcon
-                v-if="dataContainer.dataInfo.iconName"
-                :style="'width: 17px;min-width:17px;height: 17px;'"
-                :name="dataContainer.dataInfo.iconName"
-            ></SvgIcon>
-            {{ dataContainer.dataInfo.title }}
-        </div>
-        <div v-if="dataContainer.dataInfo.content" class="content">
-            {{ dataContainer.dataInfo.content }}
-        </div>
-        <div v-if="dataContainer.dataInfo.number" class="sign">
-            {{ dataContainer.dataInfo.number }}
-        </div>
-    </div>
-</template>
 <script>
 import {
     defineComponent,
@@ -56,6 +38,26 @@ export default {
     },
 };
 </script>
+
+<template>
+    <div class="link-item-cp">
+        <div class="top">
+            <SvgIcon
+                v-if="dataContainer.dataInfo.iconName"
+                :style="'width: 17px;min-width:17px;height: 17px;'"
+                :name="dataContainer.dataInfo.iconName"
+            ></SvgIcon>
+            {{ dataContainer.dataInfo.title }}
+        </div>
+        <div v-if="dataContainer.dataInfo.content" class="content">
+            {{ dataContainer.dataInfo.content }}
+        </div>
+        <div v-if="dataContainer.dataInfo.number" class="sign">
+            {{ dataContainer.dataInfo.number }}
+        </div>
+    </div>
+</template>
+
 <style scoped lang="scss">
 .link-item-cp {
     width: 100%;

@@ -27,6 +27,7 @@ export default defineComponent({
         const router = useRouter();
         const EchartContainerRef_2 = ref(); //组件实例
         const dataContainer = reactive({
+            name: import.meta.env.VITE_APP_name,
             loading: false,
         });
         onMounted(() => {
@@ -131,7 +132,7 @@ export default defineComponent({
     <DefinScrollbar height="100%" :showUpBt="true">
         <div class="page-container main-view">
             <div class="container">
-                <h3>毒蘑菇 - 管理</h3>
+                <h3>{{ dataContainer.name }}</h3>
                 <p>自定义页面菜单，标签页可自定义是否缓存。</p>
                 <p>
                     标签页下面有小横条的表示有缓存，有两种页面列表管理，一种是修改添加会打开新页面，另一种是以对话框形式操作数据。其中对话框已经封装完善。

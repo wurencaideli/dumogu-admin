@@ -19,7 +19,6 @@ import { userDataStore } from '@/store/user';
 import { toTree, unfoldTreeList } from '@/common/treeTools';
 import DefinScrollbar from '@/components/definScrollbar.vue';
 import { messageSuccess, messageError } from '@/action/messagePrompt';
-import img_1 from './pro-upgrade-bg.svg';
 import generateTagListTools from '@/action/tagListTools';
 
 export default defineComponent({
@@ -41,9 +40,6 @@ export default defineComponent({
             menuList: [],
             menuList_v: [],
             input: [],
-            img: {
-                img_1,
-            },
         });
         /**
          * 数据初始化
@@ -100,12 +96,7 @@ export default defineComponent({
 
 <template>
     <DefinScrollbar height="100%" :showUpBt="true">
-        <div
-            :style="{
-                '--bg-img_1': `url(${dataContainer.img.img_1})`,
-            }"
-            class="page-container new-tag-page-view"
-        >
+        <div class="page-container new-tag-page-view">
             <div class="container">
                 <div class="title">新标签页</div>
                 <div class="search">

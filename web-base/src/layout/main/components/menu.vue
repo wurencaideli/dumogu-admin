@@ -1,18 +1,3 @@
-<template>
-    <el-menu
-        class="menu-container"
-        ref="ElMenuRef"
-        :collapse="false"
-        :default-active="route.path"
-        :router="false"
-    >
-        <MenuItem
-            v-for="(item, index) in dataContainer.dataList"
-            :key="item.path"
-            :dataInfo="item"
-        ></MenuItem>
-    </el-menu>
-</template>
 <script>
 import {
     defineComponent,
@@ -68,6 +53,23 @@ export default {
     },
 };
 </script>
+
+<template>
+    <el-menu
+        class="menu-container"
+        ref="ElMenuRef"
+        :collapse="false"
+        :default-active="route.path"
+        :router="false"
+    >
+        <MenuItem
+            v-for="(item, index) in dataContainer.dataList"
+            :key="item.path"
+            :dataInfo="item"
+        ></MenuItem>
+    </el-menu>
+</template>
+
 <style scoped lang="scss">
 .menu-container {
     width: 100%;

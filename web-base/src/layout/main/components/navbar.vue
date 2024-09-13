@@ -317,6 +317,7 @@ export default defineComponent({
             position: relative;
             &:hover {
                 background-color: #000000af;
+                transform: scale(1.2);
             }
             > .number {
                 height: fit-content;

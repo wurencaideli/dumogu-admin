@@ -20,17 +20,7 @@ function createS(key, value) {
 const userStorage = (value) => {
     return createS('user-container', value);
 };
-/** 保存标签页的标签信息 */
-const mainTagListStorage = (value) => {
-    return createS('main-tag-list-container', value);
-};
-/** 保存memu的隐藏信息信息 */
-const showMenuStorage = (value) => {
-    return createS('show-menu-container', value);
-};
 
 export default {
     userStorage,
-    showMenuStorage,
-    mainTagListStorage,
 };

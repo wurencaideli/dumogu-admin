@@ -40,10 +40,11 @@ export default defineComponent({
         const router = useRouter();
         const route = useRoute();
         const dataContainer = reactive({
+            name: import.meta.env.VITE_APP_name,
             img: {
                 img_1,
             },
-            layoutName: 'main',
+            layoutName: 'main', // layout分组名
             userInfo: toRef(userData, 'userInfo'),
             tagList: toRef(userData, 'tagList'),
             userMenuList: toRef(userData, 'userMenuList'),
@@ -95,7 +96,7 @@ export default defineComponent({
         <div class="centre">
             <div class="logo" @click="toPath({ path: '/' })">
                 <el-image class="img" :src="dataContainer.img.img_1" fit="cover" />
-                <div class="name">毒蘑菇 - 管理</div>
+                <div class="name">{{ dataContainer.name }}</div>
             </div>
             <div class="main-centre-content">
                 <DefinScrollbar :loading="dataContainer.loading" height="100%" :showUpBt="false">

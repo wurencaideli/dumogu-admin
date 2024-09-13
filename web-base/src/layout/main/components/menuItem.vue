@@ -1,29 +1,3 @@
-<template>
-    <div class="menu-item-container">
-        <!-- 没有子目录的 -->
-        <el-menu-item
-            v-if="!dataContainer.dataInfo.childs || dataContainer.dataInfo.childs.length == 0"
-            :index="dataContainer.dataInfo.path"
-            :class="{
-                'is-active': dataContainer.dataInfo.path == route.path,
-            }"
-            @click="handleClick(dataContainer.dataInfo)"
-        >
-            <linkItem :dataInfo="dataContainer.dataInfo"></linkItem>
-        </el-menu-item>
-        <!-- 有子目录且父节点不可点击 -->
-        <el-sub-menu v-else :index="dataContainer.dataInfo.sign">
-            <template #title>
-                <linkItem :dataInfo="dataContainer.dataInfo"></linkItem>
-            </template>
-            <MenuItem
-                v-for="(item, index) in dataContainer.dataInfo.childs"
-                :key="item.path"
-                :dataInfo="item"
-            ></MenuItem>
-        </el-sub-menu>
-    </div>
-</template>
 <script>
 import {
     defineComponent,
@@ -78,6 +52,34 @@ export default {
     },
 };
 </script>
+
+<template>
+    <div class="menu-item-container">
+        <!-- 没有子目录的 -->
+        <el-menu-item
+            v-if="!dataContainer.dataInfo.childs || dataContainer.dataInfo.childs.length == 0"
+            :index="dataContainer.dataInfo.path"
+            :class="{
+                'is-active': dataContainer.dataInfo.path == route.path,
+            }"
+            @click="handleClick(dataContainer.dataInfo)"
+        >
+            <linkItem :dataInfo="dataContainer.dataInfo"></linkItem>
+        </el-menu-item>
+        <!-- 有子目录且父节点不可点击 -->
+        <el-sub-menu v-else :index="dataContainer.dataInfo.sign">
+            <template #title>
+                <linkItem :dataInfo="dataContainer.dataInfo"></linkItem>
+            </template>
+            <MenuItem
+                v-for="(item, index) in dataContainer.dataInfo.childs"
+                :key="item.path"
+                :dataInfo="item"
+            ></MenuItem>
+        </el-sub-menu>
+    </div>
+</template>
+
 <style scoped lang="scss">
 .menu-item-container {
     height: fit-content;
