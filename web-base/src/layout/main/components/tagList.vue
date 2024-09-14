@@ -57,6 +57,8 @@ export default defineComponent({
             show: false,
             location: {},
             show_1: false,
+            showLeft: false,
+            showRight: false,
             isPc: isPc(), //是否是PC端
             activeItem: null,
         });
@@ -92,6 +94,20 @@ export default defineComponent({
                 scrollLeft = scrollLeft + 30;
             }
             el.scrollLeft = scrollLeft;
+        }
+        /** 滚动容器滚动事件 */
+        function handleScroll_1(e) {
+            if (!ElScrollbarRef.value) return;
+            dataContainer.showLeft = false;
+            dataContainer.showRight = false;
+            let el = ElScrollbarRef.value.wrapRef;
+            let scrollRight = el.scrollWidth - el.clientWidth - e.scrollLeft;
+            if (e.scrollLeft >= 5) {
+                dataContainer.showLeft = true;
+            }
+            if (scrollRight >= 5) {
+                dataContainer.showRight = true;
+            }
         }
         /**
          * 自动滚动到相应标签
@@ -216,6 +232,7 @@ export default defineComponent({
             handleTagClick,
             toggleFullScreen,
             test,
+            handleScroll_1,
         };
     },
 });
@@ -223,7 +240,14 @@ export default defineComponent({
 
 <template>
     <div class="tag-list-cp-container">
-        <div class="left" @wheel="handleScroll">
+        <div
+            :class="{
+                left: true,
+                'show-right': dataContainer.showRight,
+                'show-left': dataContainer.showLeft,
+            }"
+            @wheel="handleScroll"
+        >
             <definDropdown
                 :show="dataContainer.show"
                 :ifLeftClick="false"
@@ -231,7 +255,7 @@ export default defineComponent({
                 @onOtherClick="dataContainer.show = false"
                 position="outside,bottom,start"
             >
-                <el-scrollbar ref="ElScrollbarRef" height="100%">
+                <el-scrollbar @scroll="handleScroll_1" ref="ElScrollbarRef" height="100%">
                     <draggable
                         class="scrollbar-container"
                         item-key="sign"
@@ -261,7 +285,7 @@ export default defineComponent({
                                     class="bt"
                                 >
                                     <SvgIcon
-                                        :style="'width:12px;height:12px;'"
+                                        :style="'width:10px;height:10px;'"
                                         name="svg:times.svg"
                                     ></SvgIcon>
                                 </div>
@@ -428,6 +452,44 @@ export default defineComponent({
         flex: 1 1 0;
         width: 0;
         height: 100%;
+        position: relative;
+        margin-right: var(--item-gap);
+        &.show-left {
+            &::after {
+                opacity: 1;
+            }
+        }
+        &.show-right {
+            &::before {
+                opacity: 1;
+            }
+        }
+        &::after {
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s;
+            content: ' ';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: var(--item-gap);
+            height: 100%;
+            background-image: linear-gradient(to right, #3c3f45, transparent);
+            z-index: 9;
+        }
+        &::before {
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s;
+            content: ' ';
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: var(--item-gap);
+            height: 100%;
+            background-image: linear-gradient(to right, transparent, #3c3f45);
+            z-index: 9;
+        }
         :deep(.el-scrollbar__bar) {
             &.is-horizontal {
                 height: 5px !important;
@@ -452,7 +514,7 @@ export default defineComponent({
                 flex-direction: row;
                 justify-content: center;
                 align-items: center;
-                padding: 5px 8px;
+                padding: 5px 10px;
                 box-sizing: border-box;
                 margin: 0 10px 0 0;
                 font-size: 12px;
@@ -464,6 +526,8 @@ export default defineComponent({
                 position: relative;
                 transition: all 0.2s;
                 opacity: 0.5;
+                --bt-width: 20px;
+                --bt-width-1: calc(var(--bt-width) / 2);
                 &:last-child {
                     margin: 0;
                 }
@@ -476,7 +540,11 @@ export default defineComponent({
                 }
                 &:hover {
                     background-color: #5340ff;
-                    opacity: 1;
+                    > .bt {
+                        opacity: 1;
+                        width: var(--bt-width);
+                        margin-left: 7px;
+                    }
                 }
                 > .sign {
                     width: 10px;
@@ -489,16 +557,20 @@ export default defineComponent({
                     }
                 }
                 > .bt {
-                    width: fit-content;
-                    height: fit-content;
+                    opacity: 0;
+                    width: 0;
+                    height: var(--bt-width);
+                    border-radius: 100%;
                     display: flex;
                     flex-direction: row;
                     justify-content: center;
                     align-items: center;
-                    margin-left: 5px;
                     transition: all 0.2s;
+                    border: 1px solid rgb(228, 228, 228);
+                    box-sizing: border-box;
                     &:hover {
                         color: red;
+                        border: 1px solid red;
                     }
                 }
                 > .cache {
@@ -523,6 +595,12 @@ export default defineComponent({
                 justify-content: center;
                 align-items: center;
                 color: rgb(202, 202, 202);
+                border: 2px solid #7768ff;
+                &:hover {
+                    background-color: #5340ff;
+                    opacity: 1;
+                    transform: scale(1.2);
+                }
             }
         }
     }
@@ -534,7 +612,7 @@ export default defineComponent({
         box-sizing: border-box;
         height: 100%;
         > * {
-            margin: 0 0 0 12px;
+            margin: 0 0 0 15px;
             &:first-child {
                 margin: 0;
             }

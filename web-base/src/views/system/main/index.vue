@@ -27,11 +27,9 @@ export default defineComponent({
     <DefinScrollbar height="100%" :showUpBt="true">
         <div class="page-container main-view">
             <div class="container">
-                <h3>{{ dataContainer.name }}</h3>
+                <h1>{{ dataContainer.name }}</h1>
                 <p>自定义页面菜单，标签页可自定义是否缓存。</p>
-                <p>
-                    标签页下面有小横条的表示有缓存，有两种页面列表管理，一种是修改添加会打开新页面，另一种是以对话框形式操作数据。其中对话框已经封装完善。
-                </p>
+                <p>标签页下面有小横条的表示有缓存。 标签上鼠标右击可以操作。</p>
             </div>
         </div>
     </DefinScrollbar>
@@ -42,6 +40,7 @@ export default defineComponent({
     display: flex;
     flex-direction: column;
     width: 100%;
+    color: rgb(232, 232, 232);
     .container {
         width: 100%;
         min-height: 800px;
