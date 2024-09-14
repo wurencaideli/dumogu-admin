@@ -24,12 +24,14 @@ import generateTagListTools from '@/action/tagListTools';
 import { userDataStore } from '@/store/user';
 import { useRouter, useRoute } from 'vue-router';
 import { toggleFullScreen } from '@/common/otherTools';
+import definDropdown from '@/components/definDropdown.vue';
 
 export default defineComponent({
     name: 'TagList',
     components: {
         SvgIcon,
         draggable,
+        definDropdown,
     },
     props: {
         /** 当前活动的唯一标识 */
@@ -48,8 +50,6 @@ export default defineComponent({
         const router = useRouter();
         let userData = userDataStore();
         const ElScrollbarRef = ref(null);
-        const TagListRef = ref(null);
-        const RightOptionRef = ref(null);
         const dataContainer = reactive({
             tagList: toRef(userData, 'tagList'),
             activePath: toRef(props, 'activePath'),
@@ -124,45 +124,12 @@ export default defineComponent({
             autoScroll();
         });
         /** 鼠标右击，展示自定义右击面板 */
-        function handleClickContext(e, item) {
-            if (!TagListRef.value) return;
-            let el = TagListRef.value;
-            let el_1 = e.target;
-            let rect = el.getBoundingClientRect();
-            let rect_1 = el_1.getBoundingClientRect();
-            let location = {
-                x: rect_1.x - rect.x,
-                y: rect_1.y - rect.y + rect_1.height,
-            };
-            dataContainer.location = location;
-            dataContainer.show = true;
-            dataContainer.activeItem = item;
+        function handleClickContext(item) {
+            setTimeout(() => {
+                dataContainer.show = true;
+                dataContainer.activeItem = item;
+            }, 0);
         }
-        /** 初始化隐藏事件 */
-        function initHiddenEvent() {
-            function callbackFn(e) {
-                dataContainer.show = false;
-            }
-            document.addEventListener('click', callbackFn);
-            onUnmounted(() => {
-                document.removeEventListener('click', callbackFn);
-            });
-        }
-        initHiddenEvent();
-        /** 初始化隐藏事件 */
-        function initHiddenEvent_1() {
-            function callbackFn(e) {
-                if (!RightOptionRef.value) return;
-                if (!e || !e.target) return;
-                if (RightOptionRef.value.contains(e.target)) return;
-                dataContainer.show_1 = false;
-            }
-            document.addEventListener('click', callbackFn);
-            onUnmounted(() => {
-                document.removeEventListener('click', callbackFn);
-            });
-        }
-        initHiddenEvent_1();
         /**
          * tag 点击事件
          * 跳转到该标签的地址里，注意是完整地址
@@ -236,6 +203,9 @@ export default defineComponent({
                     break;
             }
         }
+        function test(e) {
+            console.log(e);
+        }
         return {
             dataContainer,
             handleOptionClick,
@@ -243,68 +213,110 @@ export default defineComponent({
             handleScroll,
             ElScrollbarRef,
             handleClickContext,
-            TagListRef,
-            RightOptionRef,
             handleTagClick,
             toggleFullScreen,
+            test,
         };
     },
 });
 </script>
 
 <template>
-    <div class="tag-list-cp-container" ref="TagListRef">
+    <div class="tag-list-cp-container">
         <div class="left" @wheel="handleScroll">
-            <el-scrollbar ref="ElScrollbarRef" height="100%">
-                <draggable
-                    class="scrollbar-container"
-                    item-key="sign"
-                    :disabled="!dataContainer.isPc"
-                    v-model="tagListTrans"
-                >
-                    <template #item="{ element }">
+            <definDropdown
+                :show="dataContainer.show"
+                :ifLeftClick="false"
+                :targetQuery="'.target'"
+                @onOtherClick="dataContainer.show = false"
+                position="outside,bottom,start"
+            >
+                <el-scrollbar ref="ElScrollbarRef" height="100%">
+                    <draggable
+                        class="scrollbar-container"
+                        item-key="sign"
+                        :disabled="!dataContainer.isPc"
+                        v-model="tagListTrans"
+                    >
+                        <template #item="{ element }">
+                            <div
+                                :class="{
+                                    target: true,
+                                    item: true,
+                                    active: dataContainer.activePath == element.path,
+                                }"
+                                @click="handleTagClick(element)"
+                                @contextmenu.prevent="handleClickContext(element)"
+                            >
+                                <SvgIcon
+                                    class="sign icon-sign"
+                                    v-if="element.showTagIcon && element.iconName"
+                                    :style="'width: 15px;min-width:15px;height: 15px;'"
+                                    :name="element.iconName"
+                                ></SvgIcon>
+                                {{ element.title || '未知标签' }}
+                                <div
+                                    v-if="!element.fixed && tagListTrans.length > 1"
+                                    @click.stop="handleOptionClick('handleTagRemove', element)"
+                                    class="bt"
+                                >
+                                    <SvgIcon
+                                        :style="'width:12px;height:12px;'"
+                                        name="svg:times.svg"
+                                    ></SvgIcon>
+                                </div>
+                                <div v-if="element.isCache" class="cache"></div>
+                            </div>
+                        </template>
+                        <template #footer>
+                            <div class="item add-bt" @click="handleOptionClick('handleAdd')">
+                                <SvgIcon
+                                    :style="'width:16px;height:16px;'"
+                                    name="svg:plus.svg"
+                                ></SvgIcon>
+                            </div>
+                        </template>
+                    </draggable>
+                </el-scrollbar>
+                <template v-slot:dropdown>
+                    <div class="bt-list-container">
                         <div
-                            :class="{
-                                item: true,
-                                active: dataContainer.activePath == element.path,
-                            }"
-                            @click="handleTagClick(element)"
-                            @contextmenu.prevent="
-                                (e) => {
-                                    handleClickContext(e, element);
-                                }
+                            class="item re-bt"
+                            @click="handleOptionClick('handleRefresh', dataContainer.activeItem)"
+                        >
+                            <SvgIcon
+                                :style="'width:16px;height:16px;color:#0072E5;'"
+                                name="svg:redo.svg"
+                            ></SvgIcon>
+                            刷新此标签页
+                        </div>
+                        <div
+                            class="item"
+                            @click="
+                                handleOptionClick('handleSwitchCache', dataContainer.activeItem)
                             "
                         >
                             <SvgIcon
-                                class="sign icon-sign"
-                                v-if="element.showTagIcon && element.iconName"
-                                :style="'width: 15px;min-width:15px;height: 15px;'"
-                                :name="element.iconName"
+                                :style="'width:16px;height:16px;'"
+                                name="svg:switch.svg"
                             ></SvgIcon>
-                            {{ element.title || '未知标签' }}
-                            <div
-                                v-if="!element.fixed && tagListTrans.length > 1"
-                                @click.stop="handleOptionClick('handleTagRemove', element)"
-                                class="bt"
-                            >
-                                <SvgIcon
-                                    :style="'width:12px;height:12px;'"
-                                    name="svg:times.svg"
-                                ></SvgIcon>
-                            </div>
-                            <div v-if="element.isCache" class="cache"></div>
+                            切换缓存状态
                         </div>
-                    </template>
-                    <template #footer>
-                        <div class="item add-bt" @click="handleOptionClick('handleAdd')">
+                        <div
+                            class="item"
+                            @click="
+                                handleOptionClick('handleSwitchFixed', dataContainer.activeItem)
+                            "
+                        >
                             <SvgIcon
                                 :style="'width:16px;height:16px;'"
-                                name="svg:plus.svg"
+                                name="svg:nail.svg"
                             ></SvgIcon>
+                            切换固定状态
                         </div>
-                    </template>
-                </draggable>
-            </el-scrollbar>
+                    </div>
+                </template>
+            </definDropdown>
         </div>
         <div class="right">
             <div class="bt" @click="handleOptionClick('handleToLeft', dataContainer.activeItem)">
@@ -323,105 +335,71 @@ export default defineComponent({
             >
                 <SvgIcon :style="'width:15px;height:15px;'" name="svg:redo.svg"></SvgIcon>
             </div>
-            <div ref="RightOptionRef" class="bt-container">
-                <div
-                    @click="
-                        () => {
-                            dataContainer.show_1 = !dataContainer.show_1;
-                        }
-                    "
-                    class="bt"
-                >
+            <definDropdown
+                :show="dataContainer.show_1"
+                :ifLeftClick="true"
+                :targetQuery="'.target'"
+                @onOtherClick="dataContainer.show_1 = false"
+                @onClick="
+                    () => {
+                        dataContainer.show_1 = !dataContainer.show_1;
+                    }
+                "
+                position="outside,bottom,end"
+            >
+                <div class="bt target">
                     <SvgIcon
                         :style="'width:20px;height:20px;'"
                         name="svg:gallery-view.svg"
                     ></SvgIcon>
                 </div>
-                <div
-                    :class="{
-                        'bt-list-container': true,
-                        show: dataContainer.show_1,
-                    }"
-                >
-                    <div class="item" @click="handleOptionClick('handleRefreshAll')">
-                        <SvgIcon
-                            :style="'width:16px;height:16px;color:#0072E5;'"
-                            name="svg:redo.svg"
-                        ></SvgIcon>
-                        刷新所有标签页
+                <template v-slot:dropdown>
+                    <div class="bt-list-container">
+                        <div class="item" @click="handleOptionClick('handleRefreshAll')">
+                            <SvgIcon
+                                :style="'width:16px;height:16px;color:#0072E5;'"
+                                name="svg:redo.svg"
+                            ></SvgIcon>
+                            刷新所有标签页
+                        </div>
+                        <div
+                            v-if="dataContainer.tagList.length > 1"
+                            class="item"
+                            @click="handleOptionClick('handleDeleteOtherTags')"
+                        >
+                            <SvgIcon
+                                :style="'width:16px;height:16px;color:#f86464;'"
+                                name="svg:borderverticle-fill.svg"
+                            ></SvgIcon>
+                            关闭其他标签页
+                        </div>
+                        <div
+                            v-if="dataContainer.tagList.length > 1"
+                            class="item"
+                            @click="handleOptionClick('handleDeleteLeftTags')"
+                        >
+                            <SvgIcon
+                                :style="'width:16px;height:16px;color:#f86464;'"
+                                name="svg:arrow-left.svg"
+                            ></SvgIcon>
+                            关闭左边标签页
+                        </div>
+                        <div
+                            v-if="dataContainer.tagList.length > 1"
+                            class="item"
+                            @click="handleOptionClick('handleDeleteRightTags')"
+                        >
+                            <SvgIcon
+                                :style="'width:16px;height:16px;color:#f86464;'"
+                                name="svg:arrow-right.svg"
+                            ></SvgIcon>
+                            关闭右边标签页
+                        </div>
                     </div>
-                    <div
-                        v-if="dataContainer.tagList.length > 1"
-                        class="item"
-                        @click="handleOptionClick('handleDeleteOtherTags')"
-                    >
-                        <SvgIcon
-                            :style="'width:16px;height:16px;color:#f86464;'"
-                            name="svg:borderverticle-fill.svg"
-                        ></SvgIcon>
-                        关闭其他标签页
-                    </div>
-                    <div
-                        v-if="dataContainer.tagList.length > 1"
-                        class="item"
-                        @click="handleOptionClick('handleDeleteLeftTags')"
-                    >
-                        <SvgIcon
-                            :style="'width:16px;height:16px;color:#f86464;'"
-                            name="svg:arrow-left.svg"
-                        ></SvgIcon>
-                        关闭左边标签页
-                    </div>
-                    <div
-                        v-if="dataContainer.tagList.length > 1"
-                        class="item"
-                        @click="handleOptionClick('handleDeleteRightTags')"
-                    >
-                        <SvgIcon
-                            :style="'width:16px;height:16px;color:#f86464;'"
-                            name="svg:arrow-right.svg"
-                        ></SvgIcon>
-                        关闭右边标签页
-                    </div>
-                </div>
-            </div>
+                </template>
+            </definDropdown>
             <div @click="toggleFullScreen" class="bt">
                 <SvgIcon :style="'width:25px;height:25px;'" name="svg:Navbar-full.svg"></SvgIcon>
-            </div>
-        </div>
-        <div
-            :style="{
-                left: `${dataContainer.location.x || 0}px`,
-                top: `${dataContainer.location.y || 0}px`,
-            }"
-            :class="{
-                'bt-list-container': true,
-                show: dataContainer.show,
-            }"
-        >
-            <div
-                class="item re-bt"
-                @click="handleOptionClick('handleRefresh', dataContainer.activeItem)"
-            >
-                <SvgIcon
-                    :style="'width:16px;height:16px;color:#0072E5;'"
-                    name="svg:redo.svg"
-                ></SvgIcon>
-                刷新此标签页
-            </div>
-            <div
-                class="item"
-                @click="handleOptionClick('handleSwitchCache', dataContainer.activeItem)"
-            >
-                <SvgIcon :style="'width:16px;height:16px;'" name="svg:switch.svg"></SvgIcon>
-                切换缓存状态
-            </div>
-            <div
-                class="item"
-                @click="handleOptionClick('handleSwitchFixed', dataContainer.activeItem)"
-            >
-                <SvgIcon :style="'width:16px;height:16px;'" name="svg:nail.svg"></SvgIcon>
-                切换固定状态
             </div>
         </div>
     </div>
@@ -440,11 +418,16 @@ export default defineComponent({
     color: var(--text-color);
     --item-gap: 10px;
     padding: 0 var(--item-gap) 0 0;
+    :deep(.defin-drop) {
+        height: 100% !important;
+        > .defin-drop-target {
+            height: 100% !important;
+        }
+    }
     > .left {
         flex: 1 1 0;
         width: 0;
         height: 100%;
-        mask-image: linear-gradient(90deg, #000 0%, #000 calc(100% - 10px), transparent);
         :deep(.el-scrollbar__bar) {
             &.is-horizontal {
                 height: 5px !important;
@@ -567,86 +550,6 @@ export default defineComponent({
             &:hover {
                 color: #ffffff;
                 transform: scale(1.2);
-            }
-        }
-        > .bt-container {
-            height: 100%;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            > .bt {
-                width: 100%;
-                height: 100%;
-                display: flex;
-                flex-direction: row;
-                justify-content: center;
-                align-items: center;
-                cursor: pointer;
-                transition: all 0.2s;
-                &:hover {
-                    color: #ffffff;
-                    transform: scale(1.2);
-                }
-            }
-            > .bt-list-container {
-                top: calc(100% + 0px);
-                right: 0;
-            }
-        }
-    }
-    .bt-list-container {
-        min-width: 150px;
-        display: flex;
-        flex-direction: column;
-        position: absolute;
-        width: max-content;
-        z-index: 9;
-        background-color: #1f1f23;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4), 0 0px 4px rgba(0, 0, 0, 0.4);
-        padding: 20px 0;
-        box-sizing: border-box;
-        border-radius: 12px;
-        border: 1px solid #ffffff1d;
-        overflow: hidden;
-        opacity: 0;
-        pointer-events: none;
-        transition: transform 0.2s, opacity 0.2s;
-        transform: scale(0);
-        &.show {
-            opacity: 1;
-            pointer-events: initial;
-            transform: scale(1);
-        }
-        > .item {
-            display: flex;
-            flex-direction: row;
-            justify-content: flex-start;
-            align-items: center;
-            padding: 15px 20px;
-            box-sizing: border-box;
-            font-size: 13px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.2s;
-            color: rgb(206, 206, 206);
-            border-bottom: 1px solid #ffffff1d;
-            border-left: none;
-            border-right: none;
-            > * {
-                margin-right: 10px;
-            }
-            &:hover {
-                background-color: rgba(145, 145, 162, 0.17);
-                color: #007fff;
-            }
-            &:first-child {
-                border-top: 1px solid #ffffff1d;
-            }
-            &.logout {
-                color: #c95050;
             }
         }
     }

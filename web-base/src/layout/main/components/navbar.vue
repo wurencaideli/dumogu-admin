@@ -2,39 +2,30 @@
 /**
  * navbar组件
  */
-import { ref, defineComponent, reactive, toRef, onBeforeUnmount } from 'vue';
+import { ref, defineComponent, reactive, toRef } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import SvgIcon from '@/components/svgIcon/index.vue';
 import userAvatar from '@/components/userAvatar.vue';
 import { userDataStore } from '@/store/user';
 import { messageSuccess, messageError, confirm } from '@/action/messagePrompt';
+import definDropdown from '@/components/definDropdown.vue';
 
 export default defineComponent({
     name: 'Navbar',
     components: {
         SvgIcon,
         userAvatar,
+        definDropdown,
     },
     props: {},
     setup(props, { emit }) {
         let userData = userDataStore();
         const router = useRouter();
         const route = useRoute();
-        const SetupRef = ref(null);
         const dataContainer = reactive({
             loading: false,
             userInfo: toRef(userData, 'userInfo'),
             show: false,
-        });
-        function initHiddenEvent(event) {
-            const e = event || window.event;
-            if (!SetupRef.value) return;
-            if (SetupRef.value.contains(e.target)) return; //如果点击事件在组件上不做处理
-            dataContainer.show = false;
-        }
-        document.addEventListener('click', initHiddenEvent);
-        onBeforeUnmount(() => {
-            document.addEventListener('click', initHiddenEvent);
         });
         /** 跳转页面 */
         function toPath(path) {
@@ -57,7 +48,6 @@ export default defineComponent({
         return {
             dataContainer,
             toPath,
-            SetupRef,
             handleLogout,
         };
     },
@@ -81,41 +71,49 @@ export default defineComponent({
                     </span>
                 </div>
             </div>
-            <div ref="SetupRef" class="setup">
+            <definDropdown
+                :show="dataContainer.show"
+                :ifLeftClick="true"
+                :targetQuery="'.target'"
+                @onOtherClick="dataContainer.show = false"
+                @onClick="
+                    () => {
+                        dataContainer.show = !dataContainer.show;
+                    }
+                "
+                position="outside,right,start"
+            >
                 <SvgIcon
                     :style="'width: 22px;min-width:22px;height: 22px;cursor: pointer;'"
                     :name="'svg:cog-fill.svg'"
-                    @click="dataContainer.show = !dataContainer.show"
+                    class="target"
                 ></SvgIcon>
-                <div
-                    :class="{
-                        'bt-list': true,
-                        show: dataContainer.show,
-                    }"
-                >
-                    <div @click="toPath('/main/mine/info-update')" class="item">
-                        <SvgIcon
-                            :style="'width: 15px;min-width:15px;height: 15px;margin-right:10px;'"
-                            :name="'svg:user-fill.svg'"
-                        ></SvgIcon>
-                        修改用户基本信息
+                <template v-slot:dropdown>
+                    <div class="bt-list-container">
+                        <div @click="toPath('/main/mine/info-update')" class="item">
+                            <SvgIcon
+                                :style="'width: 17px;min-width:17px;height: 17px;'"
+                                :name="'svg:user-fill.svg'"
+                            ></SvgIcon>
+                            修改用户基本信息
+                        </div>
+                        <div @click="toPath('/main/mine/info-password')" class="item">
+                            <SvgIcon
+                                :style="'width: 17px;min-width:17px;height: 17px;'"
+                                :name="'svg:cat-code.svg'"
+                            ></SvgIcon>
+                            修改用户密码
+                        </div>
+                        <div @click="handleLogout" class="item logout">
+                            <SvgIcon
+                                :style="'width: 17px;min-width:17px;height: 17px;'"
+                                :name="'svg:poweroff.svg'"
+                            ></SvgIcon>
+                            退出登录
+                        </div>
                     </div>
-                    <div @click="toPath('/main/mine/info-password')" class="item">
-                        <SvgIcon
-                            :style="'width: 15px;min-width:15px;height: 15px;margin-right:10px;'"
-                            :name="'svg:cat-code.svg'"
-                        ></SvgIcon>
-                        修改用户密码
-                    </div>
-                    <div @click="handleLogout" class="item logout">
-                        <SvgIcon
-                            :style="'width: 15px;min-width:15px;height: 15px;margin-right:10px;'"
-                            :name="'svg:poweroff.svg'"
-                        ></SvgIcon>
-                        退出登录
-                    </div>
-                </div>
-            </div>
+                </template>
+            </definDropdown>
             <a href="https://gitee.com/wuzhanggui/dumogu-admin" target="_blank" class="bt">
                 <SvgIcon :style="'width:22px;height:22px;'" name="img:gitee.svg"></SvgIcon>
             </a>
@@ -218,62 +216,10 @@ export default defineComponent({
             justify-content: center;
             align-items: center;
         }
-        > .setup {
-            width: fit-content;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            > .bt-list {
-                display: flex;
-                flex-direction: column;
-                position: absolute;
-                top: 0;
-                left: calc(100% + 5px);
-                width: max-content;
-                z-index: 9;
-                background-color: #1f1f23;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4), 0 0px 4px rgba(0, 0, 0, 0.4);
-                padding: 20px 0;
-                box-sizing: border-box;
-                border-radius: 12px;
-                border: 1px solid #ffffff12;
-                overflow: hidden;
-                opacity: 0;
-                pointer-events: none;
-                transition: all 0.2s;
-                transform: scale(0);
-                &.show {
-                    opacity: 1;
-                    pointer-events: initial;
-                    transform: scale(1);
-                }
-                > .item {
-                    display: flex;
-                    flex-direction: row;
-                    justify-content: flex-start;
-                    align-items: center;
-                    padding: 15px 20px;
-                    box-sizing: border-box;
-                    font-size: 13px;
-                    font-weight: bold;
-                    cursor: pointer;
-                    transition: all 0.2s;
-                    color: rgb(206, 206, 206);
-                    border-bottom: 1px solid #ffffff12;
-                    border-left: none;
-                    border-right: none;
-                    &:hover {
-                        background-color: rgba(145, 145, 162, 0.17);
-                        color: #007fff;
-                    }
-                    &:first-child {
-                        border-top: 1px solid #ffffff12;
-                    }
-                    &.logout {
-                        color: #c95050;
-                    }
-                }
+        :deep(.defin-drop) {
+            z-index: 999;
+            .bt-list-container {
+                opacity: 1 !important;
             }
         }
         > .login {
