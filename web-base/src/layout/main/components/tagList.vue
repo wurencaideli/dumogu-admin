@@ -525,7 +525,7 @@ export default defineComponent({
                 color: var(--text-color);
                 position: relative;
                 transition: all 0.2s;
-                opacity: 0.5;
+                opacity: 0.8;
                 --bt-width: 20px;
                 --bt-width-1: calc(var(--bt-width) / 2);
                 &:last-child {
@@ -543,7 +543,7 @@ export default defineComponent({
                     > .bt {
                         opacity: 1;
                         width: var(--bt-width);
-                        margin-left: 7px;
+                        right: calc(0px - var(--bt-width-1));
                     }
                 }
                 > .sign {
@@ -562,6 +562,8 @@ export default defineComponent({
                     height: var(--bt-width);
                     border-radius: 100%;
                     display: flex;
+                    position: absolute;
+                    right: 0;
                     flex-direction: row;
                     justify-content: center;
                     align-items: center;

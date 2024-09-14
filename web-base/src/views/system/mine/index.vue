@@ -30,7 +30,7 @@ export default defineComponent({
                 <div class="item">
                     <div class="left">
                         <SvgIcon
-                            :style="'width:16px;height:16px;margin-right:5px;'"
+                            :style="'width:16px;height:16px;margin-right:10px;'"
                             name="svg:user-fill.svg"
                         ></SvgIcon>
                         用户名称
@@ -42,7 +42,7 @@ export default defineComponent({
                 <div class="item">
                     <div class="left">
                         <SvgIcon
-                            :style="'width:16px;height:16px;margin-right:5px;'"
+                            :style="'width:16px;height:16px;margin-right:10px;'"
                             name="svg:laptop.svg"
                         ></SvgIcon>
                         手机号码
@@ -54,7 +54,7 @@ export default defineComponent({
                 <div class="item">
                     <div class="left">
                         <SvgIcon
-                            :style="'width:16px;height:16px;margin-right:5px;'"
+                            :style="'width:16px;height:16px;margin-right:10px;'"
                             name="svg:commentdots-fill.svg"
                         ></SvgIcon>
                         用户邮件
@@ -66,7 +66,7 @@ export default defineComponent({
                 <div class="item">
                     <div class="left">
                         <SvgIcon
-                            :style="'width:16px;height:16px;margin-right:5px;'"
+                            :style="'width:16px;height:16px;margin-right:10px;'"
                             name="svg:compress-alt.svg"
                         ></SvgIcon>
                         所属部门
@@ -92,11 +92,11 @@ export default defineComponent({
     box-sizing: border-box;
     > .container {
         width: 100%;
-        max-width: 500px;
+        max-width: 700px;
         padding: 30px 15px 15px 15px;
         box-sizing: border-box;
-        background-color: rgb(112, 112, 112);
-        border-radius: 5px;
+        background-color: var(--bg-color);
+        border-radius: 12px;
         display: flex;
         flex-wrap: wrap;
         align-items: center;
@@ -111,8 +111,8 @@ export default defineComponent({
         }
         > .content {
             width: 100%;
-            border-radius: 5px;
-            background-color: rgb(62, 62, 62);
+            border-radius: 12px;
+            background-color: var(--bg-color-2);
             padding: 0 0;
             box-sizing: border-box;
             > .item {
@@ -124,7 +124,7 @@ export default defineComponent({
                 justify-content: space-between;
                 align-items: center;
                 font-size: 14px;
-                border-bottom: 1px solid rgb(0, 0, 0);
+                border-bottom: 1px solid var(--bg-color);
                 color: #e6e6e6;
                 &:last-child {
                     border: none;

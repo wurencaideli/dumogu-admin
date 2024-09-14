@@ -119,6 +119,7 @@ export default defineComponent({
                 :inline="false"
                 :rules="dataContainer.rules"
                 label-width="120px"
+                style="width: 100%"
             >
                 <el-row :gutter="0">
                     <el-col :span="24">
@@ -189,10 +190,10 @@ export default defineComponent({
     > .container {
         width: 100%;
         max-width: 700px;
-        padding: 30px 15px 15px 15px;
+        padding: 60px 15px;
         box-sizing: border-box;
-        background-color: rgb(113, 113, 113);
-        border-radius: 5px;
+        background-color: var(--bg-color);
+        border-radius: 12px;
         display: flex;
         flex-wrap: wrap;
         align-items: center;

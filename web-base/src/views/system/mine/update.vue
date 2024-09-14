@@ -109,12 +109,14 @@ export default defineComponent({
 <template>
     <div class="page-container mine-update-view">
         <div class="container">
+            <el-image class="img" :src="dataContainer.form.avatar" fit="cover" />
             <el-form
                 :model="dataContainer.form"
                 ref="FormElRef"
                 :inline="false"
                 :rules="dataContainer.rules"
                 label-width="120px"
+                style="width: 100%"
             >
                 <el-row :gutter="0">
                     <el-col :span="24">
@@ -166,14 +168,21 @@ export default defineComponent({
     > .container {
         width: 100%;
         max-width: 700px;
-        padding: 30px 15px 15px 15px;
+        padding: 60px 15px;
         box-sizing: border-box;
-        background-color: rgb(113, 113, 113);
-        border-radius: 5px;
+        background-color: var(--bg-color);
+        border-radius: 12px;
         display: flex;
         flex-wrap: wrap;
         align-items: center;
         flex-direction: column;
+        > .img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin-bottom: 60px;
+            border: 2px solid rgba(0, 0, 0, 0.421);
+        }
     }
 }
 </style>

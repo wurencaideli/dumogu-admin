@@ -216,6 +216,7 @@ export default defineComponent({
     > .right {
         height: 100%;
         background-color: var(--bg-color-3);
+        background-image: linear-gradient(to right, var(--bg-color-3) 0%, var(--bg-color-2) 100%);
         flex: 1 1 0;
         width: 0;
         display: flex;
