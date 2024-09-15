@@ -8,7 +8,7 @@ import SvgIcon from '@/components/svgIcon/index.vue';
 import { iconList } from '@/components/svgIcon/common.js';
 import DefinScrollbar from '@/components/definScrollbar.vue';
 import { copyValue } from '@/common/otherTools';
-import { messageSuccess } from '@/action/messagePrompt';
+import { useMessage } from 'naive-ui';
 
 export default defineComponent({
     components: {
@@ -16,6 +16,7 @@ export default defineComponent({
         DefinScrollbar,
     },
     setup() {
+        const message = useMessage();
         const dataContainer = reactive({
             iconList: iconList,
         });
@@ -25,7 +26,7 @@ export default defineComponent({
 :style="'width:23px;height:23px;'"
 name="${item.name}"></SvgIcon>`;
             copyValue(msg);
-            messageSuccess('复制成功');
+            message.success('复制成功');
         }
         return {
             dataContainer,
