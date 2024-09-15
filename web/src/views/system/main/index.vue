@@ -3,7 +3,19 @@
         <div class="page-container main-view">
             <div class="container">
                 <h3>毒蘑菇 - 管理</h3>
-                <p>自定义页面菜单，标签页可自定义是否缓存。</p>
+                <p>
+                    <a
+                        href="https://admin.dumogu.top/base"
+                        target="_blank"
+                        style="color: blue; font-weight: bold"
+                        rel="noopener noreferrer"
+                    >
+                        该项目基于此base项目上添加了一些功能页面，点击查看
+                    </a>
+                </p>
+                <p>
+                    自定义页面菜单，标签页可自定义是否缓存。可自定义切换状态。标签是根据用户目录列表来进行添加和显示的。
+                </p>
                 <p>
                     标签页下面有小横条的表示有缓存，有两种页面列表管理，一种是修改添加会打开新页面，另一种是以对话框形式操作数据。其中对话框已经封装完善。
                 </p>
