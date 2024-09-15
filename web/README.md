@@ -8,10 +8,7 @@ npm install
 
 目前只做一个模板架子，尽量不涉及业务页面的开发。尽量不使用自动化的插件，能手动调用的就手动调用。
 
-文件命名格式：
-    文件夹以首字母小写的驼峰命名。
-    js文件以首字母大写的驼峰命名，除了index.js部分文件除外。
-    vue组件文件以首字母大写的驼峰命名，除了index.vue部分文件除外文件。
+文件命名格式：首字母小写的驼峰命名。
 
 其中的模块代码整体设计思想：
     手动调用为原则，需要使用的才引用，尽量不设置全局引用。
@@ -45,7 +42,7 @@ npm install
 
 #### 菜单的添加（待完善）
 ``` javascript
-// 文件位置 /src/action/FormatUserData.js
+// 文件位置 /src/action/formatUserData.js
 // 在相应目录列表中添加目录节点
 // path和name为唯一属性，两者都可选填，标签页的配置会使用此配置（path优先）
 /** 
@@ -66,24 +63,3 @@ npm install
     iconName:"all-fill",
 }
 ```
-
-#### 标签页的操作（待完善）
-``` javascript
-// 文件位置 /src/layout/main/index.vue
-// 工具函数位置 /src/layout/main/common/TagListTools.js
-// 在相应layout的文件夹内，只负责操作相应layout中出现的标签，每个layout有自己的专属标签数据
-import {
-    deleteCurrentTag,
-    refreshCurrentTag,
-    deleteOtherTags,
-    deleteLeftTags,
-    deleteRightTags,
-    getLatelyHisTag,
-    updateTag,
-    refreshTag,
-    deleteTags,
-    formatTagsByMenu,
-} from "./common/TagListTools";
-// 相应注释在工具函数里
-```
-

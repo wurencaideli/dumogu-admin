@@ -114,6 +114,16 @@ function addTag(route) {
     let toPath = route.path;
     let toName = route.name;
     let toFullPath = route.fullPath;
+    /** 初始化sortNumber，使用本地标签的最大值 */
+    if (!sortNumber && userData.tagList.length > 0) {
+        userData.tagList.forEach((item) => {
+            if (!item.sortNumber) return;
+            let sortNumber_ = Number(item.sortNumber);
+            if (sortNumber_ > sortNumber) {
+                sortNumber = sortNumber_;
+            }
+        });
+    }
     /** 获取该路由对应的系统配置 */
     let sysMenuConfig = sysMeluConfigPathMap[toPath] || sysMeluConfigNameMap[toName];
     if (!sysMenuConfig) return;

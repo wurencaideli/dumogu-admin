@@ -2,25 +2,41 @@
  * 路由列表部分
  * 所有路由必须先手动写好，然后由后端菜单接口来进行匹配并且指定是否显示
  */
-import {createWebHistory,createRouter,createWebHashHistory} from 'vue-router';
-import dumoguConfig from '@/config.js';
-import NProgress from 'nprogress';
-import 'nprogress/nprogress.css';
-//全局进度条的配置 
-NProgress.configure({ 
-    easing: 'ease', // 动画方式 
-    speed: 300, // 递增进度条的速度 
-    showSpinner: false, // 进度环显示隐藏
-    trickleSpeed: 200, // 自动递增间隔 
-    minimum: 0.3, // 更改启动时使用的最小百分比 
-    parent: 'body', //指定进度条的父容器 
-});
-
+import { createWebHistory, createRouter, createWebHashHistory } from 'vue-router';
+/**
+ * 为路由配置meta相当于为该路由配置了基本信息，配置的属性如下
+ * title 用作标签显示字样的字段
+ * hasTag 可以生成标签
+ * isCache 该标签页面是否缓存
+ * hidden 该标签页面是否在左边目录上显示
+ * isLink 表示直接跳转新页面
+ * iconName 菜单icon图标
+ * fixed 标签是否固定
+ * layoutName layout的名称，用作分组
+ * redirectName 重定向的目标
+ * path 路由地址，唯一键
+ * fullPath
+ * showTagIcon 标签显示的时候是否显示图标
+ * content 菜单显示的详情
+ * number 菜单显示的数字
+ */
 export const constantRoutes = [
     /** 登录注册相关页面 */
     {
         path: '/login',
         component: () => import('@/views/login/index.vue'),
+    },
+    /** 404页面 */
+    {
+        path: '/404',
+        component: () => import('@/views/system/error/404.vue'),
+        name: '404',
+    },
+    /** 401页面 */
+    {
+        path: '/401',
+        component: () => import('@/views/system/error/401.vue'),
+        name: '401',
     },
     /** 定义首页重定向地址 */
     {
@@ -30,43 +46,52 @@ export const constantRoutes = [
     /** 其他业务相关页面 */
     {
         path: '/main',
-        component:() => import('@/layout/main/index.vue'),
+        component: () => import('@/layout/main/index.vue'),
         children: [
-            /** 
+            /**
              * 重定向页面
              * 用来刷新标签页
              *  */
             {
                 path: 'redirect/:path(.*)',
-                name:'main-redirect',
-                component: () => import('@/views/redirect/index.vue'),
-                meta: { 
-                    /** 该页面属于此操作页面，但是不算菜单，不允许添加到标签页上 */
-                    isMenu:false,
+                name: 'main-redirect',
+                component: () => import('@/views/system/redirect/index.vue'),
+                meta: {
+                    layoutName: 'main',
+                    redirectName: 'main-redirect',
                 },
             },
             {
                 path: '401',
-                name:'main-401',
-                component: () => import('@/views/error/401.vue'),
-                meta: { 
-                    isMenu:true,
+                name: 'main-401',
+                component: () => import('@/views/system/error/401.vue'),
+                meta: {
+                    layoutName: 'main',
+                    redirectName: 'main-redirect',
+                    hasTag: true,
+                    title: '401',
                 },
             },
             {
                 path: '404',
-                name:'main-404',
-                component: () => import('@/views/error/404.vue'),
-                meta: { 
-                    isMenu:true,
+                name: 'main-404',
+                component: () => import('@/views/system/error/404.vue'),
+                meta: {
+                    layoutName: 'main',
+                    redirectName: 'main-redirect',
+                    hasTag: true,
+                    title: '404',
                 },
             },
             {
                 path: 'new-tag-page/:sign',
                 component: () => import('@/views/system/newTagPage/index.vue'),
                 name: 'new-tag-page',
-                meta: { 
-                    isMenu:true,
+                meta: {
+                    layoutName: 'main',
+                    redirectName: 'main-redirect',
+                    hasTag: true,
+                    title: '新标签',
                 },
             },
             /** 一些页面例子 */
@@ -74,243 +99,271 @@ export const constantRoutes = [
                 path: 'index',
                 component: () => import('@/views/system/main/index.vue'),
                 name: 'main-index',
-                meta: { 
-                    isMenu:true,
+                meta: {
+                    layoutName: 'main',
+                    redirectName: 'main-redirect',
+                    hasTag: true,
                 },
             },
             {
                 path: 'show-list',
                 component: () => import('@/views/exampleViews/showList/index.vue'),
                 name: 'show-list',
-                meta: { 
-                    isMenu:true,
+                meta: {
+                    layoutName: 'main',
+                    redirectName: 'main-redirect',
+                    hasTag: true,
                 },
             },
             {
                 path: 'show-list/add',
                 component: () => import('@/views/exampleViews/showList/add.vue'),
                 name: 'show-list-add',
-                meta: { 
-                    isMenu:true,
+                meta: {
+                    layoutName: 'main',
+                    redirectName: 'main-redirect',
+                    hasTag: true,
                 },
             },
             {
                 path: 'show-list/update/:sign',
                 component: () => import('@/views/exampleViews/showList/add.vue'),
                 name: 'show-list-update',
-                meta: { 
-                    isMenu:true,
+                meta: {
+                    layoutName: 'main',
+                    redirectName: 'main-redirect',
+                    hasTag: true,
                 },
             },
             {
                 path: 'show-list/info/:sign',
                 component: () => import('@/views/exampleViews/showList/info.vue'),
                 name: 'show-list-info',
-                meta: { 
-                    isMenu:true,
+                meta: {
+                    layoutName: 'main',
+                    redirectName: 'main-redirect',
+                    hasTag: true,
                 },
             },
             {
                 path: 'user-list',
-                component: () => import('@/views/system/userList/index.vue'),
+                component: () => import('@/views/exampleViews/userList/index.vue'),
                 name: 'user-list',
-                meta: { 
-                    isMenu:true,
+                meta: {
+                    layoutName: 'main',
+                    redirectName: 'main-redirect',
+                    hasTag: true,
                 },
             },
             {
                 path: 'role-list',
-                component: () => import('@/views/system/roleList/index.vue'),
+                component: () => import('@/views/exampleViews/roleList/index.vue'),
                 name: 'role-list',
-                meta: { 
-                    isMenu:true,
+                meta: {
+                    layoutName: 'main',
+                    redirectName: 'main-redirect',
+                    hasTag: true,
                 },
             },
             {
                 path: 'icon-list',
                 component: () => import('@/views/system/iconList/index.vue'),
                 name: 'icon-list',
-                meta: { 
-                    isMenu:true,
+                meta: {
+                    layoutName: 'main',
+                    redirectName: 'main-redirect',
+                    hasTag: true,
                 },
             },
             {
                 path: 'mine',
                 component: () => import('@/views/system/mine/index.vue'),
                 name: 'mine',
-                meta: { 
-                    isMenu:true,
+                meta: {
+                    layoutName: 'main',
+                    redirectName: 'main-redirect',
+                    hasTag: true,
                 },
             },
             {
                 path: 'setup-tag',
                 component: () => import('@/views/exampleViews/setupTag/index.vue'),
                 name: 'setup-tag',
-                meta: { 
-                    isMenu:true,
+                meta: {
+                    layoutName: 'main',
+                    redirectName: 'main-redirect',
+                    hasTag: true,
                 },
             },
             {
                 path: 'setup-menu',
                 component: () => import('@/views/exampleViews/setupMenu/index.vue'),
                 name: 'setup-menu',
-                meta: { 
-                    isMenu:true,
+                meta: {
+                    layoutName: 'main',
+                    redirectName: 'main-redirect',
+                    hasTag: true,
                 },
             },
             {
                 path: 'system/menu',
-                component: () => import('@/views/system/menu/index.vue'),
+                component: () => import('@/views/exampleViews/menu/index.vue'),
                 name: 'menu',
-                meta: { 
-                    isMenu:true,
+                meta: {
+                    layoutName: 'main',
+                    redirectName: 'main-redirect',
+                    hasTag: true,
                 },
             },
             {
                 path: 'system/bt-permission',
-                component: () => import('@/views/system/btPermission/index.vue'),
+                component: () => import('@/views/exampleViews/btPermission/index.vue'),
                 name: 'bt-permission',
-                meta: { 
-                    isMenu:true,
+                meta: {
+                    layoutName: 'main',
+                    redirectName: 'main-redirect',
+                    hasTag: true,
                 },
             },
             {
                 path: 'iframe/:sign(.*)',
                 component: () => import('@/views/system/iframe/index.vue'),
                 name: 'iframe',
-                meta: { 
-                    isMenu:true,
+                meta: {
+                    layoutName: 'main',
+                    redirectName: 'main-redirect',
+                    hasTag: true,
                 },
             },
             {
                 path: 'other-view',
                 component: () => import('@/views/exampleViews/otherView/index.vue'),
                 name: 'other-view',
-                meta: { 
-                    isMenu:true,
+                meta: {
+                    layoutName: 'main',
+                    redirectName: 'main-redirect',
+                    hasTag: true,
                 },
             },
             {
                 path: 'merge-table',
                 component: () => import('@/views/exampleViews/mergeTable/index.vue'),
                 name: 'merge-table',
-                meta: { 
-                    isMenu:true,
+                meta: {
+                    layoutName: 'main',
+                    redirectName: 'main-redirect',
+                    hasTag: true,
                 },
             },
             {
                 path: 'big-screen/show_1',
                 component: () => import('@/views/bigScreen/show_1/index.vue'),
                 name: 'main-big-screen',
-                meta: { 
-                    isMenu:true,
+                meta: {
+                    layoutName: 'main',
+                    redirectName: 'main-redirect',
+                    hasTag: true,
                 },
             },
             {
                 path: 'mine/info',
                 component: () => import('@/views/system/mine/index.vue'),
                 name: 'main-mine-info',
-                meta: { 
-                    isMenu:true,
+                meta: {
+                    layoutName: 'main',
+                    redirectName: 'main-redirect',
+                    hasTag: true,
+                    title: '个人中心',
                 },
             },
             {
                 path: 'mine/info-update',
                 component: () => import('@/views/system/mine/update.vue'),
                 name: 'main-mine-info-update',
-                meta: { 
-                    isMenu:true,
+                meta: {
+                    layoutName: 'main',
+                    redirectName: 'main-redirect',
+                    hasTag: true,
+                    title: '修改个人信息',
                 },
             },
             {
                 path: 'mine/info-password',
                 component: () => import('@/views/system/mine/password.vue'),
                 name: 'main-mine-info-password',
-                meta: { 
-                    isMenu:true,
+                meta: {
+                    layoutName: 'main',
+                    redirectName: 'main-redirect',
+                    hasTag: true,
+                    title: '修改密码',
                 },
             },
         ],
     },
     {
         path: '/big-screen',
-        component:() => import('@/layout/bigScreen/index.vue'),
+        component: () => import('@/layout/bigScreen/index.vue'),
         children: [
-            /** 
+            /**
              * 重定向页面
              * 用来刷新标签页
              *  */
             {
                 path: 'redirect/:path(.*)',
-                name:'big-screen-redirect',
-                component: () => import('@/views/redirect/index.vue'),
-                meta: { 
-                    /** 该页面属于此操作页面，但是不算菜单，不允许添加到标签页上 */
-                    isMenu:false,
+                name: 'big-screen-redirect',
+                component: () => import('@/views/system/redirect/index.vue'),
+                meta: {
+                    layoutName: 'big-screen',
+                    redirectName: 'big-screen-redirect',
                 },
             },
             {
                 path: 'show_1',
                 component: () => import('@/views/bigScreen/show_1/index.vue'),
                 name: 'big-screen-show_1',
-                meta: { 
-                    isMenu:true,
+                meta: {
+                    layoutName: 'big-screen',
+                    redirectName: 'big-screen-redirect',
+                    hasTag: true,
                 },
             },
             {
                 path: 'show_2',
                 component: () => import('@/views/bigScreen/show_2/index.vue'),
                 name: 'big-screen-show_2',
-                meta: { 
-                    isMenu:true,
+                meta: {
+                    layoutName: 'big-screen',
+                    redirectName: 'big-screen-redirect',
+                    hasTag: true,
                 },
             },
             {
                 path: 'show_3',
                 component: () => import('@/views/bigScreen/show_3/index.vue'),
                 name: 'big-screen-show_3',
-                meta: { 
-                    isMenu:true,
+                meta: {
+                    layoutName: 'big-screen',
+                    redirectName: 'big-screen-redirect',
+                    hasTag: true,
                 },
             },
             {
                 path: 'show_4',
                 component: () => import('@/views/bigScreen/show_4/index.vue'),
                 name: 'big-screen-show_4',
-                meta: { 
-                    isMenu:true,
+                meta: {
+                    layoutName: 'big-screen',
+                    redirectName: 'big-screen-redirect',
+                    hasTag: true,
                 },
             },
         ],
     },
-    /** 404页面 */
-    {
-        path: "/:pathMatch(.*)*",
-        component: () => import('@/views/error/404.vue'),
-    },
-    /** 401页面 */
-    {
-        path: '/401',
-        component: () => import('@/views/error/401.vue'),
-    },
 ];
 
 const router = createRouter({
-    history: createWebHistory(dumoguConfig.routeBasePath),
+    history: createWebHistory(import.meta.env.VITE_APP_routeBasePath),
     routes: constantRoutes,
-});
-/** 此处只添加路由进度条动画 */
-router.beforeEach((to, from, next) => {
-    NProgress.start();
-    next();
-});
-router.afterEach(() => {
-    NProgress.done();
-    /** 清除loading标记 */
-    let loadingEl = document.querySelector('#html-loading-el');
-    if(loadingEl){
-        loadingEl.remove();
-    }
 });
 
 export default router;

@@ -45,10 +45,14 @@ export default defineComponent({
          * 记录已有的iframe个数的path map 方便查找
          *  */
         const iframePathMap = computed(() => {
-            return dataContainer.iframeList.reduce((c, i) => {
-                c[i.path] = i;
-                return c;
-            }, {});
+            return dataContainer.iframeList
+                .filter((item) => {
+                    return item.layoutName == dataContainer.layoutName;
+                })
+                .reduce((c, i) => {
+                    c[i.path] = i;
+                    return c;
+                }, {});
         });
         /**
          * 需要缓存的页面列表

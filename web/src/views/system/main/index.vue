@@ -1,32 +1,23 @@
 <template>
-    <DefinScrollbar 
-        height="100%"
-        :showUpBt="true">
+    <DefinScrollbar height="100%" :showUpBt="true">
         <div class="page-container main-view">
             <div class="container">
-                <h3>
-                    毒蘑菇 - 管理
-                </h3>
-                <p>
-                    自定义页面菜单，标签页可自定义是否缓存。
-                </p>
+                <h3>毒蘑菇 - 管理</h3>
+                <p>自定义页面菜单，标签页可自定义是否缓存。</p>
                 <p>
                     标签页下面有小横条的表示有缓存，有两种页面列表管理，一种是修改添加会打开新页面，另一种是以对话框形式操作数据。其中对话框已经封装完善。
                 </p>
                 <div class="echart-container">
                     <div class="top-container">
                         <div class="left">
-                            <EchartContainer
-                                ref="EchartContainerRef"></EchartContainer>
+                            <EchartContainer ref="EchartContainerRef"></EchartContainer>
                         </div>
                         <div class="right">
-                            <EchartContainer
-                                ref="EchartContainerRef_1"></EchartContainer>
+                            <EchartContainer ref="EchartContainerRef_1"></EchartContainer>
                         </div>
                     </div>
                     <div class="bottom-container">
-                        <EchartContainer
-                            ref="EchartContainerRef_2"></EchartContainer>
+                        <EchartContainer ref="EchartContainerRef_2"></EchartContainer>
                     </div>
                 </div>
             </div>
@@ -39,13 +30,18 @@
  * 页面例子
  */
 import {
-    defineComponent,onBeforeUnmount,ref,reactive,getCurrentInstance,onActivated,
+    defineComponent,
+    onBeforeUnmount,
+    ref,
+    reactive,
+    getCurrentInstance,
+    onActivated,
     onMounted,
 } from 'vue';
-import { useRouter } from "vue-router";
-import SvgIcon from "@/components/svgIcon/index.vue";
-import EchartContainer from "@/components/EchartContainer.vue";
-import DefinScrollbar from "@/components/DefinScrollbar.vue";
+import { useRouter } from 'vue-router';
+import SvgIcon from '@/components/svgIcon/index.vue';
+import EchartContainer from '@/components/echartContainer.vue';
+import DefinScrollbar from '@/components/definScrollbar.vue';
 import * as echarts from 'echarts';
 
 export default defineComponent({
@@ -56,21 +52,20 @@ export default defineComponent({
     },
     setup() {
         const router = useRouter();
-        const EchartContainerRef = ref();  //组件实例
-        const EchartContainerRef_1 = ref();  //组件实例
-        const EchartContainerRef_2 = ref();  //组件实例
+        const EchartContainerRef = ref(); //组件实例
+        const EchartContainerRef_1 = ref(); //组件实例
+        const EchartContainerRef_2 = ref(); //组件实例
         const dataContainer = reactive({
-            loading:false,
-            
+            loading: false,
         });
-        onMounted(()=>{
+        onMounted(() => {
             /** 初始化图表 */
             EchartContainerRef.value.initData({
                 backgroundColor: '',
                 title: {
                     text: '数据开发利用',
                     x: 'left',
-                    textStyle: { fontSize: '15', color: "#000" },
+                    textStyle: { fontSize: '15', color: '#000' },
                 },
                 tooltip: { trigger: 'axis' },
                 legend: { data: ['供温', '回温', '压力值(Mpa)'], right: 0 },
@@ -91,7 +86,7 @@ export default defineComponent({
                         splitLine: { show: true, lineStyle: { type: 'dashed', color: '#f5f5f5' } },
                         axisLine: { show: false },
                         axisTick: { show: false },
-                        axisLabel: { color: "#000", formatter: '{value} ' },
+                        axisLabel: { color: '#000', formatter: '{value} ' },
                     },
                     {
                         name: '压力值(Mpa)',
@@ -100,7 +95,7 @@ export default defineComponent({
                         splitLine: { show: false },
                         axisLine: { show: false },
                         axisTick: { show: false },
-                        axisLabel: { color: "#000", formatter: '{value} ' },
+                        axisLabel: { color: '#000', formatter: '{value} ' },
                     },
                 ],
                 series: [
@@ -150,7 +145,7 @@ export default defineComponent({
                                     { offset: 0, color: 'rgba(199, 237, 250,0.5)' },
                                     { offset: 1, color: 'rgba(199, 237, 250,0.2)' },
                                 ],
-                                false
+                                false,
                             ),
                         },
                         itemStyle: {
@@ -191,59 +186,72 @@ export default defineComponent({
             });
             EchartContainerRef_1.value.initData({
                 tooltip: {
-                    trigger: 'item'
+                    trigger: 'item',
                 },
                 legend: {
                     top: '5%',
-                    left: 'center'
+                    left: 'center',
                 },
                 series: [
                     {
-                    name: 'Access From',
-                    type: 'pie',
-                    radius: ['40%', '70%'],
-                    avoidLabelOverlap: false,
-                    itemStyle: {
-                        borderRadius: 10,
-                        borderColor: '#fff',
-                        borderWidth: 2
-                    },
-                    label: {
-                        show: false,
-                        position: 'center'
-                    },
-                    emphasis: {
+                        name: 'Access From',
+                        type: 'pie',
+                        radius: ['40%', '70%'],
+                        avoidLabelOverlap: false,
+                        itemStyle: {
+                            borderRadius: 10,
+                            borderColor: '#fff',
+                            borderWidth: 2,
+                        },
                         label: {
-                        show: true,
-                        fontSize: 40,
-                        fontWeight: 'bold'
-                        }
+                            show: false,
+                            position: 'center',
+                        },
+                        emphasis: {
+                            label: {
+                                show: true,
+                                fontSize: 40,
+                                fontWeight: 'bold',
+                            },
+                        },
+                        labelLine: {
+                            show: false,
+                        },
+                        data: [
+                            { value: 1048, name: 'Search Engine' },
+                            { value: 735, name: 'Direct' },
+                            { value: 580, name: 'Email' },
+                            { value: 484, name: 'Union Ads' },
+                            { value: 300, name: 'Video Ads' },
+                        ],
                     },
-                    labelLine: {
-                        show: false
-                    },
-                    data: [
-                        { value: 1048, name: 'Search Engine' },
-                        { value: 735, name: 'Direct' },
-                        { value: 580, name: 'Email' },
-                        { value: 484, name: 'Union Ads' },
-                        { value: 300, name: 'Video Ads' }
-                    ]
-                    }
-                ]
+                ],
             });
             EchartContainerRef_2.value.initData({
                 backgroundColor: '',
                 title: {
                     text: '政策补贴额度',
                     x: 'left',
-                    textStyle: { fontSize: '15', color: "#000000" },
+                    textStyle: { fontSize: '15', color: '#000000' },
                 },
                 grid: { top: 70, right: 20, bottom: 30, left: 30 },
                 tooltip: { trigger: 'axis' },
                 legend: { data: ['预购队列', '最新成交价'], right: 0 },
                 xAxis: {
-                    data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+                    data: [
+                        '1月',
+                        '2月',
+                        '3月',
+                        '4月',
+                        '5月',
+                        '6月',
+                        '7月',
+                        '8月',
+                        '9月',
+                        '10月',
+                        '11月',
+                        '12月',
+                    ],
                 },
                 yAxis: [
                     {
@@ -319,44 +327,45 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-    .main-view{
-        display: flex;
-        flex-direction: column;
+.main-view {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    .container {
+        background-color: white;
         width: 100%;
-        .container{
-            background-color: white;
+        min-height: 800px;
+        border-radius: 5px;
+        padding: 15px;
+        box-sizing: border-box;
+        > * {
+            margin: 0 0 30px 0;
+            &:last-child {
+                margin: 0;
+            }
+        }
+        > .echart-container {
             width: 100%;
-            min-height: 800px;
-            border-radius: 5px;
-            padding: 15px;
-            box-sizing: border-box;
-            >*{
-                margin: 0 0 30px 0;
-                &:last-child{
-                    margin: 0;
+            > .top-container {
+                display: flex;
+                flex-direction: row;
+                height: 300px;
+                > .left,
+                > .right {
+                    width: 0;
+                    flex: 1 1 0;
+                }
+                > .left {
+                    flex: 2 1 0;
+                    margin-right: 60px;
                 }
             }
-            >.echart-container{
+            > .bottom-container {
                 width: 100%;
-                >.top-container{
-                    display: flex;
-                    flex-direction: row;
-                    height: 300px;
-                    >.left,>.right{
-                        width: 0;
-                        flex: 1 1 0;
-                    }
-                    >.left{
-                        flex: 2 1 0;
-                        margin-right: 60px;
-                    }
-                }
-                >.bottom-container{
-                    width: 100%;
-                    height: 400px;
-                    margin-top: 30px;
-                }
+                height: 400px;
+                margin-top: 30px;
             }
         }
     }
+}
 </style>

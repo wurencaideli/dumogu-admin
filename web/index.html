@@ -8,22 +8,24 @@
             content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
         />
         <!-- <title>最基础的管理端架子 - 毒蘑菇管理</title> -->
-        <title><%- title %></title>
+        <title><%- VITE_APP_content %></title>
         <script>
             /** 加载百度统计 */
             var _hmt = _hmt || [];
-            (function() {var hm = document.createElement("script");
-            hm.src = "https://hm.baidu.com/hm.js?45a68a5c66a8cda4281052ce7bf0d3b7";
-            var s = document.getElementsByTagName("script")[0]; 
-            s.parentNode.insertBefore(hm,s);
+            (function () {
+                var hm = document.createElement('script');
+                hm.src = 'https://hm.baidu.com/hm.js?45a68a5c66a8cda4281052ce7bf0d3b7';
+                var s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(hm, s);
             })();
         </script>
     </head>
     <style>
-        body{
+        body {
             margin: 0;
+            background-color: white;
         }
-        body>.html-loading-el{
+        body > .html-loading-el {
             display: flex;
             flex-direction: row;
             align-items: center;
@@ -37,7 +39,7 @@
             pointer-events: none;
         }
         /* 设置位置 */
-        body>.html-loading-el .loading {
+        body > .html-loading-el .loading {
             /* 高度 */
             height: fit-content;
             /* 弹性布局 */
@@ -48,7 +50,7 @@
             width: fit-content;
         }
         /* 小竖条 */
-        body>.html-loading-el .item {
+        body > .html-loading-el .item {
             height: 100%;
             width: 7px;
             background: rgba(0, 128, 255, 0.503);
@@ -76,39 +78,37 @@
         }
 
         /* 为每一个竖条设置延时 */
-        body>.html-loading-el .item:nth-child(2) {
+        body > .html-loading-el .item:nth-child(2) {
             animation-delay: 0.1s;
         }
 
-        body>.html-loading-el .item:nth-child(3) {
+        body > .html-loading-el .item:nth-child(3) {
             animation-delay: 0.2s;
         }
 
-        body>.html-loading-el .item:nth-child(4) {
+        body > .html-loading-el .item:nth-child(4) {
             animation-delay: 0.3s;
         }
 
-        body>.html-loading-el .item:nth-child(5) {
+        body > .html-loading-el .item:nth-child(5) {
             animation-delay: 0.4s;
         }
 
-        body>.html-loading-el .item:nth-child(6) {
+        body > .html-loading-el .item:nth-child(6) {
             animation-delay: 0.5s;
         }
 
-        body>.html-loading-el .item:nth-child(7) {
+        body > .html-loading-el .item:nth-child(7) {
             animation-delay: 0.6s;
         }
 
-        body>.html-loading-el .item:nth-child(8) {
+        body > .html-loading-el .item:nth-child(8) {
             animation-delay: 0.7s;
         }
     </style>
     <body>
         <div id="app"></div>
-        <div
-            id="html-loading-el" 
-            class="html-loading-el">
+        <div id="html-loading-el" class="html-loading-el">
             <div class="loading">
                 <div class="item"></div>
                 <div class="item"></div>

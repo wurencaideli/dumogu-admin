@@ -1,35 +1,21 @@
 <template>
-    <DefinScrollbar 
-        height="100%"
-        :showUpBt="true">
+    <DefinScrollbar height="100%" :showUpBt="true">
         <div class="page-container main-view">
             <div class="container">
-                <p>
-                    当前加载时间：{{dataContainer.nowTime}}
-                </p>
-                <p>
-                    当前加载时间戳：{{dataContainer.nowTime_1}}
-                </p>
+                <p>当前加载时间：{{ dataContainer.nowTime }}</p>
+                <p>当前加载时间戳：{{ dataContainer.nowTime_1 }}</p>
                 <p>
                     标签页下方的小横条表示该标签页开始缓存，没有删除按钮的表示该标签页已固定，可在目录配置处配置
                 </p>
                 <p>
                     标签页固定的不可删除，可拖动排序，标签页删除后跳转到最近的一个标签上，可以手动调用
                 </p>
+                <p>可以点击切换查看缓存效果</p>
                 <p>
-                    可以点击切换查看缓存效果
+                    <el-button @click="handleClick" type="primary"> 刷新当前标签页 </el-button>
                 </p>
                 <p>
-                    <el-button 
-                        @click="handleClick"
-                        type="primary">
-                        刷新当前标签页
-                    </el-button>
-                </p>
-                <p>
-                    <el-button 
-                        @click="handleClick_1"
-                        type="primary">
+                    <el-button @click="handleClick_1" type="primary">
                         <el-icon size="20px" color="#ffffff">
                             <Delete></Delete>
                         </el-icon>
@@ -37,9 +23,7 @@
                     </el-button>
                 </p>
                 <p>
-                    <el-button 
-                        @click="handleClick_2"
-                        type="primary">
+                    <el-button @click="handleClick_2" type="primary">
                         更新标签信息（修改标题，切换缓存状态），不会更改目录配置，就是说重新重目录配置处创建该标签会使用目录的配置
                     </el-button>
                 </p>
@@ -53,21 +37,19 @@
  * 页面例子
  */
 import {
-    defineComponent,onBeforeUnmount,ref,reactive,getCurrentInstance,onActivated,
+    defineComponent,
+    onBeforeUnmount,
+    ref,
+    reactive,
+    getCurrentInstance,
+    onActivated,
     onMounted,
 } from 'vue';
-import { useRouter } from "vue-router";
-import SvgIcon from "@/components/svgIcon/index.vue";
-import {
-    Delete,
-} from '@element-plus/icons-vue';
-import {
-    deleteCurrentTag,
-    refreshCurrentTag,
-    getCurrentTag,
-    updateTag,
-} from "@/layout/main/common/TagListTools";
-import DefinScrollbar from "@/components/DefinScrollbar.vue";
+import { useRouter, useRoute } from 'vue-router';
+import SvgIcon from '@/components/svgIcon/index.vue';
+import { Delete } from '@element-plus/icons-vue';
+import generateTagListTools from '@/action/tagListTools';
+import DefinScrollbar from '@/components/definScrollbar.vue';
 
 export default defineComponent({
     components: {
@@ -77,31 +59,35 @@ export default defineComponent({
     },
     setup() {
         const router = useRouter();
+        const route = useRoute();
         const dataContainer = reactive({
-            loading:false,
-            nowTime:new Date(),
-            nowTime_1:new Date().getTime(),
+            loading: false,
+            nowTime: new Date(),
+            nowTime_1: new Date().getTime(),
         });
         /** 点击操作 */
-        function handleClick(){
-            refreshCurrentTag();
+        function handleClick() {
+            let tagTools = generateTagListTools();
+            tagTools.refreshTag(route.path);
         }
-        function handleClick_1(){
-            deleteCurrentTag();
+        function handleClick_1() {
+            let tagTools = generateTagListTools();
+            tagTools.deleteTags(route.path);
             router.push({
-                name:'show-list-update',
-                params:{
-                    sign:'测试',
+                name: 'show-list-update',
+                params: {
+                    sign: '测试',
                 },
             });
         }
-        function handleClick_2(){
-            let tag = getCurrentTag();
-            if(!tag) return;
-            updateTag({
+        function handleClick_2() {
+            let tagTools = generateTagListTools();
+            let tag = tagTools.getTag(route.path);
+            if (!tag) return;
+            tagTools.updateTag({
                 ...tag,
-                title:tag.title + '-1',
-                isCache:!tag.isCache,
+                title: tag.title + '-1',
+                isCache: !tag.isCache,
             });
         }
         return {
@@ -115,24 +101,24 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-    .main-view{
-        display: flex;
-        flex-direction: column;
+.main-view {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    .container {
+        background-color: white;
         width: 100%;
-        .container{
-            background-color: white;
-            width: 100%;
-            // min-height: 800px;
-            height: fit-content;
-            border-radius: 5px;
-            padding: 30px;
-            box-sizing: border-box;
-            >*{
-                margin: 0 0 30px 0;
-                &:last-child{
-                    margin: 0;
-                }
+        // min-height: 800px;
+        height: fit-content;
+        border-radius: 5px;
+        padding: 30px;
+        box-sizing: border-box;
+        > * {
+            margin: 0 0 30px 0;
+            &:last-child {
+                margin: 0;
             }
         }
     }
+}
 </style>
