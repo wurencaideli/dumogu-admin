@@ -86,7 +86,7 @@ export default defineComponent({
             if (!ElScrollbarRef.value) return;
             /** shift + 鼠标滚轮可以横向滚动 */
             if (e.shiftKey) return;
-            let el = ElScrollbarRef.value.wrapRef;
+            let el = ElScrollbarRef.value;
             let scrollLeft = el.scrollLeft;
             if (e.deltaY < 0) {
                 scrollLeft = scrollLeft - 30;
@@ -96,13 +96,13 @@ export default defineComponent({
             el.scrollLeft = scrollLeft;
         }
         /** 滚动容器滚动事件 */
-        function handleScroll_1(e) {
+        function handleScroll_1() {
             if (!ElScrollbarRef.value) return;
             dataContainer.showLeft = false;
             dataContainer.showRight = false;
-            let el = ElScrollbarRef.value.wrapRef;
-            let scrollRight = el.scrollWidth - el.clientWidth - e.scrollLeft;
-            if (e.scrollLeft >= 5) {
+            let el = ElScrollbarRef.value;
+            let scrollRight = el.scrollWidth - el.clientWidth - el.scrollLeft;
+            if (el.scrollLeft >= 5) {
                 dataContainer.showLeft = true;
             }
             if (scrollRight >= 5) {
@@ -116,7 +116,7 @@ export default defineComponent({
         function autoScroll() {
             nextTick(() => {
                 if (!ElScrollbarRef.value) return;
-                let el = ElScrollbarRef.value.wrapRef;
+                let el = ElScrollbarRef.value;
                 let target = el.querySelector('.item.active');
                 if (!target) return;
                 let rect = el.getBoundingClientRect();
@@ -255,7 +255,7 @@ export default defineComponent({
                 @onOtherClick="dataContainer.show = false"
                 position="outside,bottom,start"
             >
-                <el-scrollbar @scroll="handleScroll_1" ref="ElScrollbarRef" height="100%">
+                <div class="scrollbar no-scrollbar" @scroll="handleScroll_1" ref="ElScrollbarRef">
                     <draggable
                         class="scrollbar-container"
                         item-key="sign"
@@ -301,7 +301,7 @@ export default defineComponent({
                             </div>
                         </template>
                     </draggable>
-                </el-scrollbar>
+                </div>
                 <template v-slot:dropdown>
                     <div class="bt-list-container">
                         <div
@@ -444,8 +444,10 @@ export default defineComponent({
     padding: 0 var(--item-gap) 0 0;
     :deep(.defin-drop) {
         height: 100% !important;
+        width: 100% !important;
         > .defin-drop-target {
             height: 100% !important;
+            width: 100% !important;
         }
     }
     > .left {
@@ -490,118 +492,115 @@ export default defineComponent({
             background-image: linear-gradient(to right, transparent, #3c3f45);
             z-index: 9;
         }
-        :deep(.el-scrollbar__bar) {
-            &.is-horizontal {
-                height: 5px !important;
-                opacity: 0.5;
-            }
-        }
-        :deep(.el-scrollbar__view) {
+        :deep(.scrollbar) {
+            width: 100%;
             height: 100%;
-        }
-        :deep(.scrollbar-container) {
-            display: flex;
-            flex-direction: row;
-            justify-content: flex-start;
-            align-items: center;
-            width: fit-content;
-            height: 100%;
-            padding: 0 var(--item-gap);
-            box-sizing: border-box;
-            .item {
-                cursor: pointer;
+            overflow-x: auto;
+            overflow-y: hidden;
+            .scrollbar-container {
                 display: flex;
                 flex-direction: row;
-                justify-content: center;
+                justify-content: flex-start;
                 align-items: center;
-                padding: 5px 10px;
+                width: fit-content;
+                height: 100%;
+                padding: 0 var(--item-gap);
                 box-sizing: border-box;
-                margin: 0 10px 0 0;
-                font-size: 12px;
-                font-weight: bold;
-                height: 30px;
-                width: max-content;
-                border-radius: 5px;
-                color: var(--text-color);
-                position: relative;
-                transition: all 0.2s;
-                opacity: 0.8;
-                --bt-width: 20px;
-                --bt-width-1: calc(var(--bt-width) / 2);
-                &:last-child {
-                    margin: 0;
-                }
-                &.active {
-                    background-color: #5340ff;
-                    color: var(--text-color-2);
-                    font-weight: bold;
-                    opacity: 1;
-                    box-shadow: var(--box-shadow-2);
-                }
-                &:hover {
-                    background-color: #5340ff;
-                    > .bt {
-                        opacity: 1;
-                        width: var(--bt-width);
-                        right: calc(0px - var(--bt-width-1));
-                    }
-                }
-                > .sign {
-                    width: 10px;
-                    height: 10px;
-                    border-radius: 50%;
-                    background-color: #5240ff;
-                    margin-right: 5px;
-                    &.icon-sign {
-                        background-color: transparent;
-                    }
-                }
-                > .bt {
-                    opacity: 0;
-                    width: 0;
-                    height: var(--bt-width);
-                    border-radius: 100%;
+                .item {
+                    cursor: pointer;
                     display: flex;
-                    position: absolute;
-                    right: 0;
                     flex-direction: row;
                     justify-content: center;
                     align-items: center;
-                    transition: all 0.2s;
-                    border: 1px solid rgb(228, 228, 228);
+                    padding: 5px 10px;
                     box-sizing: border-box;
+                    margin: 0 10px 0 0;
+                    font-size: 12px;
+                    font-weight: bold;
+                    height: 30px;
+                    width: max-content;
+                    border-radius: 5px;
+                    color: var(--text-color);
+                    position: relative;
+                    transition: all 0.2s;
+                    opacity: 0.8;
+                    --bt-width: 20px;
+                    --bt-width-1: calc(var(--bt-width) / 2);
+                    &:last-child {
+                        margin: 0;
+                    }
+                    &.active {
+                        background-color: #5340ff;
+                        color: var(--text-color-2);
+                        font-weight: bold;
+                        opacity: 1;
+                        box-shadow: var(--box-shadow-2);
+                    }
                     &:hover {
-                        color: red;
-                        border: 1px solid red;
+                        background-color: #5340ff;
+                        > .bt {
+                            opacity: 1;
+                            width: var(--bt-width);
+                            right: calc(0px - var(--bt-width-1));
+                        }
+                    }
+                    > .sign {
+                        width: 10px;
+                        height: 10px;
+                        border-radius: 50%;
+                        background-color: #5240ff;
+                        margin-right: 5px;
+                        &.icon-sign {
+                            background-color: transparent;
+                        }
+                    }
+                    > .bt {
+                        opacity: 0;
+                        width: 0;
+                        height: var(--bt-width);
+                        border-radius: 100%;
+                        display: flex;
+                        position: absolute;
+                        right: 0;
+                        flex-direction: row;
+                        justify-content: center;
+                        align-items: center;
+                        transition: all 0.2s;
+                        border: 1px solid rgb(228, 228, 228);
+                        box-sizing: border-box;
+                        &:hover {
+                            color: red;
+                            border: 1px solid red;
+                        }
+                    }
+                    > .cache {
+                        width: 30%;
+                        max-width: 30px;
+                        min-width: 15px;
+                        height: 3px;
+                        border-radius: 999px;
+                        background-color: rgba(255, 255, 255, 0.397);
+                        position: absolute;
+                        bottom: 0;
                     }
                 }
-                > .cache {
-                    width: 30%;
-                    max-width: 30px;
-                    min-width: 15px;
-                    height: 3px;
-                    border-radius: 999px;
-                    background-color: rgba(255, 255, 255, 0.397);
-                    position: absolute;
-                    bottom: 0;
-                }
-            }
-            .add-bt {
-                width: 30px;
-                height: 30px;
-                background-color: rgb(0, 0, 0);
-                border-radius: 50%;
-                padding: 0;
-                display: flex;
-                flex-direction: row;
-                justify-content: center;
-                align-items: center;
-                color: rgb(202, 202, 202);
-                border: 2px solid #7768ff;
-                &:hover {
-                    background-color: #5340ff;
-                    opacity: 1;
-                    transform: scale(1.2);
+                .add-bt {
+                    width: 30px;
+                    height: 30px;
+                    background-color: rgb(0, 0, 0);
+                    border-radius: 50%;
+                    padding: 0;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: center;
+                    align-items: center;
+                    color: rgb(202, 202, 202);
+                    border: 2px solid #7768ff;
+                    &:hover {
+                        background-color: #5340ff;
+                        opacity: 1;
+                        transform: scale(1.2);
+                    }
                 }
             }
         }

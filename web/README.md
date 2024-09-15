@@ -21,38 +21,49 @@ npm install
 灵活可控，保证稳定性，什么华丽花哨的不考虑。做到稳如泰山的代码，一眼就能看明白。
 
 [官网DEMO](https://admin.dumogu.top/)
-[开源地址](https://github.com/wurencaideli/dumogu-admin)
+
+[开源地址](https://github.com/wurencaideli/dumogu-admin/web)
 
 ### 文档如下
 
-#### 路由页面的添加（待完善）
+#### 路由的添加（待完善）
 ``` javascript
-// 文件位置 /src/router/index.js
-// 在相应layout路由节点下添加子节点
-// path和name为唯一属性
+/**
+ * 为路由配置meta相当于为该路由配置了基本信息，配置的属性如下
+ * title 用作标签显示字样的字段
+ * hasTag 可以生成标签
+ * isCache 该标签页面是否缓存
+ * hidden 该标签页面是否在左边目录上显示
+ * isLink 表示直接跳转新页面
+ * iconName 菜单icon图标
+ * fixed 标签是否固定
+ * layoutName layout的名称，用作分组
+ * redirectName 重定向的目标
+ * path 路由地址，唯一键
+ * fullPath
+ * showTagIcon 标签显示的时候是否显示图标
+ * content 菜单显示的详情
+ * number 菜单显示的数字
+ */
 {
     path: 'new-tag-page/:sign',
     component: () => import('@/views/system/newTagPage/index.vue'),
     name: 'new-tag-page',
     meta: { 
-        isMenu:true,  //代表该页面属于目录的标签页
+        layoutName: 'main',
+        redirectName: 'main-redirect',
+        title: '新标签',
+        hasTag: true,
     },
 }
 ```
 
 #### 菜单的添加（待完善）
 ``` javascript
-// 文件位置 /src/action/formatUserData.js
-// 在相应目录列表中添加目录节点
-// path和name为唯一属性，两者都可选填，标签页的配置会使用此配置（path优先）
 /** 
- * name表示对应的系统目录，有name才有此系统目录的权限
- * 有path的可直接跳转
- * 没path的，根据name获取映射的系统菜单属性进行跳转
- * isCache 表示该页面是否缓存
- * hidden 表示该页面是否在左边目录上显示
- * isLink 表示直接跳转新页面
- * fixed  标签页是否固定（固定后不可删除）
+ * path和name为唯一属性，两者都可选填，标签页的配置会使用此配置（path优先）
+ * 用作权限验证以及独立配置路由信息，优先级高于路由的meta配置
+ * 需要配置的属性与路由的meta的属性一致
  *  */
 {
     name:"main-index",
@@ -61,5 +72,6 @@ npm install
     isCache:true,
     fixed:true,
     iconName:"all-fill",
+    hasTag: true,
 }
 ```

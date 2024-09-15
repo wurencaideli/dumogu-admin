@@ -52,7 +52,7 @@ export default defineComponent({
         class="menu-container"
         ref="ElMenuRef"
         :collapse="false"
-        :default-active="route.path"
+        :default-active="route.fullPath"
         :router="false"
     >
         <MenuItem
