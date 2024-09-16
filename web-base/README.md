@@ -22,7 +22,7 @@ npm install
 
 [官网DEMO](https://admin.dumogu.top/base)
 
-[开源地址](https://github.com/wurencaideli/dumogu-admin/web-base)
+[开源地址](https://github.com/wurencaideli/dumogu-admin/tree/master/web-base)
 
 ### 文档如下
 

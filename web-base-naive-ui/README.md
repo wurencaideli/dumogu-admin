@@ -1,6 +1,6 @@
 # 毒蘑菇 - 管理
 
-使用 vue3 + vite + element-plus，使用 storages-js 管理缓存，使用axios发起请求，pinia全局数据管理。NODE版本14.21.3。
+使用 vue3 + vite + naive-ui，使用 storages-js 管理缓存，使用axios发起请求，pinia全局数据管理。NODE版本14.21.3。
 
 ```
 npm install
@@ -22,7 +22,7 @@ npm install
 
 [官网DEMO](https://admin.dumogu.top/base-naive-ui)
 
-[开源地址](https://github.com/wurencaideli/dumogu-admin/web-base-naive-ui)
+[开源地址](https://github.com/wurencaideli/dumogu-admin/tree/master/web-base-naive-ui)
 
 ### 文档如下
 
