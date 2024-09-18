@@ -12,7 +12,6 @@ import { verifiedData } from '@/common/verifiedTools';
 import { Select, ArrowRightBold, SemiSelect } from '@element-plus/icons-vue';
 import { userDataStore } from '@/store/user';
 import { getTypeOf } from '@/common/otherTools';
-import img_1 from '@/assets/login-imgs/img-1.gif';
 import img_2 from '@/assets/login-imgs/login-bg.svg';
 import img_3 from '@/assets/login-imgs/code.svg';
 import img_4 from '@/assets/login-imgs/login-bg-1.svg';
@@ -43,7 +42,6 @@ export default defineComponent({
             captchaId: '',
             loading_1: false,
             img: {
-                img_1,
                 img_2,
                 img_3,
                 img_4,
@@ -211,13 +209,10 @@ export default defineComponent({
 </script>
 
 <template>
-    <div
-        class="login-view"
-        :style="{
-            '--bg-img-1': `url(${dataContainer.img.img_1})`,
-            '--bg-img-2': `url(${dataContainer.img.img_2})`,
-        }"
-    >
+    <div class="login-view">
+        <div class="img-bg img-bg-1">
+            <el-image class="img" :src="dataContainer.img.img_2" fit="cover" />
+        </div>
         <div class="img-bg">
             <el-image class="img" :src="dataContainer.img.img_4" fit="contain" />
         </div>
@@ -359,10 +354,6 @@ export default defineComponent({
     display: flex;
     justify-content: center;
     align-items: center;
-    background-image: var(--bg-img-2);
-    background-size: contain;
-    background-position: center bottom;
-    background-repeat: no-repeat;
     padding: 15px;
     box-sizing: border-box;
     position: relative;
@@ -378,8 +369,14 @@ export default defineComponent({
         justify-content: center;
         align-items: center;
         > .img {
-            width: 90%;
-            height: 90%;
+            width: 95%;
+            height: 95%;
+        }
+        &.img-bg-1 {
+            > .img {
+                width: 100%;
+                height: 100%;
+            }
         }
     }
     > .container {
@@ -396,11 +393,7 @@ export default defineComponent({
         > .left {
             flex: 1 1 0;
             width: 0;
-            // background-image: var(--bg-img-1);
-            // background-size: cover;
-            // box-shadow: inset 1px 0px 4px #0000006b;
             background-color: #c6c6c6;
-            background-repeat: no-repeat;
             :deep(.el-carousel) {
                 width: 100%;
                 height: 100%;
