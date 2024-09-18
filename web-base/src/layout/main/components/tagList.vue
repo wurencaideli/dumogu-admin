@@ -22,6 +22,7 @@ import draggable from 'vuedraggable';
 import { deepCopyObj, isPc } from '@/common/otherTools';
 import generateTagListTools from '@/action/tagListTools';
 import { userDataStore } from '@/store/user';
+import { publicDataStore } from '@/store/public';
 import { useRouter, useRoute } from 'vue-router';
 import { toggleFullScreen } from '@/common/otherTools';
 import definDropdown from '@/components/definDropdown.vue';
@@ -49,9 +50,11 @@ export default defineComponent({
     setup(props, { emit }) {
         const router = useRouter();
         let userData = userDataStore();
+        let publicData = publicDataStore();
         const ElScrollbarRef = ref(null);
         const dataContainer = reactive({
             tagList: toRef(userData, 'tagList'),
+            fullScreen: toRef(publicData, 'fullScreen'),
             activePath: toRef(props, 'activePath'),
             layoutName: toRef(props, 'layoutName'),
             show: false,
@@ -217,10 +220,17 @@ export default defineComponent({
                 case type == 'handleRefreshAll':
                     tagTools.refreshTag(dataContainer.activePath, true);
                     break;
+                case type == 'handleNewOpen':
+                    tag = tagParams;
+                    if (tag && tag.fullPath) {
+                        let routeUrl = router.resolve(tag.fullPath);
+                        window.open(routeUrl.href, '_blank');
+                    }
+                    break;
             }
         }
-        function test(e) {
-            console.log(e);
+        function toggleFullScreen_1() {
+            publicData.setFullScreen(!dataContainer.fullScreen);
         }
         return {
             dataContainer,
@@ -231,8 +241,8 @@ export default defineComponent({
             handleClickContext,
             handleTagClick,
             toggleFullScreen,
-            test,
             handleScroll_1,
+            toggleFullScreen_1,
         };
     },
 });
@@ -258,7 +268,7 @@ export default defineComponent({
                 <div class="scrollbar no-scrollbar" @scroll="handleScroll_1" ref="ElScrollbarRef">
                     <draggable
                         class="scrollbar-container"
-                        item-key="sign"
+                        item-key="path"
                         :disabled="!dataContainer.isPc"
                         v-model="tagListTrans"
                     >
@@ -279,6 +289,11 @@ export default defineComponent({
                                     :name="element.iconName"
                                 ></SvgIcon>
                                 {{ element.title || '未知标签' }}
+                                <SvgIcon
+                                    v-if="element.fixed"
+                                    :style="'width: 12px;min-width:12px;height: 12px;margin-left:5px;opacity: 0.8;'"
+                                    :name="'svg:nail.svg'"
+                                ></SvgIcon>
                                 <div
                                     v-if="!element.fixed && tagListTrans.length > 1"
                                     @click.stop="handleOptionClick('handleTagRemove', element)"
@@ -338,16 +353,26 @@ export default defineComponent({
                             ></SvgIcon>
                             切换固定状态
                         </div>
+                        <div
+                            class="item"
+                            @click="handleOptionClick('handleNewOpen', dataContainer.activeItem)"
+                        >
+                            <SvgIcon
+                                :style="'width:16px;height:16px;'"
+                                name="svg:paper-plane.svg"
+                            ></SvgIcon>
+                            在新窗口打开
+                        </div>
                     </div>
                 </template>
             </definDropdown>
         </div>
         <div class="right">
             <div class="bt" @click="handleOptionClick('handleToLeft', dataContainer.activeItem)">
-                <SvgIcon :style="'width:15px;height:15px;'" name="svg:arrow-left.svg"></SvgIcon>
+                <SvgIcon :style="'width:18px;height:18px;'" name="svg:arrow-left.svg"></SvgIcon>
             </div>
             <div class="bt" @click="handleOptionClick('handleToRight', dataContainer.activeItem)">
-                <SvgIcon :style="'width:15px;height:15px;'" name="svg:arrow-right.svg"></SvgIcon>
+                <SvgIcon :style="'width:18px;height:18px;'" name="svg:arrow-right.svg"></SvgIcon>
             </div>
             <div
                 class="bt"
@@ -357,7 +382,7 @@ export default defineComponent({
                     })
                 "
             >
-                <SvgIcon :style="'width:15px;height:15px;'" name="svg:redo.svg"></SvgIcon>
+                <SvgIcon :style="'width:18px;height:18px;'" name="svg:redo.svg"></SvgIcon>
             </div>
             <definDropdown
                 :show="dataContainer.show_1"
@@ -422,6 +447,12 @@ export default defineComponent({
                     </div>
                 </template>
             </definDropdown>
+            <div @click="toggleFullScreen_1" class="bt">
+                <SvgIcon
+                    :style="'width:20px;height:20px;'"
+                    :name="dataContainer.fullScreen ? 'svg:compress-alt.svg' : 'svg:expand-alt.svg'"
+                ></SvgIcon>
+            </div>
             <div @click="toggleFullScreen" class="bt">
                 <SvgIcon :style="'width:25px;height:25px;'" name="svg:Navbar-full.svg"></SvgIcon>
             </div>
@@ -566,11 +597,11 @@ export default defineComponent({
                         justify-content: center;
                         align-items: center;
                         transition: all 0.2s;
-                        border: 1px solid rgb(228, 228, 228);
+                        border: 2px solid rgb(228, 228, 228);
                         box-sizing: border-box;
                         &:hover {
                             color: red;
-                            border: 1px solid red;
+                            border: 2px solid red;
                         }
                     }
                     > .cache {
@@ -581,7 +612,8 @@ export default defineComponent({
                         border-radius: 999px;
                         background-color: rgba(255, 255, 255, 0.397);
                         position: absolute;
-                        bottom: 0;
+                        bottom: -1px;
+                        box-shadow: var(--box-shadow-2);
                     }
                 }
                 .add-bt {

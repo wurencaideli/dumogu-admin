@@ -3,8 +3,18 @@
  * 自定义的滚动条
  * 可以记录滚动位置
  */
-import { defineComponent, ref, reactive, onActivated, toRef, nextTick, onMounted } from 'vue';
+import {
+    defineComponent,
+    ref,
+    reactive,
+    onActivated,
+    toRef,
+    nextTick,
+    onMounted,
+    onUnmounted,
+} from 'vue';
 import { simpleRoll } from '@/common/rollTolls';
+import { throttleFn } from '@/common/debounceAndThrottle';
 import simplebar from 'simplebar-vue';
 import 'simplebar-vue/dist/simplebar.min.css';
 
@@ -23,6 +33,11 @@ export default defineComponent({
             type: Boolean,
             default: false,
         },
+        /** 内容被遮挡时的阴影 */
+        showMask: {
+            type: Boolean,
+            default: true,
+        },
     },
     emits: ['onScroll'],
     setup(props, { emit }) {
@@ -30,6 +45,7 @@ export default defineComponent({
         const dataContainer = reactive({
             showUpBt: toRef(props, 'showUpBt'),
             loading: toRef(props, 'loading'),
+            showMask: toRef(props, 'showMask'),
             show: false,
         });
         const otherDataContainer = {
@@ -53,6 +69,39 @@ export default defineComponent({
                 otherDataContainer.target.scrollLeft = otherDataContainer.left || 0;
             });
         });
+        /** 处理样式 */
+        const handleStyle = throttleFn(function () {
+            if (!DefinScrollbarRef.value) return;
+            if (!otherDataContainer.target) return;
+            if (!dataContainer.showMask) return;
+            let element = DefinScrollbarRef.value;
+            element.classList.remove('show-top', 'show-left', 'show-bottom', 'show-right');
+            let el = otherDataContainer.target;
+            let scrollRight = el.scrollWidth - el.clientWidth - el.scrollLeft;
+            let scrollBottom = el.scrollHeight - el.clientHeight - el.scrollTop;
+            /** 表示左边被遮挡 */
+            if (el.scrollLeft > 0) {
+                element.classList.add('show-left');
+            }
+            /** 表示右边边被遮挡 */
+            if (scrollRight > 0) {
+                element.classList.add('show-right');
+            }
+            /** 表示上边被遮挡 */
+            if (el.scrollTop > 0) {
+                element.classList.add('show-top');
+            }
+            /** 表示下边边被遮挡 */
+            if (scrollBottom > 0) {
+                element.classList.add('show-bottom');
+            }
+        }, 70);
+        let timer = setInterval(() => {
+            handleStyle();
+        }, 500);
+        onUnmounted(() => {
+            clearInterval(timer);
+        });
         /** 滚动事件 */
         function handleScroll(e) {
             if (!e || !e.target) return;
@@ -70,6 +119,8 @@ export default defineComponent({
             otherDataContainer.left = e.scrollLeft || 0;
             /** 向外部抛出事件 */
             emit('onScroll', e);
+            /** 添加自定义class */
+            handleStyle();
         }
         /** 回到顶部事件 */
         function handleUp() {
@@ -112,6 +163,10 @@ export default defineComponent({
         <simplebar class="defin-scrollbar-simplebar">
             <slot></slot>
         </simplebar>
+        <div v-if="dataContainer.showMask" class="top"></div>
+        <div v-if="dataContainer.showMask" class="right"></div>
+        <div v-if="dataContainer.showMask" class="bottom"></div>
+        <div v-if="dataContainer.showMask" class="left"></div>
         <div
             v-if="dataContainer.showUpBt"
             @click="handleUp"
@@ -139,6 +194,66 @@ export default defineComponent({
     position: relative;
     width: 100%;
     height: 100%;
+    --mask-size: 5px;
+    --shadow-color-1: #0000006b;
+    &.show-left {
+        > .left {
+            opacity: 1;
+        }
+    }
+    &.show-right {
+        > .right {
+            opacity: 1;
+        }
+    }
+    &.show-top {
+        > .top {
+            opacity: 1;
+        }
+    }
+    &.show-bottom {
+        > .bottom {
+            opacity: 1;
+        }
+    }
+    > .left,
+    > .right,
+    > .top,
+    > .bottom {
+        pointer-events: none;
+        position: absolute;
+        opacity: 0;
+        transition: opacity 0.2s;
+        z-index: 999;
+    }
+    > .top {
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: var(--mask-size);
+        background-image: linear-gradient(to bottom, var(--shadow-color-1), transparent);
+    }
+    > .right {
+        top: 0;
+        right: 0;
+        width: var(--mask-size);
+        height: 100%;
+        background-image: linear-gradient(to right, transparent, var(--shadow-color-1));
+    }
+    > .bottom {
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: var(--mask-size);
+        background-image: linear-gradient(to bottom, transparent, var(--shadow-color-1));
+    }
+    > .left {
+        top: 0;
+        left: 0;
+        width: var(--mask-size);
+        height: 100%;
+        background-image: linear-gradient(to right, var(--shadow-color-1), transparent);
+    }
     :deep(.defin-scrollbar-simplebar) {
         width: 100%;
         height: 100%;
