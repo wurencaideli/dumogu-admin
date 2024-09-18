@@ -13,6 +13,7 @@ import img_1 from '@/assets/logo.png';
 import keepAliveRouter from '@/components/keepAliveRouter.vue';
 import DefinScrollbar from '@/components/definScrollbar.vue';
 import searchContainer from './components/searchContainer.vue';
+import { publicDataStore } from '@/store/public';
 
 export default defineComponent({
     name: 'MainLayout',
@@ -26,11 +27,13 @@ export default defineComponent({
     },
     props: {},
     setup() {
+        let publicData = publicDataStore();
         let userData = userDataStore();
         const router = useRouter();
         const route = useRoute();
         const dataContainer = reactive({
             name: import.meta.env.VITE_APP_name,
+            fullScreen: toRef(publicData, 'fullScreen'),
             img: {
                 img_1,
             },
@@ -83,7 +86,12 @@ export default defineComponent({
 </script>
 
 <template>
-    <div class="main-layout">
+    <div
+        :class="{
+            'main-layout': true,
+            'full-screen': dataContainer.fullScreen,
+        }"
+    >
         <div class="left">
             <Navbar></Navbar>
         </div>
@@ -153,9 +161,19 @@ export default defineComponent({
     flex-direction: row;
     position: relative;
     z-index: 9;
+    &.full-screen {
+        > .left,
+        > .centre {
+            width: 0;
+            opacity: 0;
+            pointer-events: none;
+        }
+    }
     > .left {
         height: 100%;
         background-color: var(--bg-color);
+        transition: width 0.2s, opacity 0.2s;
+        width: 70px;
     }
     > .centre {
         height: 100%;
@@ -163,6 +181,7 @@ export default defineComponent({
         background-color: var(--bg-color-2);
         display: flex;
         flex-direction: column;
+        transition: width 0.2s, opacity 0.2s;
         > .logo {
             height: var(--navbar-height);
             padding: 0 10px;

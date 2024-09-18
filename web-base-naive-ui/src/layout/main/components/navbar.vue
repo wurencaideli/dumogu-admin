@@ -132,13 +132,13 @@ export default defineComponent({
             </a>
         </div>
         <div class="bottom">
-            <router-link to="/" class="index">
+            <div class="index" @click="handleLogout">
                 <SvgIcon
-                    :style="'width: 15px;min-width:15px;height: 15px;margin-right:5px;'"
-                    :name="'svg:arrow-left.svg'"
+                    :style="'width: 17px;min-width:17px;height: 17px;margin-right:5px;'"
+                    :name="'svg:poweroff.svg'"
                 ></SvgIcon>
-                首页
-            </router-link>
+                退出
+            </div>
         </div>
     </div>
 </template>
@@ -292,6 +292,7 @@ export default defineComponent({
             display: flex;
             justify-content: center;
             align-items: center;
+            cursor: pointer;
         }
     }
 }

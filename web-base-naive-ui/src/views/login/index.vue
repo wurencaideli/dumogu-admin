@@ -199,12 +199,10 @@ export default defineComponent({
 </script>
 
 <template>
-    <div
-        class="login-view"
-        :style="{
-            '--bg-img-2': `url(${dataContainer.img.img_2})`,
-        }"
-    >
+    <div class="login-view">
+        <div class="img-bg img-bg-1">
+            <n-image class="img" :src="dataContainer.img.img_2" fit="cover" />
+        </div>
         <div class="img-bg">
             <n-image class="img" :src="dataContainer.img.img_4" fit="contain" />
         </div>
@@ -301,10 +299,6 @@ export default defineComponent({
     display: flex;
     justify-content: center;
     align-items: center;
-    background-image: var(--bg-img-2);
-    background-size: contain;
-    background-position: center bottom;
-    background-repeat: no-repeat;
     padding: 15px;
     box-sizing: border-box;
     position: relative;
@@ -320,8 +314,14 @@ export default defineComponent({
         justify-content: center;
         align-items: center;
         > .img {
-            width: 90%;
-            height: 90%;
+            width: 95%;
+            height: 95%;
+        }
+        &.img-bg-1 {
+            > .img {
+                width: 100%;
+                height: 100%;
+            }
         }
     }
     > .container {

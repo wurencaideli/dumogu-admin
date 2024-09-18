@@ -20,7 +20,11 @@ function createS(key, value) {
 const userStorage = (value) => {
     return createS('user-container', value);
 };
+const fullScreenStorage = (value) => {
+    return createS('full-screen-container', value);
+};
 
 export default {
     userStorage,
+    fullScreenStorage,
 };
