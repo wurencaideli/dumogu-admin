@@ -3,20 +3,22 @@
  * 自定义的滚动条
  * 可以记录滚动位置
  */
-import { defineComponent, ref, reactive, onActivated, toRef, nextTick } from 'vue';
+import { defineComponent, ref, reactive, onActivated, toRef, nextTick, onMounted } from 'vue';
 import { simpleRoll } from '@/common/rollTolls';
+import simplebar from 'simplebar-vue';
+import 'simplebar-vue/dist/simplebar.min.css';
 
 export default defineComponent({
+    components: {
+        simplebar,
+    },
     props: {
-        height: {
-            type: String,
-            default: '100%',
-        },
         /** 是否显示回到顶部按钮 */
         showUpBt: {
             type: Boolean,
             default: false,
         },
+        /** 加载状态 */
         loading: {
             type: Boolean,
             default: false,
@@ -24,9 +26,8 @@ export default defineComponent({
     },
     emits: ['onScroll'],
     setup(props, { emit }) {
-        const ElScrollbarRef = ref(null); //组件实例
+        const DefinScrollbarRef = ref(null); //组件实例
         const dataContainer = reactive({
-            height: toRef(props, 'height'),
             showUpBt: toRef(props, 'showUpBt'),
             loading: toRef(props, 'loading'),
             show: false,
@@ -34,18 +35,28 @@ export default defineComponent({
         const otherDataContainer = {
             top: 0, //记录滚动条
             left: 0,
+            target: null, //滚动容器元素
         };
+        /** 页面加载好了找出滚动容器 */
+        onMounted(() => {
+            if (!DefinScrollbarRef.value) return;
+            let wrapRef = DefinScrollbarRef.value.querySelector('.simplebar-content-wrapper');
+            if (!wrapRef) return;
+            otherDataContainer.target = wrapRef;
+            wrapRef.addEventListener('scroll', handleScroll);
+        });
         /** 重新加载时候赋予旧值 */
         onActivated(() => {
             nextTick(() => {
-                if (!ElScrollbarRef.value) return;
-                ElScrollbarRef.value.setScrollTop(otherDataContainer.top);
-                ElScrollbarRef.value.setScrollLeft(otherDataContainer.left);
+                if (!otherDataContainer.target) return;
+                otherDataContainer.target.scrollTop = otherDataContainer.top || 0;
+                otherDataContainer.target.scrollLeft = otherDataContainer.left || 0;
             });
         });
         /** 滚动事件 */
         function handleScroll(e) {
-            e = e || {};
+            if (!e || !e.target) return;
+            e = e.target;
             /**
              * 控制回到顶部按钮得显示
              * 大于一定阈值并且向下滚动才显示
@@ -62,22 +73,32 @@ export default defineComponent({
         }
         /** 回到顶部事件 */
         function handleUp() {
-            if (!ElScrollbarRef.value) return;
+            if (!otherDataContainer.target) return;
+            let wrapRef = otherDataContainer.target;
+            if (!wrapRef) return;
             simpleRoll({
-                target: ElScrollbarRef.value.wrapRef,
+                top: 0,
+                time: 150,
+                target: wrapRef,
             });
         }
-        /** 滚动到某一位置 */
-        function handleTo(end) {
-            if (!ElScrollbarRef.value) return;
-            simpleRoll({
-                end: end,
-                target: ElScrollbarRef.value.wrapRef,
-            });
+        /** 滚动到某一位置params {left:0,top:0} */
+        function handleTo(params) {
+            if (!otherDataContainer.target) return;
+            let wrapRef = otherDataContainer.target;
+            if (!wrapRef) return;
+            simpleRoll(
+                Object.assign(
+                    {
+                        target: wrapRef,
+                    },
+                    params,
+                ),
+            );
         }
         return {
             dataContainer,
-            ElScrollbarRef,
+            DefinScrollbarRef,
             handleScroll,
             handleUp,
             handleTo,
@@ -87,13 +108,10 @@ export default defineComponent({
 </script>
 
 <template>
-    <el-scrollbar
-        ref="ElScrollbarRef"
-        @scroll="handleScroll"
-        wrap-class="defin-scrollbar"
-        :height="dataContainer.height"
-    >
-        <slot></slot>
+    <div ref="DefinScrollbarRef" class="defin-scrollbar">
+        <simplebar class="defin-scrollbar-simplebar">
+            <slot></slot>
+        </simplebar>
         <div
             v-if="dataContainer.showUpBt"
             @click="handleUp"
@@ -110,16 +128,29 @@ export default defineComponent({
                 'no-show': dataContainer.loading,
             }"
         >
-            <div class="title">CODESS</div>
+            <div class="title">LOADING...</div>
             <div class="loading"></div>
         </div>
-    </el-scrollbar>
+    </div>
 </template>
 
 <style lang="scss" scoped>
 .defin-scrollbar {
     position: relative;
-    .scrollbar-up-bt {
+    width: 100%;
+    height: 100%;
+    :deep(.defin-scrollbar-simplebar) {
+        width: 100%;
+        height: 100%;
+        .simplebar-vertical {
+            width: 12px;
+        }
+        .simplebar-scrollbar:before {
+            border-radius: 2px !important;
+            background-color: white;
+        }
+    }
+    > .scrollbar-up-bt {
         position: absolute;
         z-index: 999;
         bottom: 3vw;
@@ -138,14 +169,18 @@ export default defineComponent({
         cursor: pointer;
         color: rgb(25, 137, 250);
         font-size: 20px;
+        font-weight: bold;
         font-family: serif;
         box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.667);
         &.show {
             opacity: 1;
             pointer-events: initial;
         }
+        &:hover {
+            transform: scale(1.1);
+        }
     }
-    .loading-v-el {
+    > .loading-v-el {
         position: absolute;
         top: 0;
         left: 0;
@@ -160,12 +195,11 @@ export default defineComponent({
         pointer-events: none;
         transition: all 0.3s;
         opacity: 0;
-        // transform: scale(0.7);
         &.no-show {
             opacity: 0.2;
         }
     }
-    .loading-v-el .title {
+    > .loading-v-el .title {
         position: absolute;
         font-size: 20px;
         font-family: Source Han Serif CN;
@@ -174,10 +208,10 @@ export default defineComponent({
         transform: translateY(100px);
         font-style: italic;
     }
-    .loading-v-el .loading {
+    > .loading-v-el .loading {
         position: absolute;
     }
-    .loading-v-el .loading {
+    > .loading-v-el .loading {
         width: 8px;
         height: 100px;
         border-radius: 4px;
@@ -187,8 +221,8 @@ export default defineComponent({
         color: #dde1e4;
         animation: loading-animation 0.3s 0.3s linear infinite alternate;
     }
-    .loading-v-el .loading::after,
-    .loading-v-el .loading::before {
+    > .loading-v-el .loading::after,
+    > .loading-v-el .loading::before {
         content: '';
         width: 8px;
         height: 100px;
@@ -200,7 +234,7 @@ export default defineComponent({
         left: 80px;
         animation: loading-animation 0.3s 0.45s linear infinite alternate;
     }
-    .loading-v-el .loading::before {
+    > .loading-v-el .loading::before {
         left: -80px;
         animation-delay: 0s;
     }
