@@ -262,7 +262,12 @@ export default defineComponent({
                 :show="dataContainer.show"
                 :ifLeftClick="false"
                 :targetQuery="'.target'"
-                @onOtherClick="dataContainer.show = false"
+                @onOtherClick="
+                    () => {
+                        dataContainer.show = false;
+                        dataContainer.activeItem = null;
+                    }
+                "
                 position="outside,bottom,start"
             >
                 <div class="scrollbar no-scrollbar" @scroll="handleScroll_1" ref="ElScrollbarRef">
@@ -278,6 +283,9 @@ export default defineComponent({
                                     target: true,
                                     item: true,
                                     active: dataContainer.activePath == element.path,
+                                    'is-select':
+                                        dataContainer.activeItem &&
+                                        dataContainer.activeItem.path == element.path,
                                 }"
                                 @click="handleTagClick(element)"
                                 @contextmenu.prevent="handleClickContext(element)"
@@ -566,6 +574,9 @@ export default defineComponent({
                         font-weight: bold;
                         opacity: 1;
                         box-shadow: var(--box-shadow-2);
+                    }
+                    &.is-select {
+                        box-shadow: inset 0 0 0 2px #5340ff !important;
                     }
                     &:hover {
                         background-color: #5340ff;
