@@ -81,7 +81,7 @@ import SvgIcon from '@/components/svgIcon/index.vue';
 import { Delete } from '@element-plus/icons-vue';
 import { verifiedData } from '@/common/verifiedTools';
 import { messageError } from '@/action/messagePrompt.js';
-import generateTagListTools from '@/action/tagListTools';
+import { findTag, updateTag } from '@/action/tagListTools';
 
 export default defineComponent({
     components: {
@@ -143,13 +143,15 @@ export default defineComponent({
             return failData;
         }
         function handleClick_2() {
-            let tagTools = generateTagListTools();
-            let tag = tagTools.getTag(route.path);
+            let tag = findTag(route.path) || {};
             if (!tag) return;
-            tagTools.updateTag({
-                ...tag,
-                title: tag.title + '-1',
-                isCache: !tag.isCache,
+            updateTag({
+                tag: {
+                    ...tag,
+                    title: tag.title + '-1',
+                    isCache: !tag.isCache,
+                },
+                layoutName: tag.layoutName,
             });
         }
         return {

@@ -220,7 +220,7 @@ import { messageSuccess, confirm } from '@/action/messagePrompt.js';
 import EditDataDialog from './components/editDataDialog.vue';
 import SvgIcon from '@/components/svgIcon/index.vue';
 import { hasPermi } from '@/action/powerTools';
-import { toTree, unfoldTreeList } from '@/common/menuTools';
+import { toTree, unfoldTreeList } from '@/common/treeTools';
 import { getNanoid } from '@/common/guid';
 
 export default defineComponent({

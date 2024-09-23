@@ -7,10 +7,10 @@ import { useRouter, useRoute } from 'vue-router';
 import SvgIcon from '@/components/svgIcon/index.vue';
 import { Delete } from '@element-plus/icons-vue';
 import { userDataStore } from '@/store/user';
-import { toTree, unfoldTreeList } from '@/common/menuTools';
+import { toTree, unfoldTreeList } from '@/common/treeTools';
 import DefinScrollbar from '@/components/definScrollbar.vue';
 import { messageSuccess, messageError } from '@/action/messagePrompt';
-import generateTagListTools from '@/action/tagListTools';
+import { findTag, deleteTags } from '@/action/tagListTools';
 
 export default defineComponent({
     components: {
@@ -53,7 +53,6 @@ export default defineComponent({
         initData();
         /** 跳转相应链接 */
         function handleClick(params) {
-            let tagTools = generateTagListTools();
             if (!params.path) {
                 messageError('没有可用于跳转的链接');
                 return;
@@ -62,7 +61,8 @@ export default defineComponent({
             if (params.isLink) {
                 window.open(params.path);
             } else {
-                tagTools.deleteTags(route.path);
+                let tag = findTag(route.path) || {};
+                deleteTags({ paths: tag.path, layoutName: tag.layoutName });
                 router.push(params.path);
             }
         }
@@ -142,7 +142,7 @@ export default defineComponent({
         display: flex;
         flex-direction: column;
         align-items: center;
-        background-image: url(https://cn.bing.com/th?id=OHR.KirkilaiTower_ZH-CN4058404632_1920x1080.jpg&rf=LaDigue_1920x1080.jpg&pid=hp);
+        background-image: url(https://cn.bing.com/th?id=OHR.MtPrevostDuncan_ZH-CN2333619635_1920x1080.jpg&rf=LaDigue_1920x1080.jpg&pid=hp);
         background-size: cover;
         background-repeat: no-repeat;
         box-shadow: 1px 1px 3px 0 rgba(0, 0, 0, 0.319);

@@ -20,8 +20,21 @@ import SvgIcon from '@/components/svgIcon/index.vue';
  *  */
 import draggable from 'vuedraggable';
 import { deepCopyObj, isPc } from '@/common/otherTools';
-import generateTagListTools from '@/action/tagListTools';
+import {
+    findTag,
+    getTag,
+    deleteTags,
+    updateTag,
+    refreshTag,
+    deleteOtherTags,
+    deleteLeftTags,
+    deleteRightTags,
+    getLatelyHisTag,
+    getRight,
+    getLeft,
+} from '@/action/tagListTools';
 import { userDataStore } from '@/store/user';
+import { publicDataStore } from '@/store/public';
 import { useRouter, useRoute } from 'vue-router';
 import { toggleFullScreen } from '@/common/otherTools';
 import definDropdown from '@/components/definDropdown.vue';
@@ -49,9 +62,11 @@ export default defineComponent({
     setup(props, { emit }) {
         const router = useRouter();
         let userData = userDataStore();
+        let publicData = publicDataStore();
         const ElScrollbarRef = ref(null);
         const dataContainer = reactive({
-            tagList: toRef(userData, 'tagList'),
+            tagsMap: toRef(userData, 'tagsMap'),
+            fullScreen: toRef(publicData, 'fullScreen'),
             activePath: toRef(props, 'activePath'),
             layoutName: toRef(props, 'layoutName'),
             show: false,
@@ -65,17 +80,12 @@ export default defineComponent({
         /** 用来排序转换的数组，由外部确定是否转换 */
         const tagListTrans = computed({
             get() {
-                return dataContainer.tagList.filter((item) => {
-                    if (props.layoutName != item.layoutName) return false;
-                    return true;
-                });
+                let tagList = dataContainer.tagsMap[dataContainer.layoutName || ''];
+                return tagList || [];
             },
             set(value) {
-                let list = dataContainer.tagList.filter((item) => {
-                    if (props.layoutName != item.layoutName) return true;
-                    return false;
-                });
-                userData.setTagList([...value, ...list]);
+                dataContainer.tagsMap[dataContainer.layoutName || ''] = value;
+                userData.setTagsMap(dataContainer.tagsMap);
             },
         });
         /**
@@ -86,7 +96,7 @@ export default defineComponent({
             if (!ElScrollbarRef.value) return;
             /** shift + 鼠标滚轮可以横向滚动 */
             if (e.shiftKey) return;
-            let el = ElScrollbarRef.value.wrapRef;
+            let el = ElScrollbarRef.value;
             let scrollLeft = el.scrollLeft;
             if (e.deltaY < 0) {
                 scrollLeft = scrollLeft - 30;
@@ -96,13 +106,13 @@ export default defineComponent({
             el.scrollLeft = scrollLeft;
         }
         /** 滚动容器滚动事件 */
-        function handleScroll_1(e) {
+        function handleScroll_1() {
             if (!ElScrollbarRef.value) return;
             dataContainer.showLeft = false;
             dataContainer.showRight = false;
-            let el = ElScrollbarRef.value.wrapRef;
-            let scrollRight = el.scrollWidth - el.clientWidth - e.scrollLeft;
-            if (e.scrollLeft >= 5) {
+            let el = ElScrollbarRef.value;
+            let scrollRight = el.scrollWidth - el.clientWidth - el.scrollLeft;
+            if (el.scrollLeft >= 5) {
                 dataContainer.showLeft = true;
             }
             if (scrollRight >= 5) {
@@ -116,7 +126,7 @@ export default defineComponent({
         function autoScroll() {
             nextTick(() => {
                 if (!ElScrollbarRef.value) return;
-                let el = ElScrollbarRef.value.wrapRef;
+                let el = ElScrollbarRef.value;
                 let target = el.querySelector('.item.active');
                 if (!target) return;
                 let rect = el.getBoundingClientRect();
@@ -156,71 +166,90 @@ export default defineComponent({
         }
         /** 操作事件 */
         function handleOptionClick(type, tagParams) {
-            let tagTools = generateTagListTools(dataContainer.layoutName);
             tagParams = deepCopyObj(tagParams || {});
             let tag, path;
             switch (true) {
                 /** 跳转去右边标签 */
                 case type == 'handleToRight':
-                    tag = tagTools.getRight(dataContainer.activePath);
+                    tag = getRight({ path: tagParams.path, layoutName: dataContainer.layoutName });
                     handleTagClick(tag);
                     break;
                 /** 跳转去左边标签 */
                 case type == 'handleToLeft':
-                    tag = tagTools.getLeft(dataContainer.activePath);
+                    tag = getLeft({ path: tagParams.path, layoutName: dataContainer.layoutName });
                     handleTagClick(tag);
                     break;
                 /** 删除一个标签 */
                 case type == 'handleTagRemove':
-                    if (tagListTrans.value.length == 0) return;
-                    tagTools.deleteTags(tagParams.path);
+                    if (tagListTrans.value.length <= 1) return;
+                    deleteTags({
+                        paths: tagParams.path,
+                        layoutName: dataContainer.layoutName,
+                    });
                     if (dataContainer.activePath == tagParams.path) {
-                        tag = tagTools.getLatelyHisTag();
+                        tag = getLatelyHisTag({ layoutName: dataContainer.layoutName });
                         handleTagClick(tag);
                     }
                     break;
                 /** 切换标签状态 */
                 case type == 'handleSwitchCache':
                     if (!tagParams.path) return;
-                    tagTools.updateTag(
-                        Object.assign(tagParams, {
+                    updateTag({
+                        layoutName: dataContainer.layoutName,
+                        tag: Object.assign(tagParams, {
                             isCache: !tagParams.isCache,
                         }),
-                    );
+                    });
                     break;
                 /** 切换标签状态 */
                 case type == 'handleSwitchFixed':
                     if (!tagParams.path) return;
-                    tagTools.updateTag(
-                        Object.assign(tagParams, {
+                    updateTag({
+                        layoutName: dataContainer.layoutName,
+                        tag: Object.assign(tagParams, {
                             fixed: !tagParams.fixed,
                         }),
-                    );
+                    });
                     break;
                 case type == 'handleRefresh':
                     if (!tagParams.path) return;
-                    tagTools.refreshTag(tagParams.path);
+                    refreshTag({ path: tagParams.path, layoutName: dataContainer.layoutName });
                     break;
                 case type == 'handleAdd':
                     path = `/main/new-tag-page/${new Date().getTime()}`;
                     router.push(path);
                     break;
                 case type == 'handleDeleteOtherTags':
-                    tagTools.deleteOtherTags(dataContainer.activePath);
+                    deleteOtherTags({
+                        path: tagParams.path,
+                        layoutName: dataContainer.layoutName,
+                        excludePaths: tagParams.excludePaths || [],
+                    });
                     break;
                 case type == 'handleDeleteLeftTags':
-                    tagTools.deleteLeftTags(dataContainer.activePath);
+                    deleteLeftTags({ path: tagParams.path, layoutName: dataContainer.layoutName });
                     break;
                 case type == 'handleDeleteRightTags':
-                    tagTools.deleteRightTags(dataContainer.activePath);
+                    deleteRightTags({ path: tagParams.path, layoutName: dataContainer.layoutName });
                     break;
                 case type == 'handleRefreshAll':
-                    tagTools.refreshTag(dataContainer.activePath, true);
+                    refreshTag({
+                        path: tagParams.path,
+                        layoutName: dataContainer.layoutName,
+                        refreshAll: true,
+                    });
+                    break;
+                case type == 'handleNewOpen':
+                    tag = tagParams;
+                    if (tag && tag.fullPath) {
+                        let routeUrl = router.resolve(tag.fullPath);
+                        window.open(routeUrl.href, '_blank');
+                    }
                     break;
             }
         }
-        function test(e) {
-            console.log(e);
+        function toggleFullScreen_1() {
+            publicData.setFullScreen(!dataContainer.fullScreen);
         }
         return {
             dataContainer,
@@ -231,8 +260,8 @@ export default defineComponent({
             handleClickContext,
             handleTagClick,
             toggleFullScreen,
-            test,
             handleScroll_1,
+            toggleFullScreen_1,
         };
     },
 });
@@ -252,13 +281,18 @@ export default defineComponent({
                 :show="dataContainer.show"
                 :ifLeftClick="false"
                 :targetQuery="'.target'"
-                @onOtherClick="dataContainer.show = false"
+                @onOtherClick="
+                    () => {
+                        dataContainer.show = false;
+                        dataContainer.activeItem = null;
+                    }
+                "
                 position="outside,bottom,start"
             >
-                <el-scrollbar @scroll="handleScroll_1" ref="ElScrollbarRef" height="100%">
+                <div class="scrollbar no-scrollbar" @scroll="handleScroll_1" ref="ElScrollbarRef">
                     <draggable
                         class="scrollbar-container"
-                        item-key="sign"
+                        item-key="path"
                         :disabled="!dataContainer.isPc"
                         v-model="tagListTrans"
                     >
@@ -268,6 +302,9 @@ export default defineComponent({
                                     target: true,
                                     item: true,
                                     active: dataContainer.activePath == element.path,
+                                    'is-select':
+                                        dataContainer.activeItem &&
+                                        dataContainer.activeItem.path == element.path,
                                 }"
                                 @click="handleTagClick(element)"
                                 @contextmenu.prevent="handleClickContext(element)"
@@ -279,13 +316,18 @@ export default defineComponent({
                                     :name="element.iconName"
                                 ></SvgIcon>
                                 {{ element.title || '未知标签' }}
+                                <SvgIcon
+                                    v-if="element.fixed"
+                                    :style="'width: 12px;min-width:12px;height: 12px;margin-left:5px;opacity: 0.8;'"
+                                    :name="'svg:nail.svg'"
+                                ></SvgIcon>
                                 <div
                                     v-if="!element.fixed && tagListTrans.length > 1"
                                     @click.stop="handleOptionClick('handleTagRemove', element)"
                                     class="bt"
                                 >
                                     <SvgIcon
-                                        :style="'width:10px;height:10px;'"
+                                        :style="'width:10px;height:10px;color:rgb(248, 86, 86);'"
                                         name="svg:times.svg"
                                     ></SvgIcon>
                                 </div>
@@ -301,7 +343,7 @@ export default defineComponent({
                             </div>
                         </template>
                     </draggable>
-                </el-scrollbar>
+                </div>
                 <template v-slot:dropdown>
                     <div class="bt-list-container">
                         <div
@@ -338,16 +380,56 @@ export default defineComponent({
                             ></SvgIcon>
                             切换固定状态
                         </div>
+                        <div
+                            class="item"
+                            @click="handleOptionClick('handleNewOpen', dataContainer.activeItem)"
+                        >
+                            <SvgIcon
+                                :style="'width:16px;height:16px;'"
+                                name="svg:paper-plane.svg"
+                            ></SvgIcon>
+                            在新窗口打开
+                        </div>
+                        <div
+                            v-if="tagListTrans.length > 1"
+                            class="item"
+                            @click="
+                                handleOptionClick('handleDeleteOtherTags', {
+                                    path: dataContainer.activeItem.path,
+                                    excludePaths: [dataContainer.activePath],
+                                })
+                            "
+                        >
+                            <SvgIcon
+                                :style="'width:16px;height:16px;color:#f86464;'"
+                                name="svg:borderverticle-fill.svg"
+                            ></SvgIcon>
+                            关闭其他标签页
+                        </div>
                     </div>
                 </template>
             </definDropdown>
         </div>
         <div class="right">
-            <div class="bt" @click="handleOptionClick('handleToLeft', dataContainer.activeItem)">
-                <SvgIcon :style="'width:15px;height:15px;'" name="svg:arrow-left.svg"></SvgIcon>
+            <div
+                class="bt"
+                @click="
+                    handleOptionClick('handleToLeft', {
+                        path: dataContainer.activePath,
+                    })
+                "
+            >
+                <SvgIcon :style="'width:18px;height:18px;'" name="svg:arrow-left.svg"></SvgIcon>
             </div>
-            <div class="bt" @click="handleOptionClick('handleToRight', dataContainer.activeItem)">
-                <SvgIcon :style="'width:15px;height:15px;'" name="svg:arrow-right.svg"></SvgIcon>
+            <div
+                class="bt"
+                @click="
+                    handleOptionClick('handleToRight', {
+                        path: dataContainer.activePath,
+                    })
+                "
+            >
+                <SvgIcon :style="'width:18px;height:18px;'" name="svg:arrow-right.svg"></SvgIcon>
             </div>
             <div
                 class="bt"
@@ -357,7 +439,7 @@ export default defineComponent({
                     })
                 "
             >
-                <SvgIcon :style="'width:15px;height:15px;'" name="svg:redo.svg"></SvgIcon>
+                <SvgIcon :style="'width:18px;height:18px;'" name="svg:redo.svg"></SvgIcon>
             </div>
             <definDropdown
                 :show="dataContainer.show_1"
@@ -379,7 +461,14 @@ export default defineComponent({
                 </div>
                 <template v-slot:dropdown>
                     <div class="bt-list-container">
-                        <div class="item" @click="handleOptionClick('handleRefreshAll')">
+                        <div
+                            class="item"
+                            @click="
+                                handleOptionClick('handleRefreshAll', {
+                                    path: dataContainer.activePath,
+                                })
+                            "
+                        >
                             <SvgIcon
                                 :style="'width:16px;height:16px;color:#0072E5;'"
                                 name="svg:redo.svg"
@@ -387,9 +476,13 @@ export default defineComponent({
                             刷新所有标签页
                         </div>
                         <div
-                            v-if="dataContainer.tagList.length > 1"
+                            v-if="tagListTrans.length > 1"
                             class="item"
-                            @click="handleOptionClick('handleDeleteOtherTags')"
+                            @click="
+                                handleOptionClick('handleDeleteOtherTags', {
+                                    path: dataContainer.activePath,
+                                })
+                            "
                         >
                             <SvgIcon
                                 :style="'width:16px;height:16px;color:#f86464;'"
@@ -398,9 +491,13 @@ export default defineComponent({
                             关闭其他标签页
                         </div>
                         <div
-                            v-if="dataContainer.tagList.length > 1"
+                            v-if="tagListTrans.length > 1"
                             class="item"
-                            @click="handleOptionClick('handleDeleteLeftTags')"
+                            @click="
+                                handleOptionClick('handleDeleteLeftTags', {
+                                    path: dataContainer.activePath,
+                                })
+                            "
                         >
                             <SvgIcon
                                 :style="'width:16px;height:16px;color:#f86464;'"
@@ -409,9 +506,13 @@ export default defineComponent({
                             关闭左边标签页
                         </div>
                         <div
-                            v-if="dataContainer.tagList.length > 1"
+                            v-if="tagListTrans.length > 1"
                             class="item"
-                            @click="handleOptionClick('handleDeleteRightTags')"
+                            @click="
+                                handleOptionClick('handleDeleteRightTags', {
+                                    path: dataContainer.activePath,
+                                })
+                            "
                         >
                             <SvgIcon
                                 :style="'width:16px;height:16px;color:#f86464;'"
@@ -422,9 +523,15 @@ export default defineComponent({
                     </div>
                 </template>
             </definDropdown>
+            <!-- <div @click="toggleFullScreen_1" class="bt">
+                <SvgIcon
+                    :style="'width:20px;height:20px;'"
+                    :name="dataContainer.fullScreen ? 'svg:compress-alt.svg' : 'svg:expand-alt.svg'"
+                ></SvgIcon>
+            </div>
             <div @click="toggleFullScreen" class="bt">
                 <SvgIcon :style="'width:25px;height:25px;'" name="svg:Navbar-full.svg"></SvgIcon>
-            </div>
+            </div> -->
         </div>
     </div>
 </template>
@@ -440,12 +547,14 @@ export default defineComponent({
     justify-content: space-between;
     align-items: center;
     color: var(--text-color);
-    --item-gap: 5px;
+    --item-gap: 10px;
     padding: 0 var(--item-gap) 0 0;
     :deep(.defin-drop) {
         height: 100% !important;
+        width: 100% !important;
         > .defin-drop-target {
             height: 100% !important;
+            width: 100% !important;
         }
     }
     > .left {
@@ -490,123 +599,121 @@ export default defineComponent({
             background-image: linear-gradient(to right, transparent, #ffffff);
             z-index: 9;
         }
-        :deep(.el-scrollbar__bar) {
-            &.is-horizontal {
-                height: 5px !important;
-                opacity: 0.5;
-            }
-        }
-        :deep(.el-scrollbar__view) {
+        :deep(.scrollbar) {
+            width: 100%;
             height: 100%;
-        }
-        :deep(.scrollbar-container) {
-            display: flex;
-            flex-direction: row;
-            justify-content: flex-start;
-            align-items: center;
-            width: fit-content;
-            height: 100%;
-            padding: 0 var(--item-gap);
-            box-sizing: border-box;
-            position: relative;
-            z-index: 1;
-            .item {
-                cursor: pointer;
+            overflow-x: auto;
+            overflow-y: hidden;
+            .scrollbar-container {
                 display: flex;
                 flex-direction: row;
-                justify-content: center;
+                justify-content: flex-start;
                 align-items: center;
-                padding: 5px 10px;
+                width: fit-content;
+                height: 100%;
+                padding: 0 var(--item-gap);
                 box-sizing: border-box;
-                margin: 0 var(--item-gap) 0 0;
-                font-size: 12px;
-                font-weight: bold;
-                height: 30px;
-                width: max-content;
-                border-radius: 5px;
-                color: var(--text-color);
-                position: relative;
-                transition: all 0.2s;
-                opacity: 0.8;
-                --bt-width: 20px;
-                --bt-width-1: calc(var(--bt-width) / 2);
-                &:last-child {
-                    margin: 0;
-                }
-                &.active {
-                    background-color: #5340ff;
-                    color: white;
-                    font-weight: bold;
-                    opacity: 1;
-                    box-shadow: var(--box-shadow-2);
-                    &:hover {
-                        background-color: #5340ff;
-                    }
-                }
-                &:hover {
-                    background-color: #d3d1e5;
-                    > .bt {
-                        opacity: 1;
-                        width: var(--bt-width);
-                        right: calc(0px - var(--bt-width-1));
-                    }
-                }
-                > .sign {
-                    width: 10px;
-                    height: 10px;
-                    border-radius: 50%;
-                    background-color: #5240ff;
-                    margin-right: 5px;
-                    &.icon-sign {
-                        background-color: transparent;
-                    }
-                }
-                > .bt {
-                    opacity: 0;
-                    width: 0;
-                    height: var(--bt-width);
-                    border-radius: 100%;
+                .item {
+                    cursor: pointer;
                     display: flex;
-                    position: absolute;
-                    right: 0;
                     flex-direction: row;
                     justify-content: center;
                     align-items: center;
-                    transition: all 0.2s;
-                    border: 1px solid #c71d24;
+                    padding: 5px 10px;
                     box-sizing: border-box;
-                    color: #c71d24;
-                    z-index: 999;
+                    margin: 0 10px 0 0;
+                    font-size: 12px;
+                    font-weight: bold;
+                    height: 30px;
+                    width: max-content;
+                    border-radius: 5px;
+                    color: var(--text-color);
+                    position: relative;
+                    transition: all 0.2s;
+                    opacity: 0.8;
+                    --bt-width: 20px;
+                    --bt-width-1: calc(var(--bt-width) / 2);
+                    &:last-child {
+                        margin: 0;
+                    }
+                    &.active {
+                        background-color: #5340ff;
+                        color: white;
+                        font-weight: bold;
+                        opacity: 1;
+                        box-shadow: var(--box-shadow-2);
+                    }
+                    &.is-select {
+                        box-shadow: inset 0 0 0 2px #5340ff !important;
+                    }
+                    &:hover {
+                        background-color: #5340ff;
+                        color: white;
+                        box-shadow: var(--box-shadow-2);
+                        > .bt {
+                            opacity: 1;
+                            width: var(--bt-width);
+                            right: calc(0px - var(--bt-width-1));
+                        }
+                    }
+                    > .sign {
+                        width: 10px;
+                        height: 10px;
+                        border-radius: 50%;
+                        background-color: #5240ff;
+                        margin-right: 5px;
+                        &.icon-sign {
+                            background-color: transparent;
+                        }
+                    }
+                    > .bt {
+                        opacity: 0;
+                        width: 0;
+                        height: var(--bt-width);
+                        border-radius: 100%;
+                        display: flex;
+                        position: absolute;
+                        right: 0;
+                        flex-direction: row;
+                        justify-content: center;
+                        align-items: center;
+                        transition: all 0.2s;
+                        border: 2px solid rgb(248, 86, 86);
+                        box-sizing: border-box;
+                        &:hover {
+                            color: red;
+                            border: 2px solid red;
+                        }
+                    }
+                    > .cache {
+                        width: 30%;
+                        max-width: 30px;
+                        min-width: 15px;
+                        height: 3px;
+                        border-radius: 999px;
+                        background-color: rgb(237, 237, 237);
+                        position: absolute;
+                        bottom: -1px;
+                        box-shadow: var(--box-shadow-2);
+                    }
                 }
-                > .cache {
-                    width: 30%;
-                    max-width: 30px;
-                    min-width: 15px;
-                    height: 3px;
-                    border-radius: 999px;
-                    background-color: rgb(214, 214, 214);
-                    position: absolute;
-                    bottom: -1px;
-                    box-shadow: var(--box-shadow-2);
-                }
-            }
-            .add-bt {
-                width: 30px;
-                height: 30px;
-                background-color: rgb(223, 223, 223);
-                border-radius: 50%;
-                padding: 0;
-                display: flex;
-                flex-direction: row;
-                justify-content: center;
-                align-items: center;
-                color: rgb(88, 88, 88);
-                border: 2px solid #9185f9;
-                &:hover {
-                    background-color: #5340ff;
-                    color: white;
-                    opacity: 1;
-                    transform: scale(1.2);
+                .add-bt {
+                    width: 30px;
+                    height: 30px;
+                    background-color: rgba(0, 0, 0, 0.219);
+                    border-radius: 50%;
+                    padding: 0;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: center;
+                    align-items: center;
+                    color: var(--text-color);
+                    border: 2px solid #7768ff;
+                    &:hover {
+                        background-color: #5340ff;
+                        opacity: 1;
+                        transform: scale(1.2);
+                    }
                 }
             }
         }
@@ -632,9 +739,9 @@ export default defineComponent({
             flex-direction: row;
             align-items: center;
             justify-content: center;
+            color: var(--text-color);
             &:hover {
-                color: #5340ff;
-                transform: scale(1.2);
+                color: #4f3bff;
             }
         }
     }

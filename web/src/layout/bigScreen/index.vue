@@ -14,7 +14,6 @@ import {
     onMounted,
     onUnmounted,
 } from 'vue';
-import { deepCopyObj } from '@/common/otherTools';
 import { useRouter, useRoute } from 'vue-router';
 import keepAliveRouter from '@/components/keepAliveRouter.vue';
 import { userDataStore } from '@/store/user';
@@ -31,16 +30,17 @@ export default defineComponent({
         const route = useRoute();
         const dataContainer = reactive({
             layoutName: 'big-screen',
-            tagList: toRef(userData, 'tagList'),
+            tagsMap: toRef(userData, 'tagsMap'),
         });
         /**
          * 需要缓存的页面列表
          * 根据标签列表来的，需要改的话只需要处理标签列表
          *  */
         const cacheTagList = computed(() => {
-            return dataContainer.tagList
+            let tagList = dataContainer.tagsMap[dataContainer.layoutName || ''] || [];
+            return tagList
                 .filter((item) => {
-                    return item.layoutName == dataContainer.layoutName && item.isCache;
+                    return item.isCache;
                 })
                 .map((item) => {
                     /** 缓存组件是根据path命名来缓存的 */

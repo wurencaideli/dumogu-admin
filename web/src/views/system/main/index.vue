@@ -4,13 +4,26 @@
             <div class="container">
                 <h3>毒蘑菇 - 管理</h3>
                 <p>
+                    该项目基于此
                     <a
                         href="https://admin.dumogu.top/base"
                         target="_blank"
-                        style="color: blue; font-weight: bold"
+                        style="color: #5745f9; font-weight: bold"
                         rel="noopener noreferrer"
                     >
-                        该项目基于此base项目上添加了一些功能页面，点击查看
+                        base项目
+                    </a>
+                    上添加了一些功能页面，点击查看
+                </p>
+                <p>
+                    naive-ui的基础例子，点击查看
+                    <a
+                        href="https://admin.dumogu.top/base-naive-ui/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style="color: #5745f9; font-weight: bold"
+                    >
+                        DEMO（naive-ui + vue3）
                     </a>
                 </p>
                 <p>

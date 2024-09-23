@@ -9,7 +9,7 @@ import { getNanoid } from '@/common/guid';
 import { deepCopyObj } from '@/common/otherTools';
 import { Loading } from '@element-plus/icons-vue';
 import { userDataStore } from '@/store/user';
-import generateTagListTools from '@/action/tagListTools';
+import { findTag } from '@/action/tagListTools';
 
 export default defineComponent({
     components: {
@@ -28,8 +28,7 @@ export default defineComponent({
         function initData() {
             let params = route.params;
             if (!params.sign) return;
-            let tagTools = generateTagListTools();
-            let tag = tagTools.getTag(route.path) || {};
+            let tag = findTag(route.path) || {};
             let iframeList = deepCopyObj(dataContainer.iframeList);
             dataContainer.iframe = {
                 path: route.path,
@@ -60,8 +59,7 @@ export default defineComponent({
 
 <template>
     <div class="iframe-view">
-        <el-icon :size="60" class="is-loading" color="#000000"><Loading /></el-icon>
-        <div class="title">正在加载。。。</div>
+        <div class="title">Loading ......</div>
     </div>
 </template>
 
@@ -77,6 +75,7 @@ export default defineComponent({
     > .title {
         font-size: 17px;
         margin-top: 40px;
+        opacity: 0.7;
     }
 }
 </style>

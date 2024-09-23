@@ -114,20 +114,9 @@ function addTag(route) {
     let toPath = route.path;
     let toName = route.name;
     let toFullPath = route.fullPath;
-    /** 初始化sortNumber，使用本地标签的最大值 */
-    if (!sortNumber && userData.tagList.length > 0) {
-        userData.tagList.forEach((item) => {
-            if (!item.sortNumber) return;
-            let sortNumber_ = Number(item.sortNumber);
-            if (sortNumber_ > sortNumber) {
-                sortNumber = sortNumber_;
-            }
-        });
-    }
     /** 获取该路由对应的系统配置 */
     let sysMenuConfig = sysMeluConfigPathMap[toPath] || sysMeluConfigNameMap[toName];
     if (!sysMenuConfig) return;
-    sortNumber++;
     /** 获取该路由对应的用户配置 */
     const userMenuConfig =
         userData.userMenuConfigPathMap[toPath] || userData.userMenuConfigNameMap[toName] || {};
@@ -135,22 +124,34 @@ function addTag(route) {
     const menuConfig = Object.assign({}, sysMenuConfig, userMenuConfig, {
         path: toPath,
         fullPath: toFullPath,
-        sortNumber: sortNumber, // 显示的顺序号
     });
     /** 必须配置了可添加为标签才能添加标签 */
     if (!menuConfig.hasTag) return;
-    let tagList = deepCopyObj(userData.tagList);
+    let localTagsMap = deepCopyObj(userData.tagsMap);
+    localTagsMap[menuConfig.layoutName || ''] = localTagsMap[menuConfig.layoutName || ''] || [];
+    let localTagList = localTagsMap[menuConfig.layoutName || '']; //本地已有的标签列表
+    /** 初始化sortNumber，使用本地标签的sortNumber最大值 */
+    if (!sortNumber && localTagList.length > 0) {
+        localTagList.forEach((item) => {
+            if (!item.sortNumber) return;
+            let sortNumber_ = Number(item.sortNumber);
+            if (sortNumber_ > sortNumber) {
+                sortNumber = sortNumber_;
+            }
+        });
+    }
+    sortNumber++;
+    menuConfig.sortNumber = sortNumber; // 写入添加顺序
     /**
      * 不重复添加
      * 相同path的判断为重复
      *  */
-    let target = tagList.find((item) => item.path == toPath);
+    let target = localTagList.find((item) => item.path == toPath);
     if (!target) {
         // 添加进入标签列表，添加到当前标签的右边
         let sortNumber_ = -1;
         let index = -1;
-        tagList.forEach((item_, index_) => {
-            if (item_.layoutName != menuConfig.layoutName) return;
+        localTagList.forEach((item_, index_) => {
             let sortNumber__ = item_.sortNumber || 0;
             if (sortNumber__ > sortNumber_) {
                 sortNumber_ = sortNumber__;
@@ -158,14 +159,14 @@ function addTag(route) {
             }
         });
         if (index != -1) {
-            tagList.splice(index + 1, 0, menuConfig);
+            localTagList.splice(index + 1, 0, menuConfig);
         } else {
-            tagList.push(menuConfig);
+            localTagList.push(menuConfig);
         }
     } else {
         target.sortNumber = sortNumber; // 更新显示顺序
         /** 防止没有刷新地址 */
         target.redirectName = target.redirectName || menuConfig.redirectName;
     }
-    userData.setTagList(tagList);
+    userData.setTagsMap(localTagsMap);
 }

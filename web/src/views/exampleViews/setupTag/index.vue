@@ -48,7 +48,7 @@ import {
 import { useRouter, useRoute } from 'vue-router';
 import SvgIcon from '@/components/svgIcon/index.vue';
 import { Delete } from '@element-plus/icons-vue';
-import generateTagListTools from '@/action/tagListTools';
+import { findTag, updateTag, refreshTag, deleteTags } from '@/action/tagListTools';
 import DefinScrollbar from '@/components/definScrollbar.vue';
 
 export default defineComponent({
@@ -67,12 +67,15 @@ export default defineComponent({
         });
         /** 点击操作 */
         function handleClick() {
-            let tagTools = generateTagListTools();
-            tagTools.refreshTag(route.path);
+            let tag = findTag(route.path) || {};
+            refreshTag(tag);
         }
         function handleClick_1() {
-            let tagTools = generateTagListTools();
-            tagTools.deleteTags(route.path);
+            let tag = findTag(route.path) || {};
+            deleteTags({
+                paths: tag.path,
+                layoutName: tag.layoutName,
+            });
             router.push({
                 name: 'show-list-update',
                 params: {
@@ -81,13 +84,15 @@ export default defineComponent({
             });
         }
         function handleClick_2() {
-            let tagTools = generateTagListTools();
-            let tag = tagTools.getTag(route.path);
+            let tag = findTag(route.path) || {};
             if (!tag) return;
-            tagTools.updateTag({
-                ...tag,
-                title: tag.title + '-1',
-                isCache: !tag.isCache,
+            updateTag({
+                tag: {
+                    ...tag,
+                    title: tag.title + '-1',
+                    isCache: !tag.isCache,
+                },
+                layoutName: tag.layoutName,
             });
         }
         return {

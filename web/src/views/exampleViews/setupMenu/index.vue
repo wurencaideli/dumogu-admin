@@ -39,7 +39,6 @@ import { userDataStore } from '@/store/user';
 import { sysMeluConfigList } from '@/router/common';
 import { onBeforeRouteLeave } from 'vue-router';
 import DefinScrollbar from '@/components/definScrollbar.vue';
-import generateTagListTools from '@/action/tagListTools';
 
 export default defineComponent({
     components: {

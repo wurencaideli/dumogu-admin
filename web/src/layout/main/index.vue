@@ -50,7 +50,7 @@ export default defineComponent({
             },
             layoutName: 'main', // layout分组名
             userInfo: toRef(userData, 'userInfo'),
-            tagList: toRef(userData, 'tagList'),
+            tagsMap: toRef(userData, 'tagsMap'), // 根据用户目录生成的页面的标签MAP
             userMenuList: toRef(userData, 'userMenuList'), // 用户自定义的目录信息，用作左侧目录展示
             iframeList: toRef(userData, 'iframeList'), //当前已打开的iframe数组
             userMenuSignMap: toRef(userData, 'userMenuSignMap'),
@@ -76,9 +76,10 @@ export default defineComponent({
          * 根据标签列表来的，需要改的话只需要处理标签列表
          *  */
         const cacheTagList = computed(() => {
-            return dataContainer.tagList
+            let tagList = dataContainer.tagsMap[dataContainer.layoutName || ''] || [];
+            return tagList
                 .filter((item) => {
-                    return item.layoutName == dataContainer.layoutName && item.isCache;
+                    return item.isCache;
                 })
                 .map((item) => {
                     /** 缓存组件是根据path命名来缓存的 */
@@ -88,10 +89,6 @@ export default defineComponent({
         function toPath(path) {
             router.push(path);
         }
-        /** 页面加载后重新映射标签页与菜单的关系 */
-        onMounted(() => {
-            // formatTagsByMenu();
-        });
         /**
          * 获取面包屑列表
          * 根据当前用户目录中获取树形级别
@@ -192,7 +189,6 @@ export default defineComponent({
             <div class="right">
                 <div class="top">
                     <TagList
-                        :tagList="dataContainer.tagList"
                         :activePath="routeIncetance.path"
                         :layoutName="dataContainer.layoutName"
                     ></TagList>
@@ -314,6 +310,11 @@ export default defineComponent({
             background-color: #153451;
             transition: width 0.2s;
             overflow: hidden;
+            :deep(.defin-scrollbar-simplebar) {
+                .simplebar-scrollbar:before {
+                    background-color: rgb(255, 255, 255);
+                }
+            }
             &.hidden {
                 width: 0;
                 pointer-events: none;

@@ -3,7 +3,7 @@
 import { defineStore } from 'pinia';
 import allStorage from '@/action/storageManage';
 
-const tagListStorage = allStorage.tagListStorage();
+const tagsMapStorage = allStorage.tagsMapStorage();
 const userStorage = allStorage.userStorage();
 export const userDataStore = defineStore('userDataStore', {
     state: () => {
@@ -15,9 +15,9 @@ export const userDataStore = defineStore('userDataStore', {
         /**
          * 优先使用缓存中的数据
          */
-        let tagList = tagListStorage.value;
-        if (!Array.isArray(tagList)) {
-            tagList = [];
+        let tagsMap = tagsMapStorage.value;
+        if (typeof tagsMap != 'object') {
+            tagsMap = {};
         }
         return {
             userInfo: userInfo || {}, //当前登录用户的基础数据
@@ -26,7 +26,7 @@ export const userDataStore = defineStore('userDataStore', {
             userMenuSignMap: {}, //目录的唯一标识map，方便查找
             userMenuList: [], //用于展示的菜单列表，结构树形化
             permissionList: [], //权限字符串，根据该字符串可判断按钮权限
-            tagList: tagList, // 页面标签列表
+            tagsMap: tagsMap, // 页面标签MAP，layoutName为键名
             iframeList: [], //iframe 数组，iframe也属于标签，跟标签挂钩
         };
     },
@@ -53,10 +53,10 @@ export const userDataStore = defineStore('userDataStore', {
         setUserMenuList(value) {
             this.userMenuList = value || [];
         },
-        setTagList(value) {
-            this.tagList = value || [];
+        setTagsMap(value) {
+            this.tagsMap = value || {};
             /** 存入缓存 */
-            tagListStorage.value = this.tagList;
+            tagsMapStorage.value = this.tagsMap;
         },
         setIframeList(value) {
             this.iframeList = value || [];

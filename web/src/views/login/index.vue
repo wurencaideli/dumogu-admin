@@ -569,10 +569,10 @@ export default defineComponent({
         display: flex;
         justify-content: center;
         align-items: center;
-        font-size: 17px;
+        font-size: 13px;
         color: white;
         > * {
-            margin-left: 5px;
+            margin: 0 15px;
         }
     }
 }

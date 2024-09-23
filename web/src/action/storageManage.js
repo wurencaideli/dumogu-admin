@@ -21,8 +21,8 @@ const userStorage = (value) => {
     return createS('user-container', value);
 };
 /** 保存标签页的标签信息 */
-const tagListStorage = (value) => {
-    return createS('tag-list-container', value);
+const tagsMapStorage = (value) => {
+    return createS('tags-map-container', value);
 };
 /** 保存memu的隐藏信息信息 */
 const showMenuStorage = (value) => {
@@ -32,5 +32,5 @@ const showMenuStorage = (value) => {
 export default {
     userStorage,
     showMenuStorage,
-    tagListStorage,
+    tagsMapStorage,
 };

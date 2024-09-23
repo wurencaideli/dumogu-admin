@@ -76,14 +76,14 @@ const allApi = {
                 title: '系统管理',
                 iconName: 'svg:cog-fill.svg',
                 childs: [
-                    {
-                        name: 'menu',
-                        title: '菜单管理',
-                        isCache: true,
-                        content: '用户目录配置',
-                        iconName: 'svg:alignleft-fill.svg',
-                        showTagIcon: true,
-                    },
+                    // {
+                    //     name: 'menu',
+                    //     title: '菜单管理',
+                    //     isCache: true,
+                    //     content: '用户目录配置',
+                    //     iconName: 'svg:alignleft-fill.svg',
+                    //     showTagIcon: true,
+                    // },
                     {
                         name: 'bt-permission',
                         title: '按钮权限管理',

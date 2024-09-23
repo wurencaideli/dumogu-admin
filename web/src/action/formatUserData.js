@@ -4,11 +4,11 @@
  */
 import { userDataStore } from '@/store/user';
 import { sysMeluConfigNameMap, sysMeluConfigPathMap } from '@/router/common';
-import { toTree, unfoldTreeList } from '@/common/menuTools';
+import { toTree, unfoldTreeList } from '@/common/treeTools';
 import { getNanoid } from '@/common/guid';
 import { deepCopyObj } from '@/common/otherTools';
 import userApi from '@/http/user';
-import generateTagListTools from '@/action/tagListTools';
+import { formatTagsByUserMenuConfig } from '@/action/tagListTools';
 
 /**
  * url 转 path
@@ -131,10 +131,9 @@ export function getUserData() {
         userData.setUserMenuConfigPathMap(transData.userMenuConfigPathMap);
         userData.setUserMenuSignMap(transData.userMenuSignMap);
         console.log('格式化用户目录成功', transData.userMenuList);
-        if (userData.tagList.length > 0) {
-            let tagTools = generateTagListTools();
-            tagTools.formatTagsByUserMenuConfig();
-            console.log('格式化标签成功', userData.tagList);
+        if (Object.keys(userData.tagsMap).length > 0) {
+            formatTagsByUserMenuConfig();
+            console.log('格式化标签成功', userData.tagsMap);
         }
     });
 }
