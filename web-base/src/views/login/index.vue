@@ -255,14 +255,20 @@ export default defineComponent({
                     <div class="title">登 录</div>
                     <div class="other-login-bt">
                         <div class="item">
-                            <SvgIcon :style="'width:25px;height:25px;'" name="svg:g.svg"></SvgIcon>
-                        </div>
-                        <div class="item">
-                            <SvgIcon :style="'width:25px;height:25px;'" name="svg:f.svg"></SvgIcon>
+                            <SvgIcon
+                                :style="'width:22px;height:22px;color:#fff;'"
+                                name="svg:g.svg"
+                            ></SvgIcon>
                         </div>
                         <div class="item">
                             <SvgIcon
-                                :style="'width:25px;height:25px;'"
+                                :style="'width:22px;height:22px;color:#00b9f3;'"
+                                name="svg:f.svg"
+                            ></SvgIcon>
+                        </div>
+                        <div class="item">
+                            <SvgIcon
+                                :style="'width:22px;height:22px;color:#00c96e;'"
                                 name="svg:weixin.svg"
                             ></SvgIcon>
                         </div>
@@ -474,8 +480,12 @@ export default defineComponent({
                     display: flex;
                     flex-direction: row;
                     justify-content: center;
-                    font-size: 22px;
+                    font-size: 25px;
                     font-weight: bold;
+                    background: -webkit-linear-gradient(120deg, #007fff 30%, #ededed);
+                    -webkit-background-clip: text;
+                    background-clip: text;
+                    -webkit-text-fill-color: transparent;
                 }
                 > .other-login-bt {
                     display: flex;
@@ -490,8 +500,8 @@ export default defineComponent({
                         justify-content: center;
                         align-items: center;
                         margin: 0 10px;
-                        height: 35px;
-                        width: 35px;
+                        height: 40px;
+                        width: 40px;
                         cursor: pointer;
                         box-shadow: inset 0 1px 4px #0000001f;
                     }
@@ -596,8 +606,9 @@ export default defineComponent({
         align-items: center;
         font-size: 13px;
         color: white;
+        z-index: 999;
         > * {
-            margin-left: 5px;
+            margin: 0 15px;
         }
     }
 }

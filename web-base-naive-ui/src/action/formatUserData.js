@@ -8,7 +8,7 @@ import { toTree, unfoldTreeList } from '@/common/treeTools';
 import { getNanoid } from '@/common/guid';
 import { deepCopyObj } from '@/common/otherTools';
 import userApi from '@/http/user';
-import generateTagListTools from '@/action/tagListTools';
+import { formatTagsByUserMenuConfig } from '@/action/tagListTools';
 
 /**
  * url 转 path
@@ -128,8 +128,7 @@ export function getUserData() {
         userData.setUserMenuConfigPathMap(transData.userMenuConfigPathMap);
         console.log('格式化用户目录成功', transData.userMenuList);
         if (userData.tagList.length > 0) {
-            let tagTools = generateTagListTools();
-            tagTools.formatTagsByUserMenuConfig();
+            formatTagsByUserMenuConfig();
             console.log('格式化标签成功', transData.userMenuList);
         }
     });

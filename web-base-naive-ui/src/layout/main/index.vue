@@ -39,7 +39,7 @@ export default defineComponent({
             },
             layoutName: 'main', // layout分组名
             userInfo: toRef(userData, 'userInfo'),
-            tagList: toRef(userData, 'tagList'), // 根据用户目录生成的页面的标签列表
+            tagsMap: toRef(userData, 'tagsMap'), // 根据用户目录生成的页面的标签MAP
             userMenuList: toRef(userData, 'userMenuList'), // 用户自定义的目录信息，用作左侧目录展示
             iframeList: toRef(userData, 'iframeList'), //当前已打开的iframe数组
         });
@@ -62,9 +62,10 @@ export default defineComponent({
          * 根据标签列表来的，需要改的话只需要处理标签列表
          *  */
         const cacheTagList = computed(() => {
-            return dataContainer.tagList
+            let tagList = dataContainer.tagsMap[dataContainer.layoutName || ''] || [];
+            return tagList
                 .filter((item) => {
-                    return item.layoutName == dataContainer.layoutName && item.isCache;
+                    return item.isCache;
                 })
                 .map((item) => {
                     /** 缓存组件是根据path命名来缓存的 */
@@ -97,7 +98,12 @@ export default defineComponent({
         </div>
         <div class="centre">
             <div class="logo" @click="toPath({ path: '/' })">
-                <n-image class="img" :src="dataContainer.img.img_1" fit="cover" />
+                <n-image
+                    class="img"
+                    :src="dataContainer.img.img_1"
+                    fit="cover"
+                    :preview-disabled="true"
+                />
                 <div class="name">{{ dataContainer.name }}</div>
             </div>
             <div class="main-centre-content">
@@ -114,7 +120,6 @@ export default defineComponent({
         <div class="right">
             <div class="top">
                 <TagList
-                    :tagList="dataContainer.tagList"
                     :activePath="routeIncetance.path"
                     :layoutName="dataContainer.layoutName"
                 ></TagList>

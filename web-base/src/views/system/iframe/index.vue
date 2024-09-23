@@ -59,8 +59,7 @@ export default defineComponent({
 
 <template>
     <div class="iframe-view">
-        <el-icon :size="60" class="is-loading" color="#000000"><Loading /></el-icon>
-        <div class="title">正在加载。。。</div>
+        <div class="title">Loading ......</div>
     </div>
 </template>
 
@@ -76,6 +75,7 @@ export default defineComponent({
     > .title {
         font-size: 17px;
         margin-top: 40px;
+        opacity: 0.7;
     }
 }
 </style>

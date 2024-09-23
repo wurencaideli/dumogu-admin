@@ -8,7 +8,7 @@ import SvgIcon from '@/components/svgIcon/index.vue';
 import { userDataStore } from '@/store/user';
 import { toTree, unfoldTreeList } from '@/common/treeTools';
 import DefinScrollbar from '@/components/definScrollbar.vue';
-import generateTagListTools from '@/action/tagListTools';
+import { findTag, deleteTags } from '@/action/tagListTools';
 import { useMessage } from 'naive-ui';
 
 export default defineComponent({
@@ -61,7 +61,8 @@ export default defineComponent({
             if (params.isLink) {
                 window.open(params.path);
             } else {
-                tagTools.deleteTags(route.path);
+                let tag = findTag(route.path) || {};
+                deleteTags({ paths: tag.path, layoutName: tag.layoutName });
                 router.push(params.path);
             }
         }

@@ -134,7 +134,7 @@ export default defineComponent({
         <div class="bottom">
             <div class="index" @click="handleLogout">
                 <SvgIcon
-                    :style="'width: 17px;min-width:17px;height: 17px;margin-right:5px;'"
+                    :style="'width: 17px;min-width:17px;height: 17px;margin-right:5px;color: #f92b4c;'"
                     :name="'svg:poweroff.svg'"
                 ></SvgIcon>
                 退出
@@ -293,6 +293,7 @@ export default defineComponent({
             justify-content: center;
             align-items: center;
             cursor: pointer;
+            font-weight: bold;
         }
     }
 }
