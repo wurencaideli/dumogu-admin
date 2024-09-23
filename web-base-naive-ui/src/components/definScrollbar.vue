@@ -38,6 +38,10 @@ export default defineComponent({
             type: Boolean,
             default: true,
         },
+        maskShadowColor: {
+            type: String,
+            default: '#0000006b',
+        },
     },
     emits: ['onScroll'],
     setup(props, { emit }) {
@@ -46,6 +50,7 @@ export default defineComponent({
             showUpBt: toRef(props, 'showUpBt'),
             loading: toRef(props, 'loading'),
             showMask: toRef(props, 'showMask'),
+            maskShadowColor: toRef(props, 'maskShadowColor'),
             show: false,
         });
         const otherDataContainer = {
@@ -159,7 +164,13 @@ export default defineComponent({
 </script>
 
 <template>
-    <div ref="DefinScrollbarRef" class="defin-scrollbar">
+    <div
+        :style="{
+            '--shadow-color-1': dataContainer.maskShadowColor,
+        }"
+        ref="DefinScrollbarRef"
+        class="defin-scrollbar"
+    >
         <simplebar class="defin-scrollbar-simplebar">
             <slot></slot>
         </simplebar>

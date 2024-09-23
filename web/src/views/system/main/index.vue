@@ -27,6 +27,38 @@
                     </a>
                 </p>
                 <p>
+                    此项目使用
+                    <a
+                        href="https://codess.dumogu.top/manage-packets/w-project/1.0.0/js"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style="color: #5745f9; font-weight: bold"
+                    >
+                        CODESS
+                    </a>
+                    来自定义部分代码提示。
+                </p>
+                <p>
+                    此项目开源地址
+                    <a
+                        href="https://github.com/wurencaideli/dumogu-admin"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style="color: #5745f9; font-weight: bold"
+                    >
+                        github
+                    </a>
+                    ，
+                    <a
+                        href="https://gitee.com/wuzhanggui/dumogu-admin"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style="color: #5745f9; font-weight: bold"
+                    >
+                        gitee
+                    </a>
+                </p>
+                <p>
                     自定义页面菜单，标签页可自定义是否缓存。可自定义切换状态。标签是根据用户目录列表来进行添加和显示的。
                 </p>
                 <p>

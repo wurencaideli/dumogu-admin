@@ -331,7 +331,8 @@ export default defineComponent({
                     padding: 10px 10px;
                     box-sizing: border-box;
                     :deep(.search-container-cp) {
-                        box-shadow: 0 1px 4px #001247;
+                        box-shadow: 0 1px 4px #000000;
+                        background-color: rgba(0, 0, 0, 0.712);
                     }
                 }
             }

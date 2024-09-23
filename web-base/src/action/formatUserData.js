@@ -127,9 +127,9 @@ export function getUserData() {
         userData.setUserMenuConfigNameMap(transData.userMenuConfigNameMap);
         userData.setUserMenuConfigPathMap(transData.userMenuConfigPathMap);
         console.log('格式化用户目录成功', transData.userMenuList);
-        if (userData.tagList.length > 0) {
+        if (Object.keys(userData.tagsMap).length > 0) {
             formatTagsByUserMenuConfig();
-            console.log('格式化标签成功', transData.userMenuList);
+            console.log('格式化标签成功', userData.tagsMap);
         }
     });
 }
