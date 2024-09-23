@@ -10,7 +10,7 @@ import { userDataStore } from '@/store/user';
 import { toTree, unfoldTreeList } from '@/common/treeTools';
 import DefinScrollbar from '@/components/definScrollbar.vue';
 import { messageSuccess, messageError } from '@/action/messagePrompt';
-import generateTagListTools from '@/action/tagListTools';
+import { findTag, deleteTags } from '@/action/tagListTools';
 
 export default defineComponent({
     components: {
@@ -53,7 +53,6 @@ export default defineComponent({
         initData();
         /** 跳转相应链接 */
         function handleClick(params) {
-            let tagTools = generateTagListTools();
             if (!params.path) {
                 messageError('没有可用于跳转的链接');
                 return;
@@ -62,7 +61,8 @@ export default defineComponent({
             if (params.isLink) {
                 window.open(params.path);
             } else {
-                tagTools.deleteTags(route.path);
+                let tag = findTag(route.path) || {};
+                deleteTags({ paths: tag.path, layoutName: tag.layoutName });
                 router.push(params.path);
             }
         }

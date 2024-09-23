@@ -20,7 +20,19 @@ import SvgIcon from '@/components/svgIcon/index.vue';
  *  */
 import draggable from 'vuedraggable';
 import { deepCopyObj, isPc } from '@/common/otherTools';
-import generateTagListTools from '@/action/tagListTools';
+import {
+    findTag,
+    getTag,
+    deleteTags,
+    updateTag,
+    refreshTag,
+    deleteOtherTags,
+    deleteLeftTags,
+    deleteRightTags,
+    getLatelyHisTag,
+    getRight,
+    getLeft,
+} from '@/action/tagListTools';
 import { userDataStore } from '@/store/user';
 import { publicDataStore } from '@/store/public';
 import { useRouter, useRoute } from 'vue-router';
@@ -53,7 +65,7 @@ export default defineComponent({
         let publicData = publicDataStore();
         const ElScrollbarRef = ref(null);
         const dataContainer = reactive({
-            tagList: toRef(userData, 'tagList'),
+            tagsMap: toRef(userData, 'tagsMap'),
             fullScreen: toRef(publicData, 'fullScreen'),
             activePath: toRef(props, 'activePath'),
             layoutName: toRef(props, 'layoutName'),
@@ -68,17 +80,12 @@ export default defineComponent({
         /** 用来排序转换的数组，由外部确定是否转换 */
         const tagListTrans = computed({
             get() {
-                return dataContainer.tagList.filter((item) => {
-                    if (props.layoutName != item.layoutName) return false;
-                    return true;
-                });
+                let tagList = dataContainer.tagsMap[dataContainer.layoutName || ''];
+                return tagList || [];
             },
             set(value) {
-                let list = dataContainer.tagList.filter((item) => {
-                    if (props.layoutName != item.layoutName) return true;
-                    return false;
-                });
-                userData.setTagList([...value, ...list]);
+                dataContainer.tagsMap[dataContainer.layoutName || ''] = value;
+                userData.setTagsMap(dataContainer.tagsMap);
             },
         });
         /**
@@ -159,66 +166,78 @@ export default defineComponent({
         }
         /** 操作事件 */
         function handleOptionClick(type, tagParams) {
-            let tagTools = generateTagListTools(dataContainer.layoutName);
             tagParams = deepCopyObj(tagParams || {});
             let tag, path;
             switch (true) {
                 /** 跳转去右边标签 */
                 case type == 'handleToRight':
-                    tag = tagTools.getRight(dataContainer.activePath);
+                    tag = getRight({ path: tagParams.path, layoutName: dataContainer.layoutName });
                     handleTagClick(tag);
                     break;
                 /** 跳转去左边标签 */
                 case type == 'handleToLeft':
-                    tag = tagTools.getLeft(dataContainer.activePath);
+                    tag = getLeft({ path: tagParams.path, layoutName: dataContainer.layoutName });
                     handleTagClick(tag);
                     break;
                 /** 删除一个标签 */
                 case type == 'handleTagRemove':
-                    if (tagListTrans.value.length == 0) return;
-                    tagTools.deleteTags(tagParams.path);
+                    if (tagListTrans.value.length <= 1) return;
+                    deleteTags({
+                        paths: tagParams.path,
+                        layoutName: dataContainer.layoutName,
+                    });
                     if (dataContainer.activePath == tagParams.path) {
-                        tag = tagTools.getLatelyHisTag();
+                        tag = getLatelyHisTag({ layoutName: dataContainer.layoutName });
                         handleTagClick(tag);
                     }
                     break;
                 /** 切换标签状态 */
                 case type == 'handleSwitchCache':
                     if (!tagParams.path) return;
-                    tagTools.updateTag(
-                        Object.assign(tagParams, {
+                    updateTag({
+                        layoutName: dataContainer.layoutName,
+                        tag: Object.assign(tagParams, {
                             isCache: !tagParams.isCache,
                         }),
-                    );
+                    });
                     break;
                 /** 切换标签状态 */
                 case type == 'handleSwitchFixed':
                     if (!tagParams.path) return;
-                    tagTools.updateTag(
-                        Object.assign(tagParams, {
+                    updateTag({
+                        layoutName: dataContainer.layoutName,
+                        tag: Object.assign(tagParams, {
                             fixed: !tagParams.fixed,
                         }),
-                    );
+                    });
                     break;
                 case type == 'handleRefresh':
                     if (!tagParams.path) return;
-                    tagTools.refreshTag(tagParams.path);
+                    refreshTag({ path: tagParams.path, layoutName: dataContainer.layoutName });
                     break;
                 case type == 'handleAdd':
                     path = `/main/new-tag-page/${new Date().getTime()}`;
                     router.push(path);
                     break;
                 case type == 'handleDeleteOtherTags':
-                    tagTools.deleteOtherTags(dataContainer.activePath);
+                    deleteOtherTags({
+                        path: tagParams.path,
+                        layoutName: dataContainer.layoutName,
+                        excludePaths: tagParams.excludePaths || [],
+                    });
                     break;
                 case type == 'handleDeleteLeftTags':
-                    tagTools.deleteLeftTags(dataContainer.activePath);
+                    deleteLeftTags({ path: tagParams.path, layoutName: dataContainer.layoutName });
                     break;
                 case type == 'handleDeleteRightTags':
-                    tagTools.deleteRightTags(dataContainer.activePath);
+                    deleteRightTags({ path: tagParams.path, layoutName: dataContainer.layoutName });
                     break;
                 case type == 'handleRefreshAll':
-                    tagTools.refreshTag(dataContainer.activePath, true);
+                    refreshTag({
+                        path: tagParams.path,
+                        layoutName: dataContainer.layoutName,
+                        refreshAll: true,
+                    });
                     break;
                 case type == 'handleNewOpen':
                     tag = tagParams;
@@ -371,15 +390,45 @@ export default defineComponent({
                             ></SvgIcon>
                             在新窗口打开
                         </div>
+                        <div
+                            v-if="tagListTrans.length > 1"
+                            class="item"
+                            @click="
+                                handleOptionClick('handleDeleteOtherTags', {
+                                    path: dataContainer.activeItem.path,
+                                    excludePaths: [dataContainer.activePath],
+                                })
+                            "
+                        >
+                            <SvgIcon
+                                :style="'width:16px;height:16px;color:#f86464;'"
+                                name="svg:borderverticle-fill.svg"
+                            ></SvgIcon>
+                            关闭其他标签页
+                        </div>
                     </div>
                 </template>
             </definDropdown>
         </div>
         <div class="right">
-            <div class="bt" @click="handleOptionClick('handleToLeft', dataContainer.activeItem)">
+            <div
+                class="bt"
+                @click="
+                    handleOptionClick('handleToLeft', {
+                        path: dataContainer.activePath,
+                    })
+                "
+            >
                 <SvgIcon :style="'width:18px;height:18px;'" name="svg:arrow-left.svg"></SvgIcon>
             </div>
-            <div class="bt" @click="handleOptionClick('handleToRight', dataContainer.activeItem)">
+            <div
+                class="bt"
+                @click="
+                    handleOptionClick('handleToRight', {
+                        path: dataContainer.activePath,
+                    })
+                "
+            >
                 <SvgIcon :style="'width:18px;height:18px;'" name="svg:arrow-right.svg"></SvgIcon>
             </div>
             <div
@@ -412,7 +461,14 @@ export default defineComponent({
                 </div>
                 <template v-slot:dropdown>
                     <div class="bt-list-container">
-                        <div class="item" @click="handleOptionClick('handleRefreshAll')">
+                        <div
+                            class="item"
+                            @click="
+                                handleOptionClick('handleRefreshAll', {
+                                    path: dataContainer.activePath,
+                                })
+                            "
+                        >
                             <SvgIcon
                                 :style="'width:16px;height:16px;color:#0072E5;'"
                                 name="svg:redo.svg"
@@ -420,9 +476,13 @@ export default defineComponent({
                             刷新所有标签页
                         </div>
                         <div
-                            v-if="dataContainer.tagList.length > 1"
+                            v-if="tagListTrans.length > 1"
                             class="item"
-                            @click="handleOptionClick('handleDeleteOtherTags')"
+                            @click="
+                                handleOptionClick('handleDeleteOtherTags', {
+                                    path: dataContainer.activePath,
+                                })
+                            "
                         >
                             <SvgIcon
                                 :style="'width:16px;height:16px;color:#f86464;'"
@@ -431,9 +491,13 @@ export default defineComponent({
                             关闭其他标签页
                         </div>
                         <div
-                            v-if="dataContainer.tagList.length > 1"
+                            v-if="tagListTrans.length > 1"
                             class="item"
-                            @click="handleOptionClick('handleDeleteLeftTags')"
+                            @click="
+                                handleOptionClick('handleDeleteLeftTags', {
+                                    path: dataContainer.activePath,
+                                })
+                            "
                         >
                             <SvgIcon
                                 :style="'width:16px;height:16px;color:#f86464;'"
@@ -442,9 +506,13 @@ export default defineComponent({
                             关闭左边标签页
                         </div>
                         <div
-                            v-if="dataContainer.tagList.length > 1"
+                            v-if="tagListTrans.length > 1"
                             class="item"
-                            @click="handleOptionClick('handleDeleteRightTags')"
+                            @click="
+                                handleOptionClick('handleDeleteRightTags', {
+                                    path: dataContainer.activePath,
+                                })
+                            "
                         >
                             <SvgIcon
                                 :style="'width:16px;height:16px;color:#f86464;'"
@@ -669,9 +737,9 @@ export default defineComponent({
             flex-direction: row;
             align-items: center;
             justify-content: center;
+            color: #c2c2c2;
             &:hover {
                 color: #ffffff;
-                transform: scale(1.2);
             }
         }
     }

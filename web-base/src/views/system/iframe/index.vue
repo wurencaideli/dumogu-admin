@@ -9,7 +9,7 @@ import { getNanoid } from '@/common/guid';
 import { deepCopyObj } from '@/common/otherTools';
 import { Loading } from '@element-plus/icons-vue';
 import { userDataStore } from '@/store/user';
-import generateTagListTools from '@/action/tagListTools';
+import { findTag } from '@/action/tagListTools';
 
 export default defineComponent({
     components: {
@@ -28,8 +28,7 @@ export default defineComponent({
         function initData() {
             let params = route.params;
             if (!params.sign) return;
-            let tagTools = generateTagListTools();
-            let tag = tagTools.getTag(route.path) || {};
+            let tag = findTag(route.path) || {};
             let iframeList = deepCopyObj(dataContainer.iframeList);
             dataContainer.iframe = {
                 path: route.path,
