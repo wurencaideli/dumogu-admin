@@ -30,6 +30,40 @@ export default defineComponent({
                 <h1>{{ dataContainer.name }}</h1>
                 <p>自定义页面菜单，标签页可自定义是否缓存。</p>
                 <p>标签页下面有小横条的表示有缓存。 标签上鼠标右击可以操作。</p>
+                <p>
+                    1. 基于此模板开发的有着丰富组件的例子，点击查看
+                    <a
+                        href="https://admin.dumogu.top/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style="color: #a8a0f1; font-weight: bold"
+                    >
+                        DEMO（elment-plus + vue3）
+                    </a>
+                </p>
+                <p>
+                    2. 和此模板一样的基础例子，点击查看
+                    <a
+                        href="https://admin.dumogu.top/base-naive-ui/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style="color: #a8a0f1; font-weight: bold"
+                    >
+                        DEMO（naive-ui + vue3）
+                    </a>
+                </p>
+                <p>
+                    3. 此项目使用
+                    <a
+                        href="https://codess.dumogu.top/manage-packets/w-project/1.0.0/js"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style="color: #a8a0f1; font-weight: bold"
+                    >
+                        CODESS
+                    </a>
+                    来自定义部分代码提示。
+                </p>
             </div>
         </div>
     </DefinScrollbar>

@@ -142,7 +142,7 @@ export default defineComponent({
         display: flex;
         flex-direction: column;
         align-items: center;
-        background-image: url(https://cn.bing.com/th?id=OHR.KirkilaiTower_ZH-CN4058404632_1920x1080.jpg&rf=LaDigue_1920x1080.jpg&pid=hp);
+        background-image: url(https://cn.bing.com/th?id=OHR.MtPrevostDuncan_ZH-CN2333619635_1920x1080.jpg&rf=LaDigue_1920x1080.jpg&pid=hp);
         background-size: cover;
         background-repeat: no-repeat;
         box-shadow: 1px 1px 3px 0 rgba(0, 0, 0, 0.319);
