@@ -27,6 +27,17 @@
                     </a>
                 </p>
                 <p>
+                    antdv的基础例子，点击查看
+                    <a
+                        href="https://admin.dumogu.top/base-ant/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style="color: #a8a0f1; font-weight: bold"
+                    >
+                        DEMO（antdv + vue3）
+                    </a>
+                </p>
+                <p>
                     此项目使用
                     <a
                         href="https://codess.dumogu.top/manage-packets/w-project/1.0.0/js"
