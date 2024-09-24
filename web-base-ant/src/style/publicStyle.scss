@@ -1,0 +1,63 @@
+/**
+ * 公用的css样式
+ */
+
+/** 进度条颜色 */
+#nprogress {
+    position: relative;
+    z-index: 99999;
+    .bar {
+        height: 5px !important;
+    }
+}
+#app {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+/** 不显示滚动条 */
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+        display: none;
+    }
+    /** 解决后代想要滚动条的问题 */
+    *:not(.need-scrollbar, .need-scrollbar > *) {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    }
+}
+/**
+ * 页面容器的css 类名
+ * 以查询，内容上下排列
+ */
+.page-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: var(--page-gap);
+    box-sizing: border-box;
+    overflow: auto;
+    /** 查询体 */
+    > .page-query-box {
+        height: fit-content;
+        border-radius: 5px;
+        background-color: white;
+        box-sizing: border-box;
+        .el-form--inline .el-form-item {
+            width: 100%;
+        }
+    }
+    /** 内容体 */
+    > .page-content-box {
+        flex: 1 0 0;
+        height: 0;
+        border-radius: 5px;
+        overflow: hidden;
+        background-color: white;
+    }
+}

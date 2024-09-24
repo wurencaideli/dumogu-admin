@@ -1,0 +1,21 @@
+/**
+ * 公用的css变量
+ */
+:root {
+    --bg-color: #1e1f22;
+    --bg-color-2: #2b2d31;
+    --bg-color-3: #3c3f45;
+    --text-color: #ededed;
+    --text-color-1: #c7c7c7;
+    --border-color: #1f364d;
+    --theme-color: rgb(25, 118, 210); //主题色
+    --navbar-height: 48px;
+    --tags-height: 40px;
+    --menu-width: max(min(270px, 20vw), 230px);
+    /** 页面中的间隔，间距 */
+    --page-gap: 10px;
+    --bt-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.9), 0 0px 2px rgba(0, 0, 0, 0.9);
+    --bt-box-shadow-1: 0 1px 2px rgba(0, 0, 0, 0.9), 0 0px 2px rgba(0, 0, 0, 0.9);
+    --box-shadow-2: 0 1px 0 hsl(0 calc(1 * 0%) 0.8% / 0.2),
+        0 1.5px 0 hsl(240 calc(1 * 7.7%) 2.5% / 0.05), 0 2px 0 hsl(0 calc(1 * 0%) 0.8% / 0.05);
+}
