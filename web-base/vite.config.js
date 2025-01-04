@@ -10,17 +10,10 @@ import AutoImport from 'unplugin-auto-import/vite';
 import Components from 'unplugin-vue-components/vite';
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
 import { resolve } from 'path';
-
 const pathResolve = (dir) => {
     return resolve(__dirname, '.', dir);
 };
-const ossOptions = {
-    region: ossOptionConfig.region,
-    accessKeyId: ossOptionConfig.accessKeyId,
-    accessKeySecret: ossOptionConfig.accessKeySecret,
-    bucket: ossOptionConfig.bucket,
-    overwrite: true,
-};
+
 export default defineConfig(({ mode }) => {
     const isProd = mode !== 'development';
     const env = loadEnv(mode, process.cwd(), ''); // 自定义的环境变量
@@ -35,10 +28,18 @@ export default defineConfig(({ mode }) => {
             resolvers: [ElementPlusResolver()],
         }),
     ];
-    /** 如果使用了alioss来储存文件 */
+    /** 如果使用了ali oss来储存文件 */
     if (!!ossOptionConfig.url) {
         base = ossOptionConfig.url + base;
-        plugins.push(vitePluginAliOss(ossOptions));
+        plugins.push(
+            vitePluginAliOss({
+                region: ossOptionConfig.region,
+                accessKeyId: ossOptionConfig.accessKeyId,
+                accessKeySecret: ossOptionConfig.accessKeySecret,
+                bucket: ossOptionConfig.bucket,
+                overwrite: true,
+            }),
+        );
     }
     return {
         base: base, // must be URL when build
