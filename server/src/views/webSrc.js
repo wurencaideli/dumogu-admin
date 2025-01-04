@@ -11,6 +11,10 @@ const { packageRequestHandler } = require('../common/packageRequestHandler');
 
 /** 将websrc目录设置为静态目录 */
 router.use('/',express.static(resourcesTools.getWebDistRootDir(),{
+    /**
+     * TODO 注意nginx会缓存响应头带有Cache-Control的代理响应，所以对index.html友好
+     * 加个proxy_ignore_headers Cache-Control;就行了，让nginx不处理缓存让浏览器处理
+     */
     maxAge: '30d'  // 设置缓存时间为 30 天
 }));
 /** 获取站点资源 */
