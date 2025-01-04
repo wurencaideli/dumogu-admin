@@ -2,19 +2,16 @@
  * 限制资源的一些函数
  */
 const path = require('path');
-const otherTools = require('./otherTools');
 
-/** 项目根目录 */
-const rootPath = path.join(__dirname, '../../');
-const dataRootDir = otherTools.isPro() ? path.join(rootPath, 'data-pro') : path.join(rootPath, 'data');
-function getRootDir(){
-    return rootPath;
-}
+const rootDir = process.env.DUMOGU_RootDir; // 项目根目录
+const dataRootDir = process.env.DUMOGU_dataRootDir; // 服务缓存的文件目录
+const webDistRootDir = process.env.DUMOGU_webDistRootDir; // web资源目录
 /**
- * 获取可操作的文件夹路径，主要是用来储存数据以及其他的杂七杂八的文件
+ * 获取项目根目录
+ * @returns {string}
  */
-function getDataRootDir() {
-    return dataRootDir;
+function getRootDir() {
+    return rootDir;
 }
 /**
  * 是否是项目中的子目录
@@ -23,7 +20,13 @@ function getDataRootDir() {
  */
 function isRootChildPath(inputPath) {
     let normalizedPath = path.normalize(inputPath);
-    return normalizedPath.startsWith(rootPath);
+    return normalizedPath.startsWith(rootDir);
+}
+/**
+ * 获取可操作的文件夹路径，主要是用来储存数据以及其他的杂七杂八的文件
+ */
+function getDataRootDir() {
+    return dataRootDir;
 }
 /**
  * 是否是数据中的子目录
@@ -34,35 +37,25 @@ function isDataRootChildPath(inputPath) {
     let normalizedPath = path.normalize(inputPath);
     return normalizedPath.startsWith(dataRootDir);
 }
+/** web资源目录 */
+function getWebDistRootDir() {
+    return webDistRootDir;
+}
 /**
- * 是否是可操作的路径，只有满足条件的路径才允许读写操作
- * 防止代码中错误的读写文件
- * 代码中的可操作的文件夹只有根目录下的data/和data-pro/ 目录
+ * 是否是web资源目录子目录
  * @param {string} inputPath
  * @returns {boolean}
  */
-function filterOperablePathSync(inputPath) {
-    let dataPath = getDataRootDir();
+function isWebDistRootChildPath(inputPath) {
     let normalizedPath = path.normalize(inputPath);
-    const state = normalizedPath.startsWith(dataPath);
-    if (!state) throw `不允许的操作路径: ${inputPath}`;
-    return inputPath;
-}
-function filterOperablePath(inputPath) {
-    return new Promise((r, j) => {
-        try {
-            r(filterOperablePathSync(inputPath));
-        } catch (error) {
-            j(error);
-        }
-    });
+    return normalizedPath.startsWith(webDistRootDir);
 }
 
 module.exports = {
     getRootDir,
     isRootChildPath,
-    filterOperablePath,
-    filterOperablePathSync,
     getDataRootDir,
     isDataRootChildPath,
+    getWebDistRootDir,
+    isWebDistRootChildPath,
 };

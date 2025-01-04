@@ -1,9 +1,3 @@
-/** 由命令行参数决定环境 */
-const isPro = process.argv[process.argv.findIndex((_) => _ == '--environment') + 1] === 'production';
-/** 根据环境引入相应的环境文件 */
-require('dotenv').config({
-    path: isPro ? 'dumogu.production.env' : 'dumogu.development.env',
-});
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -25,7 +19,7 @@ async function start() {
     app.use(cors());  // 允许所有来源的跨域请求
     app.use(bodyParser.json({ limit: '0.3mb' }));  // 设置请求体大小
     app.use(bodyParser.urlencoded({ limit: '0.3mb', extended: true }));
-    app.use('/', viewRouter);
+    app.use(viewRouter);
     app.use(errorMiddle);
     const port = process.env.DUMOGU_PORT;
     let ipAddress = ip.address();
