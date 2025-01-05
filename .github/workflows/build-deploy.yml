@@ -1,0 +1,138 @@
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
+
+name: build-deploy
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: master
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+
+      - name: test ssh
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          key: ${{ secrets.ACCESS_TOKEN }}
+          port: 22
+          script: |
+            whoami
+            echo "ssh正常连接"
+
+      - name: Install server dependencies
+        run: | 
+          cd server
+          npm ci
+      - name: Install web dependencies
+        run: | 
+          cd web
+          npm ci
+      - name: Install web-base dependencies
+        run: | 
+          cd web-base
+          npm ci
+      - name: Install web-base-ant dependencies
+        run: | 
+          cd web-base-ant
+          npm ci
+      - name: Install web-base-naive-ui dependencies
+        run: | 
+          cd web-base-naive-ui
+          npm ci
+
+      - name: Run build server task
+        run: |
+          cd server
+          npm run build --if-present
+      - name: Run build web task
+        run: |
+          cd web
+          npm run build --if-present
+      - name: Run build web-base task
+        run: |
+          cd web-base
+          npm run build --if-present
+      - name: Run build web-base-ant task
+        run: |
+          cd web-base-ant
+          npm run build --if-present
+      - name: Run build web-base-naive-ui task
+        run: |
+          cd web-base-naive-ui
+          npm run build --if-present
+
+      - name: Deploy server to Server
+        uses: easingthemes/ssh-deploy@main
+        with:
+          SSH_PRIVATE_KEY: ${{ secrets.ACCESS_TOKEN }}
+          ARGS: '-rlgoDzvc -i'
+          SOURCE: 'server/'
+          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+          REMOTE_USER: ${{ secrets.REMOTE_USER }}
+          TARGET: ${{ vars.REMOTE_DIR }}/server/
+          EXCLUDE: '/build/, /node_modules/, /src/'
+
+      - name: Deploy web to Server
+        uses: easingthemes/ssh-deploy@main
+        with:
+          SSH_PRIVATE_KEY: ${{ secrets.ACCESS_TOKEN }}
+          ARGS: '-rlgoDzvc -i --delete'
+          SOURCE: 'web/dist/'
+          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+          REMOTE_USER: ${{ secrets.REMOTE_USER }}
+          TARGET: ${{ vars.REMOTE_DIR }}/web-dist/
+          EXCLUDE: ''
+      - name: Deploy web-base to Server
+        uses: easingthemes/ssh-deploy@main
+        with:
+          SSH_PRIVATE_KEY: ${{ secrets.ACCESS_TOKEN }}
+          ARGS: '-rlgoDzvc -i --delete'
+          SOURCE: 'web-base/dist/'
+          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+          REMOTE_USER: ${{ secrets.REMOTE_USER }}
+          TARGET: ${{ vars.REMOTE_DIR }}/web-dist/base/
+          EXCLUDE: ''
+      - name: Deploy web-base-ant to Server
+        uses: easingthemes/ssh-deploy@main
+        with:
+          SSH_PRIVATE_KEY: ${{ secrets.ACCESS_TOKEN }}
+          ARGS: '-rlgoDzvc -i --delete'
+          SOURCE: 'web-base-ant/dist/'
+          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+          REMOTE_USER: ${{ secrets.REMOTE_USER }}
+          TARGET: ${{ vars.REMOTE_DIR }}/web-dist/base-ant/
+          EXCLUDE: ''
+      - name: Deploy web-base-naive-ui to Server
+        uses: easingthemes/ssh-deploy@main
+        with:
+          SSH_PRIVATE_KEY: ${{ secrets.ACCESS_TOKEN }}
+          ARGS: '-rlgoDzvc -i --delete'
+          SOURCE: 'web-base-naive-ui/dist/'
+          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+          REMOTE_USER: ${{ secrets.REMOTE_USER }}
+          TARGET: ${{ vars.REMOTE_DIR }}/web-dist/base-naive-ui/
+          EXCLUDE: ''
+
+      - name: install server dependencies
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          key: ${{ secrets.ACCESS_TOKEN }}
+          port: 22
+          script: |
+            cd ${{ vars.REMOTE_DIR }}/server/
+            npm i --production --registry=https://registry.npmmirror.com
+            pm2 start ${{ vars.REMOTE_DIR }}/server/ecosystem.config.js
