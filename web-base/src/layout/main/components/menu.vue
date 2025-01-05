@@ -5,7 +5,7 @@
 import { defineComponent, ref, reactive, onMounted, toRef } from 'vue';
 import SvgIcon from '@/components/svgIcon/index.vue';
 import { useRouter, useRoute } from 'vue-router';
-import MenuItem from './MenuItem.vue';
+import MenuItem from './menuItem.vue';
 
 export default defineComponent({
     name: 'Menu',
