@@ -10,7 +10,7 @@ const { getReqlanguage } = require('../i18/index');
 const { packageRequestHandler } = require('../common/packageRequestHandler');
 
 /** 将websrc目录设置为静态目录 */
-router.use('/',express.static(resourcesTools.getWebDistRootDir(),{
+router.use('/',express.static(resourcesTools.getRootDir(),{
     /**
      * TODO 注意nginx会缓存响应头带有Cache-Control的代理响应，所以对index.html友好
      * 加个proxy_ignore_headers Cache-Control;就行了，让nginx不处理缓存让浏览器处理
@@ -18,10 +18,10 @@ router.use('/',express.static(resourcesTools.getWebDistRootDir(),{
     maxAge: '30d'  // 设置缓存时间为 30 天
 }));
 /** 获取站点资源 */
-const webDistRootPath = path.join(resourcesTools.getWebDistRootDir());
-const webDistRootPath_1 = path.join(resourcesTools.getWebDistRootDir(), 'base');
-const webDistRootPath_2 = path.join(resourcesTools.getWebDistRootDir(), 'base-naive-ui');
-const webDistRootPath_3 = path.join(resourcesTools.getWebDistRootDir(), 'base-ant');
+const webDistRootPath = path.join(resourcesTools.getRootDir());
+const webDistRootPath_1 = path.join(resourcesTools.getRootDir(), 'base');
+const webDistRootPath_2 = path.join(resourcesTools.getRootDir(), 'base-naive-ui');
+const webDistRootPath_3 = path.join(resourcesTools.getRootDir(), 'base-ant');
 // 自定义中间件，为特定路径返回指定文件
 router.use('/base-ant*', packageRequestHandler((req, res) => {
     const filePath = path.join(webDistRootPath_3, 'index.html');
