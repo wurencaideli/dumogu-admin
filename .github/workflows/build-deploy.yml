@@ -92,7 +92,7 @@ jobs:
           SOURCE: 'web/dist/'
           REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
           REMOTE_USER: ${{ secrets.REMOTE_USER }}
-          TARGET: ${{ vars.REMOTE_DIR }}/web-dist/
+          TARGET: ${{ vars.REMOTE_DIR }}/web/dist/
           EXCLUDE: ''
       - name: Deploy web-base to Server
         uses: easingthemes/ssh-deploy@main
@@ -102,7 +102,7 @@ jobs:
           SOURCE: 'web-base/dist/'
           REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
           REMOTE_USER: ${{ secrets.REMOTE_USER }}
-          TARGET: ${{ vars.REMOTE_DIR }}/web-dist/base/
+          TARGET: ${{ vars.REMOTE_DIR }}/web-base/dist/
           EXCLUDE: ''
       - name: Deploy web-base-ant to Server
         uses: easingthemes/ssh-deploy@main
@@ -112,7 +112,7 @@ jobs:
           SOURCE: 'web-base-ant/dist/'
           REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
           REMOTE_USER: ${{ secrets.REMOTE_USER }}
-          TARGET: ${{ vars.REMOTE_DIR }}/web-dist/base-ant/
+          TARGET: ${{ vars.REMOTE_DIR }}/web-base-ant/dist/
           EXCLUDE: ''
       - name: Deploy web-base-naive-ui to Server
         uses: easingthemes/ssh-deploy@main
@@ -122,7 +122,7 @@ jobs:
           SOURCE: 'web-base-naive-ui/dist/'
           REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
           REMOTE_USER: ${{ secrets.REMOTE_USER }}
-          TARGET: ${{ vars.REMOTE_DIR }}/web-dist/base-naive-ui/
+          TARGET: ${{ vars.REMOTE_DIR }}/web-base-naive-ui/dist/
           EXCLUDE: ''
 
       - name: install server dependencies
