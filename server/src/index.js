@@ -14,7 +14,7 @@ const viewRouter = require('./views/index');
 /** 初始化服务 */
 async function start() {
     console.log('当前环境: ', otherTools.isPro() ? 'pro' : 'dev');
-    await fileTools.ensureDir(resourcesTools.getDataRootDir());  // 创建数据源文件夹
+    await fileTools.ensureDir(resourcesTools.getServerDataRootDir());  // 创建数据源文件夹
     const app = express();
     app.use(cors());  // 允许所有来源的跨域请求
     app.use(bodyParser.json({ limit: '0.3mb' }));  // 设置请求体大小

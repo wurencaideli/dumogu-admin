@@ -3,16 +3,15 @@
  */
 const path = require('path');
 const fsExtra = require('fs-extra');
-const isPro = process.argv[process.argv.findIndex((_) => _ == '--environment') + 1] === 'production';
+const isPro =
+    process.argv[process.argv.findIndex((_) => _ == '--environment') + 1] === 'production';
 const runModel = process.argv[process.argv.findIndex((_) => _ == '--model') + 1];
 const productionEnv = path.join(__dirname, 'dumogu.production.env');
 const developmentEnv = path.join(__dirname, 'dumogu.development.env');
-require('dotenv').config({
-    path: isPro ? productionEnv : developmentEnv,  // 根据环境引入相应的环境文件
-});
-process.env.DUMOGU_RootDir = path.join(__dirname);  // 服务根目录
-process.env.DUMOGU_dataRootDir = isPro ? path.join(__dirname, 'data-pro') : path.join(__dirname, 'data');  // 服务缓存数据目录
-process.env.DUMOGU_webDistRootDir = path.join(__dirname, '../web-dist');  // web资源目录
+
+// 注入环境变量
+Object.assign(process.env, isPro ? getEnv(productionEnv) : getEnv(developmentEnv));
+
 const buildDir = path.join(__dirname, 'src'); //需要打包的文件夹
 const outDir = path.join(__dirname, 'dist'); //打包到那个文件夹
 
@@ -33,12 +32,12 @@ if (runModel == 'start') {
 } else if (runModel == 'build-start') {
     fsExtra.removeSync(outDir);
     startAndW('start');
-}else if (runModel == 'build-start-src') {
+} else if (runModel == 'build-start-src') {
     fsExtra.removeSync(outDir);
     startAndW('start-src');
 }
 /** 打包，监听并启动服务 */
-function startAndW(model){
+function startAndW(model) {
     const buildServer = require('./build/index.js');
     const { spawn } = require('child_process');
     let child;
@@ -47,7 +46,7 @@ function startAndW(model){
         if (child) {
             child.kill();
         }
-        child = spawn('node', ['script-run.js','--model',model], { stdio: 'inherit' });
+        child = spawn('node', ['script-run.js', '--model', model], { stdio: 'inherit' });
     }
     async function start() {
         await buildServer.build({
@@ -67,3 +66,21 @@ function startAndW(model){
     start();
 }
 
+/**
+ * 获取环境变量
+ * @param {string} p
+ */
+function getEnv(p) {
+    let processEnv = {};
+    require('dotenv').config({
+        path: p,
+        processEnv,
+    });
+    // 处理环境变量中的特殊值，这里是dir
+    for (let key in processEnv) {
+        if (/Dir$/.test(key)) {
+            processEnv[key] = path.join(path.dirname(p), processEnv[key]);
+        }
+    }
+    return processEnv;
+}
