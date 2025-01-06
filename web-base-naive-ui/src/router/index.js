@@ -2,6 +2,7 @@
  * 路由列表部分
  * 所有路由必须先手动写好，然后由后端菜单接口来进行匹配并且指定是否显示
  */
+import { env } from '@/env';
 import { createWebHistory, createRouter } from 'vue-router';
 /**
  * 为路由配置meta相当于为该路由配置了基本信息，配置的属性如下
@@ -163,7 +164,7 @@ export const constantRoutes = [
 ];
 
 const router = createRouter({
-    history: createWebHistory(import.meta.env.VITE_APP_routeBasePath),
+    history: createWebHistory(env.APP_routeBasePath),
     routes: constantRoutes,
 });
 

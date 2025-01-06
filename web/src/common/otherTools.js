@@ -277,14 +277,7 @@ export function getIcon(link) {
         return link;
     }
 }
-/** 是否是生产环境 */
-export function isProdoction() {
-    return import.meta.env.PROD;
-}
-/** 是否是生产环境 */
-export function isProd() {
-    return import.meta.env.PROD;
-}
+
 /**
  * 获取dict单个数据
  */
