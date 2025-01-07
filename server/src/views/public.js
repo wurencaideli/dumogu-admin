@@ -1,23 +1,21 @@
-/**
- * 公共 api
- */
-const express = require('express');
-const captchaTools = require('../common/captcha');
-const { packageRequestHandler } = require('../common/packageRequestHandler');
-const router = express.Router();
-const { getReqlanguage } = require('../i18/index');
-const { ResBody } = require('../common/ResBody');
+import express from "express";
+import { packageRequestHandler } from "../common/packageRequestHandler";
+import { create } from "../common/captcha";
+import { ResBody } from "../common/ResBody";
+import { getReqlanguage } from "../i18";
 
-/** 获取验证码 */
-router.get(
-    '/captcha',
-    packageRequestHandler(function (req, res) {
-        const captcha = captchaTools.create();
-        res.json(new ResBody(200, {
-            msg: '成功',
-            lang: getReqlanguage(req),
-        }, captcha));
-    }),
-);
-
-module.exports = router;
+export function getPublicRouter() {
+    const router = express.Router();
+    /** 获取验证码 */
+    router.get(
+        '/captcha',
+        packageRequestHandler(function (req, res) {
+            const captcha = create();
+            res.json(new ResBody(200, {
+                msg: '成功',
+                lang: getReqlanguage(req),
+            }, captcha));
+        }),
+    );
+    return router;
+}

@@ -57,7 +57,7 @@ export function getEnv() {
                 let webs = [];
                 for (let i in processEnv_) {
                     if (/^web_/i.test(i)) {
-                        let name = processEnv_[i].match(/^web(.*)?(_path|_dist_dir)$/i)[1] || '';
+                        let name = i.match(/^web(.*)?(path|dist_dir)$/i)[1] || '';
                         if (webs.every(_ => _.name != name)) {
                             webs.push({
                                 name,
@@ -65,7 +65,6 @@ export function getEnv() {
                                 distDir: '',
                             });
                         }
-                        console.log('名字', name);
                         let on = webs.find(_ => _.name == name);
                         if (/path$/i.test(i)) {
                             on.path = processEnv_[i]
