@@ -1,13 +1,13 @@
-/** 验证码验证工具 */
-const uuidTools = require('../common/uuidTools');
-const svgCaptcha = require('svg-captcha');
+import svgCaptcha from "svg-captcha";
+import { createUuid } from "./uuidTools";
 
 const captchaMap = new Map();
+
 /**
  * 创建一个验证码
  * @returns {{svg:string,id:string}} 返回数据对象
  */
-function create() {
+export function create() {
     let captcha = svgCaptcha.create({
         size: 4,
         ignoreChars: 'O0o1iIl', //不需要的字符
@@ -15,7 +15,7 @@ function create() {
         color: true,
         background: '#cc9966',
     });
-    const uuid = uuidTools.createUuid();
+    const uuid = createUuid();
     captchaMap.set(uuid, {
         id: uuid,
         text: captcha.text.toLowerCase(), //转小写
@@ -26,13 +26,14 @@ function create() {
         id: uuid,
     };
 }
+
 /**
  * 验证，不考虑验证码过期
  * @param {string} id
  * @param {string} text
  * @returns {boolean}
  *  */
-function verify(id, text) {
+export function verify(id, text) {
     const p = captchaMap.get(id);
     if (!p) return false;
     text = text + '';
@@ -41,20 +42,15 @@ function verify(id, text) {
     captchaMap.delete(id);
     return true;
 }
+
 /**
  * 清除已过期的
  * 由外部的定时任务清除
  */
-function verifyOverTime() {
+export function verifyOverTime() {
     const nowDate = new Date().getTime();
     captchaMap.forEach((item) => {
         if (item.overtime >= nowDate) return;
         captchaMap.delete(item.id);
     });
 }
-
-module.exports = {
-    create,
-    verify,
-    verifyOverTime,
-};

@@ -5,6 +5,7 @@
 import { defineComponent, reactive } from 'vue';
 import SvgIcon from '@/components/svgIcon/index.vue';
 import DefinScrollbar from '@/components/definScrollbar.vue';
+import { env } from '@/env';
 
 export default defineComponent({
     components: {
@@ -13,7 +14,7 @@ export default defineComponent({
     },
     setup() {
         const dataContainer = reactive({
-            name: import.meta.env.VITE_APP_name,
+            name: env.APP_name,
             loading: false,
         });
         return {

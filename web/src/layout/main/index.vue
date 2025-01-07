@@ -27,6 +27,7 @@ import { toggleFullScreen } from '@/common/otherTools';
 import { getNanoid } from '@/common/guid';
 import keepAliveRouter from '@/components/keepAliveRouter.vue';
 import searchContainer from './components/searchContainer.vue';
+import { env } from '@/env';
 
 export default defineComponent({
     name: 'MainLayout',
@@ -44,7 +45,7 @@ export default defineComponent({
         const router = useRouter();
         const route = useRoute();
         const dataContainer = reactive({
-            name: import.meta.env.VITE_APP_name,
+            name: env.APP_name,
             img: {
                 img_1,
             },
@@ -155,7 +156,7 @@ export default defineComponent({
                     :src="dataContainer.img.img_1"
                     fit="cover"
                 />
-                <div class="name">毒蘑菇 - 管理</div>
+                <div class="name">{{ dataContainer.name }}</div>
             </div>
             <div class="right">
                 <Navbar

@@ -230,10 +230,7 @@ export function loadScript(url, type) {
         };
     });
 }
-/** 是否是生产环境 */
-export function isProd() {
-    return import.meta.env.PROD;
-}
+
 /**
  * 获取dict单个数据
  */

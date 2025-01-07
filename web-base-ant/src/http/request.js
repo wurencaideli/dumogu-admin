@@ -6,14 +6,12 @@ import axios from 'axios';
 import { userDataStore } from '@/store/user';
 import router from '@/router';
 import { Modal } from 'ant-design-vue';
-
-let baseApiURL = import.meta.env.VITE_APP_baseApiURL; //api原始链接
-const timeout = 13000; //api请求超时时间
+import { env } from '@/env';
 
 export const service = axios.create({
     //可创建多个 axios实例
-    baseURL: baseApiURL, //设置公共的请求前缀
-    timeout: timeout, //超时终止请求
+    baseURL: env.APP_baseApiURL, //设置公共的请求前缀
+    timeout: 13000, //超时终止请求
 });
 
 service.interceptors.request.use(

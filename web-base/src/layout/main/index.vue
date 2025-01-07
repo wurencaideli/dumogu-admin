@@ -14,6 +14,7 @@ import keepAliveRouter from '@/components/keepAliveRouter.vue';
 import DefinScrollbar from '@/components/definScrollbar.vue';
 import searchContainer from './components/searchContainer.vue';
 import { publicDataStore } from '@/store/public';
+import { env } from "@/env";
 
 export default defineComponent({
     name: 'MainLayout',
@@ -32,7 +33,7 @@ export default defineComponent({
         const router = useRouter();
         const route = useRoute();
         const dataContainer = reactive({
-            name: import.meta.env.VITE_APP_name,
+            name: env.APP_name,
             fullScreen: toRef(publicData, 'fullScreen'),
             img: {
                 img_1,

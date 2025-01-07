@@ -2,7 +2,6 @@
 import '@/common/requestAnimationFrameExpand';
 /** 引入 rem计算 */
 import '@/common/rem';
-import { isProd } from '@/common/otherTools';
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 /** 添加公共样式 */
@@ -14,8 +13,10 @@ import './permission';
 /** 打印完整路由表 */
 import { sysMeluConfigList } from './router/common';
 import 'element-plus/theme-chalk/dark/css-vars.css';
+import { isProduction } from './env';
 const pinia = createPinia();
-if (!isProd()) {
+
+if (!isProduction()) {
     console.log('系统完整路由表，router挂载全局window.router', router, sysMeluConfigList);
     /** 挂载到全局方便操作 */
     window.router = router;
@@ -29,6 +30,7 @@ if (!isProd()) {
         return c;
     }, {});
 }
+
 const app = createApp(App);
 app.use(router);
 app.use(pinia);

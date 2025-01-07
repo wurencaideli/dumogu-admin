@@ -56,12 +56,12 @@ export default defineConfig(({ mode }) => {
             },
         },
         server: {
-            port: 8087,
+            port: 8082,
             host: true,
             open: true,
             proxy: {
                 '/api': {
-                    // target: 'http://127.0.0.1:8089',
+                    // target: 'http://127.0.0.1:8070',
                     target: 'https://codess.dumogu.top',
                     changeOrigin: true,
                     rewrite: (p) => p.replace(/^\/api/, '/api'),

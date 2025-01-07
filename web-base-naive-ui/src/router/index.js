@@ -2,24 +2,10 @@
  * 路由列表部分
  * 所有路由必须先手动写好，然后由后端菜单接口来进行匹配并且指定是否显示
  */
+import { env } from '@/env';
 import { createWebHistory, createRouter } from 'vue-router';
-/**
- * 为路由配置meta相当于为该路由配置了基本信息，配置的属性如下
- * title 用作标签显示字样的字段
- * hasTag 可以生成标签
- * isCache 该标签页面是否缓存
- * hidden 该标签页面是否在左边目录上显示
- * isLink 表示直接跳转新页面
- * iconName 菜单icon图标
- * fixed 标签是否固定
- * layoutName layout的名称，用作分组
- * redirectName 重定向的目标
- * path 路由地址，唯一键
- * fullPath
- * showTagIcon 标签显示的时候是否显示图标
- * content 菜单显示的详情
- * number 菜单显示的数字
- */
+
+/** @type {import('vue-router').RouteRecordRaw[]} */
 export const constantRoutes = [
     /** 登录注册相关页面 */
     {
@@ -163,7 +149,7 @@ export const constantRoutes = [
 ];
 
 const router = createRouter({
-    history: createWebHistory(import.meta.env.VITE_APP_routeBasePath),
+    history: createWebHistory(env.APP_routeBasePath),
     routes: constantRoutes,
 });
 

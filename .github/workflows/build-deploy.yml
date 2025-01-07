@@ -5,7 +5,7 @@ name: build-deploy
 
 on:
   push:
-    branches: [master]
+    tags: "release-*"
 
 jobs:
   build:

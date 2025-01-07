@@ -7,9 +7,9 @@ module.exports = {
     apps: [
         {
             name: 'dumogu-admin-server',
-            script: path.join(__dirname, 'script-run.js'),
+            script: path.join(__dirname, './dist/index.js'),
             cwd: __dirname,
-            args: '--environment production --model start',
+            args: '--environment production',
         },
     ],
 };
