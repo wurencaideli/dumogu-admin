@@ -42,7 +42,7 @@ export function getEnv() {
             path.join(serverDir(), `.env.${getEnvType()}.local`),
         ].forEach(_ => {
             if (statSync(_, { throwIfNoEntry: false })?.isFile()) {
-                /** @type {Record<string,string>} */
+                /** @type {Record<string,any>} */
                 let processEnv_ = {};
                 dotenv.config({
                     path: _,
@@ -53,31 +53,28 @@ export function getEnv() {
                         processEnv_[i] = path.join(path.dirname(_), processEnv_[i]);
                     }
                 }
-                /** @type {{name:string;path:string;distDir:string}[]} */
+                /** @type {{name:string;path:string;distDir:string;}[]} */
                 let webs = [];
-                for (let i in processEnv_) {
-                    if (/^web_/i.test(i)) {
-                        let name = i.match(/^web(.*)?(path|dist_dir)$/i)[1] || '';
-                        if (webs.every(_ => _.name != name)) {
-                            webs.push({
-                                name,
-                                path: '',
-                                distDir: '',
-                            });
-                        }
-                        let on = webs.find(_ => _.name == name);
-                        if (/path$/i.test(i)) {
-                            on.path = processEnv_[i]
-                        }
-                        if (/dist_dir$/i.test(i)) {
-                            on.distDir = processEnv_[i]
-                        }
+                for (let i of Object.keys(processEnv_).filter(_ => /^web_/i.test(_))) {
+                    let name = i.match(/^web(.*)?(path|dist_dir)$/i)[1] || '';
+                    if (webs.every(_ => _.name != name)) {
+                        webs.push({
+                            name,
+                            path: '',
+                            distDir: '',
+                        });
                     }
+                    let on = webs.find(_ => _.name == name);
+                    if (/path$/i.test(i)) {
+                        on.path = processEnv_[i]
+                    }
+                    if (/dist_dir$/i.test(i)) {
+                        on.distDir = processEnv_[i]
+                    }
+                    delete processEnv_[i];
                 }
+                webs.length > 0 && (processEnv_.WEBS = webs);
                 Object.assign(processEnv, processEnv_);
-                if (webs.length > 0) {
-                    processEnv.WEBS = webs;
-                }
             }
         });
     }

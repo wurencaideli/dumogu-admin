@@ -11,9 +11,10 @@ import { getWebDistRouter } from "./views/webDist";
 /** 初始化服务 */
 async function start() {
     console.log('当前环境类型', getEnvType());
+    let SERVER_DATA_DIR = getEnv().SERVER_DATA_DIR;
     try {
         // 创建数据源文件夹
-        mkdirSync(getEnv().SERVER_DATA_DIR);
+        mkdirSync(SERVER_DATA_DIR);
     } catch { }
     const app = express();
     app.use(cors());  // 允许所有来源的跨域请求
