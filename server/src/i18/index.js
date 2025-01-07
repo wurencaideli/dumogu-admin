@@ -1,7 +1,7 @@
 /**
  * 国际化方法
  */
-const i18n = require('i18next');
+export const i18n = require('i18next');
 
 /** 初始化实例 */
 i18n.init({
@@ -20,13 +20,14 @@ i18n.init({
         },
     },
 });
+
 /**
  * 转换
  * @param {string | Array<string>} keys
  * @param {string} lang
  * @returns {string}
  */
-function transformLang(keys, lang) {
+export function transformLang(keys, lang) {
     if (!Array.isArray(keys)) {
         keys = [keys];
     }
@@ -39,12 +40,13 @@ function transformLang(keys, lang) {
         .join('');
     return keys;
 }
+
 /**
  * 获取请求体中的语言参数
  * @param {*} req
  * @returns {string}
  */
-function getReqlanguage(req) {
+export function getReqlanguage(req) {
     if (req.__language__) return req.__language__;
     let language = (req.headers || {})['accept-language'] || '';  // 浏览器会自带此请求头，值: zh-CN,zh;q=0.9
     let languageS = language.split(',');
@@ -63,20 +65,14 @@ function getReqlanguage(req) {
     req.__language__ = language; // 防止做二次处理
     return language;
 }
+
 /**
  * 根据键和req直接返回国际化，相当于一个组合函数
  * @param {string | string[]} keys
  * @param {*} req
  * @returns {string}
  */
-function getI18ByKeyAndReq(keys, req) {
+export function getI18ByKeyAndReq(keys, req) {
     const lang = getReqlanguage(req);
     return transformLang(keys,lang);
 }
-
-module.exports = {
-    i18n,
-    transformLang,
-    getReqlanguage,
-    getI18ByKeyAndReq,
-};
