@@ -67,13 +67,13 @@ export default defineConfig(({ mode }) => {
             },
         },
         server: {
-            port: 8087,
+            port: 8081,
             host: true,
             open: true,
             proxy: {
                 // https://cn.vitejs.dev/config/#server-proxy
                 '/api': {
-                    // target: 'http://127.0.0.1:8089',
+                    // target: 'http://127.0.0.1:8070',
                     target: 'https://s.dumogu.top',
                     changeOrigin: true,
                     rewrite: (p) => p.replace(/^\/api/, '/api'),

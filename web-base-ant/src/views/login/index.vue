@@ -14,6 +14,7 @@ import { getTypeOf } from '@/common/otherTools';
 import img_2 from '@/assets/login-imgs/login-bg.svg';
 import img_3 from '@/assets/login-imgs/code.svg';
 import img_4 from '@/assets/login-imgs/login-bg-1.svg';
+import { env } from '@/env';
 
 export default defineComponent({
     name: 'LoginView',
@@ -23,7 +24,7 @@ export default defineComponent({
         const router = useRouter();
         const route = useRoute();
         const dataContainer = reactive({
-            name: import.meta.env.VITE_APP_name,
+            name: env.APP_name,
             form: {
                 name: '',
                 password: '',
