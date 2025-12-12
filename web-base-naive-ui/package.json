@@ -21,6 +21,7 @@
         "mitt": "3.0.1",
         "nanoid": "5.0.7",
         "nprogress": "0.2.0",
+        "qs": "6.11.0",
         "pinia": "2.2.2",
         "sass": "1.78.0",
         "simplebar-vue": "2.3.5",

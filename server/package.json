@@ -1,28 +1,49 @@
 {
-    "name": "dumogu-search-server",
-    "version": "1.0.1",
+    "$schema": "https://json.schemastore.org/tsconfig",
+    "name": "dumogu-admin-server",
+    "version": "1.1.2",
     "description": "",
-    "main": "index.js",
+    "type": "module",
     "scripts": {
-        "dev": "nodemon --watch ./dist ./dist/index.js --environment development",
-        "tsc-w": "tsc -w",
-        "build": "tsc"
+        "build:watch": "tsc -w",
+        "build": "tsc && node .node/compress-js.js",
+        "compress-js": "node .node/compress-js.js",
+        "dev": "node dist/index.js --model dev",
+        "start": "node dist/index.js --model pro"
     },
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "body-parser": "^1.20.3",
-        "cors": "^2.8.5",
-        "dotenv": "^16.4.7",
-        "express": "^4.21.2",
-        "i18next": "^24.2.1",
-        "shortid": "^2.2.16",
-        "svg-captcha": "^1.4.0"
+        "body-parser": "1.20.1",
+        "commander": "^14.0.2",
+        "compression": "1.7.4",
+        "cors": "2.8.5",
+        "crypto-js": "4.1.1",
+        "dotenv": "^17.2.3",
+        "express": "4.18.2",
+        "ip": "2.0.1",
+        "js-md5": "0.7.3",
+        "mime": "^4.1.0",
+        "node-schedule": "2.1.1",
+        "recursive-readdir": "2.2.3",
+        "shortid": "2.2.16",
+        "svg-captcha": "1.4.0",
+        "uuid": "9.0.0"
     },
     "devDependencies": {
-        "@types/express": "^5.0.0",
-        "@types/node": "^22.10.5",
-        "nodemon": "^3.1.9",
-        "typescript": "^5.7.2"
+        "@types/body-parser": "^1.19.6",
+        "@types/compression": "^1.8.1",
+        "@types/cors": "^2.8.19",
+        "@types/express": "^5.0.3",
+        "@types/ip": "^1.1.3",
+        "@types/js-md5": "^0.8.0",
+        "@types/node": "^24.2.0",
+        "@types/node-schedule": "^2.1.8",
+        "@types/recursive-readdir": "^2.2.4",
+        "@types/shortid": "^2.2.0",
+        "@types/uuid": "^10.0.0",
+        "terser": "^5.44.1",
+        "tslib": "^2.8.1",
+        "typescript": "^5.8.3"
     }
 }

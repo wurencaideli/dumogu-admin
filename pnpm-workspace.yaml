@@ -1,0 +1,6 @@
+packages:
+  - "server"
+  - "web"
+  - "web-base"
+  - "web-base-ant"
+  - "web-base-naive-ui"

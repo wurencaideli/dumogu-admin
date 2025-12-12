@@ -12,6 +12,7 @@
         "update-codess-package": "codess install"
     },
     "dependencies": {
+        "@element-plus/icons-vue": "2.0.10",
         "axios": "1.7.7",
         "copy-to-clipboard": "3.3.3",
         "cropperjs": "1.6.2",
@@ -21,6 +22,7 @@
         "mime": "4.0.4",
         "mitt": "3.0.1",
         "nanoid": "5.0.7",
+        "qs": "6.11.0",
         "nprogress": "0.2.0",
         "pinia": "2.2.2",
         "sass": "1.78.0",
