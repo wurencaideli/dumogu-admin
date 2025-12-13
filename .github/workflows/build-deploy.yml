@@ -101,7 +101,7 @@ jobs:
                   cp -r server/dist/. __deploy/server/dist/
                   cp server/ecosystem.config.cjs __deploy/server/
                   cp server/package.json __deploy/server/
-                  cp server/.env.development __deploy/server/
+                  cp server/.env.production __deploy/server/
 
             - name: Deploy to Server
               uses: easingthemes/ssh-deploy@main
