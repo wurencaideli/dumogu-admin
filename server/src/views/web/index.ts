@@ -21,8 +21,11 @@ export function createRouter() {
         router.use(
             item.path,
             express.static(item.dir, {
-                maxAge: '30d', // 缓存时间为 30 天
+                maxAge: '9999d', // 缓存时间为 9999 天
             }),
+        );
+        router.use(
+            item.path,
             packageRequestHandler((req: any, res: any) => {
                 const filePath = path.join(item.dir, 'index.html');
                 res.sendFile(filePath, (err: any) => {
