@@ -60,9 +60,9 @@ jobs:
                   cd web-base-ant
                   npm run build
 
-            - name: Run web-naive-ui build task
+            - name: Run web-base-naive-ui build task
               run: |
-                  cd web-naive-ui
+                  cd web-base-naive-ui
                   npm run build
 
             - name: Run server build task
