@@ -42,6 +42,7 @@
         "@types/recursive-readdir": "^2.2.4",
         "@types/shortid": "^2.2.0",
         "@types/uuid": "^10.0.0",
+        "@types/crypto-js": "^4.2.2",
         "terser": "^5.44.1",
         "tslib": "^2.8.1",
         "typescript": "^5.8.3"
