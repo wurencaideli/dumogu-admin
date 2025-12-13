@@ -129,5 +129,5 @@ jobs:
                       pnpm i
 
                       echo "启动PM2服务"
-                      pm2 start ${{ vars.REMOTE_DIR }}/server/ecosystem.config.cjs
+                      pm2 start ${{ vars.REMOTE_DIR }}/server/ecosystem.config.cjs --force
                       pm2 save
