@@ -22,11 +22,13 @@ export function createRouter() {
             item.path,
             express.static(item.dir, {
                 maxAge: '9999d', // 缓存时间为 9999 天
+                index: false,
             }),
         );
         router.use(
             item.path,
             packageRequestHandler((req: any, res: any) => {
+                res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
                 const filePath = path.join(item.dir, 'index.html');
                 res.sendFile(filePath, (err: any) => {
                     if (!err) return;
