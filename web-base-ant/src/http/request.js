@@ -1,12 +1,11 @@
-/*jshint esversion: 9 */
 /**
  * http请求配置
  */
 import axios from 'axios';
-import { userDataStore } from '@/store/user';
-import router from '@/router';
+import { userDataStore } from '@/store/user.js';
+import router from '@/router/index.js';
 import { Modal } from 'ant-design-vue';
-import { env } from '@/env';
+import { env } from '@/env.js';
 
 export const service = axios.create({
     //可创建多个 axios实例

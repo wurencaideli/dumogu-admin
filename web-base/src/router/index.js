@@ -2,7 +2,7 @@
  * 路由列表部分
  * 所有路由必须先手动写好，然后由后端菜单接口来进行匹配并且指定是否显示
  */
-import { env } from '@/env';
+import { env } from '@/env.js';
 import { createWebHistory, createRouter } from 'vue-router';
 
 /** @type {import('vue-router').RouteRecordRaw[]} */
@@ -37,7 +37,7 @@ export const constantRoutes = [
             /**
              * 重定向页面
              * 用来刷新标签页
-             *  */
+             */
             {
                 path: 'redirect/:path(.*)',
                 name: 'main-redirect',
@@ -71,7 +71,7 @@ export const constantRoutes = [
             },
             {
                 path: 'new-tag-page/:sign',
-                component: () => import('@/views/system/newTagPage/index.vue'),
+                component: () => import('@/views/system/new-tag-page/index.vue'),
                 name: 'new-tag-page',
                 meta: {
                     layoutName: 'main',
@@ -103,7 +103,7 @@ export const constantRoutes = [
             },
             {
                 path: 'icon-list',
-                component: () => import('@/views/system/iconList/index.vue'),
+                component: () => import('@/views/system/icon-list/index.vue'),
                 name: 'icon-list',
                 meta: {
                     layoutName: 'main',

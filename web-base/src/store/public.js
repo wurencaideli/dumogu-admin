@@ -1,7 +1,5 @@
-/** 公共全局数据 */
-
 import { defineStore } from 'pinia';
-import allStorage from '@/action/storageManage';
+import allStorage from '@/action/storage-manage.js';
 
 export const publicDataStore = defineStore('publicDataStore', {
     state: () => {

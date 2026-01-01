@@ -1,5 +1,4 @@
-/*jshint esversion: 9 */
-import { service } from './request';
+import { service } from './request.js';
 import qs from 'qs';
 
 /** 公用接口 */

@@ -2,6 +2,12 @@
 
 #### 毒蘑菇后台管理，最基础的后台模板
 
+项目根目录下使用pnpm安装
+
+```
+pnpm i
+```
+
 开源地址 https://github.com/wurencaideli/dumogu-admin
 
 线上DEMO(element-plus) https://admin.dumogu.top/

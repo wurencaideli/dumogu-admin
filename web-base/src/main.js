@@ -3,13 +3,13 @@ import { createPinia } from 'pinia';
 /** 添加公共样式 */
 import '@/style/index.scss';
 import App from './App.vue';
-import router from './router/index';
+import router from './router/index.js';
 /** 注册路由许可验证 */
-import './permission';
+import './permission.js';
 /** 打印完整路由表 */
-import { sysMeluConfigList } from './router/common';
+import { sysMeluConfigList } from './router/common.js';
 import 'element-plus/theme-chalk/dark/css-vars.css';
-import { isProduction } from './env';
+import { isProduction } from './env.js';
 
 const pinia = createPinia();
 if (!isProduction()) {

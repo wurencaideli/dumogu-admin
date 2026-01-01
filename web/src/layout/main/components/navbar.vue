@@ -1,24 +1,21 @@
 <script>
-/*
- * 头部组件
- * 提供类名供外部调整
- */
 import { defineComponent, reactive, toRef } from 'vue';
 import { useRouter } from 'vue-router';
-import SvgIcon from '@/components/svgIcon/index.vue';
-import { logout } from '@/action/formatUserData';
-import { confirm } from '@/action/messagePrompt';
+
+import SvgIcon from '@/components/svg-icon/index.vue';
+import { logout } from '@/action/format-user-data.js';
+import { confirm } from '@/action/message-prompt.js';
 import img_1 from '@/assets/logo.png';
-import { toggleFullScreen } from '@/common/otherTools';
-import definDropdown from '@/components/definDropdown.vue';
-import searchContainer from './searchContainer.vue';
+import { toggleFullScreen } from '@/common/other-tools.js';
+import DefinDropdown from '@/components/defin-dropdown.vue';
+import SearchContainer from './search-container.vue';
 
 export default defineComponent({
     name: 'Navbar',
     components: {
         SvgIcon,
-        searchContainer,
-        definDropdown,
+        SearchContainer,
+        DefinDropdown,
     },
     props: {
         breadcrumbList: {
@@ -132,7 +129,7 @@ export default defineComponent({
             <div @click="toggleFullScreen" class="bt">
                 <SvgIcon :style="'width:22px;height:22px;'" name="svg:Navbar-full.svg"></SvgIcon>
             </div>
-            <definDropdown
+            <DefinDropdown
                 :show="dataContainer.show_1"
                 :ifLeftClick="true"
                 :targetQuery="'.target'"
@@ -190,11 +187,11 @@ export default defineComponent({
                         </div>
                     </div>
                 </template>
-            </definDropdown>
+            </DefinDropdown>
         </div>
         <div class="search-container">
             <div class="container">
-                <searchContainer></searchContainer>
+                <SearchContainer></SearchContainer>
             </div>
         </div>
     </div>

@@ -1,16 +1,13 @@
-/*jshint esversion: 9 */
-/**
- * http请求配置
- */
 import axios from 'axios';
-import { userDataStore } from '@/store/user';
-import { confirm } from '@/action/messagePrompt';
-import router from '@/router';
-import { env } from '@/env';
+
+import { userDataStore } from '@/store/user.js';
+import { confirm } from '@/action/message-prompt.js';
+import router from '@/router/index.js';
+import { env } from '@/env.js';
 
 export const service = axios.create({
-    baseURL: env.APP_baseApiURL, //设置公共的请求前缀
-    timeout: 13000, //超时终止请求
+    baseURL: env.APP_baseApiURL,
+    timeout: 13000,
 });
 
 service.interceptors.request.use(
@@ -26,7 +23,6 @@ service.interceptors.request.use(
         });
     },
 );
-
 let modelShow = false;
 service.interceptors.response.use(
     (response) => {
@@ -59,16 +55,15 @@ service.interceptors.response.use(
                         });
                 }
                 return Promise.reject(data);
-            case 202: //表示失败，参数或其他原因
+            case 202:
                 return Promise.reject(data);
-            case 500: //表示报错。未知原因
+            case 500:
                 return Promise.reject(data);
             default:
                 return Promise.reject(data);
         }
     },
     () => {
-        //数据请求发生错误
         return Promise.reject({
             msg: '请求发生错误，请稍后再试',
         });

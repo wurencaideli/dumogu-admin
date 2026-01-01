@@ -31,7 +31,7 @@ export function create(): SvgCaptcha {
 }
 /**
  * 验证，不考虑验证码过期
- *  */
+ */
 export function verify(id: string, text: string): boolean {
     const p = captchaMap.get(id);
     if (!p) return false;

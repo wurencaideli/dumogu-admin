@@ -1,20 +1,20 @@
 <script>
 /**
  * 登录页面
- *  */
+ */
 import { defineComponent, reactive } from 'vue';
 import publicApi from '@/http/public.js';
 import userApi from '@/http/user.js';
 import { message } from 'ant-design-vue';
 import { useRoute, useRouter } from 'vue-router';
-import { throttleFn_1 as throttleFn } from '@/common/debounceAndThrottle';
-import { verifiedData } from '@/common/verifiedTools';
-import { userDataStore } from '@/store/user';
-import { getTypeOf } from '@/common/otherTools';
+import { throttleFn_1 as throttleFn } from '@/common/debounce-and-throttle.js';
+import { verifiedData } from '@/common/verified-tools.js';
+import { userDataStore } from '@/store/user.js';
+import { getTypeOf } from '@/common/other-tools.js';
 import img_2 from '@/assets/login-imgs/login-bg.svg';
 import img_3 from '@/assets/login-imgs/code.svg';
 import img_4 from '@/assets/login-imgs/login-bg-1.svg';
-import { env } from '@/env';
+import { env } from '@/env.js';
 
 export default defineComponent({
     name: 'LoginView',
@@ -24,6 +24,7 @@ export default defineComponent({
         const router = useRouter();
         const route = useRoute();
         const dataContainer = reactive({
+            version: import.meta.env.VITE_VERSION,
             name: env.APP_name,
             form: {
                 name: '',
@@ -156,7 +157,7 @@ export default defineComponent({
                     /**
                      * 登录成功，跳转到首页
                      * 其他用户信息会在路由跳转是获取到
-                     *  */
+                     */
                     let routeParams = route.query || {};
                     if (routeParams.from) {
                         router.push(decodeURIComponent(routeParams.from));
@@ -286,7 +287,7 @@ export default defineComponent({
             <div class="other">（没有后台接口，随便输入必填项就可以登录）</div>
         </div>
         <div class="bottom">
-            版权所有 @admin.dumogu.top {{ dataContainer.name }}
+            版权所有 @admin.dumogu.top {{ dataContainer.name }} v-{{ dataContainer.version }}
             <a href="https://github.com/wurencaideli/dumogu-admin" target="_blank" class="bt">
                 <SvgIcon :style="'width:60px;height:25px;'" name="svg:github.svg"></SvgIcon>
             </a>

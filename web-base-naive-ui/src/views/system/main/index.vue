@@ -3,9 +3,9 @@
  * 首页
  */
 import { defineComponent, reactive } from 'vue';
-import SvgIcon from '@/components/svgIcon/index.vue';
-import DefinScrollbar from '@/components/definScrollbar.vue';
-import { env } from '@/env';
+import SvgIcon from '@/components/svg-icon/index.vue';
+import DefinScrollbar from '@/components/defin-scrollbar.vue';
+import { env } from '@/env.js';
 
 export default defineComponent({
     components: {

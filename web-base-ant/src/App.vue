@@ -1,7 +1,7 @@
 <script>
 import { defineComponent } from 'vue';
-import { publicDataStore } from '@/store/public';
-import { loadScript } from '@/common/otherTools';
+import { publicDataStore } from '@/store/public.js';
+import { loadScript } from '@/common/other-tools.js';
 import { theme } from 'ant-design-vue';
 import zhCN from 'ant-design-vue/es/locale/zh_CN';
 import dayjs from 'dayjs';
@@ -17,7 +17,7 @@ export default defineComponent({
          * 储存在毒蘑菇变量中
          * var.dumogu.top
          * https://var.dumogu.top/var/update?id=qdmp3dmX3
-         *  */
+         */
         setTimeout(() => {
             loadScript(
                 'https://dumogu-web-var.oss-cn-chengdu.aliyuncs.com/qdmp3dmX3.js',

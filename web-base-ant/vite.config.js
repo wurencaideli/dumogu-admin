@@ -4,8 +4,6 @@
  */
 import { defineConfig, loadEnv } from 'vite';
 import vue from '@vitejs/plugin-vue';
-import vitePluginAliOss from 'vite-plugin-ali-oss';
-import ossOptionConfig from './oss.config';
 import Components from 'unplugin-vue-components/vite';
 import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers';
 import { resolve } from 'path';
@@ -13,41 +11,28 @@ import { resolve } from 'path';
 const pathResolve = (dir) => {
     return resolve(__dirname, '.', dir);
 };
-const ossOptions = {
-    region: ossOptionConfig.region,
-    accessKeyId: ossOptionConfig.accessKeyId,
-    accessKeySecret: ossOptionConfig.accessKeySecret,
-    bucket: ossOptionConfig.bucket,
-    overwrite: true,
-};
 export default defineConfig(({ mode }) => {
     const isProd = mode !== 'development';
-    const env = loadEnv(mode, process.cwd(), ''); // 自定义的环境变量
-    let base = env.VITE_APP_biuldBase; // 打包的静态资源的burl base
-    let outDir = 'dist';
-    let plugins = [
+    const env = loadEnv(mode, process.cwd(), '');
+    const base = env.VITE_APP_biuldBase;
+    const outDir = 'dist';
+    const plugins = [
         vue(),
         Components({
             resolvers: [
                 AntDesignVueResolver({
-                    importStyle: false, // css in js
+                    importStyle: false,
                 }),
             ],
         }),
     ];
-    /** 如果使用了alioss来储存文件 */
-    if (!!ossOptionConfig.url) {
-        base = ossOptionConfig.url + base;
-        plugins.push(vitePluginAliOss(ossOptions));
-    }
     return {
-        base: base, // must be URL when build
+        base: base,
         plugins: plugins,
         build: {
-            /** 指定输出路径 */
             outDir: outDir,
             reportCompressedSize: false,
-            sourcemap: isProd ? false : true, // 这个生产环境一定要关闭，不然打包的产物会很大
+            sourcemap: isProd ? false : true,
         },
         resolve: {
             alias: {

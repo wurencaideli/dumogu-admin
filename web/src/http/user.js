@@ -1,6 +1,6 @@
-/*jshint esversion: 9 */
-import { service } from './request';
 import qs from 'qs';
+
+import { service } from './request.js';
 
 /** 公用接口 */
 const allApi = {

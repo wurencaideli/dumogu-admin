@@ -1,11 +1,9 @@
 <script>
-/**
- * 左侧菜单组件
- */
 import { defineComponent, ref, reactive, onMounted, toRef } from 'vue';
-import SvgIcon from '@/components/svgIcon/index.vue';
 import { useRouter, useRoute } from 'vue-router';
-import MenuItem from './menuItem.vue';
+
+import SvgIcon from '@/components/svg-icon/index.vue';
+import MenuItem from './menu-item.vue';
 
 export default defineComponent({
     name: 'Menu',

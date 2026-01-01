@@ -3,31 +3,18 @@
  * 操作 layout
  * 负责相应事件的统一分发处理
  */
-import {
-    ref,
-    defineComponent,
-    h,
-    reactive,
-    watch,
-    toRef,
-    computed,
-    onMounted,
-    onUnmounted,
-} from 'vue';
+import { defineComponent, reactive, watch, toRef, computed } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
+
 import Navbar from './components/navbar.vue';
 import Menu from './components/menu.vue';
-import TagList from './components/tagList.vue';
-import { useRouter, useRoute } from 'vue-router';
-import { userDataStore } from '@/store/user';
-import { publicDataStore } from '@/store/public';
-import { sysMeluConfigList } from '@/router/common';
+import TagList from './components/tag-list.vue';
+import { userDataStore } from '@/store/user.js';
+import { publicDataStore } from '@/store/public.js';
 import img_1 from '@/assets/logo.png';
-import { deepCopyObj } from '@/common/otherTools';
-import { toggleFullScreen } from '@/common/otherTools';
-import { getNanoid } from '@/common/guid';
-import keepAliveRouter from '@/components/keepAliveRouter.vue';
-import searchContainer from './components/searchContainer.vue';
-import { env } from '@/env';
+import KeepAliveRouter from '@/components/keep-alive-router.vue';
+import SearchContainer from './components/search-container.vue';
+import { env } from '@/env.js';
 
 export default defineComponent({
     name: 'MainLayout',
@@ -35,8 +22,8 @@ export default defineComponent({
         Menu,
         Navbar,
         TagList,
-        keepAliveRouter,
-        searchContainer,
+        KeepAliveRouter,
+        SearchContainer,
     },
     props: {},
     setup() {
@@ -61,7 +48,7 @@ export default defineComponent({
         /**
          * iframe list map
          * 记录已有的iframe个数的path map 方便查找
-         *  */
+         */
         const iframePathMap = computed(() => {
             return dataContainer.iframeList
                 .filter((item) => {
@@ -75,7 +62,7 @@ export default defineComponent({
         /**
          * 需要缓存的页面列表
          * 根据标签列表来的，需要改的话只需要处理标签列表
-         *  */
+         */
         const cacheTagList = computed(() => {
             let tagList = dataContainer.tagsMap[dataContainer.layoutName || ''] || [];
             return tagList
@@ -93,7 +80,7 @@ export default defineComponent({
         /**
          * 获取面包屑列表
          * 根据当前用户目录中获取树形级别
-         *  */
+         */
         function getBreadcrumbList() {
             let list = [];
             let menuList = Object.values(dataContainer.userMenuSignMap);
@@ -181,7 +168,7 @@ export default defineComponent({
                 <DefinScrollbar :loading="dataContainer.loading" height="100%" :showUpBt="false">
                     <div class="content-left-container">
                         <div class="search-container">
-                            <searchContainer></searchContainer>
+                            <SearchContainer></SearchContainer>
                         </div>
                         <Menu :dataList="dataContainer.userMenuList"></Menu>
                     </div>
@@ -195,7 +182,7 @@ export default defineComponent({
                     ></TagList>
                 </div>
                 <div class="view-container">
-                    <keepAliveRouter :cacheList="cacheTagList"></keepAliveRouter>
+                    <KeepAliveRouter :cacheList="cacheTagList"></KeepAliveRouter>
                     <!-- 当前打开的iframe列表页，防止重新刷新 -->
                     <div
                         :style="{

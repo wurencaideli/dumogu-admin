@@ -4,10 +4,10 @@
  */
 import { defineComponent, ref, reactive, onMounted, toRef, h, watch } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
-import linkItem from './linkItem.vue';
-import { toTree, unfoldTreeList } from '@/common/treeTools';
-import { getNanoid } from '@/common/guid';
-import { deepCopyObj } from '@/common/otherTools';
+import linkItem from './link-item.vue';
+import { toTree, unfoldTreeList } from '@/common/tree-tools.js';
+import { getNanoid } from '@/common/guid.js';
+import { deepCopyObj } from '@/common/other-tools.js';
 
 export default defineComponent({
     name: 'Menu',

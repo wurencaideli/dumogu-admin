@@ -4,18 +4,18 @@
  */
 import { ref, defineComponent, reactive, toRef } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
-import SvgIcon from '@/components/svgIcon/index.vue';
-import userAvatar from '@/components/userAvatar.vue';
-import { userDataStore } from '@/store/user';
-import { messageSuccess, messageError, confirm } from '@/action/messagePrompt';
-import definDropdown from '@/components/definDropdown.vue';
+import SvgIcon from '@/components/svg-icon/index.vue';
+import userAvatar from '@/components/user-avatar.vue';
+import { userDataStore } from '@/store/user.js';
+import { messageSuccess, messageError, confirm } from '@/action/message-prompt.js';
+import DefinDropdown from '@/components/defin-dropdown.vue';
 
 export default defineComponent({
     name: 'Navbar',
     components: {
         SvgIcon,
         userAvatar,
-        definDropdown,
+        DefinDropdown,
     },
     props: {},
     setup(props, { emit }) {
@@ -71,7 +71,7 @@ export default defineComponent({
                     </span>
                 </div>
             </div>
-            <definDropdown
+            <DefinDropdown
                 :show="dataContainer.show"
                 :ifLeftClick="true"
                 :targetQuery="'.target'"
@@ -113,7 +113,7 @@ export default defineComponent({
                         </div>
                     </div>
                 </template>
-            </definDropdown>
+            </DefinDropdown>
             <a href="https://gitee.com/wuzhanggui/dumogu-admin" target="_blank" class="bt">
                 <SvgIcon :style="'width:22px;height:22px;'" name="img:gitee.svg"></SvgIcon>
             </a>

@@ -3,8 +3,8 @@
  * 个人信息展示
  */
 import { defineComponent, reactive, toRef } from 'vue';
-import SvgIcon from '@/components/svgIcon/index.vue';
-import { userDataStore } from '@/store/user';
+import SvgIcon from '@/components/svg-icon/index.vue';
+import { userDataStore } from '@/store/user.js';
 
 export default defineComponent({
     components: {

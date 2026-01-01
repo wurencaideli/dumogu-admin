@@ -5,10 +5,10 @@
  */
 import { defineComponent, reactive, onUnmounted, toRef } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
-import { getNanoid } from '@/common/guid';
-import { deepCopyObj } from '@/common/otherTools';
-import { userDataStore } from '@/store/user';
-import { findTag } from '@/action/tagListTools';
+import { getNanoid } from '@/common/guid.js';
+import { deepCopyObj } from '@/common/other-tools.js';
+import { userDataStore } from '@/store/user.js';
+import { findTag } from '@/action/tag-list-tools.js';
 
 export default defineComponent({
     components: {},

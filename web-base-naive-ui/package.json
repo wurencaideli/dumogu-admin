@@ -1,5 +1,5 @@
 {
-    "name": "web-base",
+    "name": "web-base-naive-ui",
     "private": true,
     "version": "0.0.1",
     "type": "module",
@@ -12,7 +12,6 @@
     },
     "dependencies": {
         "axios": "1.7.7",
-        "codess": "^1.1.5",
         "copy-to-clipboard": "3.3.3",
         "cropperjs": "1.6.2",
         "echarts": "5.5.1",
@@ -28,7 +27,6 @@
         "storages-js": "0.0.4",
         "unplugin-auto-import": "0.18.2",
         "unplugin-vue-components": "0.27.4",
-        "vite-plugin-ali-oss": "2.0.2",
         "vue": "3.5.4",
         "vue-router": "4.4.5",
         "vuedraggable": "4.1.0"

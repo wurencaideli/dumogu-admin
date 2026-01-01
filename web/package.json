@@ -9,12 +9,11 @@
         "dev": "vite",
         "build": "vite build",
         "preview": "vite preview",
-        "to-rem": "node automationScripts/toRem.js"
+        "to-rem": "node .node-automation-scripts/to-rem.js"
     },
     "dependencies": {
         "@element-plus/icons-vue": "2.0.10",
         "axios": "1.2.2",
-        "codess": "^1.1.5",
         "cropperjs": "1.6.1",
         "docxtemplater": "3.42.1",
         "docxtemplater-image-module-free": "1.1.1",
@@ -33,7 +32,6 @@
         "sass-loader": "13.2.0",
         "simplebar-vue": "2.3.5",
         "storages-js": "0.0.4",
-        "vite-plugin-ali-oss": "1.0.9",
         "vite-plugin-html": "3.2.1",
         "vue": "3.3.4",
         "vue-router": "4.2.5",

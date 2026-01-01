@@ -8,7 +8,7 @@ npm install
 
 目前只做一个模板架子，尽量不涉及业务页面的开发。尽量不使用自动化的插件，能手动调用的就手动调用。
 
-文件命名格式：首字母小写的驼峰命名。
+文件命名格式：首字母小写的驼峰命名(放弃了)，使用中划线间隔命名，防止各种字母大小写的问题。
 
 其中的模块代码整体设计思想：
     手动调用为原则，需要使用的才引用，尽量不设置全局引用。
@@ -47,9 +47,9 @@ npm install
  */
 {
     path: 'new-tag-page/:sign',
-    component: () => import('@/views/system/newTagPage/index.vue'),
+    component: () => import('@/views/system/new-tag-page/index.vue'),
     name: 'new-tag-page',
-    meta: { 
+    meta: {
         layoutName: 'main',
         redirectName: 'main-redirect',
         title: '新标签',
@@ -60,11 +60,11 @@ npm install
 
 #### 菜单的添加（待完善）
 ``` javascript
-/** 
+/**
  * path和name为唯一属性，两者都可选填，标签页的配置会使用此配置（path优先）
  * 用作权限验证以及独立配置路由信息，优先级高于路由的meta配置
  * 需要配置的属性与路由的meta的属性一致
- *  */
+ */
 {
     name:"main-index",
     title:'首页',

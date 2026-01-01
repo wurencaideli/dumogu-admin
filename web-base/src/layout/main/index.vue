@@ -6,25 +6,25 @@
 import { defineComponent, reactive, toRef, computed } from 'vue';
 import Navbar from './components/navbar.vue';
 import Menu from './components/menu.vue';
-import TagList from './components/tagList.vue';
+import TagList from './components/tag-list.vue';
 import { useRouter, useRoute } from 'vue-router';
-import { userDataStore } from '@/store/user';
+import { userDataStore } from '@/store/user.js';
 import img_1 from '@/assets/logo.png';
-import keepAliveRouter from '@/components/keepAliveRouter.vue';
-import DefinScrollbar from '@/components/definScrollbar.vue';
-import searchContainer from './components/searchContainer.vue';
-import { publicDataStore } from '@/store/public';
-import { env } from "@/env";
+import KeepAliveRouter from '@/components/keep-alive-router.vue';
+import DefinScrollbar from '@/components/defin-scrollbar.vue';
+import SearchContainer from './components/search-container.vue';
+import { publicDataStore } from '@/store/public.js';
+import { env } from '@/env.js';
 
 export default defineComponent({
     name: 'MainLayout',
     components: {
         Menu,
         TagList,
-        keepAliveRouter,
+        KeepAliveRouter,
         Navbar,
         DefinScrollbar,
-        searchContainer,
+        SearchContainer,
     },
     props: {},
     setup() {
@@ -47,7 +47,7 @@ export default defineComponent({
         /**
          * iframe list map
          * 记录已有的iframe个数的path map 方便查找
-         *  */
+         */
         const iframePathMap = computed(() => {
             return dataContainer.iframeList
                 .filter((item) => {
@@ -61,7 +61,7 @@ export default defineComponent({
         /**
          * 需要缓存的页面列表
          * 根据标签列表来的，需要改的话只需要处理标签列表
-         *  */
+         */
         const cacheTagList = computed(() => {
             let tagList = dataContainer.tagsMap[dataContainer.layoutName || ''] || [];
             return tagList
@@ -106,7 +106,7 @@ export default defineComponent({
                 <DefinScrollbar :loading="dataContainer.loading" height="100%" :showUpBt="false">
                     <div class="main-centre-content-container">
                         <div class="search-container">
-                            <searchContainer></searchContainer>
+                            <SearchContainer></SearchContainer>
                         </div>
                         <Menu :dataList="dataContainer.userMenuList"></Menu>
                     </div>
@@ -121,7 +121,7 @@ export default defineComponent({
                 ></TagList>
             </div>
             <div class="view-container">
-                <keepAliveRouter :cacheList="cacheTagList"></keepAliveRouter>
+                <KeepAliveRouter :cacheList="cacheTagList"></KeepAliveRouter>
                 <!-- 当前打开的iframe列表页，防止重新刷新 -->
                 <div
                     :style="{

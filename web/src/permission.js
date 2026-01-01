@@ -2,13 +2,15 @@
  * 路由权限配置
  * 只做路由跳转时的权限验证
  */
-import router from '@/router/index';
-import { userDataStore } from '@/store/user';
-import { getUserData } from '@/action/formatUserData';
-import { sysMeluConfigNameMap, sysMeluConfigPathMap, sysMeluConfigList } from '@/router/common';
-import { deepCopyObj } from '@/common/otherTools';
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
+
+import router from '@/router/index.js';
+import { userDataStore } from '@/store/user.js';
+import { getUserData } from '@/action/format-user-data.js';
+import { sysMeluConfigNameMap, sysMeluConfigPathMap, sysMeluConfigList } from '@/router/common.js';
+import { deepCopyObj } from '@/common/other-tools.js';
+
 //全局进度条的配置
 NProgress.configure({
     easing: 'ease', // 动画方式
@@ -18,12 +20,11 @@ NProgress.configure({
     minimum: 0.3, // 更改启动时使用的最小百分比
     parent: 'body', //指定进度条的父容器
 });
-
 /**
  * 免登录
  * 权限白名单
  * 包含路径，和目录名
- *  */
+ */
 const whiteList = ['/login', '/register', '/404', '/401'];
 /**
  * 登录后的白名单
@@ -41,7 +42,6 @@ const whiteList_1 = [
     'main-mine-info-update',
     'main-mine-info-password',
 ];
-
 router.beforeEach(async (to, from, next) => {
     NProgress.start();
     const userData = userDataStore();
@@ -63,12 +63,14 @@ router.beforeEach(async (to, from, next) => {
     }
     /** 如果没有菜单则先获取用户数据 */
     if (userData.userMenuList.length == 0) {
-        await getUserData().catch(() => {});
+        await getUserData().catch((e) => {
+            console.error(e);
+        });
     }
     /**
      * 如果是白名单中的路由直接放行
      * 登录后的白名单
-     *  */
+     */
     if (whiteList_1.includes(toPath) || whiteList_1.includes(toName)) {
         next();
         return;
@@ -83,7 +85,7 @@ router.beforeEach(async (to, from, next) => {
     /**
      * 判断用户是否有该目录配置（判断是否有该目录权限）
      * 没权限的跳转到401页面
-     *  */
+     */
     let userMenuConfigNameMap = userData.userMenuConfigNameMap;
     let userMenuConfigPathMap = userData.userMenuConfigPathMap;
     if (!userMenuConfigNameMap[toName] && !userMenuConfigPathMap[toPath]) {
@@ -145,7 +147,7 @@ function addTag(route) {
     /**
      * 不重复添加
      * 相同path的判断为重复
-     *  */
+     */
     let target = localTagList.find((item) => item.path == toPath);
     if (!target) {
         // 添加进入标签列表，添加到当前标签的右边

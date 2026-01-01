@@ -2,16 +2,8 @@
 /*
  * 404
  */
-import {
-    defineComponent,
-    ref,
-    getCurrentInstance,
-    reactive,
-    toRef,
-    computed,
-    onMounted,
-    watch,
-} from 'vue';
+import { defineComponent, reactive } from 'vue';
+
 import svg404 from '@/assets/img-list/404.svg';
 
 export default defineComponent({

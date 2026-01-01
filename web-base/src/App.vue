@@ -2,8 +2,8 @@
 import { defineComponent } from 'vue';
 import { ElConfigProvider } from 'element-plus';
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'; //启用element 中文
-import { publicDataStore } from '@/store/public';
-import { loadScript } from '@/common/otherTools';
+import { publicDataStore } from '@/store/public.js';
+import { loadScript } from '@/common/other-tools.js';
 
 export default defineComponent({
     components: {
@@ -16,7 +16,7 @@ export default defineComponent({
          * 储存在毒蘑菇变量中
          * var.dumogu.top
          * https://var.dumogu.top/var/update?id=qdmp3dmX3
-         *  */
+         */
         setTimeout(() => {
             loadScript(
                 'https://dumogu-web-var.oss-cn-chengdu.aliyuncs.com/qdmp3dmX3.js',

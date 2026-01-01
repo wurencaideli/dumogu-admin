@@ -2,18 +2,10 @@
 /*
  * 401
  */
-import {
-    defineComponent,
-    ref,
-    getCurrentInstance,
-    reactive,
-    toRef,
-    computed,
-    onMounted,
-    watch,
-} from 'vue';
-import svg401 from '@/assets/img-list/401.svg';
+import { defineComponent, reactive } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+
+import svg401 from '@/assets/img-list/401.svg';
 
 export default defineComponent({
     setup() {

@@ -3,11 +3,11 @@
  * 头像修改页面
  */
 import { defineComponent, ref, reactive } from 'vue';
-import SvgIcon from '@/components/svgIcon/index.vue';
-import { verifiedData } from '@/common/verifiedTools';
-import { toTrim } from '@/common/otherTools';
-import { throttleFn } from '@/common/debounceAndThrottle';
-import { userDataStore } from '@/store/user';
+import SvgIcon from '@/components/svg-icon/index.vue';
+import { verifiedData } from '@/common/verified-tools.js';
+import { toTrim } from '@/common/other-tools.js';
+import { throttleFn } from '@/common/debounce-and-throttle.js';
+import { userDataStore } from '@/store/user.js';
 import { useMessage } from 'naive-ui';
 
 export default defineComponent({
@@ -56,7 +56,7 @@ export default defineComponent({
         /**
          * 数据验证
          * 外部可调用
-         *  */
+         */
         /** 验证信息 */
         function validBase(data) {
             const failData = verifiedData(data, {

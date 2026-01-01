@@ -97,20 +97,13 @@
 /**
  * 页面例子
  */
-import {
-    defineComponent,
-    onBeforeUnmount,
-    ref,
-    reactive,
-    getCurrentInstance,
-    onActivated,
-    onMounted,
-} from 'vue';
+import { defineComponent, ref, reactive, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import SvgIcon from '@/components/svgIcon/index.vue';
-import EchartContainer from '@/components/echartContainer.vue';
-import DefinScrollbar from '@/components/definScrollbar.vue';
 import * as echarts from 'echarts';
+
+import SvgIcon from '@/components/svg-icon/index.vue';
+import EchartContainer from '@/components/echart-container.vue';
+import DefinScrollbar from '@/components/defin-scrollbar.vue';
 
 export default defineComponent({
     components: {

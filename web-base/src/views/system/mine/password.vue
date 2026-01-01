@@ -3,11 +3,11 @@
  * 密码修改页面
  */
 import { defineComponent, ref, reactive } from 'vue';
-import SvgIcon from '@/components/svgIcon/index.vue';
-import { verifiedData } from '@/common/verifiedTools';
-import { messageError, messageSuccess } from '@/action/messagePrompt.js';
-import { toTrim } from '@/common/otherTools';
-import { throttleFn } from '@/common/debounceAndThrottle';
+import SvgIcon from '@/components/svg-icon/index.vue';
+import { verifiedData } from '@/common/verified-tools.js';
+import { messageError, messageSuccess } from '@/action/message-prompt.js';
+import { toTrim } from '@/common/other-tools.js';
+import { throttleFn } from '@/common/debounce-and-throttle.js';
 
 export default defineComponent({
     components: {
@@ -57,7 +57,7 @@ export default defineComponent({
         /**
          * 数据验证
          * 外部可调用
-         *  */
+         */
         /** 验证信息 */
         function validBase(data) {
             const failData = verifiedData(data, {

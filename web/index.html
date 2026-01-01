@@ -7,15 +7,12 @@
             name="viewport"
             content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
         />
-        <!-- <title>最基础的管理端架子 - 毒蘑菇管理</title> -->
         <title><%- VITE_APP_content %></title>
         <script>
-            /** 加载百度统计 */
-            var _hmt = _hmt || [];
             (function () {
-                var hm = document.createElement('script');
+                const hm = document.createElement('script');
                 hm.src = 'https://hm.baidu.com/hm.js?45a68a5c66a8cda4281052ce7bf0d3b7';
-                var s = document.getElementsByTagName('script')[0];
+                const s = document.getElementsByTagName('script')[0];
                 s.parentNode.insertBefore(hm, s);
             })();
         </script>
@@ -25,6 +22,7 @@
             margin: 0;
             background-color: white;
         }
+
         body > .html-loading-el {
             display: flex;
             flex-direction: row;
@@ -38,31 +36,24 @@
             z-index: 999;
             pointer-events: none;
         }
-        /* 设置位置 */
+
         body > .html-loading-el .loading {
-            /* 高度 */
             height: fit-content;
-            /* 弹性布局 */
             display: flex;
-            /* 设置子项在y轴方向居中，应该是设置起点在中间，非常有用，不然动画很怪 */
             align-items: center;
             height: 100px;
             width: fit-content;
         }
-        /* 小竖条 */
+
         body > .html-loading-el .item {
             height: 100%;
             width: 7px;
             background: rgba(0, 128, 255, 0.503);
-            /* 加margin，使竖条之间有空隙 */
             margin: 0px 10px;
-            /* 圆角 */
             border-radius: 999px;
-            /* 动画：名称、时间、循环 */
             animation: loading 1s infinite;
         }
 
-        /* 设置动画 */
         @keyframes loading {
             0% {
                 height: 0px;
@@ -77,7 +68,6 @@
             }
         }
 
-        /* 为每一个竖条设置延时 */
         body > .html-loading-el .item:nth-child(2) {
             animation-delay: 0.1s;
         }
@@ -106,6 +96,7 @@
             animation-delay: 0.7s;
         }
     </style>
+
     <body>
         <div id="app"></div>
         <div id="html-loading-el" class="html-loading-el">

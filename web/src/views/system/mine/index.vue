@@ -63,17 +63,10 @@
 /**
  * 个人信息展示
  */
-import {
-    defineComponent,
-    onBeforeUnmount,
-    ref,
-    reactive,
-    getCurrentInstance,
-    onActivated,
-    toRef,
-} from 'vue';
-import SvgIcon from '@/components/svgIcon/index.vue';
-import { userDataStore } from '@/store/user';
+import { defineComponent, reactive, toRef } from 'vue';
+
+import SvgIcon from '@/components/svg-icon/index.vue';
+import { userDataStore } from '@/store/user.js';
 
 export default defineComponent({
     components: {

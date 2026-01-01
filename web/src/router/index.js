@@ -2,8 +2,9 @@
  * 路由列表部分
  * 所有路由必须先手动写好，然后由后端菜单接口来进行匹配并且指定是否显示
  */
-import { env } from '@/env';
 import { createWebHistory, createRouter } from 'vue-router';
+
+import { env } from '@/env.js';
 
 /** @type {import('vue-router').RouteRecordRaw[]} */
 export const constantRoutes = [
@@ -37,7 +38,7 @@ export const constantRoutes = [
             /**
              * 重定向页面
              * 用来刷新标签页
-             *  */
+             */
             {
                 path: 'redirect/:path(.*)',
                 name: 'main-redirect',
@@ -71,7 +72,7 @@ export const constantRoutes = [
             },
             {
                 path: 'new-tag-page/:sign',
-                component: () => import('@/views/system/newTagPage/index.vue'),
+                component: () => import('@/views/system/new-tag-page/index.vue'),
                 name: 'new-tag-page',
                 meta: {
                     layoutName: 'main',
@@ -93,7 +94,7 @@ export const constantRoutes = [
             },
             {
                 path: 'show-list',
-                component: () => import('@/views/exampleViews/showList/index.vue'),
+                component: () => import('@/views/example-views/show-list/index.vue'),
                 name: 'show-list',
                 meta: {
                     layoutName: 'main',
@@ -103,7 +104,7 @@ export const constantRoutes = [
             },
             {
                 path: 'show-list/add',
-                component: () => import('@/views/exampleViews/showList/add.vue'),
+                component: () => import('@/views/example-views/show-list/add.vue'),
                 name: 'show-list-add',
                 meta: {
                     layoutName: 'main',
@@ -113,7 +114,7 @@ export const constantRoutes = [
             },
             {
                 path: 'show-list/update/:sign',
-                component: () => import('@/views/exampleViews/showList/add.vue'),
+                component: () => import('@/views/example-views/show-list/add.vue'),
                 name: 'show-list-update',
                 meta: {
                     layoutName: 'main',
@@ -123,7 +124,7 @@ export const constantRoutes = [
             },
             {
                 path: 'show-list/info/:sign',
-                component: () => import('@/views/exampleViews/showList/info.vue'),
+                component: () => import('@/views/example-views/show-list/info.vue'),
                 name: 'show-list-info',
                 meta: {
                     layoutName: 'main',
@@ -133,7 +134,7 @@ export const constantRoutes = [
             },
             {
                 path: 'user-list',
-                component: () => import('@/views/exampleViews/userList/index.vue'),
+                component: () => import('@/views/example-views/user-list/index.vue'),
                 name: 'user-list',
                 meta: {
                     layoutName: 'main',
@@ -143,7 +144,7 @@ export const constantRoutes = [
             },
             {
                 path: 'role-list',
-                component: () => import('@/views/exampleViews/roleList/index.vue'),
+                component: () => import('@/views/example-views/role-list/index.vue'),
                 name: 'role-list',
                 meta: {
                     layoutName: 'main',
@@ -153,7 +154,7 @@ export const constantRoutes = [
             },
             {
                 path: 'icon-list',
-                component: () => import('@/views/system/iconList/index.vue'),
+                component: () => import('@/views/system/icon-list/index.vue'),
                 name: 'icon-list',
                 meta: {
                     layoutName: 'main',
@@ -173,7 +174,7 @@ export const constantRoutes = [
             },
             {
                 path: 'setup-tag',
-                component: () => import('@/views/exampleViews/setupTag/index.vue'),
+                component: () => import('@/views/example-views/setup-tag/index.vue'),
                 name: 'setup-tag',
                 meta: {
                     layoutName: 'main',
@@ -183,7 +184,7 @@ export const constantRoutes = [
             },
             {
                 path: 'setup-menu',
-                component: () => import('@/views/exampleViews/setupMenu/index.vue'),
+                component: () => import('@/views/example-views/setup-menu/index.vue'),
                 name: 'setup-menu',
                 meta: {
                     layoutName: 'main',
@@ -193,7 +194,7 @@ export const constantRoutes = [
             },
             {
                 path: 'system/menu',
-                component: () => import('@/views/exampleViews/menu/index.vue'),
+                component: () => import('@/views/example-views/menu/index.vue'),
                 name: 'menu',
                 meta: {
                     layoutName: 'main',
@@ -203,7 +204,7 @@ export const constantRoutes = [
             },
             {
                 path: 'system/bt-permission',
-                component: () => import('@/views/exampleViews/btPermission/index.vue'),
+                component: () => import('@/views/example-views/bt-permission/index.vue'),
                 name: 'bt-permission',
                 meta: {
                     layoutName: 'main',
@@ -223,7 +224,7 @@ export const constantRoutes = [
             },
             {
                 path: 'other-view',
-                component: () => import('@/views/exampleViews/otherView/index.vue'),
+                component: () => import('@/views/example-views/other-view/index.vue'),
                 name: 'other-view',
                 meta: {
                     layoutName: 'main',
@@ -233,7 +234,7 @@ export const constantRoutes = [
             },
             {
                 path: 'merge-table',
-                component: () => import('@/views/exampleViews/mergeTable/index.vue'),
+                component: () => import('@/views/example-views/merge-table/index.vue'),
                 name: 'merge-table',
                 meta: {
                     layoutName: 'main',
@@ -243,7 +244,7 @@ export const constantRoutes = [
             },
             {
                 path: 'big-screen/show_1',
-                component: () => import('@/views/bigScreen/show_1/index.vue'),
+                component: () => import('@/views/big-screen/show_1/index.vue'),
                 name: 'main-big-screen',
                 meta: {
                     layoutName: 'main',
@@ -288,12 +289,12 @@ export const constantRoutes = [
     },
     {
         path: '/big-screen',
-        component: () => import('@/layout/bigScreen/index.vue'),
+        component: () => import('@/layout/big-screen/index.vue'),
         children: [
             /**
              * 重定向页面
              * 用来刷新标签页
-             *  */
+             */
             {
                 path: 'redirect/:path(.*)',
                 name: 'big-screen-redirect',
@@ -305,7 +306,7 @@ export const constantRoutes = [
             },
             {
                 path: 'show_1',
-                component: () => import('@/views/bigScreen/show_1/index.vue'),
+                component: () => import('@/views/big-screen/show_1/index.vue'),
                 name: 'big-screen-show_1',
                 meta: {
                     layoutName: 'big-screen',
@@ -315,7 +316,7 @@ export const constantRoutes = [
             },
             {
                 path: 'show_2',
-                component: () => import('@/views/bigScreen/show_2/index.vue'),
+                component: () => import('@/views/big-screen/show_2/index.vue'),
                 name: 'big-screen-show_2',
                 meta: {
                     layoutName: 'big-screen',
@@ -325,7 +326,7 @@ export const constantRoutes = [
             },
             {
                 path: 'show_3',
-                component: () => import('@/views/bigScreen/show_3/index.vue'),
+                component: () => import('@/views/big-screen/show_3/index.vue'),
                 name: 'big-screen-show_3',
                 meta: {
                     layoutName: 'big-screen',
@@ -335,7 +336,7 @@ export const constantRoutes = [
             },
             {
                 path: 'show_4',
-                component: () => import('@/views/bigScreen/show_4/index.vue'),
+                component: () => import('@/views/big-screen/show_4/index.vue'),
                 name: 'big-screen-show_4',
                 meta: {
                     layoutName: 'big-screen',

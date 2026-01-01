@@ -1,16 +1,17 @@
 <script>
 /**
  * 登录页面
- *  */
-import { defineComponent, ref, reactive, computed, onMounted, onActivated } from 'vue';
+ */
+import { defineComponent, ref, reactive } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { Select, ArrowRightBold, SemiSelect } from '@element-plus/icons-vue';
+
 import publicApi from '@/http/public.js';
 import userApi from '@/http/user.js';
-import { messageSuccess, messageError } from '@/action/messagePrompt';
-import { useRoute, useRouter } from 'vue-router';
-import { throttleFn_1 as throttleFn } from '@/common/debounceAndThrottle';
-import { verifiedData } from '@/common/verifiedTools';
-import { Select, ArrowRightBold, SemiSelect } from '@element-plus/icons-vue';
-import { userDataStore } from '@/store/user';
+import { messageSuccess, messageError } from '@/action/message-prompt.js';
+import { throttleFn_1 as throttleFn } from '@/common/debounce-and-throttle.js';
+import { verifiedData } from '@/common/verified-tools.js';
+import { userDataStore } from '@/store/user.js';
 import img_1 from '@/assets/login-imgs/img-1.gif';
 import img_2 from '@/assets/login-imgs/login-bg.svg';
 import img_3 from '@/assets/login-imgs/code.svg';
@@ -31,6 +32,7 @@ export default defineComponent({
         const router = useRouter();
         const route = useRoute();
         const dataContainer = reactive({
+            version: import.meta.env.VITE_VERSION,
             form: {
                 name: '',
                 password: '',
@@ -133,7 +135,7 @@ export default defineComponent({
                     /**
                      * 登录成功，跳转到首页
                      * 其他用户信息会在路由跳转是获取到
-                     *  */
+                     */
                     let routeParams = route.query || {};
                     if (routeParams.from) {
                         router.push(decodeURIComponent(routeParams.from));
@@ -309,7 +311,7 @@ export default defineComponent({
             </div>
         </div>
         <div class="bottom">
-            版权所有 @admin.dumogu.top 毒蘑菇 - 管理
+            版权所有 @admin.dumogu.top 毒蘑菇 - 管理 v-{{ dataContainer.version }}
             <a href="https://github.com/wurencaideli/dumogu-admin" target="_blank" class="bt">
                 <SvgIcon :style="'width:60px;height:25px;'" name="svg:github.svg"></SvgIcon>
             </a>

@@ -47,7 +47,7 @@ npm install
  */
 {
     path: 'new-tag-page/:sign',
-    component: () => import('@/views/system/newTagPage/index.vue'),
+    component: () => import('@/views/system/new-tag-page/index.vue'),
     name: 'new-tag-page',
     meta: { 
         layoutName: 'main',
@@ -64,7 +64,7 @@ npm install
  * path和name为唯一属性，两者都可选填，标签页的配置会使用此配置（path优先）
  * 用作权限验证以及独立配置路由信息，优先级高于路由的meta配置
  * 需要配置的属性与路由的meta的属性一致
- *  */
+ */
 {
     name:"main-index",
     title:'首页',

@@ -1,26 +1,20 @@
-/** 引入帧动画函数（防止部分浏览器不支持） */
-import '@/common/requestAnimationFrameExpand';
-/** 引入 rem计算 */
-import '@/common/rem';
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
-/** 添加公共样式 */
+import 'element-plus/theme-chalk/dark/css-vars.css';
+
+import '@/common/request-animation-frame-expand.js';
+import '@/common/rem.js';
 import '@/style/index.scss';
 import App from './App.vue';
-import router from './router/index';
-/** 注册路由许可验证 */
-import './permission';
-/** 打印完整路由表 */
-import { sysMeluConfigList } from './router/common';
-import 'element-plus/theme-chalk/dark/css-vars.css';
-import { isProduction } from './env';
-const pinia = createPinia();
+import router from './router/index.js';
+import './permission.js';
+import { sysMeluConfigList } from './router/common.js';
+import { isProduction } from './env.js';
 
+const pinia = createPinia();
 if (!isProduction()) {
-    console.log('系统完整路由表，router挂载全局window.router', router, sysMeluConfigList);
-    /** 挂载到全局方便操作 */
+    console.log('系统完整路由表 router挂载全局window.router', router, sysMeluConfigList);
     window.router = router;
-    /** 提示重复菜单 */
     sysMeluConfigList.reduce((c, i) => {
         if (!i.name) return c;
         if (c[i.name]) {
@@ -30,7 +24,6 @@ if (!isProduction()) {
         return c;
     }, {});
 }
-
 const app = createApp(App);
 app.use(router);
 app.use(pinia);

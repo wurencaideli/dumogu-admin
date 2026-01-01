@@ -50,20 +50,12 @@
 /**
  * 密码修改页面
  */
-import {
-    defineComponent,
-    onBeforeUnmount,
-    ref,
-    reactive,
-    getCurrentInstance,
-    onActivated,
-    onMounted,
-} from 'vue';
+import { defineComponent, ref, reactive } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
-import SvgIcon from '@/components/svgIcon/index.vue';
-import { Delete } from '@element-plus/icons-vue';
-import { verifiedData } from '@/common/verifiedTools';
-import { messageError, messageSuccess } from '@/action/messagePrompt.js';
+
+import SvgIcon from '@/components/svg-icon/index.vue';
+import { verifiedData } from '@/common/verified-tools.js';
+import { messageError, messageSuccess } from '@/action/message-prompt.js';
 
 export default defineComponent({
     components: {
@@ -106,7 +98,7 @@ export default defineComponent({
         /**
          * 数据验证
          * 外部可调用
-         *  */
+         */
         function validData(data) {
             const failData = verifiedData(data, {
                 password: {

@@ -1,12 +1,11 @@
-/*jshint esversion: 9 */
 /**
  * http请求配置
  */
 import axios from 'axios';
-import { userDataStore } from '@/store/user';
-import { messageSuccess, messageError, confirm } from '@/action/messagePrompt';
-import router from '@/router';
-import { env } from '@/env';
+import { userDataStore } from '@/store/user.js';
+import { messageSuccess, messageError, confirm } from '@/action/message-prompt.js';
+import router from '@/router/index.js';
+import { env } from '@/env.js';
 
 export const service = axios.create({
     //可创建多个 axios实例
